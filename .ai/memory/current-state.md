@@ -34,8 +34,9 @@ Owner statements are recorded but not independently verified. Exact Arabic/Engli
 
 - Phase 0 discovery only; no application features, database migrations or mobile app implementation identified in inspected default branch.
 - ADR-0001 and legal-entity register are proposals/working records, not legal or accounting opinions.
+- Pharmacy stock-transfer workflow and acceptance criteria have been drafted under .ai/domain and .ai/quality; both await operational/accounting approval.
 - No production posting, inventory valuation, tax calculation, claim settlement or patient-balance logic is approved.
 
 ## Next milestone
 
-Verify company identity and full branch/site schedule; confirm site legal owner/operator/licence and stock custody; define pharmacy transfer lifecycle, roles, approval limits and exception handling; obtain accountant approval for transfer valuation/posting and company/sector/location accounting map. Then finalize database provisioning and authorization design.
+Obtain pharmacy-operations approval of the transfer lifecycle, roles, custody, approval limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing impact, transfer valuation/posting and reconciliation examples. Then translate approved criteria into a non-posting domain/API design and implementation plan. In parallel, verify company identity, legal site/operator/licence and full branch/site schedule before production configuration.
