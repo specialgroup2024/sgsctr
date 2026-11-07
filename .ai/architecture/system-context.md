@@ -1,38 +1,38 @@
 # Proposed system context — Phase 0
 
-Status: proposal for discovery; not an implementation baseline or approved architecture.
+Status: proposal for discovery; legal identity and accounting design require owner/professional approval.
 
 ## Context
-One product supports specialist contracting and a pharmacy group. Keep their business rules, financial books, reports, permissions and records separate. Clinical decisions remain with authorized pharmacy professionals.
+Owner reports one company, “Special Group”, with Pharmacies Sector and Specialized Contracting Sector. Plan provisionally for one legal entity with two separate business domains. Verify official legal identity and confirm both sectors are operated by the same legal person before production configuration.
 
 ## Proposed deployment shape
 - ASP.NET Core API: modular monolith, one deployable backend initially.
-- PostgreSQL: one managed cluster may host isolated databases per legal entity/business boundary.
-- React Native: mobile client consuming versioned APIs; do not connect clients directly to PostgreSQL.
+- PostgreSQL: one database provisionally for LE-01, with strict sector/module data ownership and authorization. Reassess if additional legal entities are evidenced.
+- React Native: mobile client consuming versioned APIs; never connect clients directly to PostgreSQL.
 - Optional web administration client: decision pending; share API and authorization policies.
 - Background processing: introduce only for confirmed asynchronous jobs; use durable idempotent work patterns.
 - Observability: structured logs, metrics, traces and security/audit events with sensitive-data redaction.
 
 ## Backend module boundaries
-- Identity and Access: users, authentication integration, role and permission evaluation.
+- Identity and Access: users, authentication integration, role and permission evaluation, sector-scoped access.
 - Shared Platform: configuration, reference data only when truly common, audit envelope, outbox and notifications.
 - Contracting: projects, estimates, contracts, variations, procurement, subcontractors, costs, billing and project reporting.
 - Pharmacy: catalog, suppliers, purchasing, receiving, lots/expiry, stock movements, dispensing records and returns.
 - Pharmacy Claims: payer agreements, claim lifecycle, remittances, patient balances and collections.
-- Finance boundary: separate ledgers/journals per legal entity; module ownership and posting authority must be agreed before design is finalized.
+- Finance: one company statutory accounting framework provisionally, with sector subledgers/journals or posting dimensions and reconciled company-level reporting. Exact ledger ownership and posting authority require accountant approval.
 
-Modules own their data and expose use-case interfaces. No direct cross-module table writes. Shared code must not contain contracting or pharmacy policy.
+Modules own their data and expose use-case interfaces. No direct cross-module table writes. Shared code must not contain contracting or pharmacy policy. Every transaction carries company/legal-entity and sector ownership, with branch/project/warehouse dimensions where appropriate.
 
 ## Data and security principles
-- Use server-side authorization and least-privilege database roles.
-- Enforce financial and inventory invariants with transactions and constraints.
-- Use fixed-precision decimal types and explicit currency; final precision and rounding require accountant approval.
+- Enforce server-side authorization and least-privilege database roles; sector users see only authorized sector records.
+- Financial and inventory invariants use transactions and constraints.
+- Use fixed-precision decimal types and explicit currency; precision and rounding require accountant approval.
 - Keep patient/health data out of general logs, agent memory and test fixtures.
 - Version migrations; test backup and restore; make integrations idempotent.
-- Cross-entity reporting is not a default. Any intercompany activity is explicit, authorized and auditable.
+- Cross-sector reporting is permissioned and traceable; intercompany activity applies only to distinct legal entities and genuine documented transactions.
 
 ## Initial stack direction
 ASP.NET Core, PostgreSQL and React Native are stated project choices. Exact framework, runtime, PostgreSQL and mobile toolchain versions remain to be verified and pinned before dependency work. EF Core/Npgsql is a candidate persistence stack, subject to a technical spike.
 
 ## Not decided
-Legal-entity topology, database-per-entity mapping, web client, identity provider, hosting region, offline behavior, integration list, ledger ownership, and deployment topology. See memory/open-questions.md and proposed ADR-0001.
+Verified legal identity, any parent/subsidiary structure, branch ownership, accountant-approved sector accounting model, web client, identity provider, hosting region, offline behavior, integrations, ledger posting rules and deployment topology. See memory/open-questions.md and proposed ADR-0001.
