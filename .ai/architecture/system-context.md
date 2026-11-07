@@ -37,6 +37,7 @@ Modules own their data and expose use-case interfaces. No direct cross-module ta
 - Record item, unit, quantity, batch/lot and expiry where applicable, document reference, responsible users, timestamps and approvals.
 - Enforce role permissions, separation of duties, idempotent processing and immutable audit history. Corrections use controlled reversal/adjustment records.
 - Detailed workflow, negative-stock exceptions, emergency process, transfer valuation and financial postings remain subject to pharmacy-operations and accountant approval.
+- Proposed lifecycle and testable behavior: [workflow specification](../domain/pharmacy-stock-transfer-workflow.md) and [acceptance criteria](../quality/pharmacy-stock-transfer-acceptance.md).
 
 ## Data and security principles
 
