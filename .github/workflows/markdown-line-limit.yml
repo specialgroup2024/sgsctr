@@ -1,0 +1,17 @@
+name: Documentation limits
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  markdown-line-limit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check Markdown files are below 200 lines
+        run: python scripts/check_markdown_line_limit.py
