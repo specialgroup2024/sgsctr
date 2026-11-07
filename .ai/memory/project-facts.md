@@ -1,0 +1,1 @@
+## confirmed, stable facts such as business boundaries and technology choices

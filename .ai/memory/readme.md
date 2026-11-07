@@ -1,0 +1,1 @@
+## Require each memory entry to have a status such as confirmed, assumption, or unverified, plus an owner and review date where appropriate. The agent may propose memory changes but must not turn an assumption into a confirmed fact by repeating it. Never store patient details, credentials, secrets, or raw production records in these files.
