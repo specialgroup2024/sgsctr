@@ -1,7 +1,7 @@
 # Current state
 
 Last reviewed: 2026-11-07.
-Status: Phase 0 discovery; no business features implemented.
+Status: Phase 0 discovery and technical design; no business features implemented.
 
 ## Owner-provided structure
 
@@ -34,9 +34,10 @@ Owner statements are recorded but not independently verified. Exact Arabic/Engli
 
 - Phase 0 discovery only; no application features, database migrations or mobile app implementation identified in inspected default branch.
 - ADR-0001 and legal-entity register are proposals/working records, not legal or accounting opinions.
-- Pharmacy stock-transfer workflow and acceptance criteria have been drafted under .ai/domain and .ai/quality; both await operational/accounting approval.
+- Pharmacy stock-transfer workflow and 21 acceptance criteria are drafted and await pharmacy-operations/accountant/owner approval.
+- A non-posting technical design has now been drafted at .ai/architecture/pharmacy-stock-transfer-technical-design.md. It defines proposed API commands, conceptual records, state/quantity model, transaction/idempotency controls, authorization/audit boundaries and test mapping.
 - No production posting, inventory valuation, tax calculation, claim settlement or patient-balance logic is approved.
 
 ## Next milestone
 
-Obtain pharmacy-operations approval of the transfer lifecycle, roles, custody, approval limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing impact, transfer valuation/posting and reconciliation examples. Then translate approved criteria into a non-posting domain/API design and implementation plan. In parallel, verify company identity, legal site/operator/licence and full branch/site schedule before production configuration.
+Obtain pharmacy-operations approval of the transfer lifecycle, roles, custody, approval limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing impact, transfer valuation/posting and reconciliation examples. Then freeze the technical design and prepare a non-posting implementation backlog. In parallel, verify company identity, legal site/operator/licence and full branch/site schedule before production configuration.
