@@ -1,7 +1,7 @@
 # Current state
 
 Last reviewed: 2026-11-07.
-Status: Phase 0 discovery; no business features implemented.
+Status: Phase 0 discovery; pharmacy transfer technical design drafted; no business features implemented.
 
 ## Owner-provided structure
 
@@ -32,11 +32,12 @@ Owner statements are recorded but not independently verified. Exact Arabic/Engli
 
 ## Repository and delivery
 
-- Phase 0 discovery only; no application features, database migrations or mobile app implementation identified in inspected default branch.
+- Repository files inspected for this task show governance documentation and a minimal README; no application solution or migrations were identified in the inspected baseline. A full repository inventory remains a required first engineering task.
 - ADR-0001 and legal-entity register are proposals/working records, not legal or accounting opinions.
-- Pharmacy stock-transfer workflow and acceptance criteria have been drafted under .ai/domain and .ai/quality; both await operational/accounting approval.
-- No production posting, inventory valuation, tax calculation, claim settlement or patient-balance logic is approved.
+- Pharmacy stock-transfer workflow and acceptance criteria are drafted; operational/accounting approval remains pending.
+- Technical design drafted on branch `docs/pharmacy-transfer-domain-api-design`: domain model, REST API contract, PostgreSQL persistence proposal and phased implementation plan.
+- These artifacts are proposals only. No application code, migrations, production stock posting, inventory valuation, tax calculation, claim settlement or patient-balance logic was implemented.
 
 ## Next milestone
 
-Obtain pharmacy-operations approval of the transfer lifecycle, roles, custody, approval limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing impact, transfer valuation/posting and reconciliation examples. Then translate approved criteria into a non-posting domain/API design and implementation plan. In parallel, verify company identity, legal site/operator/licence and full branch/site schedule before production configuration.
+Complete repository inventory and technical review of the proposed domain/API/persistence design. Obtain pharmacy-operations approval of lifecycle, roles, custody, limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing, in-transit valuation, posting and reconciliation. Then implement the approved backend foundation and transfer workflow incrementally, with PostgreSQL integration tests and explicit release gates. Verify company identity and site/operator/licence register before production configuration.
