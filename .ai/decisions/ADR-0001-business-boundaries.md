@@ -1,41 +1,49 @@
 # ADR-0001: Accounting boundaries for contracting and pharmacy
 
-- Status: **Proposed — domain boundary established; legal-entity topology pending owner evidence**
+- Status: **Proposed — single-entity operating model recorded from owner statement; accountant/legal verification pending**
 - Date: 2026-11-07
 - Decision owner: business owner; accountant approves accounting treatment
-- Scope: business accounting separation and database isolation direction
+- Scope: legal-entity mapping, sector accounting boundaries and database direction
 
-## Decision established from repository requirements
+## Owner-provided entity information
 
-The product has two distinct operating domains: specialist contracting and a pharmacy group. They must not share accounting books, journals, numbering sequences, financial permissions, or operational transaction ownership. This separation applies even if the same person or parent organization owns both operations.
+The business owner identified the registered company as **“Special Group”**, with two sectors:
+1. Pharmacies Sector
+2. Specialized Contracting Sector
 
-The repository does **not** establish the registered legal names, number of incorporated entities, ownership chain, or which branches belong to which entity. Therefore, the two operating domains must not yet be labelled as exactly two legal entities.
+This is an owner-provided statement, not independent verification of the exact registered legal name or legal form. The official Arabic/English registered name, legal form, commercial-registration and tax identifiers, and branch ownership schedule remain to be checked against company records.
 
-## Entity-to-books rule
+For discovery and architecture planning, model one provisional legal entity (**LE-01 — Special Group**) operating two separate business sectors. Do not create two legal entities solely because the sectors have different operations.
 
-1. Every confirmed legal entity maintains its own statutory books, chart of accounts, fiscal periods, tax configuration, numbering controls, approvals, and financial statements.
-2. Contracting transactions belong only to the legal entity that contracts with the customer and incurs/owns the costs.
-3. Pharmacy transactions belong only to the legal entity that purchases/owns stock, operates the pharmacy activity, and records the sale/claim. The actual owner must be confirmed for each branch.
-4. Multiple branches owned and operated by one legal entity may be tracked as branches/cost centres within that entity's books; they do not receive separate statutory ledgers solely because they are separate locations.
-5. If branches are owned by different legal entities, each entity has separate books and balances. Do not consolidate by treating them as branches.
-6. A holding/parent company is not assumed. If confirmed, it has its own books; group consolidation is a separate reporting layer and does not replace entity ledgers.
-7. Intercompany charges, loans, stock transfers or services are recorded only where an actual legal/economic transaction exists, with documented counterparties, approvals, tax treatment and reconciliation.
+## Accounting boundary decision
 
-## Data isolation direction
+If the official records confirm that both sectors are operated by the same registered legal person:
 
-Use one PostgreSQL database and distinct credentials/migrations per confirmed legal entity as the preferred initial isolation model. Do not create one database per branch unless that branch is itself a separate legal entity or a documented security/regulatory requirement demands it. A separately permissioned platform/identity store may support authentication but must not own business ledgers.
+- Maintain one statutory company accounting framework: one company-level chart of accounts, fiscal year, tax profile, statutory financial statements and legally required books.
+- Maintain separate sector-level operational accounting and management reporting for Pharmacies and Specialized Contracting. Use controlled sector subledgers/modules, journals or posting dimensions, branch/project/cost-centre dimensions and sector-specific permissions/approvals.
+- Every financial transaction must carry its owning legal entity and appropriate sector; add branch, project, warehouse, payer or other dimensions where relevant.
+- Provide company-level consolidated statutory reporting from the same legal-entity books, with sector drill-down and reconciliation.
+- Do not create separate statutory company books, separate legal-entity databases or intercompany balances between the two sectors unless evidence establishes separate legal persons or a genuine transaction between distinct entities.
+- Shared company-level balances, taxes, cash/bank controls and statutory postings must reconcile to sector detail. The accountant must approve the chart of accounts, sector dimensions, allocation and reconciliation rules.
 
-Cross-entity reporting must use authorized, traceable reporting projections. Do not allow cross-database writes or direct mobile-client database access. Separate PostgreSQL clusters remain an option if risk, residency, scale or recovery requirements justify the added operations cost.
+If later evidence identifies a separately incorporated pharmacy or contracting company, create a distinct legal-entity record and separate statutory books/database boundary for that entity. Do not silently reclassify it as a sector.
 
-## Consequences
+## Database direction
 
-- Separate books are mandatory at the legal-entity level and between the two business domains.
-- Branch reporting can be achieved without falsely multiplying legal entities.
-- Group reporting and intercompany processing require explicit, reconcilable design.
-- Database topology cannot be finalized until the entity register is evidenced and approved.
+Provisional planning baseline: one PostgreSQL database for LE-01, with explicit sector/module ownership, server-side authorization and controlled data access. Do not create one database per sector or branch on the current evidence. Separate identity/audit infrastructure may be shared. If additional legal entities are verified, reassess one database per legal entity versus stronger cluster isolation based on security, regulatory, recovery and operational needs.
 
-## Evidence and approval gate
+Cross-sector reporting is within the company boundary but must remain traceable and permission-controlled. Sector users should see only authorized sector data; company-wide finance roles may have approved cross-sector access. Mobile clients must use APIs, never connect directly to PostgreSQL.
 
-Business owner must supply/confirm the legal-entity register: registered legal name, legal form, commercial-registration identifier, tax/VAT identifiers where applicable, ownership relationship, business activity, and branches/sites operated. Accountant and qualified Egyptian legal/tax advisers must verify the records and determine statutory accounting/tax treatment. Technical owner then maps approved entities to databases, credentials, backups and access policies.
+## Consequences and controls
 
-**No legal-entity count, company identity, tax treatment, consolidation policy, schema, ledger posting logic or production calculation is approved by this ADR.**
+- Legal entity and operating sector are separate dimensions in the domain model.
+- Sector separation must not cause duplicate statutory books for one company.
+- Sector reports must reconcile to company-level statutory balances.
+- Any intercompany accounting requires distinct verified legal entities and a real documented transaction.
+- Database provisioning is not authorized until the official company record and accountant-approved accounting model are reviewed.
+
+## Required approvals
+
+Business owner confirms entity and sector facts. Accountant approves statutory-versus-management accounting design, sector chart/dimensions, allocation, control accounts and reconciliation. Qualified Egyptian legal/tax adviser verifies legal identity, registered activities, licensing and tax implications. Technical owner implements only the approved mapping.
+
+**This ADR does not approve tax treatment, chart of accounts, financial calculations, ledger posting logic, or production database provisioning.**
