@@ -2,35 +2,37 @@
 
 ## Owner-provided operating structure
 
-The owner identifies the registered company as **“Special Group”**, comprising:
+The owner identifies “Special Group” as comprising:
 - Pharmacies Sector
 - Specialized Contracting Sector
 
-For planning, record one provisional legal entity: LE-01 — Special Group. The exact registered legal name, legal form, official identifiers and site ownership still require documentary verification. Do not treat the two sectors as two companies.
+For planning, record one provisional legal entity: LE-01 — Special Group. Exact registered name, legal form, identifiers and site ownership require documentary verification. Do not treat the sectors as separate companies.
 
 ## Sector responsibilities
 
 ### Specialized Contracting Sector
-Own its customer/project contracts, estimates, variations, procurement, subcontractors, commitments, project costs, progress billing, retention, close-out and sector reports.
+Own customer/project contracts, estimates, variations, procurement, subcontractors, commitments, project costs, progress billing, retention, close-out and sector reports.
 
 ### Pharmacies Sector
-Own its branches, central warehouse, products, suppliers, purchasing, stock, dispensing, payer agreements, claims, patient balances, collections and sector reports.
+Own pharmacy locations, central warehouse, products, suppliers, purchasing, stock, dispensing, payer agreements, claims, patient balances, collections and sector reports.
 
-Owner-confirmed pharmacy logistics structure:
-- Main pharmacy warehouse: Mokattam.
-- Distribution from the Mokattam warehouse to the Student Hospital, Qasr El-Aini Hospital and Manial Hospital branches.
-- The warehouse and branches are administratively connected within the Pharmacies Sector.
-- They remain separately identifiable for accounting and inventory control. Record warehouse and branch-level stock balances, receipts, issues, transfers, consumption, adjustments and reporting independently.
+Owner-confirmed pharmacy locations:
+- Mokattam main warehouse.
+- Student Hospital branch.
+- Qasr El-Aini Hospital branch.
+- Manial Hospital branch.
 
-Each sector has separate workflows, operational records, budgets, cost/profitability reports, roles and approval controls. Pharmacy inventory costing remains weighted-average subject to accountant-approved detailed rules.
+The owner confirms the three branches may transfer medicines and supplies directly between one another; transfers need not pass through Mokattam. Support both warehouse-to-branch and branch-to-branch transfers. All locations are administratively connected, but remain separately identifiable for stock, accounting dimensions, permissions and reports.
+
+Each location needs its own stock balances and movement history. Transfers require source/destination locations, item quantities, batch/lot and expiry data where applicable, dispatch, receipt confirmation, in-transit status, discrepancy handling, approvals and audit history. These are internal location movements where locations belong to the same legal entity, not sales or intercompany transactions.
 
 ## Statutory and management accounting
 
-If both sectors belong to the same registered legal person, maintain one statutory company accounting framework and statutory set of books. Within it, preserve separate sector subledgers/journals or posting dimensions and sector-specific management reports. Transactions must identify the legal entity and sector; branch, project and warehouse dimensions apply as relevant. Sector reports must reconcile to company-level statutory balances.
+If both sectors belong to the same registered legal person, maintain one statutory company accounting framework and statutory books. Preserve separate sector subledgers/journals or posting dimensions and sector-specific management reports. Transactions identify legal entity and sector; branch, project and warehouse dimensions apply as relevant. Reconcile sector/location detail to company-level statutory balances.
 
-“Separate for accounting purposes but administratively connected” means separate operational/accounting dimensions and reconciled branch/warehouse reporting, not separate legal entities or duplicate statutory books. Stock transfers from Mokattam to a branch must be traceable as internal location movements; whether they create any accounting value entries depends on accountant-approved policy.
+“Separate for accounting purposes but administratively connected” means separately accountable operational locations and accounting dimensions, not separate legal entities or duplicate statutory books. Accountant approval is required for transfer valuation and financial posting treatment.
 
-Do not create separate statutory company books or intercompany transactions between sectors of the same legal entity. If official evidence shows a sector is separately incorporated, model it as a separate legal entity with its own statutory books and approved isolation.
+Do not create intercompany transactions between sectors or locations of the same legal entity. If official evidence shows a separately incorporated entity, model it separately with its own statutory books and approved isolation.
 
 ## Intercompany and shared services
 
