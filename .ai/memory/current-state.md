@@ -1,15 +1,27 @@
-## what is implemented, what is in progress, and the next milestone.# Current state
+# Current state
 
-Status: Discovery and repository setup.
+Last reviewed: 2026-11-07.
+Status: Phase 0 discovery; no business features implemented.
 
-Confirmed from the project brief:
-- Two businesses: specialist contracting and pharmacy group.
-- Their accounting systems are separate.
-- Pharmacy accounting uses weighted-average costing.
-- Pharmacy contracts can have different payment or discount terms.
-- An example arrangement has payer coverage and a patient balance.
-- Planned stack: ASP.NET Core, PostgreSQL, React Native.
+## Confirmed from repository
+- Product covers specialist contracting and a pharmacy group.
+- The two businesses require separate accounting systems and reports.
+- Pharmacy inventory costing is specified as weighted average; its detailed method is not approved.
+- Payer agreements may define different coverage, discount and patient-payment arrangements.
+- Intended stack: ASP.NET Core, PostgreSQL and React Native.
 
-Not yet implemented:
-- Business workflows, database schema, APIs, mobile screens,
-  accounting postings, payer integrations, or deployment.
+## Repository evidence
+- Root: AGENT.md, AGENTS.md and minimal README.md.
+- .ai: product vision, business boundaries, accounting rules, claims concepts, current state, open questions and roadmap.
+- Architecture, domain workflows, ADR and testing files were empty placeholders before Phase 0 documentation.
+- No application source, database migrations or mobile app implementation were found in the inspected default-branch tree.
+- mam/ai-chat contains two AI guidance drafts; these are reference material, not approved requirements.
+
+## Current discovery outputs
+- Phase 0 plan and scenario test outlines are drafts.
+- System context and database-isolation ADR are proposals only.
+- Contracting and pharmacy workflow documents are discovery drafts.
+- Open questions remain unresolved pending named owners and evidence.
+
+## Next milestone
+Run workshops, collect approved source documents and anonymized worked examples, resolve entity topology and data isolation, then approve Phase 1 scope. Do not implement production financial calculations or business features before approvals.
