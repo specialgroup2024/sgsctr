@@ -26,11 +26,22 @@ If the official records confirm that both sectors are operated by the same regis
 - Do not create separate statutory company books, separate legal-entity databases or intercompany balances between the two sectors unless evidence establishes separate legal persons or a genuine transaction between distinct entities.
 - Shared company-level balances, taxes, cash/bank controls and statutory postings must reconcile to sector detail. The accountant must approve the chart of accounts, sector dimensions, allocation and reconciliation rules.
 
+### Pharmacy warehouse and branch structure
+
+The owner confirms the Mokattam main pharmacy warehouse distributes stock to:
+- Student Hospital branch
+- Qasr El-Aini Hospital branch
+- Manial Hospital branch
+
+The owner explicitly requires these locations to be **separate for accounting purposes but administratively connected**. Model the warehouse and each branch as distinct inventory/accounting locations within the Pharmacies Sector, connected by common administration and controlled workflows. Keep location-level stock balances, movements, receipts, issues, transfer records, discrepancies and reports separately identifiable, while reconciling totals to the pharmacy sector and company-level balances.
+
+Transfers from Mokattam to a branch are internal location movements if the locations belong to the same legal entity; do not treat them as sales or intercompany transactions. Record dispatch, in-transit quantities, receipt confirmation, lot/batch and expiry information where applicable, and discrepancies. Accountant and pharmacy operations must approve transfer valuation/posting rules and workflow controls. This owner statement does not establish that the listed sites are exhaustive or verify their legal owner, operator, licence holder or stock custodian.
+
 If later evidence identifies a separately incorporated pharmacy or contracting company, create a distinct legal-entity record and separate statutory books/database boundary for that entity. Do not silently reclassify it as a sector.
 
 ## Database direction
 
-Provisional planning baseline: one PostgreSQL database for LE-01, with explicit sector/module ownership, server-side authorization and controlled data access. Do not create one database per sector or branch on the current evidence. Separate identity/audit infrastructure may be shared. If additional legal entities are verified, reassess one database per legal entity versus stronger cluster isolation based on security, regulatory, recovery and operational needs.
+Provisional planning baseline: one PostgreSQL database for LE-01, with explicit sector/module ownership, server-side authorization and controlled data access. Do not create one database per sector, warehouse or branch on the current evidence. Separate identity/audit infrastructure may be shared. If additional legal entities are verified, reassess one database per legal entity versus stronger cluster isolation based on security, regulatory, recovery and operational needs.
 
 Cross-sector reporting is within the company boundary but must remain traceable and permission-controlled. Sector users should see only authorized sector data; company-wide finance roles may have approved cross-sector access. Mobile clients must use APIs, never connect directly to PostgreSQL.
 
@@ -38,6 +49,7 @@ Cross-sector reporting is within the company boundary but must remain traceable 
 
 - Legal entity and operating sector are separate dimensions in the domain model.
 - Sector separation must not cause duplicate statutory books for one company.
+- Pharmacy warehouse and branches must remain separately accountable for stock and location-level reporting, while administratively integrated.
 - Sector reports must reconcile to company-level statutory balances.
 - Any intercompany accounting requires distinct verified legal entities and a real documented transaction.
 - Database provisioning is not authorized until the official company record and accountant-approved accounting model are reviewed.
