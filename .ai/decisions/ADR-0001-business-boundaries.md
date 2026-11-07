@@ -1,61 +1,62 @@
 # ADR-0001: Accounting boundaries for contracting and pharmacy
 
-- Status: **Proposed — single-entity operating model recorded from owner statement; accountant/legal verification pending**
+- Status: **Proposed — operating model recorded from owner statements; accountant/legal verification pending**
 - Date: 2026-11-07
 - Decision owner: business owner; accountant approves accounting treatment
 - Scope: legal-entity mapping, sector accounting boundaries and database direction
 
 ## Owner-provided entity information
 
-The business owner identified the registered company as **“Special Group”**, with two sectors:
-1. Pharmacies Sector
-2. Specialized Contracting Sector
+The business owner identifies “Special Group” with two sectors: Pharmacies Sector and Specialized Contracting Sector. This is an owner statement, not independent verification of the exact registered legal name or legal form. Official Arabic/English name, legal form, registration/tax identifiers and site ownership require documentary verification.
 
-This is an owner-provided statement, not independent verification of the exact registered legal name or legal form. The official Arabic/English registered name, legal form, commercial-registration and tax identifiers, and branch ownership schedule remain to be checked against company records.
+For discovery, model one provisional legal entity (LE-01 — Special Group) with two business sectors. Do not create two legal entities solely because the sectors differ operationally.
 
-For discovery and architecture planning, model one provisional legal entity (**LE-01 — Special Group**) operating two separate business sectors. Do not create two legal entities solely because the sectors have different operations.
+## Accounting boundary
 
-## Accounting boundary decision
+If official records confirm both sectors belong to the same registered legal person:
+- Maintain one statutory company accounting framework, chart of accounts, fiscal year, tax profile and statutory books.
+- Maintain separate sector operational accounting and management reporting using controlled subledgers/modules, journals or posting dimensions, branch/project/cost-centre dimensions and sector permissions.
+- Tag each transaction with legal entity and sector, plus branch, project, warehouse or other relevant dimensions.
+- Reconcile sector detail to company-level statutory control accounts and reporting.
+- Do not create duplicate statutory books or intercompany balances between sectors of the same legal entity.
+- Accountant approves chart, dimensions, allocations, posting and reconciliation rules.
 
-If the official records confirm that both sectors are operated by the same registered legal person:
+## Pharmacy locations and stock transfers
 
-- Maintain one statutory company accounting framework: one company-level chart of accounts, fiscal year, tax profile, statutory financial statements and legally required books.
-- Maintain separate sector-level operational accounting and management reporting for Pharmacies and Specialized Contracting. Use controlled sector subledgers/modules, journals or posting dimensions, branch/project/cost-centre dimensions and sector-specific permissions/approvals.
-- Every financial transaction must carry its owning legal entity and appropriate sector; add branch, project, warehouse, payer or other dimensions where relevant.
-- Provide company-level consolidated statutory reporting from the same legal-entity books, with sector drill-down and reconciliation.
-- Do not create separate statutory company books, separate legal-entity databases or intercompany balances between the two sectors unless evidence establishes separate legal persons or a genuine transaction between distinct entities.
-- Shared company-level balances, taxes, cash/bank controls and statutory postings must reconcile to sector detail. The accountant must approve the chart of accounts, sector dimensions, allocation and reconciliation rules.
+Owner-confirmed locations:
+- Mokattam — main pharmacy warehouse.
+- Student Hospital branch.
+- Qasr El-Aini Hospital branch.
+- Manial Hospital branch.
 
-### Pharmacy warehouse and branch structure
+The owner requires locations to be **separate for accounting purposes but administratively connected**. Keep each location's stock balances, receipts, issues, transfers, discrepancies and reports separately identifiable while connecting them through common administration and controlled workflows.
 
-The owner confirms the Mokattam main pharmacy warehouse distributes stock to:
-- Student Hospital branch
-- Qasr El-Aini Hospital branch
-- Manial Hospital branch
+The owner has explicitly confirmed that **the three branches may transfer medicines and supplies directly between one another**; transfers do not have to pass through Mokattam. The inventory model and workflow must therefore support approved transfers between any authorized pharmacy locations, including:
+- Mokattam warehouse → branch;
+- branch → Mokattam warehouse;
+- branch → branch directly.
 
-The owner explicitly requires these locations to be **separate for accounting purposes but administratively connected**. Model the warehouse and each branch as distinct inventory/accounting locations within the Pharmacies Sector, connected by common administration and controlled workflows. Keep location-level stock balances, movements, receipts, issues, transfer records, discrepancies and reports separately identifiable, while reconciling totals to the pharmacy sector and company-level balances.
+A direct branch-to-branch transfer is an internal location movement when both locations belong to the same legal entity. It is not a sale or intercompany transaction. It must have a source and destination, item/quantity, lot/batch and expiry where applicable, transfer reference, dispatch and receipt confirmation, in-transit tracking, discrepancy/shortage handling, timestamps, initiating users and required approvals. Maintain location-level stock ledgers and a traceable movement history; do not silently change a location's stock balance.
 
-Transfers from Mokattam to a branch are internal location movements if the locations belong to the same legal entity; do not treat them as sales or intercompany transactions. Record dispatch, in-transit quantities, receipt confirmation, lot/batch and expiry information where applicable, and discrepancies. Accountant and pharmacy operations must approve transfer valuation/posting rules and workflow controls. This owner statement does not establish that the listed sites are exhaustive or verify their legal owner, operator, licence holder or stock custodian.
+Support configurable permissions and approval limits for requesting, authorizing, dispatching and receiving transfers. Separate duties where policy requires; do not assume the same person may approve and receive their own transfer. Exact workflow, emergency exceptions, valuation and financial posting treatment require pharmacy operations and accountant approval.
 
-If later evidence identifies a separately incorporated pharmacy or contracting company, create a distinct legal-entity record and separate statutory books/database boundary for that entity. Do not silently reclassify it as a sector.
+This does not establish that the listed sites are exhaustive or verify their legal owner, operator, licence holder or stock custodian. If evidence identifies a separately incorporated entity, create a distinct legal-entity record and its own statutory books; reassess database isolation.
 
 ## Database direction
 
-Provisional planning baseline: one PostgreSQL database for LE-01, with explicit sector/module ownership, server-side authorization and controlled data access. Do not create one database per sector, warehouse or branch on the current evidence. Separate identity/audit infrastructure may be shared. If additional legal entities are verified, reassess one database per legal entity versus stronger cluster isolation based on security, regulatory, recovery and operational needs.
-
-Cross-sector reporting is within the company boundary but must remain traceable and permission-controlled. Sector users should see only authorized sector data; company-wide finance roles may have approved cross-sector access. Mobile clients must use APIs, never connect directly to PostgreSQL.
+Provisional planning baseline: one PostgreSQL database for LE-01, with explicit sector/module ownership, server-side authorization and controlled data access. Do not create one database per sector, warehouse or branch on current evidence. Reassess if additional legal entities are verified.
 
 ## Consequences and controls
 
-- Legal entity and operating sector are separate dimensions in the domain model.
-- Sector separation must not cause duplicate statutory books for one company.
-- Pharmacy warehouse and branches must remain separately accountable for stock and location-level reporting, while administratively integrated.
-- Sector reports must reconcile to company-level statutory balances.
-- Any intercompany accounting requires distinct verified legal entities and a real documented transaction.
-- Database provisioning is not authorized until the official company record and accountant-approved accounting model are reviewed.
+- Legal entity, sector and inventory location are distinct domain dimensions.
+- Sector separation must not duplicate statutory books for one company.
+- Pharmacy locations are administratively connected but separately accountable.
+- Inventory transfers must support direct branch-to-branch movement and warehouse-mediated movement, with full auditability and in-transit control.
+- Company-level statutory balances reconcile to sector and location detail as applicable.
+- Intercompany accounting requires distinct verified legal entities and a genuine documented transaction.
 
 ## Required approvals
 
-Business owner confirms entity and sector facts. Accountant approves statutory-versus-management accounting design, sector chart/dimensions, allocation, control accounts and reconciliation. Qualified Egyptian legal/tax adviser verifies legal identity, registered activities, licensing and tax implications. Technical owner implements only the approved mapping.
+Business owner confirms entity and operating facts. Accountant approves statutory-versus-management accounting, chart/dimensions, allocations and transfer valuation/posting. Pharmacy operations approves transfer workflow, roles, exceptions and stock controls. Qualified Egyptian legal/tax adviser verifies legal identity, activities, licensing and tax implications.
 
-**This ADR does not approve tax treatment, chart of accounts, financial calculations, ledger posting logic, or production database provisioning.**
+**This ADR does not approve tax treatment, chart of accounts, financial calculations, ledger posting logic or production database provisioning.**
