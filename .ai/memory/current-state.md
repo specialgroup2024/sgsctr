@@ -4,7 +4,7 @@ Last reviewed: 2026-11-07.
 
 Status: Phase 0 discovery; pharmacy transfer technical design drafted; no business features implemented.
 
-Status: Phase 0 discovery and technical design; no business features implemented.
+Status: Phase 1 technical foundation scaffold created on branch `phase-1-local-foundation`; no business features implemented.
 
 
 ## Owner-provided structure
@@ -47,10 +47,11 @@ Owner statements are recorded but not independently verified. Exact Arabic/Engli
 Complete repository inventory and technical review of the proposed domain/API/persistence design. Obtain pharmacy-operations approval of lifecycle, roles, custody, limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing, in-transit valuation, posting and reconciliation. Then implement the approved backend foundation and transfer workflow incrementally, with PostgreSQL integration tests and explicit release gates. Verify company identity and site/operator/licence register before production configuration.
 
 - Pharmacy stock-transfer workflow and 21 acceptance criteria are drafted and await pharmacy-operations/accountant/owner approval.
-- A non-posting technical design has now been drafted at .ai/architecture/pharmacy-stock-transfer-technical-design.md. It defines proposed API commands, conceptual records, state/quantity model, transaction/idempotency controls, authorization/audit boundaries and test mapping.
+- A non-posting technical design has been drafted at .ai/architecture/pharmacy-stock-transfer-technical-design.md. It defines proposed API commands, conceptual records, state/quantity model, transaction/idempotency controls, authorization/audit boundaries and test mapping.
+- GitHub Actions run for the Phase 1 branch: .NET restore/build, Docker image build, PostgreSQL 18 startup and API/database smoke test all succeeded; documentation line-limit workflow also succeeded. This is CI evidence for the foundation only, not a local test on the owner's workstation.
 - No production posting, inventory valuation, tax calculation, claim settlement or patient-balance logic is approved.
 
 ## Next milestone
 
-Obtain pharmacy-operations approval of the transfer lifecycle, roles, custody, approval limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing impact, transfer valuation/posting and reconciliation examples. Then freeze the technical design and prepare a non-posting implementation backlog. In parallel, verify company identity, legal site/operator/licence and full branch/site schedule before production configuration.
+Owner clones `phase-1-local-foundation` and runs the local Docker Compose smoke test. Resolve any workstation-specific Docker, port or network issues from the actual terminal output. Once local startup is confirmed, review and merge the foundation through the repository's normal process. Then continue with approved Phase 1 technical controls; pharmacy business implementation remains gated on operations/accountant approvals. In parallel, verify company identity, legal site/operator/licence and full branch/site schedule before production configuration.
 

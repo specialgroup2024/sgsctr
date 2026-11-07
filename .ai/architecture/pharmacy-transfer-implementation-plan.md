@@ -6,7 +6,7 @@
 
 ## 1. Repository baseline
 
-At the time of this plan, the repository is documentation-focused: root `AGENTS.md`, `.ai` governance documents and a minimal README were inspected. No application solution, API project, EF Core model, migration set or automated test project was identified in the files inspected. This is not a claim that no other repository files exist; confirm the full tree before implementation.
+Historical baseline when this plan was written: the repository was documentation-focused. The current `phase-1-local-foundation` branch now contains an ASP.NET Core 10 API skeleton, EF Core/Npgsql connectivity, PostgreSQL 18 Compose service, Docker build, liveness/readiness endpoints, smoke-test script and CI workflow. The EF Core context remains empty; no business schema, migrations or business features exist. CI verified restore/build, image build, database startup and API/database smoke test on commit `a863b3ea09c391fb6b47505ac5ba10bbfbab2745`.
 
 ## 2. Work packages
 
@@ -83,9 +83,9 @@ No production stock posting until:
 
 ## 7. Immediate next actions
 
-1. Perform complete repository tree and code inventory; confirm whether any application code or data migrations already exist.
-2. Ask operations/accountant to review the proposed documents; keep unresolved decisions explicit.
-3. Pin supported runtime/database/tool versions after checking current repository and deployment constraints.
-4. Only then create the backend solution and CI skeleton on a separate implementation branch.
+1. Clone `phase-1-local-foundation` and run `.ai/delivery/local-development.md` on the owner's workstation; capture and resolve local environment errors.
+2. Review the CI-verified foundation and merge it through the normal repository review process after local acceptance.
+3. Ask operations/accountant to review the proposed pharmacy transfer documents; keep unresolved decisions explicit.
+4. Continue Phase 1 technical foundation work (configuration, security baseline, observability and test structure) without creating business schema or stock-changing behavior before approvals.
 
 Do not infer approvals from document creation or enable live inventory changes before release gates are satisfied.

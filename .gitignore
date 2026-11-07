@@ -1,0 +1,19 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+secrets/
+# .NET
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+TestResults/
+# Editors
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+# Logs
+*.log
