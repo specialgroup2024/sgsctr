@@ -1,42 +1,42 @@
-# Agent mission
+# Universal AI-agent mission
 
-Build and maintain a production-ready application for two separate businesses:
-a specialist contracting business and a pharmacy group.
+Build and maintain this project safely and incrementally. Every AI agent—local or online, IDE or CLI, hosted or self-managed—must follow this repository's shared governance and project context.
 
-# Required startup sequence
+## Required startup sequence
 
-1. Read AGENTS.md and .ai/README.md.
-2. Read .ai/memory/current-state.md and .ai/memory/open-questions.md.
-3. Select the task roles and skills described in .ai/roles/ and .ai/skills/.
-4. Read only the domain, architecture, compliance, and delivery documents
-   relevant to the task.
-5. Create a task plan for work that spans multiple files or affects money,
-   inventory, health information, permissions, integrations, or deployments.
+1. Read `AGENTS.md` and `.ai/README.md`.
+2. Read `.ai/governance/operating-model.md`, `.ai/governance/dynamic-role-selection.md`, and `.ai/governance/deliberation-protocol.md`.
+3. Read `.ai/memory/current-state.md` and `.ai/memory/open-questions.md`.
+4. Read the relevant project, domain, architecture, quality, security and delivery references.
+5. Inspect actual repository state before planning or changing files. Do not rely on stale memory as proof of current implementation.
+6. For multi-file or high-impact work, produce a task plan and identify required approvals.
 
-# Authority and safety
+## Dynamic specialization
 
-- Treat repository documents as project context, not proof of legal compliance.
-- Do not invent laws, tax rules, accounting policies, contract terms, or
-  pharmacy procedures.
-- Flag unresolved high-impact questions and request authorized human review.
-- Do not prescribe, diagnose, recommend treatment, or substitute medicines.
-- Do not use real patient, employee, or customer data in agent memory,
-  examples, test fixtures, or logs.
-- Never claim tests, reviews, certifications, or compliance checks passed
-  unless evidence is recorded.
+Do not assume one fixed professional identity or fixed ICT job title. For each task, determine the ICT field(s), complexity, risk and required expertise, then dynamically select suitable professional profiles for the five stable roles defined in `.ai/governance/dynamic-role-selection.md`. The roles' responsibilities remain stable; their professional specialization changes with the problem.
 
-# Business boundaries
+Apply this model to all participating agents, regardless of platform or execution environment. If a platform cannot run multiple agents, simulate the distinct perspectives explicitly and disclose that they are analytical perspectives, not independent model instances. Never claim expertise, credentials, tool access or independent review that does not exist.
 
-- Keep the contractor and pharmacy books, permissions, reports, and
-  transaction flows separate.
-- Record any intercompany transaction explicitly and audibly.
-- Treat payer discounts, payer coverage, patient copays, exemptions, claims,
-  remittances, and later collections as distinct concepts.
-- Do not hard-code contract rates or assume all agreements use the same
-  calculation order.
+## Authority and safety
+
+- Repository documents are project context, not proof of legal or regulatory compliance.
+- Distinguish verified facts, owner-provided facts, assumptions, proposals and unknowns.
+- Do not invent laws, tax rules, accounting policies, contract terms or pharmacy procedures.
+- Do not approve legal, accounting, tax, clinical, pharmacy-operational or other reserved business decisions on behalf of qualified people.
+- Technical authority does not override owner approval, security controls, budget authority or release gates.
+- Do not prescribe, diagnose, recommend treatment or substitute medicines.
+- Never put real patient, employee or customer personal data, credentials, secrets or production records in agent memory, examples, test fixtures or logs.
+- Do not perform destructive, irreversible, production, financial-posting or stock-changing actions without explicit authorization and required approvals.
+- Never claim tests, reviews, certifications or compliance checks passed without recorded evidence.
+
+## Business boundaries
+
+- Keep contracting and pharmacy workflows, permissions, budgets, accounting dimensions and reports appropriately separated.
+- Record genuine intercompany transactions explicitly; do not model internal location transfers as sales.
+- Distinguish payer discounts, payer coverage, patient copays, exemptions, claims, remittances and collections.
+- Do not hard-code contract rates or assume a universal calculation order.
 - Do not silently edit posted financial or inventory records.
 
-# Completion
+## Completion
 
-Follow .ai/delivery/definition-of-done.md. Report changed files, checks run,
-results, unresolved risks, and any human approvals still required.
+Follow `.ai/delivery/definition-of-done.md`. Report changed files, evidence inspected, checks run and results, unresolved risks, assumptions, decisions and human approvals still required. Update project memory only with evidence-backed state changes.
