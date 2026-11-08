@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 BASE_URL="${1:-http://localhost:8080}"
+WEB_URL="${2:-http://localhost:3000}"
 ATTEMPTS=30
 echo "Waiting for API and PostgreSQL readiness at ${BASE_URL} ..."
 for ((i=1; i<=ATTEMPTS; i++)); do
@@ -11,7 +12,7 @@ for ((i=1; i<=ATTEMPTS; i++)); do
   fi
   sleep 2
 done
-echo "Checking liveness..."
+echo "Checking API liveness..."
 curl --silent --show-error --fail "${BASE_URL}/health/live"
 echo
 echo "Checking database readiness..."
@@ -20,4 +21,14 @@ echo
 echo "Checking API system information..."
 curl --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
 echo
-echo "Smoke test passed."
+echo "Waiting for Next.js web UI at ${WEB_URL} ..."
+for ((i=1; i<=ATTEMPTS; i++)); do
+  if curl --silent --fail "${WEB_URL}/" | grep -q "SPECIAL GROUP"; then break; fi
+  if [[ "$i" -eq "$ATTEMPTS" ]]; then
+    echo "ERROR: Web UI did not become ready. Check: docker compose logs web" >&2
+    exit 1
+  fi
+  sleep 2
+done
+echo "Web UI responded with the expected application content."
+echo "Full foundation smoke test passed."
