@@ -5,75 +5,68 @@ Special Group Pharmacies and Specialized Contracting platform.
 
 ## Current build
 
-Phase 1 foundation: ASP.NET Core 10 API, PostgreSQL 18 development database,
-EF Core/Npgsql connectivity, health/readiness endpoints and a container smoke test.
+- ASP.NET Core 10 API and PostgreSQL 18 development database.
+- Next.js 15 web foundation with a responsive local dashboard.
+- Live API/database connection status in the dashboard.
+- Docker Compose local environment and CI smoke tests.
 
-No pharmacy stock-transfer, contracting, claims, patient-balance or financial
-posting features are enabled.
+The UI is a development overview and known pharmacy location register. It does
+not implement authentication, stock balances, stock transfers, contracting
+workflows, claims, patient data or financial posting.
 
 ## Prerequisites
 
 Linux workstation with Git, Docker Engine and Docker Compose v2. Internet access
-is needed for the first image/package downloads. Optional: .NET SDK 10.0.403
-for running the API directly from the host.
+is needed for first image/package downloads.
 
 ## Start locally
 
-```bash
-git clone https://github.com/specialgroup2024/sgsctr.git
-cd sgsctr
-git checkout phase-1-local-foundation
-cp .env.example .env
-docker compose up --build -d
-```
+Run these commands in a terminal:
 
-Check status and logs:
+    git clone https://github.com/specialgroup2024/sgsctr.git
+    cd sgsctr
+    git checkout phase-2-nextjs-ui
+    cp .env.example .env
+    docker compose up --build -d
 
-```bash
-docker compose ps
-docker compose logs -f api
-```
+Open the web application at http://localhost:3000.
 
-Run the smoke test:
-
-```bash
-bash scripts/smoke-test.sh
-```
-
-Open:
+Backend endpoints:
 - API root: http://localhost:8080/
 - Liveness: http://localhost:8080/health/live
 - Database readiness: http://localhost:8080/health/ready
 - System information: http://localhost:8080/api/v1/system/info
 
-PostgreSQL is published on localhost port 5433 to reduce conflicts with a
-local PostgreSQL service. Database settings are in the ignored local `.env`.
+Check status and logs with docker compose ps and docker compose logs -f web.
+Run the API smoke test with bash scripts/smoke-test.sh.
+
+The web dashboard checks the API through a Next.js server route. The browser
+does not connect directly to PostgreSQL or require permissive API CORS rules.
+PostgreSQL is published on localhost port 5433. Database settings are in the
+ignored local .env file.
+
+## Run frontend outside Docker (optional)
+
+    cd web
+    npm install
+    npm run dev
+
+The development server runs at http://localhost:3000. Set API_BASE_URL to
+http://localhost:8080 if the API is running on the host.
 
 ## Stop
 
-```bash
-docker compose down
-```
+    docker compose down
 
 To also delete the local development database volume and its test data:
 
-```bash
-docker compose down --volumes
-```
-
-## Run API from the .NET SDK
-
-Start PostgreSQL with `docker compose up -d db`, then:
-
-```bash
-export ConnectionStrings__DefaultConnection='Host=localhost;Port=5433;Database=sgsctr_dev;Username=sgsctr;Password=local_dev_only_change_me'
-dotnet run --project src/Sgsctr.Api
-```
+    docker compose down --volumes
 
 ## Safety and scope
 
-- `.env` is local-only and ignored by Git. Never commit real passwords.
+- .env is local-only and ignored by Git. Never commit real passwords.
 - Compose credentials are for local testing, not production.
 - EF Core context is intentionally empty; no business schema or migration exists.
+- The dashboard contains no fabricated stock or financial figures.
 - Readiness verifies database connectivity, not business correctness or production readiness.
-- Review `.ai/architecture` and `.ai/delivery/roadmap.md` before feature work.
+- Business workflow and accounting approvals remain required before stock-changing features.

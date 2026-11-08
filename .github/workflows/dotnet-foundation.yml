@@ -1,7 +1,7 @@
-name: .NET foundation
+name: .NET and web foundation
 on:
   push:
-    branches: [master, phase-1-local-foundation]
+    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui]
   pull_request:
     branches: [master]
 permissions:
@@ -19,13 +19,13 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
-      - name: Start local stack
+      - name: Start API, PostgreSQL and Next.js
         run: docker compose up --build --detach
-      - name: API and PostgreSQL smoke test
-        run: bash scripts/smoke-test.sh
+      - name: API, database and web smoke tests
+        run: bash scripts/smoke-test.sh http://localhost:8080 http://localhost:3000
       - name: Container logs on failure
         if: failure()
-        run: docker compose logs api db
+        run: docker compose logs api db web
       - name: Stop local stack
         if: always()
         run: docker compose down --volumes
