@@ -26,9 +26,30 @@ Run these commands in a terminal:
     git clone https://github.com/specialgroup2024/sgsctr.git
     cd sgsctr
     cp .env.example .env
+
+Edit the local `.env` file before starting the stack. Keep the file private and
+set `PGADMIN_DEFAULT_PASSWORD` to the password you want to use for pgAdmin.
+The default pgAdmin login email is `specialgroup2024@gmail.com`. Do not commit
+`.env` or share its password.
+
+Then run:
+
     docker compose up --build -d
 
 Open the web application at http://localhost:3000.
+
+Open pgAdmin at http://localhost:5051 and sign in with the email and password
+configured in `.env`. To connect to PostgreSQL from pgAdmin, register a server
+with these connection values:
+- Name: SGSCTR Local
+- Host name/address: `db`
+- Port: `5432`
+- Maintenance database: the `POSTGRES_DB` value (default: `sgsctr_dev`)
+- Username: the `POSTGRES_USER` value (default: `sgsctr`)
+- Password: the `POSTGRES_PASSWORD` value in `.env`
+
+Use `db` as the host because pgAdmin runs inside the Compose network. The
+pgAdmin web port is bound to `127.0.0.1` so it is not exposed to other machines.
 
 Backend endpoints:
 - API root: http://localhost:8080/
@@ -40,6 +61,7 @@ Check status and logs with:
 
     docker compose ps
     docker compose logs -f web
+    docker compose logs -f pgadmin
 
 Run the API smoke test with:
 
@@ -104,13 +126,14 @@ http://localhost:8080 if the API is running on the host.
 
     docker compose down
 
-To also delete the local development database volume and its test data:
+To also delete the local development database and pgAdmin data/configuration volumes:
 
     docker compose down --volumes
 
 ## Safety and scope
 
-- .env is local-only and ignored by Git. Never commit real passwords.
+- `.env` is local-only and ignored by Git. Never commit real passwords.
+- pgAdmin is intended for local development; do not expose it publicly without appropriate security controls.
 - Compose credentials are for local testing, not production.
 - EF Core context is intentionally empty; no business schema or migration exists.
 - The dashboard contains no fabricated stock or financial figures.
