@@ -16,6 +16,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+
   api:
     build:
       context: .
@@ -30,6 +31,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
   web:
     build:
       context: .
@@ -44,5 +46,22 @@ services:
     depends_on:
       api:
         condition: service_started
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: sgsctr-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-specialgroup2024@gmail.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?Set PGADMIN_DEFAULT_PASSWORD in your local .env file}
+    ports:
+      - "127.0.0.1:5051:80"
+    volumes:
+      - sgsctr_pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   sgsctr_postgres_data:
+  sgsctr_pgadmin_data:
