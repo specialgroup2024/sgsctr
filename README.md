@@ -8,7 +8,7 @@ Special Group Pharmacies and Specialized Contracting platform.
 - ASP.NET Core 10 API and PostgreSQL 18 development database.
 - Next.js 15 web foundation with a responsive local dashboard.
 - Live API/database connection status in the dashboard.
-- Docker Compose local environment and CI smoke tests.
+- Docker Compose local environment with pgAdmin database administration and CI smoke tests.
 
 The UI is a development overview and known pharmacy location register. It does
 not implement authentication, stock balances, stock transfers, contracting
