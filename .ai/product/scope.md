@@ -10,8 +10,10 @@ Status: discovery/foundation. This document describes staged scope; it does not 
 
 ## Current implementation phase
 
-Phase 3 authenticated workspace (implementation branch; merge and runtime verification pending):
-- Keycloak OIDC Authorization Code with PKCE through a Next.js BFF; encrypted HttpOnly session cookie.
+Native application authentication migration (branch; merge and runtime verification pending):
+- ASP.NET Core Identity with PostgreSQL-backed accounts and password hashes in a dedicated identity schema.
+- Native email/password sign-in through a Next.js BFF and encrypted HttpOnly session cookie.
+- Administrator-provisioned accounts; public registration disabled.
 - Protected navigation and pages, session refresh and sign-out.
 - Authenticated organization sector directory and PostgreSQL-backed location register.
 - Location create/edit/deactivate gated by an explicit, empty-by-default subject allowlist.
