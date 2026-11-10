@@ -45,5 +45,6 @@ No business features or production financial calculations before required owner 
 
 ## Phase 2 UI references
 
-- [Application shell and organization workspace plan](delivery/phase-2-application-shell-plan.md) — implementation scope, exclusions, acceptance criteria and follow-on approval gates.
+- [Application shell and organization workspace plan](delivery/phase-2-application-shell-plan.md) — Phase 2 scope and exclusions.
+- [Authenticated workspace setup](../docs/security/phase-3-authenticated-workspace.md) — Keycloak BFF login, VM tunnel, migration and organization-manager setup.
 - [Product scope](product/scope.md) — staged product boundaries and explicit exclusions.

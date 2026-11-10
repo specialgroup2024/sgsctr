@@ -13,6 +13,10 @@ Status: implemented development identity-provider foundation; production deploym
 - The API retrieves OIDC metadata and signing keys through the internal Compose hostname. Keycloak's local hostname-strict setting is disabled so it derives the issuer from each request host. This dual-issuer arrangement is strictly for local development; production must use one canonical HTTPS issuer and a reviewed reverse-proxy/backchannel configuration.
 - No end-user, business role, sector/location permission, or privileged account is seeded.
 
+## Next.js authenticated workspace
+
+For the BFF login and organization workspace implementation, follow [Phase 3 authenticated workspace setup](phase-3-authenticated-workspace.md). It covers the public Keycloak web client, API audience mapper, VM SSH tunnel, encrypted session secret and owner-controlled organization-manager allowlist. Do not delete the persistent Keycloak volume to apply realm changes.
+
 ## First startup
 
 1. Copy `.env.example` to `.env`.

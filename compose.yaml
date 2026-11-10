@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-sgsctr}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_dev_only_change_me}
     ports:
-      - "5433:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - sgsctr_postgres_data:/var/lib/postgresql
     healthcheck:
@@ -41,6 +41,8 @@ services:
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      Database__ApplyMigrations: "true"
+      Organization__ManagerSubjects: ${ORGANIZATION_MANAGER_SUBJECTS:-}
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${POSTGRES_DB:-sgsctr_dev};Username=${POSTGRES_USER:-sgsctr};Password=${POSTGRES_PASSWORD:-local_dev_only_change_me}
       Authentication__Authority: http://localhost:8180/realms/sgsctr
       Authentication__MetadataAddress: http://keycloak:8080/realms/sgsctr/.well-known/openid-configuration
@@ -48,7 +50,7 @@ services:
       Authentication__InternalIssuer: http://keycloak:8080/realms/sgsctr
       Authentication__RequireHttpsMetadata: "false"
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       db:
         condition: service_healthy
@@ -64,10 +66,19 @@ services:
     environment:
       NODE_ENV: production
       API_BASE_URL: http://api:8080
+      KEYCLOAK_PUBLIC_URL: ${KEYCLOAK_PUBLIC_URL:-http://localhost:8180}
+      KEYCLOAK_INTERNAL_URL: http://keycloak:8080
+      KEYCLOAK_REALM: sgsctr
+      KEYCLOAK_WEB_CLIENT_ID: sgsctr-web
+      WEB_BASE_URL: ${WEB_BASE_URL:-http://localhost:3000}
+      AUTH_SESSION_SECRET: ${AUTH_SESSION_SECRET:?Set AUTH_SESSION_SECRET in your local .env file}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       api:
+        condition: service_started
+      keycloak:
         condition: service_started
 
   pgadmin:

@@ -8,18 +8,19 @@ Status: discovery/foundation. This document describes staged scope; it does not 
 - Specialized Contracting: a separate business domain whose project, contract, procurement and cost-control workflows remain to be defined.
 - Shared platform: identity, organization reference data, audit, notifications and technical operations, subject to approved ownership and access boundaries.
 
-## Current UI phase
+## Current implementation phase
 
-Phase 2 application shell and organization workspace:
-- Shared responsive navigation.
-- Overview dashboard with live API/database connection checks.
-- Read-only organization register using owner-provided sector and location information.
-- Explicit provisional status for legal identity and unverified structure.
+Phase 3 authenticated workspace (implementation branch; merge and runtime verification pending):
+- Keycloak OIDC Authorization Code with PKCE through a Next.js BFF; encrypted HttpOnly session cookie.
+- Protected navigation and pages, session refresh and sign-out.
+- Authenticated organization sector directory and PostgreSQL-backed location register.
+- Location create/edit/deactivate gated by an explicit, empty-by-default subject allowlist.
+- Legal identity remains provisional; no legal-entity edits or operational transactions.
 
 ## Explicitly not in scope yet
 
-- Application login/session UI or business authorization.
-- Organization/branch CRUD.
+- Approved enterprise role/permission matrix, user provisioning lifecycle, MFA/recovery policy and sector/location resource authorization.
+- Legal-entity identity/registration editing.
 - Pharmacy stock, dispensing, purchasing, transfers, claims, patient balances or costing.
 - Contracting projects, contracts, procurement, progress billing or project cost postings.
 - Accounting, tax, e-invoice, statutory reporting or financial calculations.

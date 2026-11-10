@@ -1,7 +1,7 @@
 name: .NET and web foundation
 on:
   push:
-    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui, phase-1-keycloak-authentication, phase-2-application-shell]
+    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui, phase-1-keycloak-authentication, phase-2-application-shell, phase-3-auth-organization-workspace]
   pull_request:
     branches: [master]
 permissions:
@@ -24,20 +24,42 @@ jobs:
           KEYCLOAK_ADMIN_USERNAME: admin
           KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          KEYCLOAK_PUBLIC_URL: http://localhost:8180
+          COOKIE_SECURE: "false"
         run: docker compose up --build --detach
       - name: API, database, Keycloak and web smoke tests
         env:
           KEYCLOAK_ADMIN_USERNAME: admin
           KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
-        run: bash scripts/smoke-test.sh http://localhost:8080 http://localhost:3000 http://localhost:8180
-      - name: Container logs on failure
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          KEYCLOAK_PUBLIC_URL: http://localhost:8180
+          COOKIE_SECURE: "false"
+        run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000 http://127.0.0.1:8180
+      - name: Container diagnostics on failure
         if: failure()
-        run: docker compose logs api db keycloak web
+        env:
+          KEYCLOAK_ADMIN_USERNAME: admin
+          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          KEYCLOAK_PUBLIC_URL: http://localhost:8180
+          COOKIE_SECURE: "false"
+        run: |
+          docker compose ps -a
+          docker compose logs --tail=200 api db keycloak web
       - name: Stop local stack
         if: always()
         env:
           KEYCLOAK_ADMIN_USERNAME: admin
           KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          KEYCLOAK_PUBLIC_URL: http://localhost:8180
+          COOKIE_SECURE: "false"
         run: docker compose down --volumes
