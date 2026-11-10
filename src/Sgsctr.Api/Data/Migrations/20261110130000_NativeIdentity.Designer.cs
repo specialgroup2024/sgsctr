@@ -8,7 +8,6 @@ using Sgsctr.Api.Data;
 namespace Sgsctr.Api.Data.Migrations;
 
 [DbContext(typeof(AuthDbContext))]
-[Migration("20261110130000_NativeIdentity")]
 public sealed partial class NativeIdentity
 {
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
