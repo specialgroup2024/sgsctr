@@ -16,7 +16,7 @@ Track each item as: ID, question, impact, owner, status, evidence and decision d
 - Q09: Identify source documents and approval evidence for commitments, invoices and payment certificates. Owner: contracting lead/accountant. Status: open.
 
 ## Pharmacy inventory and costing
-- Q10: Owner confirmed direct branch-to-branch transfers without routing through Mokattam. The proposed workflow, 21 acceptance criteria and non-posting technical design are documented in .ai/domain/pharmacy-stock-transfer-workflow.md, .ai/quality/pharmacy-stock-transfer-acceptance.md and .ai/architecture/pharmacy-stock-transfer-technical-design.md. Pharmacy operations must approve lifecycle, custody, roles, limits, separation of duties, lot/expiry and exception handling. Owner: pharmacy operations/business owner. Status: route capability confirmed; workflow, criteria and technical design drafted, approval pending.
+- Q10: Owner confirmed direct branch-to-branch transfers without routing through Mokattam. The proposed workflow, 21 acceptance criteria and non-posting technical design are documented in `.ai/domain/pharmacy-stock-transfer-workflow.md`, `.ai/quality/pharmacy-stock-transfer-acceptance.md` and `.ai/architecture/pharmacy-stock-transfer-technical-design.md`. Pharmacy operations must approve lifecycle, custody, roles, limits, separation of duties, lot/expiry and exception handling. Owner: pharmacy operations/business owner. Status: route capability confirmed; workflow, criteria and technical design drafted, approval pending.
 - Q11: Define units, pack conversions, batch/lot, expiry, recall, temperature and controlled-item requirements. Owner: pharmacist/quality lead. Status: open.
 - Q12: Approve weighted-average costing level/timing, receipt/return/transfer/adjustment treatment, negative-stock policy, precision and rounding. Owner: accountant/pharmacy lead. Status: open.
 - Q13: Approve purchasing, receiving, dispensing, returns, expiry and stock-count procedures. Owner: pharmacy lead. Status: open.
@@ -31,6 +31,10 @@ Track each item as: ID, question, impact, owner, status, evidence and decision d
 - Q18: Identify applicable Egyptian legal, tax, e-invoice, pharmacy, privacy and health-data requirements for each sector/workflow. Owner: Egyptian counsel/tax adviser/pharmacy professional. Status: open.
 - Q19: Identify legacy systems, import formats, data owners, reconciliation and migration cutover rules. Owner: data owner/accountant. Status: open.
 - Q20: Confirm integrations, hosting region, backup retention, recovery objectives, audit retention and mobile offline requirements. Owner: technical owner/security. Status: open.
+- Q21: Select the OIDC/OAuth identity provider and confirm hosting/data-residency, cost, MFA, account recovery, provisioning and support constraints. Impact: authentication integration, operations and privacy. Owner: business owner/technical owner/security adviser. Status: open; ADR-0002 is proposed.
+- Q22: Approve user populations, role catalogue, permissions, legal-entity/sector/location scopes, privileged access and separation-of-duties matrix. Impact: server-side authorization and operational control. Owner: business owner and relevant sector/finance leads. Status: open; do not invent roles.
+- Q23: Approve audit event catalogue, data classification, access, retention, export, tamper-evidence and recovery requirements. Impact: legal evidence, privacy, security and storage design. Owner: business owner/security adviser/legal adviser as applicable. Status: open.
+- Q24: Confirm backup retention and recovery point/time objectives, backup storage location, encryption/key ownership and restore test schedule. Impact: resilience and production recovery. Owner: technical owner/business owner. Status: open.
 
 ## Decision gate
 
