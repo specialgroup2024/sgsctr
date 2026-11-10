@@ -14,10 +14,11 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 
 ## Phase 1 technical-control references
 
-- [ADR-0002: Identity and access architecture](architecture/ADR-0002-identity-and-access.md) — proposed; provider and business-access decisions require owner approval.
+- [ADR-0002: Identity and access architecture](architecture/ADR-0002-identity-and-access.md) — self-hosted Keycloak selected; production topology and business access decisions remain pending.
 - [Identity and access security baseline](security/identity-access-baseline.md) — technical requirements and negative-test expectations.
 - [Audit and application logging baseline](security/audit-logging-baseline.md) — event, integrity, access and redaction requirements.
 - [Phase 1 technical controls plan](delivery/phase-1-technical-controls-plan.md) — work packages, gates and acceptance evidence.
+- [Keycloak local setup](../docs/security/keycloak-local-setup.md) — local realm, test-client and API verification steps.
 
 ## Governance model
 
