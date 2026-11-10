@@ -1,56 +1,51 @@
 # Identity and access security baseline
 
-Status: API bearer authentication exists on master. Next.js BFF login/session and organization workspace are implemented on phase-3 branch; PR/CI/runtime verification pending. Business authorization policy approvals remain pending.
+Status: native ASP.NET Core Identity replacement is implemented on a migration branch; CI, build and runtime verification remain pending. Business authorization policy approvals remain pending.
 
 ## Trust boundaries
 
-- Browser and mobile clients are untrusted public environments.
+- Browser and mobile clients are untrusted environments.
 - The API is the enforcement point for resource access and business permissions.
 - PostgreSQL is private to the application network; clients never connect directly.
-- Keycloak authenticates identities and issues tokens; the API authorizes each requested action.
-- pgAdmin is a local development administration tool, not an application identity service.
+- ASP.NET Core Identity owns application accounts and password verification; the API authorizes each requested action.
+- pgAdmin is a local development database tool, not an application identity service.
 
-## Implemented technical controls
+## Implemented on migration branch
 
-1. Keycloak is provided as a self-hosted local development Compose service.
-2. The `sgsctr` realm has an API resource-server identifier `sgsctr-api`.
-3. The API validates bearer access tokens using OIDC metadata and provider signing keys.
-4. Token validation checks signature, issuer, audience and lifetime.
-5. A fallback authorization policy requires an authenticated principal for endpoints unless explicitly marked anonymous.
-6. Only root, liveness, readiness and system information endpoints are explicitly anonymous.
-7. `GET /api/v1/auth/me` is an authenticated diagnostic endpoint.
-8. Phase 3 adds a Next.js BFF Authorization Code + PKCE flow, ID-token signature/issuer/audience/nonce validation, API validation of the access token, encrypted HttpOnly session cookies, refresh and sign-out.
-9. Phase 3 adds protected web routes and authenticated organization reference-data endpoints.
-10. Organization location writes require an explicit subject allowlist; it is empty by default and no default administrator is seeded.
+1. ASP.NET Core Identity with EF Core/Npgsql, using a dedicated identity schema in the existing PostgreSQL database.
+2. Framework password hashing, unique email, minimum 12-character password policy and temporary lockout after five failed attempts.
+3. Native API login and refresh endpoints based on ASP.NET Core Identity API endpoints.
+4. Public account registration, unauthenticated password recovery and reset endpoints are blocked until an approved email/recovery workflow exists.
+5. Optional first-run bootstrap administrator requires explicit environment configuration; an existing account is never reset or promoted automatically.
+6. Administrator-only API endpoint provisions standard user accounts; no business roles are assigned automatically.
+7. Next.js BFF stores tokens only in an encrypted HttpOnly cookie and sends them server-to-server.
+8. Protected web routes and organization reference-data endpoints retain API-side authorization.
+9. Organization location writes remain gated by an explicit subject allowlist, empty by default.
 
 ## Required controls still pending
 
-- Verify the Phase 3 BFF flow in CI and on the Linux VM with a provisioned test user.
-- Approve and implement enterprise role catalogue, permissions, sector/location/project scopes, separation of duties and resource-level checks.
-- Approve user provisioning, deactivation, recovery, MFA enforcement and emergency access.
-- Implement React Native Authorization Code with PKCE and operating-system secure credential storage; do not embed client secrets.
-- Add valid-token, invalid-signature, issuer, audience, expiry, disabled-user and authorization integration tests.
-- Configure production TLS, reverse proxy, secret storage, Keycloak database, backups, monitoring and high availability.
+- Execute .NET restore/build, Next.js typecheck/build and PostgreSQL migration tests in CI.
+- Verify sign-in, invalid password, lockout, refresh, sign-out, disabled user and unauthorized user creation end-to-end.
+- Configure persistent ASP.NET Core Data Protection keys and a production secret store before production deployment.
+- Approve and implement MFA, email verification, password reset delivery, account deactivation, session revocation and emergency access.
+- Implement React Native sign-in with HTTPS and OS secure credential storage; do not embed secrets in the mobile app.
+- Approve enterprise role catalogue, permissions, sector/location/project scopes, separation of duties and resource-level checks.
+- Implement persisted security audit events, retention, access controls and redaction.
 
 ## Owner-controlled policy
 
-The following must not be invented by implementation agents:
-- Role names, role membership and permission catalogue.
-- Legal-entity, sector, branch and warehouse scope assignments.
-- Approval limits, dual control and separation-of-duties rules.
-- User invitation, onboarding, offboarding, recovery, MFA exceptions and emergency access.
-- Access review frequency and privileged-account ownership.
+Do not invent role names, role membership, sector/location scope, approval limits, dual control, account onboarding/offboarding, MFA exceptions, recovery or emergency access. Obtain owner/security approval before implementing these policies.
 
 ## Minimum verification suite
 
-- No token, malformed token, expired token, invalid signature, issuer or audience: 401.
-- Valid identity without permission: 403.
-- Valid permission in one sector/location cannot read or mutate another scope.
-- Disabled/revoked user cannot continue privileged activity beyond documented provider behavior.
-- Client cannot elevate authority by changing request fields or local UI state.
-- Health endpoints disclose only the minimum status required.
-- No secret/token/credential appears in application, audit, CI or error logs.
+- No token, malformed token, expired token or invalid token: 401.
+- Invalid password: generic failure; repeated failures trigger lockout.
+- Public registration and unauthenticated recovery/reset endpoints are unavailable.
+- Non-administrator cannot provision accounts; authenticated standard user receives 403.
+- Valid authentication without permission cannot perform protected business actions.
+- Cross-sector/location access is denied by server-side policy.
+- No password, token, secret or sensitive personal data appears in logs.
 
-## Current implementation boundary
+## Data protection boundary
 
-The organization location reference-data table and EF migration are included in Phase 3; this is not a business transaction schema. No enterprise role/permission model, persisted business audit event model or API test project is included. The current Keycloak service uses development mode and must not be exposed as a production identity service.
+The new Identity schema is additive. Existing organization/reference records and PostgreSQL named volumes must remain intact. The old Keycloak volume is retained but unused; do not remove it as part of this migration.
