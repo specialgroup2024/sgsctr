@@ -26,7 +26,7 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:?Set KEYCLOAK_ADMIN_USERNAME in your local .env file}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Set KEYCLOAK_ADMIN_PASSWORD in your local .env file}
       KC_HEALTH_ENABLED: "true"
-      KC_HOSTNAME: http://localhost:8180
+      KC_HOSTNAME_STRICT: "false"
     ports:
       - "127.0.0.1:8180:8080"
     volumes:
@@ -45,6 +45,7 @@ services:
       Authentication__Authority: http://localhost:8180/realms/sgsctr
       Authentication__MetadataAddress: http://keycloak:8080/realms/sgsctr/.well-known/openid-configuration
       Authentication__Audience: sgsctr-api
+      Authentication__InternalIssuer: http://keycloak:8080/realms/sgsctr
       Authentication__RequireHttpsMetadata: "false"
     ports:
       - "8080:8080"
