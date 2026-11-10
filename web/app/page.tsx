@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 type SystemStatus = { api: string; database: string; checkedAt: string };
 const locations = [
@@ -28,10 +29,10 @@ export default function Home() {
     </section>
     <div className="section-heading"><div><p className="eyebrow">YOUR ORGANIZATION</p><h2>Business sectors</h2></div><span className="section-note">Initial workspace · No operational data loaded</span></div>
     <section className="sector-grid">
-      <article className="sector-card pharmacy-card"><div className="sector-top"><span className="sector-symbol">✚</span><span className="sector-tag">SECTOR 01</span></div><h3>Pharmacies</h3><p>Manage the pharmacy network, locations and future inventory operations from one connected workspace.</p><div className="sector-meta"><span>4 owner-identified locations</span><a className="text-link" href="/pharmacies">Open workspace ↗</a></div></article>
-      <article className="sector-card contracting-card"><div className="sector-top"><span className="sector-symbol">⌂</span><span className="sector-tag">SECTOR 02</span></div><h3>Specialized Contracting</h3><p>A dedicated workspace for future projects, contracts, procurement, execution and cost control.</p><div className="sector-meta"><span>Module foundation only</span><a className="text-link" href="/contracting">Open workspace ↗</a></div></article>
+      <article className="sector-card pharmacy-card"><div className="sector-top"><span className="sector-symbol">✚</span><span className="sector-tag">SECTOR 01</span></div><h3>Pharmacies</h3><p>Manage the pharmacy network, locations and future inventory operations from one connected workspace.</p><div className="sector-meta"><span>4 owner-identified locations</span><Link className="text-link" href="/pharmacies">Open workspace ↗</Link></div></article>
+      <article className="sector-card contracting-card"><div className="sector-top"><span className="sector-symbol">⌂</span><span className="sector-tag">SECTOR 02</span></div><h3>Specialized Contracting</h3><p>A dedicated workspace for future projects, contracts, procurement, execution and cost control.</p><div className="sector-meta"><span>Module foundation only</span><Link className="text-link" href="/contracting">Open workspace ↗</Link></div></article>
     </section>
-    <section className="locations-section"><div className="section-heading compact"><div><p className="eyebrow">PHARMACY NETWORK</p><h2>Locations</h2></div><a className="text-link" href="/organization">View organization register ↗</a></div>
+    <section className="locations-section"><div className="section-heading compact"><div><p className="eyebrow">PHARMACY NETWORK</p><h2>Locations</h2></div><Link className="text-link" href="/organization">View organization register ↗</Link></div>
       <div className="location-grid">{locations.map((loc) => <article className="location-card" key={loc.code}><div className="location-icon">{loc.code.startsWith("WH") ? "▤" : "✚"}</div><div className="location-info"><strong>{loc.name}</strong><span>{loc.type}</span><small>{loc.detail}</small></div><span className="location-code">{loc.code}</span></article>)}</div>
     </section>
     <section className="bottom-grid">
