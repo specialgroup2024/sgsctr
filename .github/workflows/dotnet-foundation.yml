@@ -1,7 +1,7 @@
 name: .NET and web foundation
 on:
   push:
-    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui]
+    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui, phase-1-keycloak-authentication]
   pull_request:
     branches: [master]
 permissions:
@@ -19,13 +19,21 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
-      - name: Start API, PostgreSQL and Next.js
+      - name: Start API, PostgreSQL, Keycloak and Next.js
+        env:
+          KEYCLOAK_ADMIN_USERNAME: admin
+          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
         run: docker compose up --build --detach
-      - name: API, database and web smoke tests
-        run: bash scripts/smoke-test.sh http://localhost:8080 http://localhost:3000
+      - name: API, database, Keycloak and web smoke tests
+        env:
+          KEYCLOAK_ADMIN_USERNAME: admin
+          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+        run: bash scripts/smoke-test.sh http://localhost:8080 http://localhost:3000 http://localhost:8180
       - name: Container logs on failure
         if: failure()
-        run: docker compose logs api db web
+        run: docker compose logs api db keycloak web
       - name: Stop local stack
         if: always()
         run: docker compose down --volumes
