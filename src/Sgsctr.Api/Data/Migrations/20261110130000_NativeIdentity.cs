@@ -6,7 +6,7 @@ namespace Sgsctr.Api.Data.Migrations;
 
 [DbContext(typeof(AuthDbContext))]
 [Migration("20261110130000_NativeIdentity")]
-public sealed class NativeIdentity : Migration
+public sealed partial class NativeIdentity : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder) => migrationBuilder.Sql("""
         CREATE SCHEMA IF NOT EXISTS identity;
