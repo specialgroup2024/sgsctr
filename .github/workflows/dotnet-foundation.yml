@@ -38,7 +38,7 @@ jobs:
           WEB_BASE_URL: http://localhost:3000
           KEYCLOAK_PUBLIC_URL: http://localhost:8180
           COOKIE_SECURE: "false"
-        run: bash scripts/smoke-test.sh http://localhost:8080 http://localhost:3000 http://localhost:8180
+        run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000 http://127.0.0.1:8180
       - name: Container diagnostics on failure
         if: failure()
         env:
