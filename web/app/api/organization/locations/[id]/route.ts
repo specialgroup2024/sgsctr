@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { apiBaseUrl, readSession, refreshSession } from "@/lib/auth";
+import { SESSION_COOKIE, apiBaseUrl, cookieOptions, readSession, refreshSession, seal } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -21,9 +21,11 @@ async function proxy(request: NextRequest, id: string, method: "PUT" | "DELETE")
     ...(body ? { body: JSON.stringify(body) } : {}),
     cache: "no-store"
   });
-  if (upstream.status === 204) return new NextResponse(null, { status: 204 });
-  const payload = await upstream.json().catch(() => null);
-  return NextResponse.json(payload, { status: upstream.status });
+  const response = upstream.status === 204
+    ? new NextResponse(null, { status: 204 })
+    : NextResponse.json(await upstream.json().catch(() => null), { status: upstream.status });
+  if (valid.accessToken !== session.accessToken) response.cookies.set(SESSION_COOKIE, await seal(valid as unknown as Record<string, unknown>, 8 * 60 * 60), cookieOptions(8 * 60 * 60));
+  return response;
 }
 
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
