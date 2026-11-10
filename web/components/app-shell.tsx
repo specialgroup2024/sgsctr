@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-const navigation = [
+const navigation: Array<{ href: string; label: string; icon: string; status?: string }> = [
   { href: "/", label: "Overview", icon: "▦" },
   { href: "/organization", label: "Organization", icon: "⌂" },
   { href: "/pharmacies", label: "Pharmacies", icon: "✚", status: "Foundation" },
