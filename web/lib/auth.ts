@@ -80,8 +80,15 @@ export async function getOidcConfiguration() {
 }
 
 export async function refreshSession(session: UserSession): Promise<UserSession | null> {
-  if (session.expiresAt > Math.floor(Date.now() / 1000) + 60) return session;
   try {
+    if (session.expiresAt > Math.floor(Date.now() / 1000) + 60) {
+      const currentTokenCheck = await fetch(`${apiBaseUrl}/api/v1/auth/me`, {
+        headers: { authorization: `Bearer ${session.accessToken}` },
+        cache: "no-store"
+      });
+      if (currentTokenCheck.ok) return session;
+      if (currentTokenCheck.status !== 401) return null;
+    }
     const oidc = await getOidcConfiguration();
     const response = await fetch(oidc.token_endpoint, {
       method: "POST",
