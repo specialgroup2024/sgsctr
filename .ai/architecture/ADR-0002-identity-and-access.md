@@ -1,56 +1,49 @@
 # ADR-0002: Identity and access architecture
 
-- Status: **Accepted — self-hosted Keycloak for the identity-provider direction; production topology and business authorization policy remain pending**
+- Status: Owner-directed replacement — ASP.NET Core Identity; implementation and runtime verification pending.
 - Date: 2026-11-10
-- Scope: ASP.NET Core API, Next.js web client and future React Native client
-- Decision authority: project owner selected self-hosted hosting; Keycloak is the implementation provider for the current phase
+- Scope: ASP.NET Core API, Next.js web client and future React Native client.
+- Decision authority: project owner explicitly requested normal application-managed authentication instead of Keycloak.
 
 ## Context
 
-The repository contains an ASP.NET Core 10 API, Next.js web foundation and PostgreSQL 18. The API had no authentication or authorization middleware. The owner selected a self-hosted identity provider.
+SGSCTR uses ASP.NET Core 10, PostgreSQL 18, Next.js and a future React Native client. The previous self-hosted Keycloak choice introduced a separate identity service and administration burden that the owner does not want.
 
 ## Decision
 
-1. Use self-hosted Keycloak as the OIDC provider. Pin the local development image to Keycloak 26.8.2; review security updates before upgrading.
-2. Use OpenID Connect for user authentication and OAuth 2.0 access tokens for API authorization. Do not create a proprietary password-to-token endpoint or self-issued production JWTs.
-3. Use Authorization Code with PKCE for public clients. Prefer a server-side Backend-for-Frontend (BFF) for the Next.js browser experience, with secure, HttpOnly, SameSite cookies and server-held tokens. Do not store bearer or refresh tokens in browser localStorage/sessionStorage.
-4. Treat the React Native application as a public client using Authorization Code with PKCE and operating-system secure credential storage. Do not embed client secrets in the mobile app.
-5. The API validates access-token signature, issuer, audience and expiry using Keycloak OIDC metadata and signing keys. ID tokens are for client sign-in, not API access tokens.
-6. Implement authorization in the API with named policies and resource-level checks. Deny by default for business endpoints. Never trust client-supplied role, sector, location or legal-entity identifiers without server-side authorization.
-7. Model access dimensions separately: legal entity, sector, location/branch/warehouse and resource/project where applicable. Do not define business roles or approval limits in this ADR.
-8. Keep liveness/readiness endpoints deliberately minimal and explicitly anonymous; do not expose connection strings, hostnames, exception details or secrets in health responses.
+1. Use ASP.NET Core Identity with EF Core/Npgsql as the application-owned account and credential system. No external identity provider is required.
+2. Store Identity users, roles, claims and tokens in the existing PostgreSQL database, isolated in the identity schema. Keep existing business/reference tables intact.
+3. Use supported ASP.NET Core Identity API endpoints for password sign-in and bearer-token issuance/refresh. Do not implement custom password hashing or a proprietary token format.
+4. Use a Next.js BFF for browser sign-in. Keep access/refresh tokens server-side inside an encrypted, HttpOnly, SameSite cookie; never expose tokens to browser JavaScript or localStorage/sessionStorage.
+5. The future React Native client may call the application Identity API over HTTPS and store tokens only in OS-protected secure storage. Complete mobile token lifecycle/revocation design and tests before release.
+6. Public registration is disabled. Accounts are provisioned by an authenticated administrator. An optional first-run bootstrap administrator is created only when both bootstrap email and password are explicitly configured; changing those variables never resets an existing account.
+7. Authentication and authorization remain separate. The API denies by default; business role membership, sector/location/project scopes and approval limits remain owner-controlled decisions.
+8. Use Identity password hashing, unique email, minimum 12-character complexity, lockout after five failed attempts for 15 minutes, and generic sign-in failure messages. MFA, email verification, password recovery and account lifecycle workflows require approved policy and configured delivery.
+9. Keep liveness/readiness endpoints deliberately minimal and explicitly anonymous.
 
 ## Alternatives considered
 
-- Custom username/password and JWT issuer in the application: rejected due to credential lifecycle, token security, MFA, recovery and operational burden.
-- Hard-coded local administrator and role seed: rejected because no approved user lifecycle or role matrix exists.
-- Managed identity provider: not selected because the owner chose self-hosted hosting.
+- Self-hosted Keycloak: previously selected, now rejected by explicit owner direction because a separate identity service is not wanted.
+- Custom password hashing/token implementation: rejected; use framework-supported Identity.
+- Public self-registration: rejected; application accounts are administrator-provisioned.
 
-## Security and operational requirements
+## Data and migration safeguards
 
-- MFA capability for privileged accounts; exact enforcement and recovery policy require owner approval.
-- Short-lived access tokens; refresh-token issuance, rotation, revocation and storage follow the selected provider's supported secure design.
-- Validate issuer, audience, signature, expiry and required claims. Fail closed on invalid or missing configuration.
-- No secrets, tokens, password material or sensitive health information in logs.
-- Account provisioning, deactivation, recovery, access review and emergency access must be documented and auditable.
-- Separate authentication (who is the caller?) from authorization (what may the caller do?).
+- Add Identity tables in a dedicated identity schema within the existing PostgreSQL database.
+- Do not drop, recreate, rename or migrate existing business/reference tables as part of this change.
+- Never delete the legacy sgsctr_keycloak_data volume during transition. Compose no longer mounts it; it remains untouched until the owner explicitly authorizes a separate retention decision.
+- Back up PostgreSQL before applying the new Identity migration in any existing environment.
 
 ## Consequences and residual risks
 
-- Local Keycloak service and API bearer-token validation are implemented in the development stack.
-- No production-grade Keycloak deployment, Next.js BFF login flow or React Native login flow is implemented yet.
-- No business role, permission, approval limit, legal-entity/sector/location scope or separation-of-duties policy is approved.
-- Authentication alone does not authorize pharmacy, contracting, finance or accounting actions.
+- API and web implementation are being migrated on feature/native-identity-authentication; merge, build, CI and VM runtime verification are pending.
+- A bootstrap administrator must be configured securely before first use; no real credentials are committed.
+- No production email sender, MFA enforcement, recovery flow, session revocation policy or React Native implementation is claimed complete.
+- No business role/permission/scope matrix is approved. Authentication alone does not authorize pharmacy, contracting, finance or accounting actions.
 
 ## Required owner decisions still open
 
-- Production hosting location, domain, TLS termination, HA, database, backup and recovery design.
-- User populations, invitation/provisioning, MFA enforcement, recovery and emergency-access policy.
+- Production HTTPS/domain, secret storage, backup/restore and key persistence.
+- User populations, administrator ownership, account creation/deactivation, MFA, email verification and recovery policy.
 - Role catalogue, permissions, legal-entity/sector/location scopes and separation of duties.
-- Administrator and emergency-access responsibilities.
-
-## References
-
-- Keycloak: [OIDC endpoints and discovery](https://www.keycloak.org/docs/latest/securing_apps/#_oidc)
-- Keycloak: [Release notes](https://www.keycloak.org/docs/latest/release_notes/)
-- Microsoft Learn: [JWT bearer authentication in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/security/authentication/configure-jwt-bearer-authentication?view=aspnetcore-10.0)
+- React Native token storage, expiry, refresh and revocation requirements.

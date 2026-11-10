@@ -1,102 +1,68 @@
-# SGSCTR authenticated workspace setup
+# SGSCTR native application authentication
 
-Status: implementation guide for the phase-3 branch. Local development only; not a production deployment approval.
+Status: migration guide for feature/native-identity-authentication; CI, build, merge and VM runtime verification remain pending.
 
-## What this phase implements
+## Authentication design
 
-- Keycloak OpenID Connect Authorization Code with PKCE login.
-- Next.js server-side BFF session using an encrypted, HttpOnly, SameSite=Lax cookie. Access and refresh tokens are not written to browser storage.
-- ID-token signature, issuer, audience and nonce verification; the API independently validates the access token.
-- Login, logout, session refresh, protected pages and authenticated navigation.
-- Organization sector directory and PostgreSQL-backed location register.
-- Location create/edit/deactivate API operations, gated by an explicit subject allowlist.
-- Initial location rows reflect only owner-provided names. Legal identity, ownership and licensing are not asserted.
+- ASP.NET Core Identity owns application users and password hashes.
+- Identity tables are added to the existing PostgreSQL database in the identity schema.
+- API sign-in and refresh use supported ASP.NET Core Identity API endpoints.
+- Next.js handles browser sign-in through a server-side BFF. Tokens are stored in an encrypted HttpOnly SameSite cookie and are never exposed to browser JavaScript.
+- Public registration and unauthenticated password recovery/reset are disabled. Users are created by an administrator.
+- A future React Native client can use the API over HTTPS and OS-protected secure storage; mobile implementation is not included in this migration.
 
 ## Preserve existing data
 
-Never use `docker compose down -v`, remove named volumes, or delete PostgreSQL/Keycloak data to troubleshoot. This phase adds one EF migration; it does not drop or recreate existing application data.
-
-## Migration rollback safety
-
-The forward migration only adds the `OrganizationLocations` table and its owner-provided seed rows. Its `Down` operation drops that table and all location records created in it. Do not run an EF downgrade without explicit owner approval and a verified export/backup of those records. Normal startup applies only pending forward migrations.
+Never use docker compose down -v, remove named volumes, or delete PostgreSQL data. The new migration adds only the identity schema and Identity tables. It does not drop existing business/reference tables. The legacy sgsctr_keycloak_data volume is intentionally retained but is no longer mounted by Compose.
 
 ## Configure the VM
 
-1. Update the existing ignored `.env` file manually; do not replace it if it contains existing database passwords.
-2. Ensure these values exist:
-   - `AUTH_SESSION_SECRET`: output of `openssl rand -base64 48` (at least 32 characters).
-   - `WEB_BASE_URL=http://localhost:3000`
-   - `KEYCLOAK_PUBLIC_URL=http://localhost:8180`
-   - `COOKIE_SECURE=false` for this local HTTP tunnel only.
-   - Keep existing PostgreSQL, pgAdmin and Keycloak passwords unchanged.
-   - Leave `ORGANIZATION_MANAGER_SUBJECTS` empty until the owner approves a specific account.
-3. Compose binds web, API, Keycloak, PostgreSQL and pgAdmin to VM loopback addresses. From your desktop, open an SSH tunnel:
+1. Update the existing ignored .env manually; do not replace it or overwrite existing PostgreSQL/pgAdmin credentials.
+2. Keep existing POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD and PGADMIN_DEFAULT_* values unchanged.
+3. Add BOOTSTRAP_ADMIN_EMAIL and a unique BOOTSTRAP_ADMIN_PASSWORD that meets the password policy (12+ characters, upper/lowercase, digit and symbol). First startup creates this account only if the email is not already present. Changing the variable later does not reset its password.
+4. Generate AUTH_SESSION_SECRET using openssl rand -base64 48.
+5. Set WEB_BASE_URL=http://localhost:3000 and COOKIE_SECURE=false for the local SSH-tunnel-only HTTP setup.
+6. Keep ORGANIZATION_MANAGER_SUBJECTS empty until the owner approves a specific account.
+7. Back up PostgreSQL before applying the new migration. Use a verified backup and test restoration separately; never overwrite the only working database.
 
-       ssh -N -L 3000:127.0.0.1:3000 -L 8180:127.0.0.1:8180 YOUR_USER@YOUR_VM_IP
+## Start without deleting volumes
 
-4. In a second VM terminal, rebuild and start without removing volumes:
+From the repository directory:
 
-       docker compose up -d --build
+    docker compose up -d --build
 
-5. Check startup and migration:
+Check:
 
-       docker compose ps
-       docker compose logs --tail=100 api web keycloak
+    docker compose ps
+    docker compose logs --tail=150 api web db
 
-   The API applies the new migration automatically only in Development because `Database__ApplyMigrations=true` is set by this Compose file. Existing named PostgreSQL volumes are retained.
+Compose no longer starts Keycloak. Do not run docker compose down -v. From a desktop, the existing web/API tunnel is:
 
-## Configure the existing Keycloak realm
+    ssh -N -L 3000:127.0.0.1:3000 -L 8080:127.0.0.1:8080 YOUR_USER@YOUR_VM_IP
 
-The existing Keycloak database volume is persistent. Realm JSON import is not an update mechanism for an already-imported realm. Do not delete the Keycloak volume.
+Open http://localhost:3000. If using a browser inside the VM, no tunnel is needed.
 
-In Keycloak Admin Console at `http://localhost:8180`, select realm `sgsctr` and create this client if it is not already present:
+## First administrator and user provisioning
 
-- Client ID: `sgsctr-web`
-- Client type/protocol: OpenID Connect
-- Client authentication: Off (public client)
-- Standard flow: On
-- Direct access grants: Off
-- Valid redirect URI: `http://localhost:3000/api/auth/callback`
-- Valid post-logout redirect URI: `http://localhost:3000/*`
-- Web origin: `http://localhost:3000`
-- Proof Key for Code Exchange: S256 (required)
+- Sign in with BOOTSTRAP_ADMIN_EMAIL and BOOTSTRAP_ADMIN_PASSWORD.
+- The bootstrap account is assigned the technical Administrator role only when it is first created.
+- The protected API endpoint POST /api/v1/admin/users allows an Administrator to create standard accounts. It accepts JSON with email and password and returns the new account ID.
+- Public registration is disabled. Do not enable it as a workaround.
+- No pharmacy, contracting, accounting or sector/location role is automatically granted. Business roles and scopes require owner approval.
+- ORGANIZATION_MANAGER_SUBJECTS remains a temporary explicit gate for organization reference-data writes.
 
-Add an access-token audience mapper to this client:
-- Mapper type: Audience
-- Included client audience: `sgsctr-api`
-- Add to access token: On
-- Add to ID token: Off
+## Current security and release limits
 
-The access token must contain audience `sgsctr-api`; otherwise the API correctly rejects it. Do not enable password grant or implicit flow.
+- Password hashing and lockout use ASP.NET Core Identity; the application does not implement its own password hashing.
+- MFA, email verification, password reset delivery, account deactivation screens, full audit trail, Data Protection key persistence and formal token revocation are not yet verified/complete.
+- Identity bearer token/refresh flow must be tested after API container restart before production use. Do not claim production readiness.
+- Production requires HTTPS, protected secrets, persistent Data Protection keys, backup/restore testing, monitoring, approved MFA/recovery policy and a complete authorization matrix.
+- No inventory, pharmacy transactions, contracting transactions, financial posting or legal-entity editing is enabled by this change.
 
-Create test users only for approved personnel, using individual accounts and the owner's approved MFA/recovery policy. Do not use the Keycloak bootstrap administrator as an application user.
+## Verification
 
-## First sign-in and organization-manager permission
+Run:
 
-1. Open `http://localhost:3000` through the SSH tunnel.
-2. Sign in with the approved Keycloak test account.
-3. Confirm that the overview and Organization page load and the user identity appears in the top bar.
-4. Organization data is readable by authenticated users. Create/edit/deactivate is denied by default.
-5. If the owner authorizes one account to manage organization reference records, copy that user's subject identifier from the Organization page and add it to `ORGANIZATION_MANAGER_SUBJECTS` in the VM's ignored `.env`, comma-separated if more than one.
-6. Recreate only the API service to load the allowlist:
+    bash scripts/smoke-test.sh
 
-       docker compose up -d --force-recreate api
-
-No role is automatically assigned, no user is seeded, and no default administrator is created. The allowlist is a temporary, explicit technical gate; it is not a substitute for a future approved role and scope model.
-
-## Security and operational boundaries
-
-- This is a local development Keycloak deployment using HTTP and `start-dev`. Never expose these ports directly to the internet.
-- Use SSH tunnels; ports are loopback-bound on the VM.
-- For HTTPS production, configure canonical HTTPS URLs, secure cookies, hardened Keycloak, managed secrets, production database, backups, monitoring, MFA, account lifecycle and a reviewed authorization policy.
-- Organization records are reference data only. Legal identity changes, stock operations, pharmacy transactions, contracting transactions, accounting and financial postings are not implemented.
-- Deactivation is soft; records remain in PostgreSQL.
-- No persisted business audit event model is included yet. Do not treat application logs as a complete audit trail.
-
-## Troubleshooting
-
-- Login returns `token_exchange_failed`: check Keycloak client redirect URI, client ID and PKCE S256.
-- Login returns `api_token_rejected`: inspect the access token audience mapper and API logs; `aud` must include `sgsctr-api`.
-- Login returns `authentication_failed`: check Keycloak discovery/JWKS reachability from the web container and inspect `docker compose logs web keycloak api`.
-- Browser cannot reach login or callback: ensure both SSH forwards are open and use exactly `localhost:3000` / `localhost:8180`.
-- Never remove database or Keycloak volumes as a login fix.
+The smoke test checks API/database readiness, anonymous API denial, disabled public registration, web availability and protected-route redirects. It does not prove successful account sign-in, refresh/revocation, MFA, mobile authentication, authorization scopes or production hardening.
