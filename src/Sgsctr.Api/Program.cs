@@ -110,7 +110,7 @@ app.MapPost("/api/v1/admin/users", async (CreateUserInput input, UserManager<Ide
     if (string.IsNullOrWhiteSpace(input.Email) || string.IsNullOrWhiteSpace(input.Password))
         return Results.ValidationProblem(new Dictionary<string, string[]> { ["email"] = ["Email and password are required."] });
     var email = input.Email.Trim();
-    var user = new IdentityUser { UserName = email, Email = email, EmailConfirmed = true, LockoutEnabled = true };
+    var user = new IdentityUser { UserName = email, Email = email, EmailConfirmed = false, LockoutEnabled = true };
     var created = await users.CreateAsync(user, input.Password);
     if (!created.Succeeded)
         return Results.ValidationProblem(created.Errors.GroupBy(x => x.Code).ToDictionary(x => x.Key, x => x.Select(e => e.Description).ToArray()));
@@ -235,8 +235,9 @@ await using (var scope = app.Services.CreateAsyncScope())
         {
             var admin = new IdentityUser { UserName = email.Trim(), Email = email.Trim(), EmailConfirmed = true, LockoutEnabled = true };
             var result = await users.CreateAsync(admin, password);
-            if (result.Succeeded) await users.AddToRoleAsync(admin, "Administrator");
-            else throw new InvalidOperationException("Bootstrap administrator creation failed: " + string.Join("; ", result.Errors.Select(x => x.Code)));
+            if (!result.Succeeded) throw new InvalidOperationException("Bootstrap administrator creation failed: " + string.Join("; ", result.Errors.Select(x => x.Code)));
+            var roleResult = await users.AddToRoleAsync(admin, "Administrator");
+            if (!roleResult.Succeeded) throw new InvalidOperationException("Bootstrap administrator role assignment failed: " + string.Join("; ", roleResult.Errors.Select(x => x.Code)));
         }
     }
 }
