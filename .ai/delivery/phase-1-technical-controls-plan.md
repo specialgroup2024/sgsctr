@@ -9,7 +9,7 @@ Status: native ASP.NET Core Identity migration is under implementation on featur
 - Web: Next.js 15.5.7.
 - ASP.NET Core Identity with EF Core/Npgsql is the approved direction; migration adds an identity schema in the existing PostgreSQL database.
 - Native API bearer-token login/refresh and default-deny authorization are being implemented.
-- No approved business role/permission matrix, persistent audit model, EF migration or API test project exists.
+- No approved business role/permission matrix or persistent audit model exists; a dedicated API integration-test project is still absent.
 
 ## Work packages
 
