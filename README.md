@@ -10,7 +10,7 @@ Special Group Pharmacies and Specialized Contracting platform.
 - Live API/database connection status in the dashboard.
 - Docker Compose local environment with pgAdmin database administration and CI smoke tests.
 
-The UI is a development overview and known pharmacy location register. The API now has bearer-token authentication scaffolding, but the web UI does not yet implement user sign-in/session management. The application does not implement stock balances, stock transfers, contracting workflows, claims, patient data or financial posting.
+The UI is a development overview and known pharmacy location register. The migration branch introduces ASP.NET Core Identity and native email/password sign-in. It is not merged or runtime-verified yet. The application does not implement stock balances, stock transfers, contracting workflows, claims, patient data or financial posting.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ Run these commands in a terminal:
     cp .env.example .env
 
 Edit the local `.env` file before starting the stack. Keep the file private and
-set `PGADMIN_DEFAULT_PASSWORD` and `KEYCLOAK_ADMIN_PASSWORD` to unique strong local passwords. The default pgAdmin login email is `specialgroup2024@gmail.com`; the Keycloak bootstrap administrator username is `admin`. Do not commit `.env` or share either password.
+set PGADMIN_DEFAULT_PASSWORD, BOOTSTRAP_ADMIN_EMAIL, BOOTSTRAP_ADMIN_PASSWORD and AUTH_SESSION_SECRET. Use unique strong values. The bootstrap administrator is created only if that email does not already exist. Do not commit .env or share credentials.
 
 Then run:
 
@@ -34,7 +34,7 @@ Then run:
 
 Open the web application at http://localhost:3000.
 
-Open the self-hosted Keycloak administration UI at http://localhost:8180. The local `sgsctr` realm is imported automatically. Follow [the Keycloak setup guide](docs/security/keycloak-local-setup.md) to create a test client/user and obtain a token for the protected API identity endpoint. Keycloak currently runs in development mode and must not be exposed publicly or treated as production-ready.
+Sign in at http://localhost:3000 with the bootstrap administrator account configured in .env. No external identity service or public registration is used.
 
 Open pgAdmin at http://localhost:5051 and sign in with the email and password
 configured in `.env`. To connect to PostgreSQL from pgAdmin, register a server
@@ -54,7 +54,7 @@ Backend endpoints:
 - Liveness: http://localhost:8080/health/live
 - Database readiness: http://localhost:8080/health/ready
 - System information: http://localhost:8080/api/v1/system/info
-- Authenticated identity diagnostic: http://localhost:8080/api/v1/auth/me (requires a Keycloak access token)
+- Authenticated identity diagnostic: http://localhost:8080/api/v1/auth/me (requires an application Identity bearer token)
 
 Check status and logs with:
 
@@ -125,16 +125,14 @@ http://localhost:8080 if the API is running on the host.
 
     docker compose down
 
-To also delete the local development database and pgAdmin data/configuration volumes:
-
-    docker compose down --volumes
+Do not use docker compose down --volumes on an environment containing data you need to preserve.
 
 ## Safety and scope
 
 - `.env` is local-only and ignored by Git. Never commit real passwords.
 - pgAdmin is intended for local development; do not expose it publicly without appropriate security controls.
 - Compose credentials are for local testing, not production.
-- EF Core context is intentionally empty; no business schema or migration exists.
+- Identity records are stored in the additive identity schema; existing business/reference records remain separate.
 - The dashboard contains no fabricated stock or financial figures.
 - Readiness verifies database connectivity, not business correctness or production readiness.
 - Business workflow and accounting approvals remain required before stock-changing features.
