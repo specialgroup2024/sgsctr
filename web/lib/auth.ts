@@ -8,7 +8,6 @@ export const LOGIN_COOKIE = "sgsctr_login";
 export type UserSession = {
   accessToken: string;
   refreshToken: string;
-  idToken: string;
   expiresAt: number;
   subject: string;
   displayName: string;
@@ -106,7 +105,6 @@ export async function refreshSession(session: UserSession): Promise<UserSession 
       ...session,
       accessToken: tokens.access_token,
       refreshToken: tokens.refresh_token ?? session.refreshToken,
-      idToken: tokens.id_token ?? session.idToken,
       expiresAt: Math.floor(Date.now() / 1000) + tokens.expires_in,
       subject: identity.subject,
       displayName: identity.displayName ?? session.displayName,
