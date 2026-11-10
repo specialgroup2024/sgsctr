@@ -19,9 +19,7 @@ It does not make clinical decisions.
 
 # Important product boundary
 
-The two businesses require separate accounting systems and reports.
-Do not combine their ledgers. Shared infrastructure does not mean shared
-business rules or financial records.
+Keep the two business domains operationally and permission-wise separated, with sector-specific workflows, controls and management reporting. The statutory accounting model depends on verified legal identity and qualified accountant approval; do not assume either separate statutory ledgers or a shared statutory framework before that decision is confirmed. Shared infrastructure does not mean shared business rules or unrestricted cross-sector access.
 
 # Users
 
