@@ -2,7 +2,7 @@
 
 Last reviewed: 2026-11-10.
 
-Status: Phase 1 technical-control implementation is present on master (PR #9 merged). Keycloak/API authentication code exists, but successful runtime login and end-to-end valid-token behavior remain unverified. Phase 2 application-shell and read-only organization UI are being implemented on branch phase-2-application-shell; not yet merged or build-verified.
+Status: Phase 1 technical controls and Phase 2 application shell are present on master. Phase 3 authentication, navigation and organization workspace are implemented on branch phase-3-auth-organization-workspace; merge, CI and local VM runtime verification remain pending. Do not claim successful end-user login until the BFF/Keycloak/API flow has been exercised.
 
 ## Owner-provided structure
 
@@ -30,34 +30,28 @@ The owner explicitly confirms that the three branches may transfer medicines and
 ## Verified repository foundation
 
 - Default branch: `master`; project solution: `Sgsctr.slnx`.
-- API: ASP.NET Core `net10.0`, EF Core/Npgsql registration and minimal endpoints.
-- SDK pin: .NET SDK `10.0.403`; Npgsql EF Core provider package version `10.0.3`.
-- Database Compose image: PostgreSQL `18-alpine`; local Compose service: `db`.
+- API: ASP.NET Core `net10.0`, EF Core/Npgsql; SDK pin `10.0.403`; Npgsql provider `10.0.3`.
+- Database Compose image: PostgreSQL `18-alpine`.
 - Web: Next.js `15.5.7`, React `19.1.1`.
-- Compose on master includes `db`, `api`, `web`, local pgAdmin and Keycloak.
-- pgAdmin is loopback-bound to host port 5051; Keycloak is intended to be loopback-bound to host port 8180.
-- The API readiness endpoint tests database reachability only.
-- The API now configures JWT bearer authentication and a fallback policy requiring authentication for endpoints unless explicitly marked anonymous. Existing root, health and system-info endpoints are explicitly anonymous.
-- Protected diagnostic endpoint: `GET /api/v1/auth/me`; it returns only authentication status and subject identifier.
-- Local Keycloak realm: `sgsctr`; API audience: `sgsctr-api`. No end-user or business role is seeded.
-- Local Compose uses Keycloak development mode and a local development hostname. This is not a production deployment configuration.
-- No approved business role/permission matrix, persisted audit event model, EF migration or API test project is present.
-- The owner confirmed pgAdmin login and pgAdmin-to-PostgreSQL connectivity locally. This does not prove API-to-PostgreSQL or Keycloak runtime connectivity.
+- Master contains Keycloak/API bearer authentication and the Phase 2 application shell.
+- The API validates JWT signature, issuer, audience and lifetime; fallback authorization requires authentication except explicitly anonymous endpoints.
+- Protected diagnostic endpoint: `GET /api/v1/auth/me`.
+- Local Keycloak realm: `sgsctr`; API audience: `sgsctr-api`. No user or business role is seeded.
+- Local Keycloak `start-dev`, HTTP and dual issuer validation are development-only.
+- No approved enterprise role/permission matrix or persisted business audit event model exists.
 
-## Governance and domain design
+## Phase 3 implementation boundary
 
-- Root `AGENT.md`, `AGENTS.md` and `.ai/` define the dynamic five-role process and human/professional approval boundaries.
-- Pharmacy stock-transfer workflow, 21 acceptance criteria and non-posting technical design remain proposals pending pharmacy-operations, accountant and owner approval.
-- No production stock posting, inventory valuation, tax calculation, claim settlement or patient-balance logic is approved.
+- Next.js BFF login uses Keycloak Authorization Code with PKCE, ID-token signature/issuer/audience/nonce verification, API access-token validation and encrypted HttpOnly session cookies; browser storage is not used for bearer tokens.
+- Protected routes include overview, organization, pharmacies and contracting; navigation shows the signed-in identity and sign-out action.
+- Organization sectors are owner-provided directory values. Pharmacy location reference records are persisted through an EF migration; the migration seeds the four owner-provided locations without asserting legal ownership or licensing.
+- Authenticated users can read the directory. Location create/edit/deactivate requires the exact subject to be placed in `ORGANIZATION_MANAGER_SUBJECTS`; this is empty by default and does not replace a future role/scope matrix.
+- No inventory, pharmacy transactions, contracting transactions, financial posting or legal-entity editing is enabled.
+- Existing Keycloak realm volumes are persistent. The web client and audience mapper must be applied using the documented admin-console procedure; do not delete the Keycloak volume.
 
-## Phase 1 technical-control references
+## Governance and next milestone
 
-- Identity/access architecture: `.ai/architecture/ADR-0002-identity-and-access.md`.
-- Identity controls: `.ai/security/identity-access-baseline.md`.
-- Audit/logging controls: `.ai/security/audit-logging-baseline.md`.
-- Work packages and acceptance gates: `.ai/delivery/phase-1-technical-controls-plan.md`.
-- Local Keycloak setup: `docs/security/keycloak-local-setup.md`.
-
-## Next milestone
-
-Verify the Keycloak/API integration with build and runtime tests, then implement Next.js BFF login. Obtain owner approval for user lifecycle/MFA/recovery and the role/permission/entity-sector-location matrix before implementing business authorization. Continue audit, EF migration tooling and isolated backup/restore work without creating business schema prematurely.
+- Root `AGENT.md`, `AGENTS.md` and `.ai/` define dynamic five-role operation and human/professional approval boundaries.
+- Pharmacy stock-transfer workflow and acceptance criteria remain proposals pending pharmacy-operations, accountant and owner approval.
+- Run CI and VM runtime verification for Phase 3, complete an approved test-user login, and validate refresh/logout/401 behavior.
+- Obtain owner approval for account lifecycle/MFA/recovery and the enterprise role/permission/entity-sector-location matrix before implementing business authorization.
