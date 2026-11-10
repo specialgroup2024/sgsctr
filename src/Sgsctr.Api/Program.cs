@@ -16,10 +16,12 @@ if (!string.IsNullOrWhiteSpace(connectionString))
 var authority = builder.Configuration["Authentication:Authority"];
 var metadataAddress = builder.Configuration["Authentication:MetadataAddress"];
 var audience = builder.Configuration["Authentication:Audience"];
+var internalIssuer = builder.Configuration["Authentication:InternalIssuer"];
 
 if (string.IsNullOrWhiteSpace(authority) ||
     string.IsNullOrWhiteSpace(metadataAddress) ||
-    string.IsNullOrWhiteSpace(audience))
+    string.IsNullOrWhiteSpace(audience) ||
+    string.IsNullOrWhiteSpace(internalIssuer))
 {
     throw new InvalidOperationException(
         "Authentication:Authority, Authentication:MetadataAddress and Authentication:Audience must be configured.");
@@ -41,7 +43,7 @@ builder.Services
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = authority.TrimEnd('/'),
+            ValidIssuers = new[] { authority.TrimEnd('/'), internalIssuer.TrimEnd('/') },
             ValidateAudience = true,
             ValidAudience = audience,
             ValidateLifetime = true,
