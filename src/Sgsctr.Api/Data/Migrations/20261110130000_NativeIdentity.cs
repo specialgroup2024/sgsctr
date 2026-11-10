@@ -26,5 +26,5 @@ public sealed class NativeIdentity : Migration
         CREATE TABLE identity."AspNetUserTokens" ("UserId" text NOT NULL REFERENCES identity."AspNetUsers" ("Id") ON DELETE CASCADE, "LoginProvider" varchar(128) NOT NULL, "Name" varchar(128) NOT NULL, "Value" text, PRIMARY KEY ("UserId", "LoginProvider", "Name"));
         """);
 
-    protected override void Down(MigrationBuilder migrationBuilder) => migrationBuilder.Sql("DROP SCHEMA IF EXISTS identity CASCADE;");
+    protected override void Down(MigrationBuilder migrationBuilder) => throw new NotSupportedException("Identity rollback would delete application accounts. Restore from a verified backup only with explicit owner approval.");
 }
