@@ -43,7 +43,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <section className="main-panel">
       <header className="topbar"><div className="breadcrumb">Workspace <span>/</span> {current?.label ?? "Workspace"}</div><div className="topbar-right">
         <div className="identity-chip"><strong>{identity?.user?.displayName ?? "Signed-in user"}</strong><small>{identity?.user?.email ?? "Verified by Keycloak"}</small></div>
-        <a className="logout-link" href="/api/auth/logout">Sign out</a>
+        <form action="/api/auth/logout" method="post"><button className="logout-link" type="submit">Sign out</button></form>
       </div></header>
       {children}
     </section>
