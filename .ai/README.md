@@ -14,11 +14,11 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 
 ## Phase 1 technical-control references
 
-- [ADR-0002: Identity and access architecture](architecture/ADR-0002-identity-and-access.md) — self-hosted Keycloak selected; production topology and business access decisions remain pending.
+- [ADR-0002: Identity and access architecture](architecture/ADR-0002-identity-and-access.md) — ASP.NET Core Identity is the owner-directed replacement; CI/runtime verification and business access decisions remain pending.
 - [Identity and access security baseline](security/identity-access-baseline.md) — technical requirements and negative-test expectations.
 - [Audit and application logging baseline](security/audit-logging-baseline.md) — event, integrity, access and redaction requirements.
 - [Phase 1 technical controls plan](delivery/phase-1-technical-controls-plan.md) — work packages, gates and acceptance evidence.
-- [Keycloak local setup](../docs/security/keycloak-local-setup.md) — local realm, test-client and API verification steps.
+- [Native application authentication](../docs/security/phase-3-authenticated-workspace.md) — local account bootstrap, sign-in, session and safe migration steps.
 
 ## Governance model
 
@@ -46,5 +46,5 @@ No business features or production financial calculations before required owner 
 ## Phase 2 UI references
 
 - [Application shell and organization workspace plan](delivery/phase-2-application-shell-plan.md) — Phase 2 scope and exclusions.
-- [Authenticated workspace setup](../docs/security/phase-3-authenticated-workspace.md) — Keycloak BFF login, VM tunnel, migration and organization-manager setup.
+- [Authenticated workspace setup](../docs/security/phase-3-authenticated-workspace.md) — native Identity BFF login, VM tunnel, migration and organization-manager setup.
 - [Product scope](product/scope.md) — staged product boundaries and explicit exclusions.
