@@ -59,7 +59,13 @@ export default function OrganizationWorkspace() {
         body: JSON.stringify(draft)
       });
       const payload = await response.json().catch(() => null);
-      if (!response.ok) {\n        const validationMessage = Object.values(payload?.errors ?? {}).flat().join(" ");\n        throw new Error(payload?.error ?? validationMessage || (response.status === 403 ? "Your account cannot manage organization locations." : `Save failed (HTTP ${response.status}).`));\n      }
+      if (!response.ok) {
+        const validationMessage = Object.values(payload?.errors ?? {}).flat().join(" ");
+        const message = (payload?.error ?? validationMessage) || (response.status === 403
+          ? "Your account cannot manage organization locations."
+          : `Save failed (HTTP ${response.status}).`);
+        throw new Error(message);
+      }
       cancelEdit(); setNotice("Location record saved."); await load();
     } catch (e) { setError(e instanceof Error ? e.message : "Could not save location."); }
     finally { setSaving(false); }
