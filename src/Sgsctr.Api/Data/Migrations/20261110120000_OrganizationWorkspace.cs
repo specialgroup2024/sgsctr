@@ -33,17 +33,28 @@ public sealed class OrganizationWorkspace : Migration
             column: "Code",
             unique: true);
 
-        var now = new DateTimeOffset(2026, 11, 10, 0, 0, 0, TimeSpan.Zero);
-        migrationBuilder.InsertData(
-            table: "OrganizationLocations",
-            columns: new[] { "Id", "Code", "Name", "SectorCode", "LocationType", "Notes", "RecordStatus", "IsActive", "CreatedAtUtc", "UpdatedAtUtc" },
-            values: new object[,]
-            {
-                { Guid.Parse("10000000-0000-4000-8000-000000000001"), "WH-01", "Mokattam", "PHARMACIES", "MainWarehouse", "Owner-provided location name; legal ownership and licensing not verified.", "OwnerProvided", true, now, now },
-                { Guid.Parse("10000000-0000-4000-8000-000000000002"), "PH-02", "Student Hospital", "PHARMACIES", "Branch", "Owner-provided location name; legal ownership and licensing not verified.", "OwnerProvided", true, now, now },
-                { Guid.Parse("10000000-0000-4000-8000-000000000003"), "PH-03", "Qasr El-Aini Hospital", "PHARMACIES", "Branch", "Owner-provided location name; legal ownership and licensing not verified.", "OwnerProvided", true, now, now },
-                { Guid.Parse("10000000-0000-4000-8000-000000000004"), "PH-04", "Manial Hospital", "PHARMACIES", "Branch", "Owner-provided location name; legal ownership and licensing not verified.", "OwnerProvided", true, now, now }
-            });
+        // Use explicit SQL instead of InsertData: this hand-authored migration has no
+        // generated BuildTargetModel, so EF cannot resolve property mappings for seeding.
+        // ON CONFLICT preserves any pre-existing owner-managed location with the same code.
+        migrationBuilder.Sql("""
+            INSERT INTO "OrganizationLocations"
+                ("Id", "Code", "Name", "SectorCode", "LocationType", "Notes", "RecordStatus",
+                 "IsActive", "CreatedAtUtc", "UpdatedAtUtc")
+            VALUES
+                ('10000000-0000-4000-8000-000000000001', 'WH-01', 'Mokattam', 'PHARMACIES', 'MainWarehouse',
+                 'Owner-provided location name; legal ownership and licensing not verified.', 'OwnerProvided',
+                 TRUE, TIMESTAMPTZ '2026-11-10 00:00:00+00', TIMESTAMPTZ '2026-11-10 00:00:00+00'),
+                ('10000000-0000-4000-8000-000000000002', 'PH-02', 'Student Hospital', 'PHARMACIES', 'Branch',
+                 'Owner-provided location name; legal ownership and licensing not verified.', 'OwnerProvided',
+                 TRUE, TIMESTAMPTZ '2026-11-10 00:00:00+00', TIMESTAMPTZ '2026-11-10 00:00:00+00'),
+                ('10000000-0000-4000-8000-000000000003', 'PH-03', 'Qasr El-Aini Hospital', 'PHARMACIES', 'Branch',
+                 'Owner-provided location name; legal ownership and licensing not verified.', 'OwnerProvided',
+                 TRUE, TIMESTAMPTZ '2026-11-10 00:00:00+00', TIMESTAMPTZ '2026-11-10 00:00:00+00'),
+                ('10000000-0000-4000-8000-000000000004', 'PH-04', 'Manial Hospital', 'PHARMACIES', 'Branch',
+                 'Owner-provided location name; legal ownership and licensing not verified.', 'OwnerProvided',
+                 TRUE, TIMESTAMPTZ '2026-11-10 00:00:00+00', TIMESTAMPTZ '2026-11-10 00:00:00+00')
+            ON CONFLICT ("Code") DO NOTHING;
+            """);
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
