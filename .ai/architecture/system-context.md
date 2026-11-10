@@ -1,6 +1,6 @@
-# Proposed system context — Phase 0
+# Proposed system context — foundation and discovery
 
-Status: proposal for discovery; legal identity and accounting design require owner/professional approval.
+Status: architecture proposal. Legal identity, business permissions and regulated operating decisions require owner/professional approval.
 
 ## Context
 
@@ -8,12 +8,22 @@ Owner reports “Special Group” with Pharmacies Sector and Specialized Contrac
 
 Pharmacy topology: Mokattam main warehouse, Student Hospital branch, Qasr El-Aini Hospital branch and Manial Hospital branch. The owner confirms branches may transfer medicines and supplies directly between one another; transfers need not route through Mokattam. All locations are administratively connected but separately accountable for stock, accounting dimensions and reports. Verify complete site list, legal operator, licence holder and stock custodian.
 
+## Repository-verified technology baseline
+
+- ASP.NET Core API targets .NET 10 (`net10.0`).
+- Repository SDK pin: .NET SDK `10.0.403`.
+- EF Core provider: Npgsql Entity Framework Core PostgreSQL `10.0.3`; the API currently registers `AppDbContext`.
+- PostgreSQL Compose image: `postgres:18-alpine`.
+- Web foundation: Next.js `15.5.7`, React `19.1.1`, TypeScript `5.9.3`.
+- Mobile direction: React Native; mobile project/toolchain is not yet present in the inspected repository.
+- These are repository configuration facts, not a production support, hosting or upgrade approval.
+
 ## Proposed deployment shape
 
 - ASP.NET Core API: modular monolith, one deployable backend initially.
 - PostgreSQL: one database provisionally for LE-01, with strict sector/module data ownership and authorization. Reassess if additional legal entities are evidenced.
 - React Native: mobile client consuming versioned APIs; never connect clients directly to PostgreSQL.
-- Optional web administration client: decision pending; share API and authorization policies.
+- Next.js: current web foundation; browser should call a server-side BFF/API route rather than connect to PostgreSQL.
 - Background processing: introduce only for confirmed asynchronous jobs; use durable idempotent work patterns.
 - Observability: structured logs, metrics, traces and security/audit events with sensitive-data redaction.
 
@@ -39,8 +49,6 @@ Modules own their data and expose use-case interfaces. No direct cross-module ta
 - Detailed workflow, negative-stock exceptions, emergency process, transfer valuation and financial postings remain subject to pharmacy-operations and accountant approval.
 - Workflow: [proposed process](../domain/pharmacy-stock-transfer-workflow.md); [acceptance criteria](../quality/pharmacy-stock-transfer-acceptance.md).
 - Technical artifacts: [domain model](pharmacy-transfer-domain-model.md), [API contract](pharmacy-transfer-api-contract.md), [persistence design](pharmacy-transfer-persistence-design.md), [implementation plan](pharmacy-transfer-implementation-plan.md).
-- Proposed specifications: [workflow](../domain/pharmacy-stock-transfer-workflow.md), [acceptance criteria](../quality/pharmacy-stock-transfer-acceptance.md), and [technical design](pharmacy-stock-transfer-technical-design.md).
-
 
 ## Data and security principles
 
@@ -51,11 +59,8 @@ Modules own their data and expose use-case interfaces. No direct cross-module ta
 - Version migrations; test backup/restore; make integrations idempotent.
 - Cross-sector reporting is permissioned and traceable; intercompany activity applies only to distinct legal entities and genuine documented transactions.
 - Internal location transfers are traceable and auditable; do not model them as sales.
-
-## Initial stack direction
-
-ASP.NET Core, PostgreSQL and React Native are stated project choices. Exact framework, runtime, PostgreSQL and mobile toolchain versions remain to be verified and pinned before dependency work. EF Core/Npgsql is a candidate persistence stack, subject to a technical spike.
+- Identity and access approach: [ADR-0002](ADR-0002-identity-and-access.md), proposed pending owner decisions.
 
 ## Not decided
 
-Verified legal identity, parent/subsidiary structure, branch ownership/licensing, complete site list, accountant-approved accounting model, transfer workflow roles/approval limits and exception policy, transfer valuation/posting, web client, identity provider, hosting region, offline behavior, integrations, ledger posting rules and deployment topology. See memory/open-questions.md and proposed ADR-0001.
+Verified legal identity, parent/subsidiary structure, branch ownership/licensing, complete site list, accountant-approved accounting model, transfer workflow roles/approval limits and exception policy, transfer valuation/posting, identity provider, hosting region, offline behavior, integrations, ledger posting rules, audit retention, backup/recovery objectives and deployment topology.
