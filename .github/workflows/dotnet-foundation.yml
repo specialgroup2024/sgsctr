@@ -1,7 +1,7 @@
 name: .NET and web foundation
 on:
   push:
-    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui, phase-1-keycloak-authentication, phase-2-application-shell, phase-3-auth-organization-workspace]
+    branches: [master, feature/native-identity-authentication]
   pull_request:
     branches: [master]
 permissions:
@@ -19,47 +19,43 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
-      - name: Start API, PostgreSQL, Keycloak and Next.js
+      - name: Start API, PostgreSQL and Next.js
         env:
-          KEYCLOAK_ADMIN_USERNAME: admin
-          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
-          KEYCLOAK_PUBLIC_URL: http://localhost:8180
           COOKIE_SECURE: "false"
         run: docker compose up --build --detach
-      - name: API, database, Keycloak and web smoke tests
+      - name: API, database and web smoke tests
         env:
-          KEYCLOAK_ADMIN_USERNAME: admin
-          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
-          KEYCLOAK_PUBLIC_URL: http://localhost:8180
           COOKIE_SECURE: "false"
-        run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000 http://127.0.0.1:8180
+        run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000
       - name: Container diagnostics on failure
         if: failure()
         env:
-          KEYCLOAK_ADMIN_USERNAME: admin
-          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
-          KEYCLOAK_PUBLIC_URL: http://localhost:8180
           COOKIE_SECURE: "false"
         run: |
           docker compose ps -a
-          docker compose logs --tail=200 api db keycloak web
-      - name: Stop local stack
+          docker compose logs --tail=200 api db web
+      - name: Stop local stack without deleting data volumes
         if: always()
         env:
-          KEYCLOAK_ADMIN_USERNAME: admin
-          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
-          KEYCLOAK_PUBLIC_URL: http://localhost:8180
           COOKIE_SECURE: "false"
-        run: docker compose down --volumes
+        run: docker compose down
