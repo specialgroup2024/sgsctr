@@ -12,6 +12,13 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 6. Load only the skills relevant to the task.
 7. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
 
+## Phase 1 technical-control references
+
+- [ADR-0002: Identity and access architecture](architecture/ADR-0002-identity-and-access.md) — proposed; provider and business-access decisions require owner approval.
+- [Identity and access security baseline](security/identity-access-baseline.md) — technical requirements and negative-test expectations.
+- [Audit and application logging baseline](security/audit-logging-baseline.md) — event, integrity, access and redaction requirements.
+- [Phase 1 technical controls plan](delivery/phase-1-technical-controls-plan.md) — work packages, gates and acceptance evidence.
+
 ## Governance model
 
 The five role responsibilities are stable, while their ICT professional identities are selected dynamically for each problem. See `governance/dynamic-role-selection.md`. All agents must use the same principles across local and online environments.
