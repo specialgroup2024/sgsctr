@@ -34,7 +34,7 @@ The owner explicitly confirms that the three branches may transfer medicines and
 - Database Compose image: PostgreSQL `18-alpine`.
 - Web: Next.js `15.5.7`, React `19.1.1`.
 - Master still contains the previous Keycloak/API bearer authentication. The native-authentication migration branch replaces it; do not treat that branch as merged or runtime-verified.
-- The API validates JWT signature, issuer, audience and lifetime; fallback authorization requires authentication except explicitly anonymous endpoints.
+- On master, the previous API validates JWT signature, issuer, audience and lifetime. The native-authentication branch replaces this with ASP.NET Core Identity bearer-token validation and default-deny authorization.
 - Protected diagnostic endpoint: `GET /api/v1/auth/me`.
 - Previous master configuration used a local Keycloak realm. The migration branch removes Keycloak from active Compose services and adds ASP.NET Core Identity in PostgreSQL schema identity.
 - The legacy sgsctr_keycloak_data volume is retained but not mounted or deleted by the new Compose file.
