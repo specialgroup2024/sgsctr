@@ -60,5 +60,27 @@ for ((i=1; i<=ATTEMPTS; i++)); do
   sleep 2
 done
 
-echo "Web UI responded with the expected application content."
+echo "Checking organization register route..."
+ORG_CONTENT="$(curl --silent --show-error --fail "${WEB_URL}/organization")"
+if ! grep -q "READ-ONLY FOUNDATION" <<<"${ORG_CONTENT}" || ! grep -q "Legal identity verification is still pending" <<<"${ORG_CONTENT}"; then
+  echo "ERROR: Organization register content or read-only boundary is missing." >&2
+  exit 1
+fi
+
+echo "Checking pharmacy foundation route..."
+PHARMACY_CONTENT="$(curl --silent --show-error --fail "${WEB_URL}/pharmacies")"
+if ! grep -q "Operational features are not enabled" <<<"${PHARMACY_CONTENT}"; then
+  echo "ERROR: Pharmacy route is missing its disabled-feature boundary." >&2
+  exit 1
+fi
+
+echo "Checking contracting foundation route..."
+CONTRACTING_CONTENT="$(curl --silent --show-error --fail "${WEB_URL}/contracting")"
+if ! grep -q "Operational features are not enabled" <<<"${CONTRACTING_CONTENT}"; then
+  echo "ERROR: Contracting route is missing its disabled-feature boundary." >&2
+  exit 1
+fi
+
+echo "Overview, organization, pharmacy and contracting routes responded with expected content."
 echo "Foundation and authentication-boundary smoke tests passed."
+

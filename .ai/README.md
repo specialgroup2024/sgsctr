@@ -42,3 +42,8 @@ Every Markdown file must remain below 200 lines. Aim for 180 lines or fewer. Spl
 Agents may analyze, challenge, propose, implement and test within approved scope. They may not approve legal, pharmacy, accounting, tax or other reserved decisions on behalf of qualified people. Maestro is a technical decision role, not the business owner and cannot waive approval gates.
 
 No business features or production financial calculations before required owner and professional approvals of requirements and worked examples. Proposed ADRs remain unapproved until an authorized decision is recorded.
+
+## Phase 2 UI references
+
+- [Application shell and organization workspace plan](delivery/phase-2-application-shell-plan.md) — implementation scope, exclusions, acceptance criteria and follow-on approval gates.
+- [Product scope](product/scope.md) — staged product boundaries and explicit exclusions.

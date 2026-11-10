@@ -1,7 +1,7 @@
 name: .NET and web foundation
 on:
   push:
-    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui, phase-1-keycloak-authentication]
+    branches: [master, phase-1-local-foundation, phase-2-nextjs-ui, phase-1-keycloak-authentication, phase-2-application-shell]
   pull_request:
     branches: [master]
 permissions:
