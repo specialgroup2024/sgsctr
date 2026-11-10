@@ -17,22 +17,6 @@ services:
       timeout: 5s
       retries: 20
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.8.2
-    container_name: sgsctr-keycloak
-    restart: unless-stopped
-    command: ["start-dev", "--http-port=8080", "--import-realm"]
-    environment:
-      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:?Set KEYCLOAK_ADMIN_USERNAME in your local .env file}
-      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Set KEYCLOAK_ADMIN_PASSWORD in your local .env file}
-      KC_HEALTH_ENABLED: "true"
-      KC_HOSTNAME_STRICT: "false"
-    ports:
-      - "127.0.0.1:8180:8080"
-    volumes:
-      - sgsctr_keycloak_data:/opt/keycloak/data
-      - ./infra/keycloak/sgsctr-realm.json:/opt/keycloak/data/import/sgsctr-realm.json:ro
-
   api:
     build:
       context: .
@@ -43,19 +27,14 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       Database__ApplyMigrations: "true"
       Organization__ManagerSubjects: ${ORGANIZATION_MANAGER_SUBJECTS:-}
+      BootstrapAdmin__Email: ${BOOTSTRAP_ADMIN_EMAIL:-}
+      BootstrapAdmin__Password: ${BOOTSTRAP_ADMIN_PASSWORD:-}
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${POSTGRES_DB:-sgsctr_dev};Username=${POSTGRES_USER:-sgsctr};Password=${POSTGRES_PASSWORD:-local_dev_only_change_me}
-      Authentication__Authority: http://localhost:8180/realms/sgsctr
-      Authentication__MetadataAddress: http://keycloak:8080/realms/sgsctr/.well-known/openid-configuration
-      Authentication__Audience: sgsctr-api
-      Authentication__InternalIssuer: http://keycloak:8080/realms/sgsctr
-      Authentication__RequireHttpsMetadata: "false"
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:
       db:
         condition: service_healthy
-      keycloak:
-        condition: service_started
 
   web:
     build:
@@ -66,10 +45,6 @@ services:
     environment:
       NODE_ENV: production
       API_BASE_URL: http://api:8080
-      KEYCLOAK_PUBLIC_URL: ${KEYCLOAK_PUBLIC_URL:-http://localhost:8180}
-      KEYCLOAK_INTERNAL_URL: http://keycloak:8080
-      KEYCLOAK_REALM: sgsctr
-      KEYCLOAK_WEB_CLIENT_ID: sgsctr-web
       WEB_BASE_URL: ${WEB_BASE_URL:-http://localhost:3000}
       AUTH_SESSION_SECRET: ${AUTH_SESSION_SECRET:?Set AUTH_SESSION_SECRET in your local .env file}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
@@ -77,8 +52,6 @@ services:
       - "127.0.0.1:3000:3000"
     depends_on:
       api:
-        condition: service_started
-      keycloak:
         condition: service_started
 
   pgadmin:
@@ -99,4 +72,5 @@ services:
 volumes:
   sgsctr_postgres_data:
   sgsctr_pgadmin_data:
+  # Retained for safe transition only. No service mounts or deletes this legacy volume.
   sgsctr_keycloak_data:
