@@ -52,7 +52,7 @@ fi
 
 echo "Waiting for Next.js web UI at ${WEB_URL} ..."
 for ((i=1; i<=ATTEMPTS; i++)); do
-  if curl --silent --fail "${WEB_URL}/" | grep -q "SPECIAL GROUP"; then break; fi
+  if curl --silent --location --fail "${WEB_URL}/" | grep -q "Sign in to SGSCTR"; then break; fi
   if [[ "$i" -eq "$ATTEMPTS" ]]; then
     echo "ERROR: Web UI did not become ready. Check: docker compose logs web" >&2
     exit 1
@@ -60,30 +60,21 @@ for ((i=1; i<=ATTEMPTS; i++)); do
   sleep 2
 done
 
-echo "Checking organization register route..."
-ORG_CONTENT="$(curl --silent --show-error --fail "${WEB_URL}/organization")"
-if ! grep -q "READ-ONLY FOUNDATION" <<<"${ORG_CONTENT}" || ! grep -q "Legal identity verification is still pending" <<<"${ORG_CONTENT}"; then
-  echo "ERROR: Organization register content or read-only boundary is missing." >&2
+echo "Checking protected organization route redirects to login..."
+ORG_PAGE_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/organization")"
+if [[ "$ORG_PAGE_STATUS" != "307" && "$ORG_PAGE_STATUS" != "302" ]]; then
+  echo "ERROR: Expected unauthenticated organization page to redirect to login, got ${ORG_PAGE_STATUS}." >&2
   exit 1
 fi
 
-echo "Checking pharmacy foundation route..."
-PHARMACY_CONTENT="$(curl --silent --show-error --fail "${WEB_URL}/pharmacies")"
-if ! grep -q "Operational features are not enabled" <<<"${PHARMACY_CONTENT}"; then
-  echo "ERROR: Pharmacy route is missing its disabled-feature boundary." >&2
-  exit 1
-fi
-
-echo "Checking contracting foundation route..."
-CONTRACTING_CONTENT="$(curl --silent --show-error --fail "${WEB_URL}/contracting")"
-if ! grep -q "Operational features are not enabled" <<<"${CONTRACTING_CONTENT}"; then
-  echo "ERROR: Contracting route is missing its disabled-feature boundary." >&2
-  exit 1
-fi
-
-echo "Overview, organization, pharmacy and contracting routes responded with expected content."
-echo "Foundation and authentication-boundary smoke tests passed."
-
+echo "Checking protected sector routes redirect to login..."
+for ROUTE in pharmacies contracting; do
+  ROUTE_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/${ROUTE}")"
+  if [[ "$ROUTE_STATUS" != "307" && "$ROUTE_STATUS" != "302" ]]; then
+    echo "ERROR: Expected /${ROUTE} to redirect to login, got ${ROUTE_STATUS}." >&2
+    exit 1
+  fi
+done
 
 echo "Checking protected BFF session and organization endpoints reject anonymous requests..."
 SESSION_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/api/auth/session")"
