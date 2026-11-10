@@ -25,7 +25,7 @@ Status: native ASP.NET Core Identity migration is under implementation on featur
 - [x] Add optional one-time bootstrap administrator and admin-only account provisioning endpoint.
 - [x] Require authentication by default; explicitly allow only the existing minimal public endpoints.
 - [x] Add a protected identity diagnostic endpoint.
-- [x] Extend smoke tests for anonymous and malformed-token 401 responses.
+- [x] Extend smoke tests for anonymous API denial, disabled public registration and protected-route redirects.
 - [x] Implement Next.js BFF email/password sign-in, encrypted HttpOnly session and local sign-out (runtime verification pending).
 - [ ] Implement React Native Authorization Code + PKCE with OS secure storage.
 - [ ] Add valid-token, invalid-signature, issuer, audience, expiry and revoked-user integration tests.
