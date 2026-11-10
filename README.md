@@ -10,9 +10,7 @@ Special Group Pharmacies and Specialized Contracting platform.
 - Live API/database connection status in the dashboard.
 - Docker Compose local environment with pgAdmin database administration and CI smoke tests.
 
-The UI is a development overview and known pharmacy location register. It does
-not implement authentication, stock balances, stock transfers, contracting
-workflows, claims, patient data or financial posting.
+The UI is a development overview and known pharmacy location register. The API now has bearer-token authentication scaffolding, but the web UI does not yet implement user sign-in/session management. The application does not implement stock balances, stock transfers, contracting workflows, claims, patient data or financial posting.
 
 ## Prerequisites
 
