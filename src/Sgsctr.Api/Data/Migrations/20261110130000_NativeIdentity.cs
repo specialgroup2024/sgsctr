@@ -1,10 +1,8 @@
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Sgsctr.Api.Data;
 
 namespace Sgsctr.Api.Data.Migrations;
 
-[DbContext(typeof(AuthDbContext))]
 [Migration("20261110130000_NativeIdentity")]
 public sealed partial class NativeIdentity : Migration
 {
