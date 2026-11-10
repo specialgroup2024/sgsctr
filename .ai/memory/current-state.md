@@ -1,11 +1,8 @@
 # Current state
 
-Last reviewed: 2026-11-07.
+Last reviewed: 2026-11-10.
 
-Status: Phase 0 discovery; pharmacy transfer technical design drafted; no business features implemented.
-
-Status: Phase 1 technical foundation scaffold created on branch `phase-1-local-foundation`; no business features implemented.
-
+Status: Phase 1 technical foundation exists; technical-control design is now being prepared. No business features or production financial workflows are implemented.
 
 ## Owner-provided structure
 
@@ -30,28 +27,33 @@ The owner explicitly confirms that the three branches may transfer medicines and
 - Do not create duplicate statutory books, separate company databases or intercompany entries solely because of sectors or pharmacy locations.
 - Provisional database direction: one PostgreSQL database for LE-01 with strict sector/module access controls.
 
-## Evidence status
+## Verified repository foundation
 
-Owner statements are recorded but not independently verified. Exact Arabic/English registered legal name, legal form, commercial-registration and tax/VAT references, registered activities, parent/subsidiary relationship, site ownership, operator, licences and stock custody remain outstanding. The full site list is not yet confirmed.
+- Default branch inspected: `master`; project solution is `Sgsctr.slnx`.
+- API: ASP.NET Core `net10.0`, EF Core/Npgsql registration and minimal endpoints for root, liveness, readiness and system information.
+- SDK pin: .NET SDK `10.0.403`; Npgsql EF Core provider package version `10.0.3`.
+- Database Compose image: PostgreSQL `18-alpine`; local Compose service is `db`.
+- Web: Next.js `15.5.7`, React `19.1.1`.
+- Compose includes `db`, `api`, `web` and local pgAdmin. pgAdmin is loopback-bound to host port 5051.
+- The API readiness endpoint tests database reachability. It is not a business correctness or production readiness test.
+- No authentication middleware, authorization policies, application user/role model, persisted audit event model, EF migration or API test project was found in the inspected paths.
+- Existing CI workflow builds the solution, starts the Compose stack and runs the API/database/web smoke script. A previous Phase 1 CI run was recorded as successful in repository memory; this task did not rerun GitHub Actions or the owner's local smoke test.
+- The owner confirmed pgAdmin login and pgAdmin-to-PostgreSQL connectivity locally in this conversation. This does not prove API-to-PostgreSQL connectivity.
 
-## Repository and delivery
+## Governance and domain design
 
-- Repository files inspected for this task show governance documentation and a minimal README; no application solution or migrations were identified in the inspected baseline. A full repository inventory remains a required first engineering task.
-- ADR-0001 and legal-entity register are proposals/working records, not legal or accounting opinions.
-- Pharmacy stock-transfer workflow and acceptance criteria are drafted; operational/accounting approval remains pending.
-- Technical design drafted on branch `docs/pharmacy-transfer-domain-api-design`: domain model, REST API contract, PostgreSQL persistence proposal and phased implementation plan.
-- These artifacts are proposals only. No application code, migrations, production stock posting, inventory valuation, tax calculation, claim settlement or patient-balance logic was implemented.
+- Root `AGENT.md`, `AGENTS.md` and `.ai/` define the dynamic five-role process and human/professional approval boundaries.
+- Pharmacy stock-transfer workflow, 21 acceptance criteria and non-posting technical design remain proposals pending pharmacy-operations, accountant and owner approval.
+- No production stock posting, inventory valuation, tax calculation, claim settlement or patient-balance logic is approved.
+
+## Phase 1 technical-control work
+
+- Proposed identity/access architecture: `.ai/architecture/ADR-0002-identity-and-access.md`.
+- Identity controls: `.ai/security/identity-access-baseline.md`.
+- Audit/logging controls: `.ai/security/audit-logging-baseline.md`.
+- Work packages and acceptance gates: `.ai/delivery/phase-1-technical-controls-plan.md`.
+- These are proposed design artifacts, not implemented controls. Identity provider, account lifecycle, business roles/scopes, audit retention and event catalogue remain owner decisions.
 
 ## Next milestone
 
-Complete repository inventory and technical review of the proposed domain/API/persistence design. Obtain pharmacy-operations approval of lifecycle, roles, custody, limits, exceptions and lot/expiry controls; obtain accountant approval of weighted-average costing, in-transit valuation, posting and reconciliation. Then implement the approved backend foundation and transfer workflow incrementally, with PostgreSQL integration tests and explicit release gates. Verify company identity and site/operator/licence register before production configuration.
-
-- Pharmacy stock-transfer workflow and 21 acceptance criteria are drafted and await pharmacy-operations/accountant/owner approval.
-- A non-posting technical design has been drafted at .ai/architecture/pharmacy-stock-transfer-technical-design.md. It defines proposed API commands, conceptual records, state/quantity model, transaction/idempotency controls, authorization/audit boundaries and test mapping.
-- GitHub Actions run for the Phase 1 branch: .NET restore/build, Docker image build, PostgreSQL 18 startup and API/database smoke test all succeeded; documentation line-limit workflow also succeeded. This is CI evidence for the foundation only, not a local test on the owner's workstation.
-- No production posting, inventory valuation, tax calculation, claim settlement or patient-balance logic is approved.
-
-## Next milestone
-
-Owner clones `phase-1-local-foundation` and runs the local Docker Compose smoke test. Resolve any workstation-specific Docker, port or network issues from the actual terminal output. Once local startup is confirmed, review and merge the foundation through the repository's normal process. Then continue with approved Phase 1 technical controls; pharmacy business implementation remains gated on operations/accountant approvals. In parallel, verify company identity, legal site/operator/licence and full branch/site schedule before production configuration.
-
+Obtain owner decisions for identity provider, user lifecycle/MFA/recovery and the role/permission/entity-sector-location matrix. Then implement and test provider-backed authentication, default-deny API authorization, PostgreSQL migration tooling, audit persistence/redaction, and isolated backup/restore verification. Keep pharmacy and contracting business features gated on their respective owner and professional approvals.
