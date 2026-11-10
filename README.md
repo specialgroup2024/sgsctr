@@ -10,9 +10,7 @@ Special Group Pharmacies and Specialized Contracting platform.
 - Live API/database connection status in the dashboard.
 - Docker Compose local environment with pgAdmin database administration and CI smoke tests.
 
-The UI is a development overview and known pharmacy location register. It does
-not implement authentication, stock balances, stock transfers, contracting
-workflows, claims, patient data or financial posting.
+The UI is a development overview and known pharmacy location register. The API now has bearer-token authentication scaffolding, but the web UI does not yet implement user sign-in/session management. The application does not implement stock balances, stock transfers, contracting workflows, claims, patient data or financial posting.
 
 ## Prerequisites
 
@@ -28,15 +26,15 @@ Run these commands in a terminal:
     cp .env.example .env
 
 Edit the local `.env` file before starting the stack. Keep the file private and
-set `PGADMIN_DEFAULT_PASSWORD` to the password you want to use for pgAdmin.
-The default pgAdmin login email is `specialgroup2024@gmail.com`. Do not commit
-`.env` or share its password.
+set `PGADMIN_DEFAULT_PASSWORD` and `KEYCLOAK_ADMIN_PASSWORD` to unique strong local passwords. The default pgAdmin login email is `specialgroup2024@gmail.com`; the Keycloak bootstrap administrator username is `admin`. Do not commit `.env` or share either password.
 
 Then run:
 
     docker compose up --build -d
 
 Open the web application at http://localhost:3000.
+
+Open the self-hosted Keycloak administration UI at http://localhost:8180. The local `sgsctr` realm is imported automatically. Follow [the Keycloak setup guide](docs/security/keycloak-local-setup.md) to create a test client/user and obtain a token for the protected API identity endpoint. Keycloak currently runs in development mode and must not be exposed publicly or treated as production-ready.
 
 Open pgAdmin at http://localhost:5051 and sign in with the email and password
 configured in `.env`. To connect to PostgreSQL from pgAdmin, register a server
@@ -56,6 +54,7 @@ Backend endpoints:
 - Liveness: http://localhost:8080/health/live
 - Database readiness: http://localhost:8080/health/ready
 - System information: http://localhost:8080/api/v1/system/info
+- Authenticated identity diagnostic: http://localhost:8080/api/v1/auth/me (requires a Keycloak access token)
 
 Check status and logs with:
 

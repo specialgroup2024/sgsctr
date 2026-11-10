@@ -1,4 +1,8 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Sgsctr.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,22 +13,71 @@ if (!string.IsNullOrWhiteSpace(connectionString))
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 }
 
+var authority = builder.Configuration["Authentication:Authority"];
+var metadataAddress = builder.Configuration["Authentication:MetadataAddress"];
+var audience = builder.Configuration["Authentication:Audience"];
+var internalIssuer = builder.Configuration["Authentication:InternalIssuer"];
+
+if (string.IsNullOrWhiteSpace(authority) ||
+    string.IsNullOrWhiteSpace(metadataAddress) ||
+    string.IsNullOrWhiteSpace(audience) ||
+    string.IsNullOrWhiteSpace(internalIssuer))
+{
+    throw new InvalidOperationException(
+        "Authentication:Authority, Authentication:MetadataAddress and Authentication:Audience must be configured.");
+}
+
+var requireHttpsMetadata = builder.Configuration.GetValue(
+    "Authentication:RequireHttpsMetadata",
+    !builder.Environment.IsDevelopment());
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = authority;
+        options.MetadataAddress = metadataAddress;
+        options.Audience = audience;
+        options.RequireHttpsMetadata = requireHttpsMetadata;
+        options.MapInboundClaims = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuers = new[] { authority.TrimEnd('/'), internalIssuer.TrimEnd('/') },
+            ValidateAudience = true,
+            ValidAudience = audience,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.FromMinutes(1)
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/", () => Results.Ok(new
 {
     service = "SGSCTR API",
     status = "running",
     apiVersion = "v1"
-}));
+})).AllowAnonymous();
 
 app.MapGet("/health/live", () => Results.Ok(new
 {
     status = "ok",
     check = "live"
-}));
+})).AllowAnonymous();
 
-app.MapGet("/health/ready", CheckReadiness);
+app.MapGet("/health/ready", CheckReadiness).AllowAnonymous();
 
 app.MapGet("/api/v1/system/info", () => Results.Ok(new
 {
@@ -32,7 +85,13 @@ app.MapGet("/api/v1/system/info", () => Results.Ok(new
     apiVersion = "v1",
     environment = app.Environment.EnvironmentName,
     businessModulesEnabled = false
-}));
+})).AllowAnonymous();
+
+app.MapGet("/api/v1/auth/me", (ClaimsPrincipal user) => Results.Ok(new
+{
+    authenticated = user.Identity?.IsAuthenticated ?? false,
+    subject = user.FindFirst("sub")?.Value
+})).RequireAuthorization();
 
 app.Run();
 

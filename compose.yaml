@@ -17,6 +17,22 @@ services:
       timeout: 5s
       retries: 20
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.2
+    container_name: sgsctr-keycloak
+    restart: unless-stopped
+    command: ["start-dev", "--http-port=8080", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:?Set KEYCLOAK_ADMIN_USERNAME in your local .env file}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Set KEYCLOAK_ADMIN_PASSWORD in your local .env file}
+      KC_HEALTH_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+    ports:
+      - "127.0.0.1:8180:8080"
+    volumes:
+      - sgsctr_keycloak_data:/opt/keycloak/data
+      - ./infra/keycloak/sgsctr-realm.json:/opt/keycloak/data/import/sgsctr-realm.json:ro
+
   api:
     build:
       context: .
@@ -26,11 +42,18 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${POSTGRES_DB:-sgsctr_dev};Username=${POSTGRES_USER:-sgsctr};Password=${POSTGRES_PASSWORD:-local_dev_only_change_me}
+      Authentication__Authority: http://localhost:8180/realms/sgsctr
+      Authentication__MetadataAddress: http://keycloak:8080/realms/sgsctr/.well-known/openid-configuration
+      Authentication__Audience: sgsctr-api
+      Authentication__InternalIssuer: http://keycloak:8080/realms/sgsctr
+      Authentication__RequireHttpsMetadata: "false"
     ports:
       - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
+      keycloak:
+        condition: service_started
 
   web:
     build:
@@ -65,3 +88,4 @@ services:
 volumes:
   sgsctr_postgres_data:
   sgsctr_pgadmin_data:
+  sgsctr_keycloak_data:

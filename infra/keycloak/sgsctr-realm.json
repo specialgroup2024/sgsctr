@@ -1,0 +1,25 @@
+{
+  "realm": "sgsctr",
+  "enabled": true,
+  "displayName": "SGSCTR",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "rememberMe": false,
+  "verifyEmail": false,
+  "clients": [
+    {
+      "clientId": "sgsctr-api",
+      "name": "SGSCTR API resource server",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "bearerOnly": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "fullScopeAllowed": false
+    }
+  ]
+}
