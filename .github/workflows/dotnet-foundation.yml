@@ -36,4 +36,8 @@ jobs:
         run: docker compose logs api db keycloak web
       - name: Stop local stack
         if: always()
+        env:
+          KEYCLOAK_ADMIN_USERNAME: admin
+          KEYCLOAK_ADMIN_PASSWORD: ci-only-local-development-password
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
         run: docker compose down --volumes
