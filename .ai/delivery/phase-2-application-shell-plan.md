@@ -47,7 +47,7 @@ These are simulated analytical perspectives, not independent agents or credentia
 
 ## Follow-on gates
 
-- Implement a server-side Keycloak OIDC BFF (Authorization Code + PKCE, state/nonce validation, secure HttpOnly cookies, server-held tokens, CSRF protections) and test it before claiming application login works.
+- Implement and verify native ASP.NET Core Identity login through a Next.js BFF with secure HttpOnly cookies, server-held tokens and CSRF protections before claiming application login works.
 - Obtain owner approval for user lifecycle, MFA/recovery and role/permission/entity-sector/location scopes before permission-aware menus or business operations.
 - Build organization CRUD only after legal identity, legal operators, location ownership/custody and the owner-approved organization model are verified.
 - Keep Pharmacy and Contracting workflows behind their respective business/professional approvals.
