@@ -84,3 +84,23 @@ fi
 echo "Overview, organization, pharmacy and contracting routes responded with expected content."
 echo "Foundation and authentication-boundary smoke tests passed."
 
+
+echo "Checking protected BFF session and organization endpoints reject anonymous requests..."
+SESSION_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/api/auth/session")"
+if [[ "$SESSION_STATUS" != "401" ]]; then
+  echo "ERROR: Expected 401 for anonymous BFF session, got ${SESSION_STATUS}." >&2
+  exit 1
+fi
+ORG_API_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/api/organization")"
+if [[ "$ORG_API_STATUS" != "401" ]]; then
+  echo "ERROR: Expected 401 for anonymous organization access, got ${ORG_API_STATUS}." >&2
+  exit 1
+fi
+
+echo "Checking login route redirects to Keycloak..."
+LOGIN_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/api/auth/login")"
+if [[ "$LOGIN_STATUS" != "307" && "$LOGIN_STATUS" != "302" ]]; then
+  echo "ERROR: Expected a redirect from the login route, got ${LOGIN_STATUS}." >&2
+  exit 1
+fi
+echo "Authentication boundary and organization route smoke tests passed."
