@@ -9,8 +9,8 @@ Status: implemented development identity-provider foundation; production deploym
 - The imported realm is `sgsctr`; the resource-server audience/client identifier is `sgsctr-api`.
 - Keycloak development data is persisted in the named `sgsctr_keycloak_data` volume.
 - The API validates signed bearer access tokens against the realm metadata and signing keys.
-- The API expects issuer `http://localhost:8180/realms/sgsctr` and audience `sgsctr-api` in local Compose.
-- The API's metadata request uses the internal Compose hostname; the public issuer remains localhost so browser-based OIDC clients use the same issuer.
+- The API expects audience `sgsctr-api` and validates both local request-derived issuer URLs: `http://localhost:8180/realms/sgsctr` (host/browser traffic) and `http://keycloak:8080/realms/sgsctr` (internal Compose traffic).
+- The API retrieves OIDC metadata and signing keys through the internal Compose hostname. Keycloak's local hostname-strict setting is disabled so it derives the issuer from each request host. This dual-issuer arrangement is strictly for local development; production must use one canonical HTTPS issuer and a reviewed reverse-proxy/backchannel configuration.
 - No end-user, business role, sector/location permission, or privileged account is seeded.
 
 ## First startup
@@ -36,7 +36,7 @@ Before a test user can call the API:
 2. Do not enable Direct Access Grants / Resource Owner Password Credentials.
 3. Add an audience protocol mapper to the client or an assigned client scope. Set the included client audience to `sgsctr-api`; include it in the access token, not the ID token.
 4. Create a test user, set a non-reused password, and configure required actions/MFA according to the approved test policy.
-5. Obtain an access token through the Authorization Code flow and call:
+5. The token issuer must match one of the two local issuer URLs documented above. Obtain an access token through the Authorization Code flow and call:
 
        curl -i -H "Authorization: Bearer <ACCESS_TOKEN>" http://localhost:8080/api/v1/auth/me
 
@@ -51,7 +51,7 @@ Before a test user can call the API:
 
 ## Important environment boundaries
 
-- `start-dev`, the development database mode, HTTP issuer and local bootstrap credentials are for local development only.
+- `start-dev`, request-derived local HTTP issuers, dual-issuer validation, the development database mode and local bootstrap credentials are for local development only. Production must configure one canonical HTTPS issuer and a single trusted issuer value.
 - The Keycloak port is loopback-bound. Do not expose it to a LAN or the public internet.
 - Production requires a hardened Keycloak deployment, HTTPS, a separately managed PostgreSQL database, protected secrets, backup/restore, monitoring, account lifecycle/MFA policy, and a reviewed reverse-proxy/hostname configuration.
 - Do not delete the PostgreSQL or Keycloak named volumes to troubleshoot login; doing so destroys local data.
