@@ -58,7 +58,6 @@ export async function GET(request: NextRequest) {
     const session: UserSession = {
       accessToken: tokens.access_token,
       refreshToken: tokens.refresh_token,
-      idToken: tokens.id_token,
       expiresAt: Math.floor(Date.now() / 1000) + tokens.expires_in,
       subject: identity.subject,
       displayName: identity.displayName ?? "Signed-in user",
