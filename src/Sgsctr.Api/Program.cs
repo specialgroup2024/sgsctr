@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sgsctr.Api.Data;
@@ -26,6 +27,11 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AuthDbContext>();
+builder.Services.Configure<BearerTokenOptions>(IdentityConstants.BearerScheme, options =>
+{
+    options.BearerTokenExpiration = TimeSpan.FromMinutes(15);
+    options.RefreshTokenExpiration = TimeSpan.FromDays(7);
+});
 
 builder.Services.AddAuthorization(options =>
 {
