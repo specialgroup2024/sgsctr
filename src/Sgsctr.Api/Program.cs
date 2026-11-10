@@ -43,6 +43,7 @@ if (app.Environment.IsDevelopment() &&
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.MigrateAsync();
     var authDb = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+    await authDb.Database.ExecuteSqlRawAsync("CREATE SCHEMA IF NOT EXISTS identity;");
     await authDb.Database.MigrateAsync();
 }
 
