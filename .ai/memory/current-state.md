@@ -2,7 +2,7 @@
 
 Last reviewed: 2026-11-10.
 
-Status: Phase 1 technical-control design is merged. Self-hosted Keycloak and API authentication implementation is in the open phase branch; it is not yet verified by build/runtime tests.
+Status: Phase 1 technical-control implementation is present on master (PR #9 merged). Keycloak/API authentication code exists, but successful runtime login and end-to-end valid-token behavior remain unverified. Phase 2 application-shell and read-only organization UI are being implemented on branch phase-2-application-shell; not yet merged or build-verified.
 
 ## Owner-provided structure
 
@@ -34,7 +34,7 @@ The owner explicitly confirms that the three branches may transfer medicines and
 - SDK pin: .NET SDK `10.0.403`; Npgsql EF Core provider package version `10.0.3`.
 - Database Compose image: PostgreSQL `18-alpine`; local Compose service: `db`.
 - Web: Next.js `15.5.7`, React `19.1.1`.
-- Compose includes `db`, `api`, `web`, local pgAdmin and (on the phase branch) Keycloak.
+- Compose on master includes `db`, `api`, `web`, local pgAdmin and Keycloak.
 - pgAdmin is loopback-bound to host port 5051; Keycloak is intended to be loopback-bound to host port 8180.
 - The API readiness endpoint tests database reachability only.
 - The API now configures JWT bearer authentication and a fallback policy requiring authentication for endpoints unless explicitly marked anonymous. Existing root, health and system-info endpoints are explicitly anonymous.
