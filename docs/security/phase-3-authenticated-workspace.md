@@ -16,6 +16,10 @@ Status: implementation guide for the phase-3 branch. Local development only; not
 
 Never use `docker compose down -v`, remove named volumes, or delete PostgreSQL/Keycloak data to troubleshoot. This phase adds one EF migration; it does not drop or recreate existing application data.
 
+## Migration rollback safety
+
+The forward migration only adds the `OrganizationLocations` table and its owner-provided seed rows. Its `Down` operation drops that table and all location records created in it. Do not run an EF downgrade without explicit owner approval and a verified export/backup of those records. Normal startup applies only pending forward migrations.
+
 ## Configure the VM
 
 1. Update the existing ignored `.env` file manually; do not replace it if it contains existing database passwords.
