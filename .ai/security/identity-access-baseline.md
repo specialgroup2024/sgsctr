@@ -1,6 +1,6 @@
 # Identity and access security baseline
 
-Status: API authentication foundation implemented in the phase branch; business authorization policy approvals remain pending.
+Status: API bearer authentication exists on master. Next.js BFF login/session and organization workspace are implemented on phase-3 branch; PR/CI/runtime verification pending. Business authorization policy approvals remain pending.
 
 ## Trust boundaries
 
@@ -23,7 +23,8 @@ Status: API authentication foundation implemented in the phase branch; business 
 
 ## Required controls still pending
 
-- Implement Next.js server-side BFF login/session/logout; do not store bearer or refresh tokens in browser localStorage/sessionStorage.
+- Phase 3 adds Next.js server-side BFF login/session/logout using PKCE, ID-token signature/issuer/audience/nonce validation, API access-token validation, and an encrypted HttpOnly cookie; verify CI and runtime before treating it as released.
+- Organization location writes are restricted by an explicit subject allowlist, empty by default; this is a temporary owner-controlled gate, not the approved enterprise role/permission model.
 - Implement React Native Authorization Code with PKCE and operating-system secure credential storage; do not embed client secrets.
 - Add valid-token, invalid-signature, issuer, audience, expiry and disabled-user integration tests.
 - Implement approved named policies and resource-level checks when the owner approves business access rules.
