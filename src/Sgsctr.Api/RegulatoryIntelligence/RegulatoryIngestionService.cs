@@ -178,7 +178,7 @@ public sealed class RegulatoryIngestionService(
         if ((int)response.StatusCode is >= 300 and < 400)
             throw new InvalidOperationException("Redirects are not followed by the ingestion service; verify the official source URL.");
         response.EnsureSuccessStatusCode();
-        if (response.Content.Headers.ContentLength > maxBytes)
+        if (response.Content.Headers.ContentLength is long length && length > maxBytes)
             throw new InvalidOperationException("Source content exceeds the configured ingestion size limit.");
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
         using var output = new MemoryStream();
