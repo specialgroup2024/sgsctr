@@ -100,6 +100,8 @@ jobs:
           git add src/Sgsctr.Api/Data/Migrations
           if ! git diff --cached --quiet; then
             git commit -m "db: align Identity migration snapshot with EF Core 10.0.4 [skip ci]"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           else
             echo "No generated migration changes to commit."
