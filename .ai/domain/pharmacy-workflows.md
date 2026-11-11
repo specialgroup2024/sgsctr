@@ -34,6 +34,10 @@ Price discount, payer coverage, patient copay/share, exemption, submitted claim,
 - Keep patient and health data access restricted and out of general logs.
 - Record actor, timestamp, source document, reason and approval for adjustments.
 
+## Egypt regulatory and market change gate
+
+Every pharmacy workflow must be checked against the current Egypt pharmacy market/regulatory monitoring policy before approval and again before release. Map applicable EDA/MOHP/Official Gazette and other competent-authority updates to product category, location, workflow and test cases. Keep market signals separate from verified legal requirements. Regulatory changes must be reviewed by the relevant qualified professional and owner before operational rules or code are changed. The agent must not autonomously change clinical, dispensing, licensing, pricing, inventory, reimbursement or accounting behavior.
+
 ## Acceptance scenarios
 - A receipt with a missing/invalid required lot or expiry attribute is held for review.
 - A quarantined batch cannot be issued until authorized release.
