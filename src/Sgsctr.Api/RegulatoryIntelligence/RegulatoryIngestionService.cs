@@ -40,7 +40,8 @@ public sealed class RegulatoryIngestionService(
         ("EDA-ANNOUNCEMENTS", "EDA announcements", "https://www.edaegypt.gov.eg/en/media-center/announcements/", "edaegypt.gov.eg"),
         ("EDA-NEWS", "EDA news", "https://www.edaegypt.gov.eg/en/media-center/news/", "edaegypt.gov.eg"),
         ("EDA-SAFETY", "EDA pharmaceutical-care safety alerts", "https://www.edaegypt.gov.eg/en/awareness/ca-of-pharmaceutical-care-publications/pharmacovigilance-publications/third-safety-alerts/", "edaegypt.gov.eg"),
-        ("EDA-DECREE-2026", "EDA chairman decrees 2026", "https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/eda-chairman-decree/eda-chairman-decree-of-year-2026/", "edaegypt.gov.eg")
+        ("EDA-DECREE-CURRENT", "EDA chairman decrees (current year)", $"https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/eda-chairman-decree/eda-chairman-decree-of-year-{DateTime.UtcNow.Year}/", "edaegypt.gov.eg"),
+        ("EDA-GUIDELINES", "EDA regulatory guidelines", "https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/", "edaegypt.gov.eg")
     ];
 
     public async Task<RegulatoryScanSummary> RunAsync(bool force, CancellationToken cancellationToken)
@@ -67,6 +68,7 @@ public sealed class RegulatoryIngestionService(
                 var links = ExtractLinks(page.Bytes, source.Url, source.AllowedHost);
                 run.DiscoveredCount = links.Count;
                 discovered += links.Count;
+                string? linkError = null;
                 foreach (var link in links)
                 {
                     if (added >= MaxNewDocumentsPerCycle) break;
@@ -84,7 +86,7 @@ public sealed class RegulatoryIngestionService(
                         var document = new RegulatoryDocument
                         {
                             Id = Guid.NewGuid(), SourceId = source.Id, Title = title.Length > 500 ? title[..500] : title,
-                            SourceUrl = link.Url, ContentHash = hash, ContentType = item.ContentType,
+                            SourceUrl = link.Url, ContentHash = hash, ContentType = item.ContentType.Contains("octet-stream", StringComparison.OrdinalIgnoreCase) && link.Url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ? "application/pdf" : item.ContentType,
                             Language = ContainsArabic(title) ? "ar" : "en", SourceClass = source.SourceClass,
                             Topic = topic, Modules = JsonSerializer.Serialize(modules),
                             VerificationStatus = "Unverified", ReviewStatus = "Pending",
@@ -103,12 +105,14 @@ public sealed class RegulatoryIngestionService(
                     }
                     catch (Exception exception) when (exception is HttpRequestException or InvalidOperationException)
                     {
+                        linkError = exception.Message.Length > 1000 ? exception.Message[..1000] : exception.Message;
                         logger.LogWarning(exception, "Skipped EDA document link {Url} from source {SourceCode}.", link.Url, source.Code);
                     }
                 }
                 source.LastSuccessAtUtc = DateTimeOffset.UtcNow;
-                source.LastError = null;
-                run.Status = "Succeeded";
+                source.LastError = linkError;
+                run.Status = linkError is null ? "Succeeded" : "Partial";
+                run.ErrorMessage = linkError;
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -138,7 +142,16 @@ public sealed class RegulatoryIngestionService(
     {
         foreach (var seed in SeedSources)
         {
-            if (await db.RegulatorySources.AnyAsync(x => x.Code == seed.Code, cancellationToken)) continue;
+            var existing = await db.RegulatorySources.SingleOrDefaultAsync(x => x.Code == seed.Code, cancellationToken);
+            if (existing is not null)
+            {
+                if (seed.Code == "EDA-DECREE-CURRENT" && existing.Url != seed.Url)
+                {
+                    existing.Url = seed.Url;
+                    existing.LastCheckedAtUtc = null;
+                }
+                continue;
+            }
             db.RegulatorySources.Add(new RegulatorySource
             {
                 Id = Guid.NewGuid(), Code = seed.Code, Name = seed.Name, Url = seed.Url,
