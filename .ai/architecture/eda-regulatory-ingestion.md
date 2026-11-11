@@ -1,6 +1,6 @@
 # EDA regulatory ingestion architecture
 
-Status: implemented MVP on feature branch; CI and runtime verification pending.
+Status: MVP code merged to master. Latest CI build succeeds, but AppDbContext migration-snapshot validation still fails; runtime and smoke verification remain blocked.
 
 ## Objective and boundary
 
@@ -68,3 +68,18 @@ Migrations are additive and reversible. Do not delete existing PostgreSQL volume
 - Source checks run in the API process. Production should eventually separate the worker into a dedicated deployment if scale or availability requires it.
 - The MVP only seeds EDA pages. Other Egyptian authorities, Official Gazette, MOHP, UPA, ETA, payers, professional bodies and market sources remain a governed expansion backlog.
 - Source review, qualified human ownership, alert escalation, retention, and data licensing remain owner decisions.
+
+
+## Completion backlog (not yet implemented/verified)
+
+- Fix the AppDbContext model snapshot with generated EF tooling output; never suppress pending-model validation or add a fabricated no-op migration.
+- Verify API, PostgreSQL and Next.js startup plus authenticated scan, alert acknowledgement and document download in CI.
+- Add text extraction and scanned-PDF detection; OCR remains a separately approved capability with Arabic/English engine and hosting decisions.
+- Extract candidate document identifiers, publication/effective dates and issuing authority with page/paragraph evidence and confidence; require qualified reviewer confirmation.
+- Add pharmacy-catalogue matching only after the authoritative product master exists; all matches remain suggestions until approved.
+- Implement explicit review states/actions, reviewer assignment, rationale, immutable audit events and role-based separation of duties.
+- Add notification outbox/retries and configurable email; SMS/push require provider, credentials, consent and owner approval.
+- Add tested backup/restore, operational metrics, failed-source retry, source freshness alerts and monitored storage growth.
+- Define owner-approved retention, archival, legal-hold and deletion policy before implementing any automated purge.
+
+No capability in this backlog should be represented as complete merely because a requirements or architecture document describes it.
