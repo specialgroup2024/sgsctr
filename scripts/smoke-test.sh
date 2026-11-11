@@ -26,20 +26,6 @@ echo
 curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
 echo
 
-  exit 1
-fi
-echo
-
-READY_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/ready")"
-printf '%s\n' "$READY_STATUS"
-if ! printf '%s' "$READY_STATUS" | jq -e '.status == "ok" and .database == "connected" and .applicationContext == "connected" and .identityContext == "connected"' >/dev/null; then
-  echo "ERROR: API readiness did not confirm PostgreSQL for both application and Identity contexts." >&2
-  exit 1
-fi
-
-curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
-echo
-
 
 echo "Waiting for Next.js web UI at ${WEB_URL} ..."
 for ((i=1; i<=ATTEMPTS; i++)); do
