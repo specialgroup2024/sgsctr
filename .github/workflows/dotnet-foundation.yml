@@ -5,7 +5,7 @@ concurrency:
   cancel-in-progress: true
 on:
   push:
-    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion, fix/eda-regulatory-completion]
+    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion]
   pull_request:
     branches: [master]
 permissions:
@@ -24,25 +24,6 @@ jobs:
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
 
-      - name: Diagnose AppDbContext snapshot drift (temporary)
-        run: |
-          dotnet tool install --global dotnet-ef --version 10.0.4
-          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
-          dotnet ef migrations add AppDbContextModelParityDiagnostic --context AppDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --output-dir Data/Migrations
-          echo "--- GENERATED MIGRATION ---"
-          cat src/Sgsctr.Api/Data/Migrations/*_AppDbContextModelParityDiagnostic.cs
-          echo "--- SNAPSHOT DIFF ---"
-          git diff -- src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs
-          echo "SNAPSHOT_BASE64_BEGIN"
-          base64 -w0 src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs
-          echo
-          echo "SNAPSHOT_BASE64_END"
-          echo "DESIGNER_BASE64_BEGIN"
-          base64 -w0 src/Sgsctr.Api/Data/Migrations/*_AppDbContextModelParityDiagnostic.Designer.cs
-          echo
-          echo "DESIGNER_BASE64_END"
-          echo "Diagnostic scaffold only; generated migration has not been accepted or applied."
-          exit 1
       - name: Validate EF Core migration snapshots
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.4
