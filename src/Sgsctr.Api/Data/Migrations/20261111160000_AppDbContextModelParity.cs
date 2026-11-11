@@ -4,9 +4,7 @@ using Sgsctr.Api.Data;
 
 namespace Sgsctr.Api.Data.Migrations;
 
-[DbContext(typeof(AppDbContext))]
-[Migration("20261111160000_AppDbContextModelParity")]
-public sealed class AppDbContextModelParity : Migration
+public sealed partial class AppDbContextModelParity : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
