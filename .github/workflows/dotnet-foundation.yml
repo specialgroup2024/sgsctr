@@ -58,6 +58,7 @@ jobs:
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
           COOKIE_SECURE: "false"
         run: docker compose up --build --detach
       - name: API, database and web smoke tests
@@ -67,6 +68,7 @@ jobs:
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
           COOKIE_SECURE: "false"
         run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000
       - name: Commit verified Identity migration
@@ -89,6 +91,7 @@ jobs:
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
           COOKIE_SECURE: "false"
         run: |
           docker compose ps -a
@@ -101,5 +104,6 @@ jobs:
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
           AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
           WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
           COOKIE_SECURE: "false"
         run: docker compose down
