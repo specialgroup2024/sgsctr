@@ -25,7 +25,7 @@ Status: initial operational runbook for the EDA ingestion MVP.
 - Check last scan status, discovered link count and new document count.
 - Review unread alerts and open the ingested copy or original EDA page.
 - Acknowledge an alert only after assigning it to the responsible reviewer; acknowledgement is not regulatory verification or approval.
-- Administrator users can select Scan EDA now. Standard authenticated users can view and acknowledge alerts but cannot trigger a scan.
+- Administrator users can select Scan EDA now and acknowledge alerts. Standard authenticated users can view alerts but cannot acknowledge or trigger scans. In local Development only, when authentication is explicitly disabled, the local development user can perform these actions.
 
 ## Failure handling
 
