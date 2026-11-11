@@ -351,7 +351,13 @@ static async Task<IResult> CheckReadiness(
     }
 
     return Results.Json(
-        new { status = "not_ready", database = "unreachable" },
+        new
+        {
+            status = "not_ready",
+            database = "unreachable",
+            applicationContext = "unreachable",
+            identityContext = "unreachable"
+        },
         statusCode: StatusCodes.Status503ServiceUnavailable);
 }
 
