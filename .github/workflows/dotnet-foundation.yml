@@ -24,6 +24,26 @@ jobs:
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
           dotnet ef migrations add IdentityModelAlignment --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build --verbose
+          python3 - <<'PY'
+          from pathlib import Path
+          migrations = Path("src/Sgsctr.Api/Data/Migrations")
+          generated = sorted(migrations.glob("*_IdentityModelAlignment.cs"))
+          if len(generated) != 1:
+              raise SystemExit(f"Expected one generated IdentityModelAlignment migration, found {len(generated)}")
+          generated[0].write_text("""using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace Sgsctr.Api.Migrations.AuthDb;
+
+public partial class IdentityModelAlignment : Migration
+{
+    // The existing SQL migration already created these columns as PostgreSQL identity columns.
+    // This migration records the corrected EF/Npgsql model metadata without altering live data/schema.
+    protected override void Up(MigrationBuilder migrationBuilder) { }
+    protected override void Down(MigrationBuilder migrationBuilder) { }
+}
+""")
+          print(f"Replaced redundant physical ALTER operations with a metadata-only migration: {generated[0]}")
+          PY
       - name: Rebuild generated migration metadata
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
       - name: Validate EF migration snapshots
