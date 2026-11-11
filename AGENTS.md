@@ -39,7 +39,7 @@
 - Link each material update to the Egyptian requirements register, evidence register, affected modules, tests and proposed actions.
 - Legal interpretation, pharmacy practice, licensing, clinical/quality disposition, tax/accounting and business-policy decisions require qualified human review and owner approval.
 - Never claim complete market coverage, real-time monitoring or legal compliance without evidence. Do not make autonomous changes to product prices, dispensing, stock, reimbursement or financial rules.
-- The proposed in-app intelligence capability remains discovery-only until approved.
+- The EDA ingestion MVP is approved and implemented on feature branch feat/eda-regulatory-ingestion; do not describe it as agent-only or discovery-only. Check .ai/architecture/eda-regulatory-ingestion.md and .ai/delivery/eda-regulatory-ingestion-runbook.md. Broader Egyptian source coverage, email/SMS/push, paid feeds and retention policy remain open decisions.
 
 ## Approval and change controls
 

@@ -26,20 +26,6 @@ echo
 curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
 echo
 
-  exit 1
-fi
-echo
-
-READY_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/ready")"
-printf '%s\n' "$READY_STATUS"
-if ! printf '%s' "$READY_STATUS" | jq -e '.status == "ok" and .database == "connected" and .applicationContext == "connected" and .identityContext == "connected"' >/dev/null; then
-  echo "ERROR: API readiness did not confirm PostgreSQL for both application and Identity contexts." >&2
-  exit 1
-fi
-
-curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
-echo
-
 
 echo "Waiting for Next.js web UI at ${WEB_URL} ..."
 for ((i=1; i<=ATTEMPTS; i++)); do
@@ -58,6 +44,8 @@ fi
 
 
 echo "Checking protected API rejects anonymous requests..."
+REGULATORY_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${BASE_URL}/api/v1/pharmacy/regulatory-intelligence/overview")"
+if [[ "$REGULATORY_STATUS" != "401" ]]; then echo "ERROR: Regulatory intelligence overview must reject anonymous access (HTTP ${REGULATORY_STATUS})." >&2; exit 1; fi
 AUTH_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${BASE_URL}/api/v1/auth/me")"
 if [[ "$AUTH_STATUS" != "401" ]]; then echo "ERROR: Expected 401 for anonymous request, got ${AUTH_STATUS}." >&2; exit 1; fi
 
@@ -105,13 +93,13 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
 fi
 
 echo "Checking protected organization and sector pages redirect to login..."
-for ROUTE in organization pharmacies contracting; do
+for ROUTE in organization pharmacies pharmacies/regulatory-intelligence contracting; do
   ROUTE_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/${ROUTE}")"
   if [[ "$ROUTE_STATUS" != "307" && "$ROUTE_STATUS" != "302" ]]; then echo "ERROR: Expected /${ROUTE} to redirect to login, got ${ROUTE_STATUS}." >&2; exit 1; fi
 done
 
 echo "Checking anonymous BFF session and organization endpoints reject access..."
-for ROUTE in /api/auth/session /api/organization; do
+for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence; do
   STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}${ROUTE}")"
   if [[ "$STATUS" != "401" ]]; then echo "ERROR: Expected 401 for ${ROUTE}, got ${STATUS}." >&2; exit 1; fi
 done

@@ -1,8 +1,8 @@
 # Current state
 
-Last reviewed: 2026-11-10.
+Last reviewed: 2026-11-11.
 
-Status: Phase 1 technical controls and Phase 2 application shell are present on master. Phase 3 organization workspace is on master. Native ASP.NET Core Identity migration is under implementation on feature/native-identity-authentication; merge, CI and local VM runtime verification remain pending. Do not claim successful end-user login until the native API/BFF flow has been exercised.
+Status: Phase 1 technical controls, Phase 2 application shell, Phase 3 organization workspace and native ASP.NET Core Identity code are present on master. End-to-end login, CI and local VM runtime verification must still be evidenced before claiming production-ready authentication. The EDA regulatory-ingestion MVP is being implemented on feat/eda-regulatory-ingestion; it is not yet merged or runtime-verified.
 
 ## Owner-provided structure
 
@@ -33,21 +33,27 @@ The owner explicitly confirms that the three branches may transfer medicines and
 - API: ASP.NET Core `net10.0`, EF Core/Npgsql; SDK pin `10.0.403`; Npgsql provider `10.0.3`.
 - Database Compose image: PostgreSQL `18-alpine`.
 - Web: Next.js `15.5.7`, React `19.1.1`.
-- Master still contains the previous Keycloak/API bearer authentication. The native-authentication migration branch replaces it; do not treat that branch as merged or runtime-verified.
-- On master, the previous API validates JWT signature, issuer, audience and lifetime. The native-authentication branch replaces this with ASP.NET Core Identity bearer-token validation and default-deny authorization.
+- Master now registers ASP.NET Core Identity through IdentityRegistration.cs, persists Identity in PostgreSQL schema identity and uses native Identity bearer-token validation with default-deny authorization. Verify login/refresh/logout end-to-end before claiming runtime success.
 - Protected diagnostic endpoint: `GET /api/v1/auth/me`.
-- Previous master configuration used a local Keycloak realm. The migration branch removes Keycloak from active Compose services and adds ASP.NET Core Identity in PostgreSQL schema identity.
-- The legacy sgsctr_keycloak_data volume is retained but not mounted or deleted by the new Compose file.
+- Current Compose does not run Keycloak. The legacy sgsctr_keycloak_data volume is retained but unused; do not delete it as part of unrelated work.
 - No approved enterprise role/permission matrix or persisted business audit event model exists.
 
 ## Phase 3 implementation boundary
 
-- The migration branch replaces external-provider login with native email/password sign-in, Identity API tokens and encrypted HttpOnly BFF sessions; runtime verification remains pending.
+- Master contains native email/password sign-in, Identity API tokens and encrypted HttpOnly BFF sessions; runtime verification remains pending.
 - Protected routes include overview, organization, pharmacies and contracting; navigation shows the signed-in identity and sign-out action.
 - Organization sectors are owner-provided directory values. Pharmacy location reference records are persisted through an EF migration; the migration seeds the four owner-provided locations without asserting legal ownership or licensing.
 - Authenticated users can read the directory. Location create/edit/deactivate requires the exact subject to be placed in `ORGANIZATION_MANAGER_SUBJECTS`; this is empty by default and does not replace a future role/scope matrix.
 - No inventory, pharmacy transactions, contracting transactions, financial posting or legal-entity editing is enabled.
 - The legacy Keycloak volume is retained but unused; do not delete it during the transition.
+
+## EDA regulatory intelligence implementation branch
+
+- Owner requested automatic EDA document ingestion and in-app notifications; this is now approved MVP scope, not merely an agent-only proposal.
+- Branch feat/eda-regulatory-ingestion adds a hosted EDA page monitor, five seeded EDA sources, PostgreSQL document/source/alert/scan persistence, authenticated API/BFF endpoints, document download and a Pharmacy Regulatory Intelligence workspace.
+- New records remain Unverified/Pending; no pharmacy prices, dispensing, inventory, reimbursement or accounting rules are changed.
+- CI, API startup/migration, source reachability, actual ingestion, alert display and document download remain unverified until the branch runs in GitHub Actions and in the local VM.
+- Scope is bounded to five public EDA pages; wider Egyptian sources, OCR, publication/effective-date extraction, email/SMS/push, retention policy and reviewer assignment remain open.
 
 ## Governance and next milestone
 
