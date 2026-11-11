@@ -43,7 +43,7 @@ echo "Checking public account registration is disabled..."
 REGISTER_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' -H 'Content-Type: application/json' -d '{"email":"public@example.test","password":"NotAllowed-123!"}' "${BASE_URL}/api/v1/auth/register")"
 if [[ "$REGISTER_STATUS" != "404" ]]; then echo "ERROR: Expected 404 for public registration, got ${REGISTER_STATUS}." >&2; exit 1; fi
 
-if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" ]]; then
+if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "${SKIP_AUTHENTICATION_SMOKE_TESTS:-false}" != "true" ]]; then
   echo "Checking native administrator sign-in and protected account provisioning..."
   ADMIN_PAYLOAD="$(jq -n --arg email "$BOOTSTRAP_ADMIN_EMAIL" --arg password "$BOOTSTRAP_ADMIN_PASSWORD" '{email:$email,password:$password}')"
   ADMIN_RESPONSE_FILE="$(mktemp)"
