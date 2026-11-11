@@ -8,11 +8,15 @@ Status: living source-discovery register; validate links and authority at each r
 |---|---|---|
 | Egyptian Drug Authority (EDA) | https://edaegypt.gov.eg/en | Regulatory announcements, decisions, guidance, product safety and market controls. |
 | EDA laws and executive regulations | https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/laws-and-executive-regulations/ | EDA framework and referenced laws/decrees; verify legal instruments in original publication. |
+| EDA Chairman decrees | https://edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/eda-chairman-decree/eda-chairman-decree-of-year-2026/ | Current-year EDA chairman decisions; retain Arabic originals and verify current validity. |
 | EDA regulatory guidelines | https://edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ | Product, device, pharmacy-care, inspection, licensing and control guidance. |
 | EDA pharmaceutical-institution licensing | https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ca-of-pharmaceutical-institutions-licensing/ | Pharmacy/establishment, warehouse and relevant facility licensing requirements. |
 | EDA inspection guidance | https://dev.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ca-of-inspection-of-pharmaceutical-institutions/ | Inspection, storage/distribution, dispensing, traceability and corrective actions. Reconfirm canonical URL. |
-| EDA periodic lists / pharmaceutical care | https://www.edaegypt.gov.eg/en/publications-reports-and-eda-in-numbers/eda-publications/periodic-lists/periodic-lists-of-the-central-administration-for-pharmaceutical-care/ | OTC, high-alert and other pharmacy-care lists and updates. |
+| EDA pharmacy-care guidance | https://edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/guidance-of-ca-of-pharmaceutical-care/ | Pharmacy practice and pharmacovigilance guidance. |
+| EDA periodic lists / pharmaceutical care | https://www.edaegypt.gov.eg/en/publications-reports-and-eda-in-numbers/eda-publications/periodic-lists/periodic-lists-of-the-central-administration-for-pharmaceutical-care/ | OTC, do-not-crush, essential medicines, high-alert and other pharmacy-care lists. |
+| EDA safety alerts | https://www.edaegypt.gov.eg/en/awareness/ca-of-pharmaceutical-care-publications/pharmacovigilance-publications/third-safety-alerts/ | Current safety alerts; obtain the full alert and assess local applicability. |
 | EDA pharmacovigilance / EPVC | https://sites.google.com/view/pvcenter/announcements | Safety notices, pharmacovigilance guidance and announcements; verify each document against EDA publication. |
+| EDA news and announcements | https://edaegypt.gov.eg/en/media-center/news/ | Official market-policy, local manufacturing, supply and institutional developments; classify news as a signal unless a binding instrument is identified. |
 | Egyptian Official Gazette / Al-Waqa'i al-Misriya | Locate the original issue through the official government publication channel | Binding laws, decrees and effective dates. Confirm authenticity and complete text. |
 | Ministry of Health and Population (MOHP) | https://www.mohp.gov.eg/ | Ministerial decisions, public-health directives and health-sector policy. |
 | Egyptian Authority for Unified Procurement (UPA) | https://upa.gov.eg/ | Public procurement, tenders, supply and medical-product market signals. |
@@ -21,7 +25,7 @@ Status: living source-discovery register; validate links and authority at each r
 | Universal Health Insurance Authority (UHIA) | https://uhia.gov.eg/ | Universal health insurance scheme and provider/payer developments, where applicable. |
 | Egyptian Competition Authority (ECA) | https://eca.org.eg/ | Competition and market conduct matters. |
 | Consumer Protection Agency (CPA) | https://cpa.gov.eg/ | Consumer protection, pricing/advertising/complaint developments within its remit. |
-| Personal Data Protection Center / competent Egyptian authority | Verify current official portal and implementing instruments | Personal data and health-data requirements; do not infer implementation details from summaries. |
+| Personal data protection authority | Verify the competent authority's current official portal and implementing instruments | Personal data and health-data requirements; do not infer implementation details from summaries. |
 
 ## Professional, industry and market sources
 
@@ -32,6 +36,10 @@ Public social channels and crowdsourced availability reports may reveal early sh
 ## International references
 
 WHO, EMA, FDA and other foreign regulators may provide scientific or comparative context. They are not Egyptian law and do not replace EDA/MOHP or Egyptian legal instruments. Clearly label foreign-only information and assess whether EDA has adopted or referenced it.
+
+## Current dated scan
+
+See [Egypt pharmacy market and regulatory scan — 2026-11-11](egypt-pharmacy-current-scan-2026-11-11.md). This is a bounded initial snapshot; repeat the scan for every relevant task and monitoring cycle.
 
 ## Source maintenance
 
