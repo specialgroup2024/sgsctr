@@ -24,6 +24,8 @@ jobs:
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
           dotnet ef migrations add IdentityModelAlignment --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build --verbose
+      - name: Rebuild generated migration metadata
+        run: dotnet build Sgsctr.slnx --configuration Release --no-restore
       - name: Validate EF migration snapshots
         run: dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
       - name: Preserve generated migration for review
