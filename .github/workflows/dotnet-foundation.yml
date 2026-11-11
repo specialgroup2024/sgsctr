@@ -19,6 +19,11 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
+      - name: Validate EF migration snapshots
+        run: |
+          dotnet tool install --global dotnet-ef --version 10.0.3
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+          dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api
       - name: Start API, PostgreSQL and Next.js
         env:
           BOOTSTRAP_ADMIN_EMAIL: admin@example.test
