@@ -219,6 +219,11 @@ public sealed class RegulatoryIngestionService(
             .Replace('\n', ' ').Replace('\r', ' ').Trim();
 
     private static bool ContainsArabic(string value) => value.Any(c => c >= '\u0600' && c <= '\u06FF');
+
+    private static bool IsSupportedContent(string contentType, string url) =>
+        contentType.Contains("pdf", StringComparison.OrdinalIgnoreCase) ||
+        contentType.Contains("html", StringComparison.OrdinalIgnoreCase) ||
+        url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
     private static bool IsUrgent(string value) => new[] { "recall", "safety alert", "urgent", "withdrawal", "استدعاء", "تنبيه هام", "تحذير", "سحب" }.Any(x => value.Contains(x, StringComparison.OrdinalIgnoreCase));
     private static string ClassifyTopic(string value)
     {
