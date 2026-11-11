@@ -55,7 +55,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<RegulatorySource>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.Code).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
             entity.Property(x => x.Name).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
             entity.Property(x => x.Url).IsRequired().HasMaxLength(1000).HasColumnType("character varying(1000)");
@@ -74,7 +74,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<RegulatoryDocument>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.SourceId).HasColumnType("uuid");
             entity.Property(x => x.Title).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
             entity.Property(x => x.SourceUrl).IsRequired().HasMaxLength(2000).HasColumnType("character varying(2000)");
@@ -100,7 +100,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<RegulatoryAlert>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.DocumentId).HasColumnType("uuid");
             entity.Property(x => x.AlertType).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
             entity.Property(x => x.Status).IsRequired().HasMaxLength(24).HasColumnType("character varying(24)");
@@ -116,7 +116,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<RegulatoryScanRun>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.SourceId).HasColumnType("uuid");
             entity.Property(x => x.StartedAtUtc).HasColumnType("timestamp with time zone");
             entity.Property(x => x.CompletedAtUtc).HasColumnType("timestamp with time zone");
