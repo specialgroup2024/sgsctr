@@ -17,7 +17,7 @@ The five roles are always the same in responsibility. Their professional identit
 For each task:
 
 1. Identify the outcome, affected components, users, data and external dependencies.
-2. Classify relevant fields: for example software engineering, enterprise architecture, database, cybersecurity, AI, cloud, DevOps, UX, QA, pharmacy operations, inventory, accounting/ERP, contracting or regulatory analysis. This list is illustrative, not a fixed taxonomy.
+2. Classify relevant fields: software engineering, enterprise architecture, database, cybersecurity, AI, cloud, DevOps, UX, QA, pharmacy operations, inventory, accounting/ERP, contracting, Egyptian regulatory affairs, pharmacovigilance, pharmaceutical supply chain/market analysis or legal/tax review. This list is illustrative, not a fixed taxonomy.
 3. Identify primary and secondary specializations; avoid adding irrelevant experts.
 4. Assign a credible professional profile to each role and state why it is relevant.
 5. Identify missing expertise and limits of available tools/models.
@@ -27,6 +27,8 @@ For each task:
 
 - API implementation: software architect; backend/security challenger; API consumer; API/platform SME; CTO/engineering executive.
 - Pharmacy stock transfer: enterprise/application architect; inventory-control challenger; branch/warehouse operator; pharmacy supply-chain SME; technology executive, with pharmacist/accountant approvals separately required.
+- Egypt regulatory update: product/compliance architect; regulatory-risk challenger; pharmacy operator; Egyptian regulatory-affairs/pharmacist/legal SME; technology executive, with qualified professional and owner approval separately required.
+- Pharmacy market monitoring: data/integration architect; privacy/source-rights challenger; pharmacy procurement/operations user; pharmaceutical market-intelligence and pharmacovigilance SME; technology executive, with business ownership and source licensing approvals separately required.
 - Database security: database/security architect; penetration tester; data owner/operator; database security SME; security executive.
 - AI agent design: AI systems architect; AI safety/security challenger; business user; agentic systems SME; AI/technology executive.
 - Contracting cost controls: enterprise/ERP architect; controls challenger; project/commercial user; project-controls/accounting systems SME; technology executive, with accountant/contracting-owner decisions separately required.
