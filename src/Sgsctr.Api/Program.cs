@@ -1,6 +1,8 @@
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sgsctr.Api.Data;
@@ -10,6 +12,30 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException("ConnectionStrings:DefaultConnection must be configured.");
+
+// Persist the Data Protection key ring outside the container writable layer.
+var dataProtectionKeysPath = builder.Configuration["DataProtection:KeysDirectory"]
+    ?? "/var/lib/sgsctr/data-protection-keys";
+Directory.CreateDirectory(dataProtectionKeysPath);
+var dataProtection = builder.Services.AddDataProtection()
+    .SetApplicationName("SGSCTR")
+    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
+
+var dataProtectionCertificatePath = builder.Configuration["DataProtection:CertificatePath"];
+if (!string.IsNullOrWhiteSpace(dataProtectionCertificatePath))
+{
+    if (!File.Exists(dataProtectionCertificatePath))
+        throw new InvalidOperationException("The configured Data Protection certificate file does not exist.");
+    var certificate = X509CertificateLoader.LoadPkcs12FromFile(
+        dataProtectionCertificatePath,
+        builder.Configuration["DataProtection:CertificatePassword"]);
+    dataProtection.ProtectKeysWithCertificate(certificate);
+}
+else if (!builder.Environment.IsDevelopment())
+{
+    throw new InvalidOperationException(
+        "Production requires DataProtection:CertificatePath and a certificate password supplied through a secret.");
+}
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddSgsctrIdentity();
