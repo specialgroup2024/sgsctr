@@ -1,6 +1,6 @@
 # Pharmacy market and regulatory intelligence
 
-Status: owner-approved EDA ingestion MVP; implementation on feat/eda-regulatory-ingestion, CI/runtime verification and merge pending. Broader market-intelligence scope remains proposed.
+Status: EDA ingestion MVP code is merged to master. Latest CI build succeeds, but AppDbContext migration-snapshot validation still fails; API/PostgreSQL/Next.js smoke tests are therefore not yet executed. Production operation is not verified. Broader market-intelligence scope remains proposed.
 
 ## Objective
 
@@ -50,3 +50,24 @@ Classify and route each update for review against regular medicines, chemotherap
 - Email/SMS/push delivery, digest subscriptions, escalation policies and reviewer assignment.
 - Full regulatory review workflow, audit retention and approved document-retention policy.
 - Market prices, availability/shortage feeds, tenders and supplier intelligence subject to data rights and source licensing.
+
+
+## Execution backlog and acceptance gates
+
+The following are not complete and must not be described as delivered until the acceptance evidence exists:
+
+1. **Migration parity:** regenerate the AppDbContext snapshot using the exact pinned .NET/EF/Npgsql toolchain; inspect any generated schema operations; add only a genuine additive migration; verify both contexts report no pending changes.
+2. **End-to-end runtime:** run PostgreSQL + API + Next.js in CI; verify startup readiness, authenticated workspace, scan, document retrieval and authorization paths.
+3. **Document extraction:** add safe text extraction for HTML and text-based PDFs; detect scanned PDFs and route them to OCR review instead of silently treating them as searchable text. OCR engine/language support and deployment footprint require a technical decision.
+4. **Metadata verification:** extract candidate publication date, effective date, document/reference number and issuing authority with source offsets/page evidence; retain confidence and require human confirmation before marking verified.
+5. **Pharmacy product matching:** only implement after the authoritative pharmacy catalogue and identifiers exist; matching must be suggestions with reviewer confirmation, never automatic product-status or dispensing changes.
+6. **Review workflow and audit:** add explicit review decisions, reviewer identity, timestamps, rationale, immutable event history and role-based permissions. Acknowledge remains distinct from verify/approve.
+7. **Notification delivery:** add an outbox/retry design and configurable email first; SMS/push require provider selection, credentials, consent and delivery policy. In-app remains the fallback.
+8. **Operations:** add source freshness/lag metrics, alerting, failed-run retry controls, backup/restore tests, document storage monitoring and an owner-approved retention/legal-hold policy before purge automation.
+9. **Coverage assurance:** source inventory must record authority, scope, update mechanism, terms, host allowlist, last validation and known coverage gaps; no exhaustive-coverage claim without evidence.
+
+### Human approval gates
+
+- Qualified Egyptian regulatory/legal/pharmacy/quality reviewers must approve legal effect, applicability, clinical/quality action and effective dates.
+- The business owner must approve retention duration, archival/deletion, external notification providers and escalation/SLA policy.
+- Product matching must wait for the authoritative product catalogue and owner-approved matching thresholds.
