@@ -93,13 +93,13 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
 fi
 
 echo "Checking protected organization and sector pages redirect to login..."
-for ROUTE in organization pharmacies contracting; do
+for ROUTE in organization pharmacies pharmacies/regulatory-intelligence contracting; do
   ROUTE_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}/${ROUTE}")"
   if [[ "$ROUTE_STATUS" != "307" && "$ROUTE_STATUS" != "302" ]]; then echo "ERROR: Expected /${ROUTE} to redirect to login, got ${ROUTE_STATUS}." >&2; exit 1; fi
 done
 
 echo "Checking anonymous BFF session and organization endpoints reject access..."
-for ROUTE in /api/auth/session /api/organization; do
+for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence; do
   STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}${ROUTE}")"
   if [[ "$STATUS" != "401" ]]; then echo "ERROR: Expected 401 for ${ROUTE}, got ${STATUS}." >&2; exit 1; fi
 done
