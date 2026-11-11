@@ -30,9 +30,12 @@ services:
       Organization__ManagerSubjects: ${ORGANIZATION_MANAGER_SUBJECTS:-}
       BootstrapAdmin__Email: ${BOOTSTRAP_ADMIN_EMAIL:-specialgroup2024@gmail.com}
       BootstrapAdmin__Password: ${BOOTSTRAP_ADMIN_PASSWORD:-}
+      DataProtection__KeysDirectory: /var/lib/sgsctr/data-protection-keys
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${POSTGRES_DB:-sgsctr_dev};Username=${POSTGRES_USER:-sgsctr};Password=${POSTGRES_PASSWORD:-local_dev_only_change_me}
     ports:
       - "127.0.0.1:8080:8080"
+    volumes:
+      - sgsctr_dataprotection_keys:/var/lib/sgsctr/data-protection-keys
     depends_on:
       db:
         condition: service_healthy
@@ -74,3 +77,5 @@ services:
 volumes:
   sgsctr_postgres_data:
   sgsctr_pgadmin_data:
+  sgsctr_dataprotection_keys:
+    name: sgsctr_dataprotection_keys
