@@ -9,8 +9,9 @@ Special Group Pharmacies and Specialized Contracting platform.
 - Next.js 15 web foundation with a responsive local dashboard.
 - Live API/database connection status in the dashboard.
 - Docker Compose local environment with pgAdmin database administration and CI smoke tests.
+- ASP.NET Core Data Protection key ring persisted in a dedicated Docker volume; production requires certificate-based key encryption.
 
-The UI is a development overview and known pharmacy location register. The migration branch introduces ASP.NET Core Identity and native email/password sign-in. It is not merged or runtime-verified yet. The application does not implement stock balances, stock transfers, contracting workflows, claims, patient data or financial posting.
+The UI is a development overview and known pharmacy location register. The application uses ASP.NET Core Identity for sign-in. It is not a production business system yet: stock balances, stock transfers, contracting workflows, claims, patient data and financial posting are not implemented.
 
 ## Prerequisites
 
@@ -70,6 +71,34 @@ The web dashboard checks the API through a Next.js server route. The browser
 does not connect directly to PostgreSQL or require permissive API CORS rules.
 PostgreSQL is published on localhost port 5433. Database settings are in the
 ignored local .env file.
+
+## ASP.NET Core Data Protection key persistence
+
+The API stores its key ring at
+`/var/lib/sgsctr/data-protection-keys`, backed by the dedicated
+`sgsctr_dataprotection_keys` Docker named volume. This survives ordinary API
+container recreation and image replacement. The Docker image creates the
+directory with permissions for its non-root application user.
+
+The local Development environment persists keys but does not encrypt the key
+ring at rest; ASP.NET Core may therefore continue to log the XML-encryptor
+warning. This is deliberately not represented as production-secure.
+
+Before deploying with `ASPNETCORE_ENVIRONMENT=Production`:
+1. Provision a private X.509 certificate with an accessible private key.
+2. Mount the PFX file read-only into the API container using the deployment
+   platform's secret mechanism.
+3. Supply `DataProtection__CertificatePath` and
+   `DataProtection__CertificatePassword` as protected runtime secrets.
+4. Keep the certificate/private key backed up and stable across deployments.
+5. Do not place the PFX or its password in Git, the Docker image, or a plain
+   committed Compose file.
+
+The API intentionally refuses to start in non-Development environments if
+certificate-based key encryption is not configured. Back up the Data
+Protection volume and certificate together; losing either can invalidate
+existing protected authentication/session data. Do not delete the volume as
+part of routine troubleshooting.
 
 ## Frontend package installation and Docker DNS troubleshooting
 
