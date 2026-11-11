@@ -29,7 +29,7 @@ Status: living source-discovery register; validate links and authority at each r
 
 ## Professional, industry and market sources
 
-Discover and maintain current official channels for the Egyptian Pharmacists Syndicate, Egyptian pharmaceutical manufacturers and distributors, chambers/trade associations, licensed wholesalers, major suppliers, healthcare providers, payer networks, public tenders, reputable Egyptian business/health media and relevant market research. Record each exact source URL, publisher, source class, coverage, reliability limitations and review date before relying on it.
+Discover and maintain current official channels for the Egyptian Pharmacists Syndicate, Egyptian pharmaceutical manufacturers and distributors, chambers/trade associations, licensed wholesalers, major suppliers, healthcare providers, payer networks, public tenders, reputable Egyptian business/health media and relevant market research. Examples to monitor as signals (not legal authorities) include EnterpriseAM, Al Manassa and other established Egyptian business/health desks; official market updates may also appear on the State Information Service and Cairo Governorate portals. Record each exact source URL, publisher, source class, coverage, reliability limitations and review date before relying on it.
 
 Public social channels and crowdsourced availability reports may reveal early shortage, recall or market signals. Treat them as unverified leads until corroborated by EDA, the manufacturer/marketing authorization holder, licensed supplier or another competent primary source.
 
