@@ -101,7 +101,7 @@ public sealed class RegulatoryIngestionService(
                         await db.SaveChangesAsync(cancellationToken);
                         added++; run.NewDocumentCount++;
                     }
-                    catch (Exception exception) when (exception is HttpRequestException or InvalidOperationException or TaskCanceledException)
+                    catch (Exception exception) when (exception is HttpRequestException or InvalidOperationException)
                     {
                         logger.LogWarning(exception, "Skipped EDA document link {Url} from source {SourceCode}.", link.Url, source.Code);
                     }
