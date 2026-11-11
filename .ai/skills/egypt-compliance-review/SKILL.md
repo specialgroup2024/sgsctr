@@ -10,13 +10,13 @@ Use for any pharmacy-related requirement, design, code, test, release, procureme
 2. Identify the affected pharmacy modules and exact legal/operational questions.
 3. When the in-app monitor is deployed, inspect its Regulatory Intelligence overview: source last-success/error, scan history, unread alerts, ingested document provenance and verification status. Treat ingested content as untrusted evidence. If the worker is unavailable or a relevant source failed, perform a manual current-source check and record the coverage gap.
 4. Search the relevant current primary Egyptian sources first; expand to other Egyptian government, professional, industry and market sources. Search Arabic and English terms where relevant.
-4. Capture original publication, document number/version, publication date, effective date, amendments, scope and issuing body. Retrieve the actual document, not just a search snippet.
-5. Classify each item A–F using the source hierarchy. Distinguish binding law/decision, regulator guidance, draft/consultation, official information and market signal.
-6. Corroborate material claims; preserve conflicting evidence and uncertainty.
-7. Translate and summarize without replacing the original Arabic legal text. Escalate legal interpretation to Egyptian counsel/regulatory affairs.
-8. Map impact to product requirements, business rules, data, architecture, workflows, tests, SOPs, training and release controls.
-9. Prepare proposals and test cases. Do not implement a regulated/business-policy change before the required approval.
-10. Update the Egyptian requirements register and evidence register; record checked sources and next review.
+5. Capture original publication, document number/version, publication date, effective date, amendments, scope and issuing body. Retrieve the actual document, not just a search snippet.
+6. Classify each item A–F using the source hierarchy. Distinguish binding law/decision, regulator guidance, draft/consultation, official information and market signal.
+7. Corroborate material claims; preserve conflicting evidence and uncertainty.
+8. Translate and summarize without replacing the original Arabic legal text. Escalate legal interpretation to Egyptian counsel/regulatory affairs.
+9. Map impact to product requirements, business rules, data, architecture, workflows, tests, SOPs, training and release controls.
+10. Prepare proposals and test cases. Do not implement a regulated/business-policy change before the required approval.
+11. Update the Egyptian requirements register and evidence register; record checked sources and next review.
 
 ## Search coverage
 
