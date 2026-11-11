@@ -42,7 +42,13 @@ public static class RegulatoryIntelligenceExtensions
             var lastRun = await db.RegulatoryScanRuns.AsNoTracking().OrderByDescending(x => x.StartedAtUtc)
                 .Select(x => new { x.StartedAtUtc, x.CompletedAtUtc, x.Status, x.DiscoveredCount, x.NewDocumentCount, x.ErrorMessage })
                 .FirstOrDefaultAsync(ct);
-            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = true, pollingIntervalMinutes = 15, canTriggerScan = localDevelopmentScan || user.IsInRole("Administrator"), canAcknowledgeAlerts = localDevelopmentScan || user.IsInRole("Administrator") });
+            var recentSuccess = sources.Any(x => x.IsEnabled && x.LastSuccessAtUtc.HasValue && x.LastSuccessAtUtc.Value >= DateTimeOffset.UtcNow.AddHours(-12));
+            var monitoringStatus = !sources.Any(x => x.IsEnabled) ? "No active sources" :
+                recentSuccess ? "Source checks active" : "No successful source check in the last 12 hours";
+            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = recentSuccess,
+                monitoringStatus, pollingIntervalMinutes = 15,
+                canTriggerScan = localDevelopmentScan || user.IsInRole("Administrator"),
+                canAcknowledgeAlerts = localDevelopmentScan || user.IsInRole("Administrator") });
         });
 
         api.MapPost("/scan", async (IRegulatoryIngestionService monitor, CancellationToken ct) =>

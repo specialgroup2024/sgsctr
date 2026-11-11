@@ -10,7 +10,7 @@ type DocumentItem = {
 };
 type AlertItem = { id: string; alertType: string; status: string; createdAtUtc: string; documentTitle: string; documentId: string };
 type SourceItem = { id: string; code: string; name: string; url: string; sourceClass: string; isEnabled: boolean; pollIntervalMinutes: number; lastCheckedAtUtc: string | null; lastSuccessAtUtc: string | null; lastError: string | null };
-type Overview = { documents: DocumentItem[]; alerts: AlertItem[]; sources: SourceItem[]; lastRun: { startedAtUtc: string; completedAtUtc: string | null; status: string; discoveredCount: number; newDocumentCount: number; errorMessage: string | null } | null; monitoringEnabled: boolean; pollingIntervalMinutes: number; canTriggerScan: boolean; canAcknowledgeAlerts: boolean };
+type Overview = { documents: DocumentItem[]; alerts: AlertItem[]; sources: SourceItem[]; lastRun: { startedAtUtc: string; completedAtUtc: string | null; status: string; discoveredCount: number; newDocumentCount: number; errorMessage: string | null } | null; monitoringEnabled: boolean; monitoringStatus: string; pollingIntervalMinutes: number; canTriggerScan: boolean; canAcknowledgeAlerts: boolean };
 
 function date(value: string | null) { return value ? new Date(value).toLocaleString() : "Not available"; }
 
@@ -51,7 +51,7 @@ export default function RegulatoryIntelligencePage() {
     <section className="welcome-row">
       <div><p className="eyebrow">PHARMACIES · REGULATORY INTELLIGENCE</p><h1>Egypt market & <span>regulatory updates</span></h1>
       <p className="welcome-copy">Automatic monitoring of published EDA notices, guidance, safety alerts and regulatory documents.</p></div>
-      <div className="date-chip"><span className="date-dot" />{data?.monitoringEnabled ? "SCHEDULED MONITORING ENABLED" : "LOADING MONITOR STATUS"}</div>
+      <div className="date-chip"><span className="date-dot" />{data?.monitoringEnabled ? "SOURCE CHECKS ACTIVE" : data?.monitoringStatus?.toUpperCase() ?? "MONITOR STATUS UNAVAILABLE"}</div>
     </section>
 
     <section className="status-banner">
