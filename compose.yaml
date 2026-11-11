@@ -78,3 +78,4 @@ volumes:
   sgsctr_postgres_data:
   sgsctr_pgadmin_data:
   sgsctr_dataprotection_keys:
+    name: sgsctr_dataprotection_keys
