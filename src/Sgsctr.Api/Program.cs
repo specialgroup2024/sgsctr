@@ -237,14 +237,28 @@ await using (var scope = app.Services.CreateAsyncScope())
         var users = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
         var roles = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         if (!await roles.RoleExistsAsync("Administrator"))
-            await roles.CreateAsync(new IdentityRole("Administrator"));
-        if (await users.FindByEmailAsync(email.Trim()) is null)
         {
-            var admin = new IdentityUser { UserName = email.Trim(), Email = email.Trim(), EmailConfirmed = true, LockoutEnabled = true };
-            var result = await users.CreateAsync(admin, password);
-            if (!result.Succeeded) throw new InvalidOperationException("Bootstrap administrator creation failed: " + string.Join("; ", result.Errors.Select(x => x.Code)));
-            var roleResult = await users.AddToRoleAsync(admin, "Administrator");
-            if (!roleResult.Succeeded) throw new InvalidOperationException("Bootstrap administrator role assignment failed: " + string.Join("; ", roleResult.Errors.Select(x => x.Code)));
+            var roleResult = await roles.CreateAsync(new IdentityRole("Administrator"));
+            if (!roleResult.Succeeded)
+                throw new InvalidOperationException("Bootstrap administrator role creation failed: " + string.Join("; ", roleResult.Errors.Select(x => x.Code)));
+        }
+
+        var admin = await users.FindByEmailAsync(email.Trim());
+        if (admin is null)
+        {
+            admin = new IdentityUser { UserName = email.Trim(), Email = email.Trim(), EmailConfirmed = true, LockoutEnabled = true };
+            var createResult = await users.CreateAsync(admin, password);
+            if (!createResult.Succeeded)
+                throw new InvalidOperationException("Bootstrap administrator creation failed: " + string.Join("; ", createResult.Errors.Select(x => x.Code)));
+        }
+
+        // Existing accounts are never password-reset here, but the configured bootstrap
+        // account is always ensured to have the Administrator role.
+        if (!await users.IsInRoleAsync(admin, "Administrator"))
+        {
+            var roleAssignment = await users.AddToRoleAsync(admin, "Administrator");
+            if (!roleAssignment.Succeeded)
+                throw new InvalidOperationException("Bootstrap administrator role assignment failed: " + string.Join("; ", roleAssignment.Errors.Select(x => x.Code)));
         }
     }
 }
