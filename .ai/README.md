@@ -15,7 +15,7 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 
 ## Egypt pharmacy intelligence — mandatory
 
-The Egypt market/regulatory monitoring policy is required for pharmacy discovery, requirements, architecture, implementation, tests and release. It defines source coverage, evidence classes, review cadence, impact mapping, human approval and limits on claims. The source register is an expandable starting point, not an exhaustive whitelist.
+The Egypt market/regulatory monitoring policy is required for pharmacy discovery, requirements, architecture, implementation, tests and release. It defines source coverage, evidence classes, review cadence, impact mapping, human approval and limits on claims. The source register is an expandable starting point, not an exhaustive whitelist. The dated scan is an initial snapshot, not a substitute for fresh checks.
 
 Maintain the Egyptian requirements and evidence registers. Treat a possible in-app market/regulatory intelligence workspace as a proposed product capability, separate from the mandatory agent research workflow. Do not implement it without product-owner approval.
 
