@@ -1,4 +1,8 @@
 name: .NET and web foundation
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches: [master, feature/native-identity-authentication]
