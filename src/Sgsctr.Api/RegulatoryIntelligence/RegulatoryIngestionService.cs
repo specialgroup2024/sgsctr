@@ -87,7 +87,9 @@ public sealed class RegulatoryIngestionService(
                         {
                             Id = Guid.NewGuid(), SourceId = source.Id, Title = title.Length > 500 ? title[..500] : title,
                             SourceUrl = link.Url, ContentHash = hash, ContentType = item.ContentType.Contains("octet-stream", StringComparison.OrdinalIgnoreCase) && link.Url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ? "application/pdf" : item.ContentType,
-                            Language = ContainsArabic(title) ? "ar" : "en", SourceClass = source.SourceClass,
+                            Language = ContainsArabic(title + (item.ContentType.Contains("html", StringComparison.OrdinalIgnoreCase)
+                                ? Encoding.UTF8.GetString(item.Bytes, 0, Math.Min(item.Bytes.Length, 65536)) : "")) ? "ar" : "en",
+                            SourceClass = source.SourceClass,
                             Topic = topic, Modules = JsonSerializer.Serialize(modules),
                             VerificationStatus = "Unverified", ReviewStatus = "Pending",
                             Severity = IsUrgent(title) ? "UrgentReview" : "ReviewRequired",
@@ -165,8 +167,8 @@ public sealed class RegulatoryIngestionService(
     private async Task<DownloadedContent> FetchAsync(string url, string allowedHost, int maxBytes, CancellationToken cancellationToken)
     {
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps ||
-            !(uri.Host.Equals(allowedHost, StringComparison.OrdinalIgnoreCase) ||
-              uri.Host.EndsWith("." + allowedHost, StringComparison.OrdinalIgnoreCase)))
+            !(uri.Port == 443 && (uri.Host.Equals(allowedHost, StringComparison.OrdinalIgnoreCase) ||
+              uri.Host.Equals("www." + allowedHost, StringComparison.OrdinalIgnoreCase))))
             throw new InvalidOperationException("Only HTTPS URLs on the configured EDA host are allowed.");
         using var request = new HttpRequestMessage(HttpMethod.Get, uri);
         request.Headers.UserAgent.ParseAdd("SGSCTR-RegulatoryMonitor/1.0 (+authorized EDA public-page monitoring)");
@@ -199,11 +201,12 @@ public sealed class RegulatoryIngestionService(
             var href = WebUtility.HtmlDecode(match.Groups[2].Value).Trim();
             var title = CleanTitle(match.Groups[3].Value);
             if (!Uri.TryCreate(new Uri(pageUrl), href, out var uri) || uri.Scheme != Uri.UriSchemeHttps ||
-                !(uri.Host.Equals(allowedHost, StringComparison.OrdinalIgnoreCase) ||
-                  uri.Host.EndsWith("." + allowedHost, StringComparison.OrdinalIgnoreCase))) continue;
+                !(uri.Port == 443 && (uri.Host.Equals(allowedHost, StringComparison.OrdinalIgnoreCase) ||
+                  uri.Host.Equals("www." + allowedHost, StringComparison.OrdinalIgnoreCase)))) continue;
             var candidate = (title + " " + uri.AbsolutePath).ToLowerInvariant();
             if (!Keywords.Any(keyword => candidate.Contains(keyword, StringComparison.OrdinalIgnoreCase))) continue;
             var normalized = uri.GetLeftPart(UriPartial.Query);
+            if (normalized.Equals(new Uri(pageUrl).GetLeftPart(UriPartial.Query), StringComparison.OrdinalIgnoreCase)) continue;
             if (result.Any(x => x.Url.Equals(normalized, StringComparison.OrdinalIgnoreCase))) continue;
             result.Add(new DiscoveredLink(normalized, title));
             if (result.Count >= MaxLinksPerSource) break;
