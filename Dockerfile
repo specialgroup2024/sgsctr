@@ -9,6 +9,7 @@ RUN dotnet publish src/Sgsctr.Api/Sgsctr.Api.csproj --configuration Release --ou
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 ENV ASPNETCORE_HTTP_PORTS=8080
+RUN mkdir -p /var/lib/sgsctr/data-protection-keys && chown -R $APP_UID:$APP_UID /var/lib/sgsctr
 COPY --from=build /app/publish .
 USER $APP_UID
 EXPOSE 8080
