@@ -15,7 +15,7 @@ public sealed class AuthDbContextFactory : IDesignTimeDbContextFactory<AuthDbCon
     {
         var services = new ServiceCollection();
         services.AddSgsctrIdentity();
-        using var applicationServices = services.BuildServiceProvider();
+        var applicationServices = services.BuildServiceProvider();
 
         var connectionString = Environment.GetEnvironmentVariable("SGSCTR_DESIGNTIME_CONNECTION")
             ?? "Host=localhost;Port=5433;Database=sgsctr_design;Username=sgsctr;Password=design_time_only";
