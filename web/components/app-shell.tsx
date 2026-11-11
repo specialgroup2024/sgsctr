@@ -36,7 +36,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         })}
       </nav>
       <div className="sidebar-bottom">
-        <div className="environment-card"><span className="environment-indicator" /><div><strong>AUTHENTICATED SESSION</strong><small>Protected workspace</small></div></div>
+        <div className="environment-card"><span className="environment-indicator" /><div><strong>WORKSPACE ACCESS</strong><small>Local development environment</small></div></div>
         <small className="sidebar-foot">SGSCTR · Local development</small>
       </div>
     </aside>
