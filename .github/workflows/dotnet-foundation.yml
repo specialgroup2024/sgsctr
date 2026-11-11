@@ -33,6 +33,14 @@ jobs:
           cat src/Sgsctr.Api/Data/Migrations/*_AppDbContextModelParityDiagnostic.cs
           echo "--- SNAPSHOT DIFF ---"
           git diff -- src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs
+          echo "SNAPSHOT_BASE64_BEGIN"
+          base64 -w0 src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs
+          echo
+          echo "SNAPSHOT_BASE64_END"
+          echo "DESIGNER_BASE64_BEGIN"
+          base64 -w0 src/Sgsctr.Api/Data/Migrations/*_AppDbContextModelParityDiagnostic.Designer.cs
+          echo
+          echo "DESIGNER_BASE64_END"
           echo "Diagnostic scaffold only; generated migration has not been accepted or applied."
           exit 1
       - name: Validate EF Core migration snapshots
