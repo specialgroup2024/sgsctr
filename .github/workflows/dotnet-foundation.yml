@@ -5,7 +5,7 @@ concurrency:
   cancel-in-progress: true
 on:
   push:
-    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion]
+    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion, fix/eda-regulatory-completion]
   pull_request:
     branches: [master]
 permissions:
