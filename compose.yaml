@@ -26,8 +26,9 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       Database__ApplyMigrations: "true"
+      Authentication__Enabled: ${AUTHENTICATION_ENABLED:-false}
       Organization__ManagerSubjects: ${ORGANIZATION_MANAGER_SUBJECTS:-}
-      BootstrapAdmin__Email: ${BOOTSTRAP_ADMIN_EMAIL:-}
+      BootstrapAdmin__Email: ${BOOTSTRAP_ADMIN_EMAIL:-specialgroup2024@gmail.com}
       BootstrapAdmin__Password: ${BOOTSTRAP_ADMIN_PASSWORD:-}
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${POSTGRES_DB:-sgsctr_dev};Username=${POSTGRES_USER:-sgsctr};Password=${POSTGRES_PASSWORD:-local_dev_only_change_me}
     ports:
@@ -44,6 +45,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      AUTHENTICATION_ENABLED: ${AUTHENTICATION_ENABLED:-false}
       API_BASE_URL: http://api:8080
       WEB_BASE_URL: ${WEB_BASE_URL:-http://localhost:3000}
       AUTH_SESSION_SECRET: ${AUTH_SESSION_SECRET:?Set AUTH_SESSION_SECRET in your local .env file}
