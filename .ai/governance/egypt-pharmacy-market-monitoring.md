@@ -1,6 +1,6 @@
 # Egypt pharmacy market and regulatory intelligence
 
-Status: mandatory agent operating control; product capability is a proposal until owner-approved.
+Status: mandatory agent operating control; EDA public-page ingestion and in-app alerts are owner-approved MVP scope, implemented on feat/eda-regulatory-ingestion pending verification and merge.
 
 ## Purpose and scope
 
@@ -11,7 +11,7 @@ Keep pharmacy discovery, requirements, architecture, implementation, testing and
 ## Two separate workstreams
 
 1. **Agent intelligence:** mandatory research before and during pharmacy-related work; maintain dated, cited evidence and identify impacts.
-2. **Potential application capability:** assess a pharmacy market/regulatory intelligence workspace, alert register and impact workflow as a product requirement candidate. Do not build, subscribe to paid feeds, scrape restricted services or represent this capability as approved until product-owner approval and a scoped work package exist.
+2. **In-app EDA monitor:** use the approved EDA MVP described in ../architecture/eda-regulatory-ingestion.md. It polls four configured public EDA pages, ingests linked HTML/PDF documents, deduplicates by URL/hash, stores originals and creates in-app alerts. The implementation is not proof of complete EDA coverage or real-time delivery. Other Egyptian sources, paid feeds, restricted services and email/SMS/push channels require separate approval and scoped work.
 
 ## Monitoring cycle
 
@@ -22,7 +22,7 @@ Keep pharmacy discovery, requirements, architecture, implementation, testing and
 - Event-driven: immediately escalate recalls, safety alerts, controlled-product changes, urgent dispensing/storage notices, licensing changes and effective-now legal requirements.
 - Before release: perform a change scan covering all laws, regulations, circulars and guidance relevant to affected workflows.
 
-If no scheduled monitoring service is configured, agents must not claim background or continuous monitoring. Perform and timestamp the checks in the active task and recommend an approved automation/work package if needed.
+The EDA worker is a scheduled best-effort service on the implementation branch. Agents must check its last-success/error status and still refresh relevant primary sources for high-risk work. If the feature is not deployed, its worker is failing, or source coverage is incomplete, perform and timestamp manual checks; never claim complete or real-time monitoring.
 
 ## Required topic coverage
 
