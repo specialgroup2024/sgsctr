@@ -1,2 +1,2 @@
 <Project><PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally></PropertyGroup><ItemGroup><PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4" /><PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" /></ItemGroup></Project>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4" /><PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.4" /></ItemGroup></Project>
