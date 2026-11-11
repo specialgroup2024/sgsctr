@@ -19,6 +19,22 @@ echo
 curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
 echo
 
+echo "Waiting for Next.js web UI at ${WEB_URL} ..."
+for ((i=1; i<=ATTEMPTS; i++)); do
+  if curl --connect-timeout 3 --max-time 3 --silent --location --fail "${WEB_URL}/login" | grep -q "Sign in to SGSCTR"; then break; fi
+  if [[ "$i" -eq "$ATTEMPTS" ]]; then echo "ERROR: Web UI did not become ready. Check: docker compose logs web" >&2; exit 1; fi
+  sleep 2
+done
+
+echo "Checking dashboard reports live API and PostgreSQL connectivity..."
+SYSTEM_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail "${WEB_URL}/api/system-status")"
+printf '%s\n' "$SYSTEM_STATUS"
+if ! printf '%s' "$SYSTEM_STATUS" | jq -e '.api == "online" and .database == "connected"' >/dev/null; then
+  echo "ERROR: Dashboard did not confirm both API and PostgreSQL as online/connected." >&2
+  exit 1
+fi
+
+
 echo "Checking protected API rejects anonymous requests..."
 AUTH_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${BASE_URL}/api/v1/auth/me")"
 if [[ "$AUTH_STATUS" != "401" ]]; then echo "ERROR: Expected 401 for anonymous request, got ${AUTH_STATUS}." >&2; exit 1; fi
@@ -64,21 +80,6 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" ]]; 
   AFTER_LOGOUT_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" "${WEB_URL}/api/auth/session")"
   rm -f "$COOKIE_JAR"
   if [[ "$AFTER_LOGOUT_STATUS" != "401" ]]; then echo "ERROR: BFF session remained active after sign-out (HTTP ${AFTER_LOGOUT_STATUS})." >&2; exit 1; fi
-fi
-
-echo "Waiting for Next.js web UI at ${WEB_URL} ..."
-for ((i=1; i<=ATTEMPTS; i++)); do
-  if curl --connect-timeout 3 --max-time 3 --silent --location --fail "${WEB_URL}/login" | grep -q "Sign in to SGSCTR"; then break; fi
-  if [[ "$i" -eq "$ATTEMPTS" ]]; then echo "ERROR: Web UI did not become ready. Check: docker compose logs web" >&2; exit 1; fi
-  sleep 2
-done
-
-echo "Checking dashboard reports live API and PostgreSQL connectivity..."
-SYSTEM_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail "${WEB_URL}/api/system-status")"
-printf '%s\n' "$SYSTEM_STATUS"
-if ! printf '%s' "$SYSTEM_STATUS" | jq -e '.api == "online" and .database == "connected"' >/dev/null; then
-  echo "ERROR: Dashboard did not confirm both API and PostgreSQL as online/connected." >&2
-  exit 1
 fi
 
 echo "Checking protected organization and sector pages redirect to login..."
