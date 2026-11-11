@@ -31,6 +31,12 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AuthDbContext>();
+
+// IdentityDbContext reads model-shaping IdentityOptions from the application service provider.
+// Supplying that provider explicitly keeps runtime model construction aligned with migrations.
+builder.Services.AddDbContext<AuthDbContext>((serviceProvider, options) =>
+    options.UseNpgsql(connectionString, npgsql => npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "identity"))
+        .UseApplicationServiceProvider(serviceProvider));
 builder.Services.Configure<BearerTokenOptions>(IdentityConstants.BearerScheme, options =>
 {
     options.BearerTokenExpiration = TimeSpan.FromMinutes(15);
@@ -52,6 +58,33 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+
+// PostgreSQL is a mandatory runtime dependency, not an optional dashboard integration.
+// Do not start serving the application until both application and Identity contexts can connect.
+var databaseConnected = false;
+for (var attempt = 1; attempt <= 30; attempt++)
+{
+    try
+    {
+        await using var startupScope = app.Services.CreateAsyncScope();
+        var appDb = startupScope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var authDb = startupScope.ServiceProvider.GetRequiredService<AuthDbContext>();
+        databaseConnected = await appDb.Database.CanConnectAsync() &&
+                            await authDb.Database.CanConnectAsync();
+        if (databaseConnected) break;
+    }
+    catch (Exception exception)
+    {
+        app.Logger.LogWarning(exception, "PostgreSQL startup connection attempt {Attempt}/30 failed.", attempt);
+    }
+
+    if (attempt < 30) await Task.Delay(TimeSpan.FromSeconds(2));
+}
+
+if (!databaseConnected)
+    throw new InvalidOperationException("PostgreSQL is a required dependency. The API will not start until the database is reachable.");
+
+app.Logger.LogInformation("PostgreSQL connectivity verified for application and Identity contexts.");
 
 if (app.Environment.IsDevelopment() &&
     app.Configuration.GetValue<bool>("Database:ApplyMigrations"))
