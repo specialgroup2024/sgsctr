@@ -346,9 +346,21 @@ static async Task<IResult> CheckReadiness(
     {
         await using var scope = services.CreateAsyncScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        if (await db.Database.CanConnectAsync(cancellationToken))
+        var authDb = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+
+        // PostgreSQL is shared by business data and native Identity. Readiness is true
+        // only when both application data access paths can reach the required database.
+        var appDatabaseReachable = await db.Database.CanConnectAsync(cancellationToken);
+        var identityDatabaseReachable = await authDb.Database.CanConnectAsync(cancellationToken);
+        if (appDatabaseReachable && identityDatabaseReachable)
         {
-            return Results.Ok(new { status = "ok", database = "reachable" });
+            return Results.Ok(new
+            {
+                status = "ok",
+                database = "connected",
+                applicationContext = "connected",
+                identityContext = "connected"
+            });
         }
     }
     catch (Exception exception)
