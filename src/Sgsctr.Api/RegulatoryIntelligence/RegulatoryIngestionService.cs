@@ -21,28 +21,33 @@ public sealed class RegulatoryIngestionService(
     ILogger<RegulatoryIngestionService> logger) : IRegulatoryIngestionService
 {
     private const int MaxPageBytes = 4 * 1024 * 1024;
-    private const int MaxDocumentBytes = 8 * 1024 * 1024;
+    private const int MaxDocumentBytes = 5 * 1024 * 1024;
+    private const int MaxNewDocumentsPerCycle = 12;
+    private static readonly SemaphoreSlim ScanLock = new(1, 1);
     private const int MaxLinksPerSource = 20;
     private static readonly Regex AnchorPattern = new("<a\\b[^>]*href\\s*=\\s*(['\"])(.*?)\\1[^>]*>(.*?)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
     private static readonly Regex TagPattern = new("<[^>]+>", RegexOptions.Singleline | RegexOptions.Compiled);
     private static readonly string[] Keywords =
     [
         "recall", "alert", "safety", "pharmacovigilance", "decree", "regulation", "regulatory",
-        "guideline", "circular", "announcement", "medicine", "medicinal", "pharmaceutical",
+        "guideline", "circular", "announcement", "notice", "news", "update", "publication", "decision", "medicine", "medicinal", "pharmaceutical",
         "pharmacy", "drug", "cosmetic", "medical device", "medical supply", "track", "price",
         "استدعاء", "تنبيه", "سلامة", "قرار", "لائحة", "دليل", "دواء", "صيدلية", "مستحضر", "تسعير"
     ];
 
     private static readonly (string Code, string Name, string Url, string Host)[] SeedSources =
     [
-        ("EDA-ANNOUNCEMENTS", "EDA announcements", "https://edaegypt.gov.eg/en/media-center/announcements/", "edaegypt.gov.eg"),
-        ("EDA-NEWS", "EDA news", "https://edaegypt.gov.eg/en/media-center/news/", "edaegypt.gov.eg"),
+        ("EDA-ANNOUNCEMENTS", "EDA announcements", "https://www.edaegypt.gov.eg/en/media-center/announcements/", "edaegypt.gov.eg"),
+        ("EDA-NEWS", "EDA news", "https://www.edaegypt.gov.eg/en/media-center/news/", "edaegypt.gov.eg"),
         ("EDA-SAFETY", "EDA pharmaceutical-care safety alerts", "https://www.edaegypt.gov.eg/en/awareness/ca-of-pharmaceutical-care-publications/pharmacovigilance-publications/third-safety-alerts/", "edaegypt.gov.eg"),
         ("EDA-DECREE-2026", "EDA chairman decrees 2026", "https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/eda-chairman-decree/eda-chairman-decree-of-year-2026/", "edaegypt.gov.eg")
     ];
 
     public async Task<RegulatoryScanSummary> RunAsync(bool force, CancellationToken cancellationToken)
     {
+        await ScanLock.WaitAsync(cancellationToken);
+        try
+        {
         await EnsureSeedSourcesAsync(cancellationToken);
         var now = DateTimeOffset.UtcNow;
         var sources = await db.RegulatorySources.Where(x => x.IsEnabled).OrderBy(x => x.Code).ToListAsync(cancellationToken);
@@ -64,6 +69,7 @@ public sealed class RegulatoryIngestionService(
                 discovered += links.Count;
                 foreach (var link in links)
                 {
+                    if (added >= MaxNewDocumentsPerCycle) break;
                     if (await db.RegulatoryDocuments.AnyAsync(x => x.SourceUrl == link.Url, cancellationToken)) continue;
                     try
                     {
@@ -104,6 +110,10 @@ public sealed class RegulatoryIngestionService(
                 source.LastError = null;
                 run.Status = "Succeeded";
             }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
             catch (Exception exception)
             {
                 failed++;
@@ -117,6 +127,11 @@ public sealed class RegulatoryIngestionService(
             await db.SaveChangesAsync(cancellationToken);
         }
         return new RegulatoryScanSummary(checkedCount, discovered, added, failed);
+        }
+        finally
+        {
+            ScanLock.Release();
+        }
     }
 
     private async Task EnsureSeedSourcesAsync(CancellationToken cancellationToken)
@@ -175,7 +190,7 @@ public sealed class RegulatoryIngestionService(
                   uri.Host.EndsWith("." + allowedHost, StringComparison.OrdinalIgnoreCase))) continue;
             var candidate = (title + " " + uri.AbsolutePath).ToLowerInvariant();
             if (!Keywords.Any(keyword => candidate.Contains(keyword, StringComparison.OrdinalIgnoreCase))) continue;
-            var normalized = uri.GetLeftPart(UriPartial.Path);
+            var normalized = uri.GetLeftPart(UriPartial.Query);
             if (result.Any(x => x.Url.Equals(normalized, StringComparison.OrdinalIgnoreCase))) continue;
             result.Add(new DiscoveredLink(normalized, title));
             if (result.Count >= MaxLinksPerSource) break;
@@ -193,7 +208,7 @@ public sealed class RegulatoryIngestionService(
         url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
 
     private static bool ContainsArabic(string value) => value.Any(c => c is >= '\\u0600' and <= '\\u06FF');
-    private static bool IsUrgent(string value) => new[] { "recall", "safety alert", "urgent", "withdrawal", "استدعاء", "تنبيه هام" }.Any(x => value.Contains(x, StringComparison.OrdinalIgnoreCase));
+    private static bool IsUrgent(string value) => new[] { "recall", "safety alert", "urgent", "withdrawal", "استدعاء", "تنبيه هام", "تحذير", "سحب" }.Any(x => value.Contains(x, StringComparison.OrdinalIgnoreCase));
     private static string ClassifyTopic(string value)
     {
         if (IsUrgent(value)) return "SafetyOrRecall";
