@@ -23,7 +23,11 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
+        
+      - name: Validate Identity runtime/design-time model parity
+
       - name: Validate Identity migration snapshot
+
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"

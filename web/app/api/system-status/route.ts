@@ -39,7 +39,7 @@ export async function GET() {
   // The browser never connects directly to PostgreSQL. If the API is offline,
   // the database cannot be verified through the trusted server-side path.
   const database = !live?.ok
-    ? "api_required"
+    ? "not_verified"
     : ready?.ok
       ? "connected"
       : ready

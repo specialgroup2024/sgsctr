@@ -11,25 +11,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException("ConnectionStrings:DefaultConnection must be configured.");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
-builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
-{
-    // Keep the deployed Identity schema aligned with the checked-in migration and snapshot.
-    // Passkeys (Identity schema v3) remain a deliberate future migration, not an implicit startup change.
-    options.Stores.SchemaVersion = IdentitySchemaVersions.Version1;
-    options.Stores.MaxLengthForKeys = 128;
-    options.User.RequireUniqueEmail = true;
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequiredLength = 12;
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Lockout.AllowedForNewUsers = true;
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-})
-.AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<AuthDbContext>();
+builder.Services.AddSgsctrIdentity();
 
 // IdentityDbContext reads model-shaping IdentityOptions from the application service provider.
 // Supplying that provider explicitly keeps runtime model construction aligned with migrations.

@@ -1,25 +1,20 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.DependencyInjection;
-using Sgsctr.Api.Data;
 
 namespace Sgsctr.Api.Data;
 
 /// <summary>
-/// Ensures EF tooling builds the Identity model with the same schema-shaping options
-/// as the running API. Never connect this factory to or mutate a production database.
+/// Builds the Identity model using the exact same Identity registration and
+/// model-shaping options as the running API. This factory never connects to or
+/// mutates a production database.
 /// </summary>
 public sealed class AuthDbContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
 {
     public AuthDbContext CreateDbContext(string[] args)
     {
         var services = new ServiceCollection();
-        services.AddIdentityCore<IdentityUser>(options =>
-        {
-            options.Stores.SchemaVersion = IdentitySchemaVersions.Version1;
-            options.Stores.MaxLengthForKeys = 128;
-        });
+        services.AddSgsctrIdentity();
         var applicationServices = services.BuildServiceProvider();
 
         var connectionString = Environment.GetEnvironmentVariable("SGSCTR_DESIGNTIME_CONNECTION")
