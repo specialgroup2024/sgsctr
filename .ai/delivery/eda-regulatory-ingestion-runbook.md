@@ -16,7 +16,7 @@ Status: initial operational runbook for the EDA ingestion MVP.
 2. Apply the additive AppDbContext migration 20261111140000_EdaRegulatoryIntelligence before enabling the worker in production.
 3. Development Compose has Database__ApplyMigrations=true; production must use the approved migration job/process rather than enabling startup migrations by default.
 4. Preserve the PostgreSQL data volume and take a verified backup before production migration.
-5. Confirm the four RegulatorySources seed records appear after the first worker cycle.
+5. Confirm the five RegulatorySources seed records appear after the first worker cycle.
 
 ## Monitoring
 
