@@ -24,7 +24,7 @@ Pharmacy topology: Mokattam main warehouse, Student Hospital branch, Qasr El-Ain
 - PostgreSQL: one database provisionally for LE-01, with strict sector/module data ownership and authorization. Reassess if additional legal entities are evidenced.
 - React Native: mobile client consuming versioned APIs; never connect clients directly to PostgreSQL.
 - Next.js: current web foundation; browser should call a server-side BFF/API route rather than connect to PostgreSQL.
-- Background processing: introduce only for confirmed asynchronous jobs; use durable idempotent work patterns.
+- Background processing: the Pharmacy module has an EDA regulatory-ingestion hosted worker with PostgreSQL-backed source/document/alert/scan history. It is a bounded best-effort MVP; see [EDA ingestion architecture](eda-regulatory-ingestion.md). Use durable idempotent work patterns for future jobs.
 - Observability: structured logs, metrics, traces and security/audit events with sensitive-data redaction.
 
 ## Backend module boundaries

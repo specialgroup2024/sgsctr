@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sgsctr.Api.Data;
+using Sgsctr.Api.RegulatoryIntelligence;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -12,6 +13,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddSgsctrIdentity();
+builder.Services.AddRegulatoryIntelligence();
 
 // IdentityDbContext reads model-shaping IdentityOptions from the application service provider.
 // Supplying that provider explicitly keeps runtime model construction aligned with migrations.
@@ -119,6 +121,8 @@ app.MapGet("/api/v1/system/info", () => Results.Ok(new
     environment = app.Environment.EnvironmentName,
     businessModulesEnabled = false
 })).AllowAnonymous();
+
+app.MapRegulatoryIntelligenceEndpoints();
 
 var authRoutes = app.MapGroup("/api/v1/auth");
 authRoutes.MapIdentityApi<IdentityUser>();
