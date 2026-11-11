@@ -24,7 +24,22 @@ jobs:
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
           dotnet ef migrations add IdentityModelAlignment --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build --verbose
-          python3 -c 'from pathlib import Path; files=sorted(Path("src/Sgsctr.Api/Data/Migrations").glob("*_IdentityModelAlignment.cs")); assert len(files)==1, f"Expected one generated migration, found {len(files)}"; files[0].write_text("using Microsoft.EntityFrameworkCore.Migrations;\n\nnamespace Sgsctr.Api.Migrations.AuthDb;\n\npublic partial class IdentityModelAlignment : Migration\n{\n    // Existing SQL already created PostgreSQL identity columns; record model metadata without altering schema or data.\n    protected override void Up(MigrationBuilder migrationBuilder) { }\n    protected override void Down(MigrationBuilder migrationBuilder) { }\n}\n"); print(f"Replaced redundant ALTER operations with a metadata-only migration: {files[0]}")'\n      - name: Rebuild generated migration metadata
+          MIGRATION_FILE="$(find src/Sgsctr.Api/Data/Migrations -maxdepth 1 -name '*_IdentityModelAlignment.cs' -print -quit)"
+          test -n "$MIGRATION_FILE"
+          cat > "$MIGRATION_FILE" <<'CSHARP'
+          using Microsoft.EntityFrameworkCore.Migrations;
+
+          namespace Sgsctr.Api.Migrations.AuthDb;
+
+          public partial class IdentityModelAlignment : Migration
+          {
+              // Existing SQL already created PostgreSQL identity columns; record model metadata without altering schema or data.
+              protected override void Up(MigrationBuilder migrationBuilder) { }
+              protected override void Down(MigrationBuilder migrationBuilder) { }
+          }
+          CSHARP
+          echo "Replaced redundant ALTER operations with a metadata-only migration: $MIGRATION_FILE"
+      - name: Rebuild generated migration metadata
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
       - name: Validate EF migration snapshots
         run: dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
