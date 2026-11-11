@@ -40,6 +40,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         document.HasKey(x => x.Id);
         document.HasIndex(x => x.SourceUrl).IsUnique();
         document.HasIndex(x => x.ContentHash).IsUnique();
+        document.HasIndex(x => x.SourceId);
         document.HasIndex(x => new { x.ReviewStatus, x.RetrievedAtUtc });
         document.Property(x => x.Title).HasMaxLength(500).IsRequired();
         document.Property(x => x.SourceUrl).HasMaxLength(2000).IsRequired();
