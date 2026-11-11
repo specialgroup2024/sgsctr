@@ -44,6 +44,8 @@ fi
 
 
 echo "Checking protected API rejects anonymous requests..."
+REGULATORY_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${BASE_URL}/api/v1/pharmacy/regulatory-intelligence/overview")"
+if [[ "$REGULATORY_STATUS" != "401" ]]; then echo "ERROR: Regulatory intelligence overview must reject anonymous access (HTTP ${REGULATORY_STATUS})." >&2; exit 1; fi
 AUTH_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${BASE_URL}/api/v1/auth/me")"
 if [[ "$AUTH_STATUS" != "401" ]]; then echo "ERROR: Expected 401 for anonymous request, got ${AUTH_STATUS}." >&2; exit 1; fi
 
