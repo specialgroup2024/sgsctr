@@ -49,20 +49,6 @@ jobs:
           AUTHENTICATION_ENABLED: "true"
           COOKIE_SECURE: "false"
         run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000
-      - name: Commit verified Identity migration
-        if: success() && steps.identity_drift.outputs.pending == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/Sgsctr.Api/Data/Migrations
-          if ! git diff --cached --quiet; then
-            git commit -m "db: align Identity migration snapshot with EF Core 10.0.4 [skip ci]"
-            git fetch origin "${GITHUB_REF_NAME}"
-            git rebase "origin/${GITHUB_REF_NAME}"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
-          else
-            echo "No generated migration changes to commit."
-          fi
       - name: Container diagnostics on failure
         if: failure()
         env:
