@@ -9,7 +9,7 @@ namespace Sgsctr.Api.Data.Migrations;
 
 [DbContext(typeof(AppDbContext))]
 [Migration("20261111160000_AppDbContextModelParity")]
-partial class AppDbContextModelParity : Migration
+public sealed partial class AppDbContextModelParity : Migration
 {
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
@@ -97,6 +97,7 @@ partial class AppDbContextModelParity : Migration
             entity.HasKey(x => x.Id);
             entity.HasIndex(x => x.SourceUrl).IsUnique();
             entity.HasIndex(x => x.ContentHash).IsUnique();
+            entity.HasIndex(x => x.SourceId);
             entity.HasIndex(x => new { x.ReviewStatus, x.RetrievedAtUtc });
             entity.HasOne(x => x.Source).WithMany(x => x.Documents).HasForeignKey(x => x.SourceId).OnDelete(DeleteBehavior.Restrict);
             entity.ToTable("RegulatoryDocuments");
