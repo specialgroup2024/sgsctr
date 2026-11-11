@@ -14,14 +14,14 @@ done
 echo "Checking API liveness, readiness and public system information..."
 curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/live"
 echo
-READY_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/ready")"
-printf '%s\\n' "$READY_STATUS"
-if ! printf '%s' "$READY_STATUS" | jq -e '.status == "ok" and .database == "connected" and .applicationContext == "connected" and .identityContext == "connected"' >/dev/null; then
-  echo "ERROR: API readiness did not confirm PostgreSQL for both application and Identity contexts." >&2
+READINESS="$(curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/ready")"
+printf '%s\n' "$READINESS"
+if ! printf '%s' "$READINESS" | jq -e '.status == "ok" and .database == "connected" and .applicationContext == "connected" and .identityContext == "connected"' >/dev/null; then
+  echo "ERROR: API readiness did not confirm both application and Identity contexts connected to PostgreSQL." >&2
   exit 1
 fi
-curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
 echo
+curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
 echo
 
 echo "Waiting for Next.js web UI at ${WEB_URL} ..."
