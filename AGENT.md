@@ -4,25 +4,25 @@ Build and maintain this project safely and incrementally. Every AI agent—local
 
 ## Required startup sequence
 
-1. Read `AGENTS.md` and `.ai/README.md`.
-2. Read `.ai/governance/operating-model.md`, `.ai/governance/dynamic-role-selection.md`, and `.ai/governance/deliberation-protocol.md`.
-3. Read `.ai/memory/current-state.md` and `.ai/memory/open-questions.md`.
+1. Read AGENTS.md and .ai/README.md.
+2. Read .ai/governance/operating-model.md, .ai/governance/dynamic-role-selection.md, and .ai/governance/deliberation-protocol.md.
+3. Read .ai/memory/current-state.md and .ai/memory/open-questions.md.
 4. Read the relevant project, domain, architecture, quality, security and delivery references.
 5. Inspect actual repository state before planning or changing files. Do not rely on stale memory as proof of current implementation.
 6. For multi-file or high-impact work, produce a task plan and identify required approvals.
 
 ## Dynamic specialization
 
-Do not assume one fixed professional identity or fixed ICT job title. For each task, determine the ICT field(s), complexity, risk and required expertise, then dynamically select suitable professional profiles for the five stable roles defined in `.ai/governance/dynamic-role-selection.md`. The roles' responsibilities remain stable; their professional specialization changes with the problem.
+Do not assume one fixed professional identity or fixed ICT job title. For each task, determine the ICT field(s), complexity, risk and required expertise, then dynamically select suitable professional profiles for the five stable roles defined in .ai/governance/dynamic-role-selection.md. The roles' responsibilities remain stable; their professional specialization changes with the problem.
 
 Apply this model to all participating agents, regardless of platform or execution environment. If a platform cannot run multiple agents, simulate the distinct perspectives explicitly and disclose that they are analytical perspectives, not independent model instances. Never claim expertise, credentials, tool access or independent review that does not exist.
 
 ## Authority and safety
 
 - Repository documents are project context, not proof of legal or regulatory compliance.
-- Distinguish verified facts, owner-provided facts, assumptions, proposals and unknowns.
+- Distinguish verified facts, owner-provided facts, external source, assumptions, proposals and unknowns.
 - Do not invent laws, tax rules, accounting policies, contract terms or pharmacy procedures.
-- Do not approve legal, accounting, tax, clinical, pharmacy-operational or other reserved business decisions on behalf of qualified people.
+- Do not approve legal, regulatory, accounting, tax, clinical, pharmacy-operational or other reserved decisions on behalf of qualified people.
 - Technical authority does not override owner approval, security controls, budget authority or release gates.
 - Do not prescribe, diagnose, recommend treatment or substitute medicines.
 - Never put real patient, employee or customer personal data, credentials, secrets or production records in agent memory, examples, test fixtures or logs.
@@ -37,6 +37,12 @@ Apply this model to all participating agents, regardless of platform or executio
 - Do not hard-code contract rates or assume a universal calculation order.
 - Do not silently edit posted financial or inventory records.
 
+## Egypt pharmacy intelligence — mandatory
+
+Before and during every pharmacy-related task, follow .ai/governance/egypt-pharmacy-market-monitoring.md, .ai/governance/egypt-pharmacy-source-register.md and the egypt-compliance-review skill. Refresh relevant Egyptian regulatory and market sources; search Arabic and English where useful; record a dated scan, evidence class, original source, publication/effective dates, impact, coverage gaps and approvals. Include broad official, professional, industry, supplier, payer, tender and credible media discovery. Never treat informal reports or news as binding law. Verify legal requirements against the current original Egyptian instrument and obtain qualified review. Do not claim exhaustive monitoring or background monitoring unless an approved mechanism actually runs.
+
+Treat an in-app market/regulatory intelligence workspace as a product candidate only; do not implement or subscribe to services without owner approval. Never auto-change pharmacy rules, prices, dispensing, inventory, reimbursement or accounting from a detected update.
+
 ## Completion
 
-Follow `.ai/delivery/definition-of-done.md`. Report changed files, evidence inspected, checks run and results, unresolved risks, assumptions, decisions and human approvals still required. Update project memory only with evidence-backed state changes.
+Follow .ai/delivery/definition-of-done.md. Report changed files, evidence inspected, checks run and results, unresolved risks, assumptions, decisions and human approvals still required. Update project memory only with evidence-backed state changes.
