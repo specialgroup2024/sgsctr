@@ -38,7 +38,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Cross-origin request rejected." }, { status: 403 });
   const auth = await authorizedSession();
-  if (auth.error) return auth.error;
+  if ("error" in auth) return auth.error;
   const body = await request.json().catch(() => null) as { action?: string; alertId?: string } | null;
   if (!body || !["scan", "acknowledge"].includes(body.action ?? ""))
     return NextResponse.json({ error: "Unsupported action." }, { status: 400 });
