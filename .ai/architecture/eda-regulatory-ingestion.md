@@ -20,7 +20,7 @@ Provide automatic ingestion of publicly accessible EDA publications and in-app a
 1. EDA announcements.
 2. EDA news.
 3. EDA pharmaceutical-care safety alerts.
-4. EDA chairman decrees for 2026.
+4. EDA chairman decrees for the current calendar year (the seeded URL rolls forward by year).\n5. EDA regulatory guidelines.
 
 The exact URLs and allowlisted host are seeded in RegulatoryIngestionService. Source class B means primary official regulator material, not automatically a binding legal instrument. Expand sources only after checking authority, public accessibility, terms and host allowlist.
 
