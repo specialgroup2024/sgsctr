@@ -5,7 +5,7 @@ concurrency:
   cancel-in-progress: true
 on:
   push:
-    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2]
+    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion]
   pull_request:
     branches: [master]
 permissions:
@@ -24,18 +24,12 @@ jobs:
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
 
-      - name: Validate Identity runtime/design-time model parity
-
-        
-      - name: Validate Identity runtime/design-time model parity
-
-      - name: Validate Identity migration snapshot
-
-
+      - name: Validate EF Core migration snapshots
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
           dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
+          dotnet ef migrations has-pending-model-changes --context AppDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
       - name: Start API, PostgreSQL and Next.js
         env:
           BOOTSTRAP_ADMIN_EMAIL: admin@example.test
