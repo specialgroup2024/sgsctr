@@ -19,6 +19,8 @@ public static class RegulatoryIntelligenceExtensions
 
     public static WebApplication MapRegulatoryIntelligenceEndpoints(this WebApplication app)
     {
+        var localDevelopmentScan = app.Environment.IsDevelopment() &&
+            !app.Configuration.GetValue<bool>("Authentication:Enabled", true);
         var api = app.MapGroup("/api/v1/pharmacy/regulatory-intelligence").RequireAuthorization();
 
         api.MapGet("/overview", async (System.Security.Claims.ClaimsPrincipal user, AppDbContext db, CancellationToken ct) =>
@@ -40,12 +42,12 @@ public static class RegulatoryIntelligenceExtensions
             var lastRun = await db.RegulatoryScanRuns.AsNoTracking().OrderByDescending(x => x.StartedAtUtc)
                 .Select(x => new { x.StartedAtUtc, x.CompletedAtUtc, x.Status, x.DiscoveredCount, x.NewDocumentCount, x.ErrorMessage })
                 .FirstOrDefaultAsync(ct);
-            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = true, pollingIntervalMinutes = 15, canTriggerScan = user.IsInRole("Administrator") });
+            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = true, pollingIntervalMinutes = 15, canTriggerScan = localDevelopmentScan || user.IsInRole("Administrator") });
         });
 
         api.MapPost("/scan", async (IRegulatoryIngestionService monitor, CancellationToken ct) =>
             Results.Ok(await monitor.RunAsync(true, ct)))
-            .RequireAuthorization(policy => policy.RequireRole("Administrator"));
+            .RequireAuthorization(policy => policy.RequireAssertion(context => localDevelopmentScan || context.User.IsInRole("Administrator")));
 
         api.MapPost("/alerts/{id:guid}/acknowledge", async (
             Guid id, System.Security.Claims.ClaimsPrincipal user, AppDbContext db, CancellationToken ct) =>
