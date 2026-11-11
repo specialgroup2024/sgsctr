@@ -93,7 +93,7 @@ export default function RegulatoryIntelligencePage() {
       {(data?.documents ?? []).length ? data!.documents.map(doc => <article key={doc.id} style={{ padding: "14px 0", borderBottom: "1px solid var(--border, #ddd)" }}>
         <strong>{doc.title}</strong><p className="muted">{doc.topic} · Class {doc.sourceClass} · {doc.language.toUpperCase()} · {doc.reviewStatus} · {doc.severity}</p>
         <p className="muted">Modules: {doc.modules} · Retrieved: {date(doc.retrievedAtUtc)}</p>
-        <a className="text-link" href={doc.sourceUrl} target="_blank" rel="noreferrer">View original publication ↗</a>
+        <a className="text-link" href={`/api/pharmacy-intelligence/documents/${doc.id}/content`}>Download ingested copy ↓</a> · <a className="text-link" href={doc.sourceUrl} target="_blank" rel="noreferrer">Open source publication ↗</a>
       </article>) : <p className="muted">No documents ingested yet. Check source connectivity and scan history.</p>}
     </section>
     <section className="notice-panel"><strong>Important: ingestion is not approval.</strong><p>Every imported item starts unverified and pending review. This feature does not determine legal applicability, make clinical decisions, or change medicine prices, dispensing, stock, reimbursement or accounting. EDA page structure and access may change; failed sources remain visible for follow-up.</p></section>
