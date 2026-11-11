@@ -19,10 +19,28 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
-      - name: Scaffold Identity model alignment migration
+      - name: Detect Identity migration drift
+        id: identity_drift
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+          set +e
+          EF_OUTPUT="$(dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build 2>&1)"
+          EF_STATUS=$?
+          set -e
+          if [ "$EF_STATUS" -eq 0 ]; then
+            echo "pending=false" >> "$GITHUB_OUTPUT"
+            echo "Identity migration snapshot is current."
+          elif printf '%s' "$EF_OUTPUT" | grep -q "Changes have been made to the model since the last migration"; then
+            echo "pending=true" >> "$GITHUB_OUTPUT"
+            echo "Identity migration drift detected; scaffolding a safe alignment migration."
+          else
+            printf '%s\\n' "$EF_OUTPUT"
+            exit "$EF_STATUS"
+          fi
+      - name: Scaffold Identity model alignment migration
+        if: steps.identity_drift.outputs.pending == 'true'
+        run: |
           dotnet ef migrations add IdentityModelAlignment --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build --verbose
           MIGRATION_FILE="$(find src/Sgsctr.Api/Data/Migrations -maxdepth 1 -name '*_IdentityModelAlignment.cs' -print -quit)"
           test -n "$MIGRATION_FILE"
@@ -40,10 +58,12 @@ jobs:
           CSHARP
           echo "Replaced redundant ALTER operations with a metadata-only migration: $MIGRATION_FILE"
       - name: Rebuild generated migration metadata
+        if: steps.identity_drift.outputs.pending == 'true'
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
       - name: Validate EF migration snapshots
         run: dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
       - name: Preserve generated migration for review
+        if: steps.identity_drift.outputs.pending == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: generated-identity-migration
@@ -72,11 +92,11 @@ jobs:
           COOKIE_SECURE: "false"
         run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000
       - name: Commit verified Identity migration
-        if: success()
+        if: success() && steps.identity_drift.outputs.pending == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/Sgsctr.Api/Data/Migrations/*_IdentityModelAlignment.cs src/Sgsctr.Api/Data/Migrations/*_IdentityModelAlignment.Designer.cs src/Sgsctr.Api/Data/Migrations/AuthDbContextModelSnapshot.cs
+          git add src/Sgsctr.Api/Data/Migrations
           if ! git diff --cached --quiet; then
             git commit -m "db: align Identity migration snapshot with EF Core 10.0.4 [skip ci]"
             git push origin "HEAD:${GITHUB_REF_NAME}"
