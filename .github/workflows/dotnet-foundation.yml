@@ -35,7 +35,7 @@ jobs:
             echo "pending=true" >> "$GITHUB_OUTPUT"
             echo "Identity migration drift detected; scaffolding a safe alignment migration."
           else
-            printf '%s\\n' "$EF_OUTPUT"
+            printf '%s\n' "$EF_OUTPUT"
             exit "$EF_STATUS"
           fi
       - name: Scaffold Identity model alignment migration
