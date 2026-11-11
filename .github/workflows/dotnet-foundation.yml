@@ -19,11 +19,21 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
-      - name: Validate EF migration snapshots
+      - name: Scaffold Identity model alignment migration
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
-          dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build --verbose
+          dotnet ef migrations add IdentityModelAlignment --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build --verbose
+      - name: Validate EF migration snapshots
+        run: dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
+      - name: Preserve generated migration for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-identity-migration
+          path: |
+            src/Sgsctr.Api/Data/Migrations/*_IdentityModelAlignment.cs
+            src/Sgsctr.Api/Data/Migrations/*_IdentityModelAlignment.Designer.cs
+            src/Sgsctr.Api/Data/Migrations/AuthDbContextModelSnapshot.cs
       - name: Start API, PostgreSQL and Next.js
         env:
           BOOTSTRAP_ADMIN_EMAIL: admin@example.test
