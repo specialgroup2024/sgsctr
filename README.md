@@ -84,6 +84,21 @@ The local Development environment persists keys but does not encrypt the key
 ring at rest; ASP.NET Core may therefore continue to log the XML-encryptor
 warning. This is deliberately not represented as production-secure.
 
+Before replacing the currently running API container for the first
+deployment of this change, preserve its existing ephemeral key ring if you
+need to avoid invalidating active protected sessions/tokens. Run these commands
+from the repository directory while the current API container is still running:
+
+    mkdir -p "$HOME/sgsctr-dataprotection-backup"
+    docker cp sgsctr-api:/home/app/.aspnet/DataProtection-Keys/. "$HOME/sgsctr-dataprotection-backup/"
+    docker volume create sgsctr_dataprotection_keys
+    docker run --rm -v sgsctr_dataprotection_keys:/target -v "$HOME/sgsctr-dataprotection-backup:/source:ro" alpine:3.20 sh -c 'cp -an /source/. /target/ && chown -R 1654:1654 /target'
+
+If the source directory is absent, stop and inspect the current API key-ring
+location rather than proceeding with an empty backup. Keep the backup private;
+it contains security-sensitive key material. Remove the backup only after
+confirming the API starts and existing protected sessions behave as expected.
+
 Before deploying with `ASPNETCORE_ENVIRONMENT=Production`:
 1. Provision a private X.509 certificate with an accessible private key.
 2. Mount the PFX file read-only into the API container using the deployment
