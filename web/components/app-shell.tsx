@@ -7,6 +7,7 @@ const navigation: Array<{ href: string; label: string; icon: string; status?: st
   { href: "/", label: "Overview", icon: "▦" },
   { href: "/organization", label: "Organization", icon: "⌂" },
   { href: "/pharmacies", label: "Pharmacies", icon: "✚", status: "Foundation" },
+  { href: "/pharmacies/regulatory-intelligence", label: "Regulatory Intelligence", icon: "◎", status: "New" },
   { href: "/contracting", label: "Specialized Contracting", icon: "▤", status: "Foundation" }
 ];
 type Identity = { authenticated: boolean; user?: { subject: string; displayName: string; email: string } };
