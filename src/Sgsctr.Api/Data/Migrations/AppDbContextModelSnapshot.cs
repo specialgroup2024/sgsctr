@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Sgsctr.Api.Data;
 
 namespace Sgsctr.Api.Data.Migrations;
@@ -11,8 +12,9 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .HasAnnotation("ProductVersion", "10.0.3")
+            .HasAnnotation("ProductVersion", "10.0.4")
             .HasAnnotation("Relational:MaxIdentifierLength", 63);
+        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
         modelBuilder.Entity<OrganizationLocation>(entity =>
         {
