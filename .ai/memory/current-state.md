@@ -50,10 +50,10 @@ The owner explicitly confirms that the three branches may transfer medicines and
 ## EDA regulatory intelligence implementation branch
 
 - Owner requested automatic EDA document ingestion and in-app notifications; this is now approved MVP scope, not merely an agent-only proposal.
-- Branch feat/eda-regulatory-ingestion adds a hosted EDA page monitor, four seeded EDA sources, PostgreSQL document/source/alert/scan persistence, authenticated API/BFF endpoints, document download and a Pharmacy Regulatory Intelligence workspace.
+- Branch feat/eda-regulatory-ingestion adds a hosted EDA page monitor, five seeded EDA sources, PostgreSQL document/source/alert/scan persistence, authenticated API/BFF endpoints, document download and a Pharmacy Regulatory Intelligence workspace.
 - New records remain Unverified/Pending; no pharmacy prices, dispensing, inventory, reimbursement or accounting rules are changed.
 - CI, API startup/migration, source reachability, actual ingestion, alert display and document download remain unverified until the branch runs in GitHub Actions and in the local VM.
-- Scope is bounded to four public EDA pages; wider Egyptian sources, OCR, publication/effective-date extraction, email/SMS/push, retention policy and reviewer assignment remain open.
+- Scope is bounded to five public EDA pages; wider Egyptian sources, OCR, publication/effective-date extraction, email/SMS/push, retention policy and reviewer assignment remain open.
 
 ## Governance and next milestone
 
