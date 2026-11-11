@@ -36,13 +36,15 @@ export async function GET() {
 
   const readyBody = await readJson(ready);
   const api = live?.ok ? "online" : "unreachable";
+  // The browser never connects directly to PostgreSQL. If the API is offline,
+  // the database cannot be verified through the trusted server-side path.
   const database = !live?.ok
-    ? "unknown"
+    ? "api_required"
     : ready?.ok
       ? "connected"
       : ready
         ? String(readyBody?.database ?? "unavailable")
-        : "unknown";
+        : "unavailable";
 
   return NextResponse.json({
     api,
