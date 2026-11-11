@@ -11,7 +11,6 @@ if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException("ConnectionStrings:DefaultConnection must be configured.");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
-builder.Services.AddDbContext<AuthDbContext>(options => options.UseNpgsql(connectionString, npgsql => npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "identity")));
 builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 {
     // Keep the deployed Identity schema aligned with the checked-in migration and snapshot.
