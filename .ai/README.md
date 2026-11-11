@@ -4,13 +4,20 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 
 ## Required load order
 
-1. Read root `AGENT.md` and `AGENTS.md`.
-2. Read `governance/operating-model.md`, `governance/dynamic-role-selection.md`, `governance/deliberation-protocol.md` and `governance/approval-and-execution.md`.
-3. Read `memory/current-state.md` and `memory/open-questions.md`.
-4. Read `product/vision.md`, `product/scope.md` and relevant domain documents.
-5. Read relevant architecture, decisions, quality, security and delivery documents.
-6. Load only the skills relevant to the task.
-7. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
+1. Read root AGENT.md and AGENTS.md.
+2. Read governance/operating-model.md, governance/dynamic-role-selection.md, governance/deliberation-protocol.md and governance/approval-and-execution.md.
+3. Read memory/current-state.md and memory/open-questions.md.
+4. Read product/vision.md, product/scope.md and relevant domain documents.
+5. For pharmacy tasks, read governance/egypt-pharmacy-market-monitoring.md, governance/egypt-pharmacy-source-register.md, governance/egypt-requirements-register.md, governance/evidence-register.md, roles/pharmacy-domain.md and skills/egypt-compliance-review/SKILL.md.
+6. Read relevant architecture, decisions, quality, security and delivery documents.
+7. Load only the skills relevant to the task.
+8. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
+
+## Egypt pharmacy intelligence — mandatory
+
+The Egypt market/regulatory monitoring policy is required for pharmacy discovery, requirements, architecture, implementation, tests and release. It defines source coverage, evidence classes, review cadence, impact mapping, human approval and limits on claims. The source register is an expandable starting point, not an exhaustive whitelist.
+
+Maintain the Egyptian requirements and evidence registers. Treat a possible in-app market/regulatory intelligence workspace as a proposed product capability, separate from the mandatory agent research workflow. Do not implement it without product-owner approval.
 
 ## Phase 1 technical-control references
 
@@ -22,7 +29,7 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 
 ## Governance model
 
-The five role responsibilities are stable, while their ICT professional identities are selected dynamically for each problem. See `governance/dynamic-role-selection.md`. All agents must use the same principles across local and online environments.
+The five role responsibilities are stable, while their ICT and business professional identities are selected dynamically for each problem. See governance/dynamic-role-selection.md. All agents must use the same principles across local and online environments.
 
 ## Memory rules
 
@@ -31,13 +38,11 @@ The five role responsibilities are stable, while their ICT professional identiti
 - Record evidence/source, owner and review date for decisions that can change.
 - Do not store credentials, patient records, personal information or raw production records.
 - Update memory only when new information is confirmed; do not convert assumptions into facts by repetition.
-- Put enduring technical decisions in ADRs; keep unresolved decisions in `memory/open-questions.md`.
+- Put enduring technical decisions in ADRs; keep unresolved decisions in memory/open-questions.md.
 
-## Documentation size
+## Documentation size and approval
 
-Every Markdown file must remain below 200 lines. Aim for 180 lines or fewer. Split long content into linked focused documents. CI enforces the limit through `scripts/check_markdown_line_limit.py`.
-
-## Agent behavior and phase gates
+Every Markdown file must remain below 200 lines. Aim for 180 lines or fewer. Split long content into linked focused documents. CI enforces the limit through scripts/check_markdown_line_limit.py.
 
 Agents may analyze, challenge, propose, implement and test within approved scope. They may not approve legal, pharmacy, accounting, tax or other reserved decisions on behalf of qualified people. Maestro is a technical decision role, not the business owner and cannot waive approval gates.
 
