@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SESSION_COOKIE, apiBaseUrl, cookieOptions, readSession, refreshSession, seal } from "@/lib/auth";
+import { SESSION_COOKIE, apiBaseUrl, cookieOptions, readSession, refreshSession, seal, type UserSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +8,9 @@ function sameOrigin(request: NextRequest) {
   return origin === (process.env.WEB_BASE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 }
 
-async function authorizedSession() {
+type AuthResult = { error: NextResponse } | { session: UserSession; valid: UserSession };
+
+async function authorizedSession(): Promise<AuthResult> {
   const session = await readSession();
   if (!session) return { error: NextResponse.json({ error: "Authentication required." }, { status: 401 }) };
   const valid = await refreshSession(session);
@@ -22,7 +24,7 @@ async function authorizedSession() {
 
 export async function GET() {
   const auth = await authorizedSession();
-  if (auth.error) return auth.error;
+  if ("error" in auth) return auth.error;
   const upstream = await fetch(`${apiBaseUrl}/api/v1/pharmacy/regulatory-intelligence/overview`, {
     headers: { authorization: `Bearer ${auth.valid.accessToken}` }, cache: "no-store"
   });
