@@ -30,9 +30,12 @@ if [[ "$REGISTER_STATUS" != "404" ]]; then echo "ERROR: Expected 404 for public 
 if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" ]]; then
   echo "Checking native administrator sign-in and protected account provisioning..."
   ADMIN_PAYLOAD="$(jq -n --arg email "$BOOTSTRAP_ADMIN_EMAIL" --arg password "$BOOTSTRAP_ADMIN_PASSWORD" '{email:$email,password:$password}')"
-  ADMIN_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error -H 'Content-Type: application/json' -d "$ADMIN_PAYLOAD" "${BASE_URL}/api/v1/auth/login?useCookies=false")"
+  ADMIN_RESPONSE_FILE="$(mktemp)"
+  ADMIN_HTTP_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --output "$ADMIN_RESPONSE_FILE" --write-out '%{http_code}' -H 'Content-Type: application/json' -d "$ADMIN_PAYLOAD" "${BASE_URL}/api/v1/auth/login?useCookies=false")"
+  ADMIN_RESPONSE="$(cat "$ADMIN_RESPONSE_FILE")"
+  rm -f "$ADMIN_RESPONSE_FILE"
   ADMIN_TOKEN="$(printf '%s' "$ADMIN_RESPONSE" | jq -r '.accessToken // empty')"
-  if [[ -z "$ADMIN_TOKEN" ]]; then echo "ERROR: Native administrator login did not return an access token. API response: ${ADMIN_RESPONSE}" >&2; exit 1; fi
+  if [[ -z "$ADMIN_TOKEN" ]]; then echo "ERROR: Native administrator login failed (HTTP ${ADMIN_HTTP_STATUS}). API response: ${ADMIN_RESPONSE}" >&2; exit 1; fi
   ME_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" "${BASE_URL}/api/v1/auth/me")"
   if [[ "$ME_STATUS" != "200" ]]; then echo "ERROR: Native access token was not accepted by /me (HTTP ${ME_STATUS})." >&2; exit 1; fi
 
