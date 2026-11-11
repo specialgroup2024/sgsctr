@@ -33,11 +33,18 @@ builder.Services.Configure<BearerTokenOptions>(IdentityConstants.BearerScheme, o
     options.RefreshTokenExpiration = TimeSpan.FromDays(7);
 });
 
+var authenticationEnabled = builder.Configuration.GetValue<bool>("Authentication:Enabled", true);
+if (!authenticationEnabled && !builder.Environment.IsDevelopment())
+    throw new InvalidOperationException("Authentication may only be disabled in the Development environment.");
+
 builder.Services.AddAuthorization(options =>
 {
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
+    var accessPolicy = new AuthorizationPolicyBuilder()
+        .RequireAssertion(context =>
+            !authenticationEnabled || context.User.Identity?.IsAuthenticated == true)
         .Build();
+    options.DefaultPolicy = accessPolicy;
+    options.FallbackPolicy = accessPolicy;
 });
 
 var app = builder.Build();
