@@ -17,7 +17,7 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 
 The Egypt market/regulatory monitoring policy is required for pharmacy discovery, requirements, architecture, implementation, tests and release. It defines source coverage, evidence classes, review cadence, impact mapping, human approval and limits on claims. The source register is an expandable starting point, not an exhaustive whitelist. The dated scan is an initial snapshot, not a substitute for fresh checks.
 
-Maintain the Egyptian requirements and evidence registers. The EDA ingestion MVP is owner-approved and implemented on feat/eda-regulatory-ingestion, pending CI/runtime verification and merge. It is separate from the mandatory agent research workflow. For implementation and operations, read architecture/eda-regulatory-ingestion.md and delivery/eda-regulatory-ingestion-runbook.md. The MVP is not exhaustive; broader sources and outbound notifications remain gated.
+Maintain the Egyptian requirements and evidence registers. The EDA ingestion MVP is owner-approved and implemented on feat/eda-regulatory-ingestion, pending CI/runtime verification and merge. It is separate from the mandatory agent research workflow. For implementation and operations, read [architecture/eda-regulatory-ingestion.md](architecture/eda-regulatory-ingestion.md) and [delivery/eda-regulatory-ingestion-runbook.md](delivery/eda-regulatory-ingestion-runbook.md). The MVP is not exhaustive; broader sources and outbound notifications remain gated.
 
 ## Phase 1 technical-control references
 
