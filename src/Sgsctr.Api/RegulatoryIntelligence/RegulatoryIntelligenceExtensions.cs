@@ -21,7 +21,7 @@ public static class RegulatoryIntelligenceExtensions
     {
         var api = app.MapGroup("/api/v1/pharmacy/regulatory-intelligence").RequireAuthorization();
 
-        api.MapGet("/overview", async (AppDbContext db, CancellationToken ct) =>
+        api.MapGet("/overview", async (System.Security.Claims.ClaimsPrincipal user, AppDbContext db, CancellationToken ct) =>
         {
             var documents = await db.RegulatoryDocuments.AsNoTracking()
                 .OrderByDescending(x => x.RetrievedAtUtc).Take(50)
@@ -40,7 +40,7 @@ public static class RegulatoryIntelligenceExtensions
             var lastRun = await db.RegulatoryScanRuns.AsNoTracking().OrderByDescending(x => x.StartedAtUtc)
                 .Select(x => new { x.StartedAtUtc, x.CompletedAtUtc, x.Status, x.DiscoveredCount, x.NewDocumentCount, x.ErrorMessage })
                 .FirstOrDefaultAsync(ct);
-            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = true, pollingIntervalMinutes = 15 });
+            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = true, pollingIntervalMinutes = 15, canTriggerScan = user.IsInRole("Administrator") });
         });
 
         api.MapPost("/scan", async (IRegulatoryIngestionService monitor, CancellationToken ct) =>
@@ -63,8 +63,9 @@ public static class RegulatoryIntelligenceExtensions
         api.MapGet("/documents/{id:guid}/content", async (Guid id, AppDbContext db, CancellationToken ct) =>
         {
             var document = await db.RegulatoryDocuments.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, ct);
-            return document is null ? Results.NotFound() :
-                Results.File(document.OriginalContent, document.ContentType, $"{document.Id}{(document.ContentType.Contains("pdf", StringComparison.OrdinalIgnoreCase) ? ".pdf" : ".html")}");
+            if (document is null) return Results.NotFound();
+            var extension = document.ContentType.Contains("pdf", StringComparison.OrdinalIgnoreCase) ? ".pdf" : ".html";
+            return Results.File(document.OriginalContent, document.ContentType, $"{document.Id}{extension}");
         });
         return app;
     }
