@@ -95,6 +95,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.HasKey(x => x.Id);
             entity.HasIndex(x => x.SourceUrl).IsUnique();
             entity.HasIndex(x => x.ContentHash).IsUnique();
+            entity.HasIndex(x => x.SourceId);
             entity.HasIndex(x => new { x.ReviewStatus, x.RetrievedAtUtc });
             entity.HasOne(x => x.Source).WithMany(x => x.Documents).HasForeignKey(x => x.SourceId).OnDelete(DeleteBehavior.Restrict);
             entity.ToTable("RegulatoryDocuments");
