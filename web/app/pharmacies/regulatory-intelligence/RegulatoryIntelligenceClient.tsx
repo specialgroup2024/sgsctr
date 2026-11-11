@@ -84,7 +84,7 @@ export default function RegulatoryIntelligencePage() {
     {loading ? <p className="muted">Loading regulatory records…</p> : data?.alerts.length ? <section className="notice-panel">
       {data.alerts.map(alert => <div key={alert.id} style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", padding: "12px 0", borderBottom: "1px solid var(--border, #ddd)" }}>
         <div><strong>{alert.documentTitle}</strong><p className="muted">{alert.alertType} · {date(alert.createdAtUtc)}</p></div>
-        <button className="secondary-button" disabled={busy} onClick={() => void act({ action: "acknowledge", alertId: alert.id })}>Acknowledge</button>
+        <button className="subtle-button" disabled={busy} onClick={() => void act({ action: "acknowledge", alertId: alert.id })}>Acknowledge</button>
       </div>)}
     </section> : <p className="muted">No unread alerts currently recorded.</p>}
 
