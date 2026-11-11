@@ -36,7 +36,6 @@ The owner explicitly confirms that the three branches may transfer medicines and
 - Master now registers ASP.NET Core Identity through IdentityRegistration.cs, persists Identity in PostgreSQL schema identity and uses native Identity bearer-token validation with default-deny authorization. Verify login/refresh/logout end-to-end before claiming runtime success.
 - Protected diagnostic endpoint: `GET /api/v1/auth/me`.
 - Current Compose does not run Keycloak. The legacy sgsctr_keycloak_data volume is retained but unused; do not delete it as part of unrelated work.
-- The legacy sgsctr_keycloak_data volume is retained but not mounted or deleted by the new Compose file.
 - No approved enterprise role/permission matrix or persisted business audit event model exists.
 
 ## Phase 3 implementation boundary
