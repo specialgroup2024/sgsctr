@@ -29,7 +29,9 @@ export async function GET() {
     headers: { authorization: `Bearer ${auth.valid.accessToken}` }, cache: "no-store"
   });
   const payload = await upstream.json().catch(() => ({ error: "Regulatory intelligence service unavailable." }));
-  const response = NextResponse.json(payload, { status: upstream.status });
+  const response = upstream.status === 204
+    ? new NextResponse(null, { status: 204 })
+    : NextResponse.json(payload, { status: upstream.status });
   if (auth.valid.accessToken !== auth.session.accessToken)
     response.cookies.set(SESSION_COOKIE, await seal(auth.valid as unknown as Record<string, unknown>, 8 * 60 * 60), cookieOptions(8 * 60 * 60));
   return response;
