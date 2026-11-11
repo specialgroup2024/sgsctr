@@ -16,7 +16,7 @@ Automatically monitor publicly accessible Egyptian Drug Authority (EDA) publicat
 - Classify topic, language and four pharmacy modules using transparent keyword heuristics.
 - Create in-app unread alerts for each new document; urgent title keywords set a review-priority hint.
 - Authenticated workspace shows source health, last scan, alerts and recent documents.
-- Authenticated users may acknowledge alerts; only Administrator may force a scan.
+- Authenticated users may view alerts; Administrator may acknowledge alerts and force a scan. In local Development only, when authentication is explicitly disabled, the local development user may perform those actions.
 - Allow authenticated download of the retained document and link to the original EDA publication.
 
 ## Four pharmacy modules
