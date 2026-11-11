@@ -14,7 +14,12 @@ done
 echo "Checking API liveness, readiness and public system information..."
 curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/live"
 echo
-curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/ready"
+READINESS="$(curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/health/ready")"
+printf '%s\\n' "$READINESS"
+if ! printf '%s' "$READINESS" | jq -e '.status == "ok" and .database == "connected" and .applicationContext == "connected" and .identityContext == "connected"' >/dev/null; then
+  echo "ERROR: API readiness did not confirm both application and Identity contexts connected to PostgreSQL." >&2
+  exit 1
+fi
 echo
 curl --connect-timeout 3 --max-time 3 --silent --show-error --fail "${BASE_URL}/api/v1/system/info"
 echo
