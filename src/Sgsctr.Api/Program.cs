@@ -14,6 +14,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.Services.AddDbContext<AuthDbContext>(options => options.UseNpgsql(connectionString, npgsql => npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "identity")));
 builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 {
+    // Keep the deployed Identity schema aligned with the checked-in migration and snapshot.
+    // Passkeys (Identity schema v3) remain a deliberate future migration, not an implicit startup change.
+    options.Stores.SchemaVersion = IdentitySchemaVersions.Version1;
+    options.Stores.MaxLengthForKeys = 128;
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequiredLength = 12;
