@@ -42,7 +42,7 @@ public static class RegulatoryIntelligenceExtensions
             var lastRun = await db.RegulatoryScanRuns.AsNoTracking().OrderByDescending(x => x.StartedAtUtc)
                 .Select(x => new { x.StartedAtUtc, x.CompletedAtUtc, x.Status, x.DiscoveredCount, x.NewDocumentCount, x.ErrorMessage })
                 .FirstOrDefaultAsync(ct);
-            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = true, pollingIntervalMinutes = 15, canTriggerScan = localDevelopmentScan || user.IsInRole("Administrator") });
+            return Results.Ok(new { documents, alerts, sources, lastRun, monitoringEnabled = true, pollingIntervalMinutes = 15, canTriggerScan = localDevelopmentScan || user.IsInRole("Administrator"), canAcknowledgeAlerts = localDevelopmentScan || user.IsInRole("Administrator") });
         });
 
         api.MapPost("/scan", async (IRegulatoryIngestionService monitor, CancellationToken ct) =>
@@ -60,7 +60,7 @@ public static class RegulatoryIntelligenceExtensions
                 ?? user.FindFirst("sub")?.Value ?? "authenticated-user";
             await db.SaveChangesAsync(ct);
             return Results.NoContent();
-        });
+        }).RequireAuthorization(policy => policy.RequireAssertion(context => localDevelopmentScan || context.User.IsInRole("Administrator")));
 
         api.MapGet("/documents/{id:guid}/content", async (Guid id, AppDbContext db, CancellationToken ct) =>
         {
