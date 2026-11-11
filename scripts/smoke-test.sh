@@ -72,7 +72,7 @@ done
 
 echo "Checking dashboard reports live API and PostgreSQL connectivity..."
 SYSTEM_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail "${WEB_URL}/api/system-status")"
-printf '%s\\n' "$SYSTEM_STATUS"
+printf '%s\n' "$SYSTEM_STATUS"
 if ! printf '%s' "$SYSTEM_STATUS" | jq -e '.api == "online" and .database == "connected"' >/dev/null; then
   echo "ERROR: Dashboard did not confirm both API and PostgreSQL as online/connected." >&2
   exit 1
