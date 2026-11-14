@@ -104,7 +104,7 @@ public static class PharmacyCatalogueExtensions
         {
             if (string.IsNullOrWhiteSpace(input.Code) || input.Code.Trim().Length > 24 ||
                 string.IsNullOrWhiteSpace(input.Name) || input.Name.Trim().Length > 100 ||
-                input.Symbol?.Length > 24)
+                input.Symbol?.Length > 24 || input.ChangeReason?.Length > 500)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["unit"] = ["Provide a unit code (max 24), name (max 100), and optional symbol (max 24)."] });
 
             var actor = Actor(user);
@@ -141,6 +141,8 @@ public static class PharmacyCatalogueExtensions
         {
             if (!CatalogueRules.TryNormalizeRatio(input.Numerator, input.Denominator, out var numerator, out var denominator))
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["ratio"] = ["Numerator and denominator must both be positive whole numbers."] });
+            if (input.ChangeReason?.Length > 500)
+                return Results.ValidationProblem(new Dictionary<string, string[]> { ["changeReason"] = ["Change reason must be 500 characters or fewer."] });
             if (input.FromUnitId == input.ToUnitId)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["units"] = ["Choose two different units."] });
 
