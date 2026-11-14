@@ -5,12 +5,13 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 ## Required load order
 1. Read root AGENT.md and AGENTS.md.
 2. Read governance/operating-model.md, governance/dynamic-role-selection.md, governance/deliberation-protocol.md and governance/approval-and-execution.md.
-3. Read memory/current-state.md and memory/open-questions.md.
-4. Read product/vision.md, product/scope.md and relevant domain documents.
-5. For pharmacy tasks, read governance/egypt-pharmacy-market-monitoring.md, governance/egypt-pharmacy-source-register.md, governance/egypt-requirements-register.md, governance/evidence-register.md, roles/pharmacy-domain.md and skills/egypt-compliance-review/SKILL.md.
-6. Read relevant architecture, decisions, quality, security and delivery documents.
-7. Load only the skills relevant to the task.
-8. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
+3. Read governance/approval-register.md before implementation, workflow changes or release decisions.
+4. Read memory/current-state.md and memory/open-questions.md.
+5. Read product/vision.md, product/scope.md and relevant domain documents.
+6. For pharmacy tasks, read governance/egypt-pharmacy-market-monitoring.md, governance/egypt-pharmacy-source-register.md, governance/egypt-requirements-register.md, governance/evidence-register.md, roles/pharmacy-domain.md and skills/egypt-compliance-review/SKILL.md.
+7. Read relevant architecture, decisions, quality, security and delivery documents.
+8. Load only the skills relevant to the task.
+9. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
 
 ## Egypt pharmacy intelligence — mandatory
 The Egypt market/regulatory monitoring policy is required for pharmacy discovery, requirements, architecture, implementation, tests and release. It defines source coverage, evidence classes, review cadence, impact mapping, human approval and limits on claims. The source register is an expandable starting point, not an exhaustive whitelist. The dated scan is an initial snapshot, not a substitute for fresh checks.
@@ -26,6 +27,9 @@ The EDA ingestion MVP is owner-approved and merged to master (PR #22); the dupli
 
 ## Governance model
 The five role responsibilities are stable, while their ICT and business professional identities are selected dynamically for each problem. See governance/dynamic-role-selection.md. All agents must use the same principles across local and online environments.
+
+## Approval system
+[Central approval register](governance/approval-register.md) is the authoritative index of owner, business, professional, regulatory, accounting, security and release approvals. Owner authorization to develop is not professional sign-off or permission to activate operational/production behavior. Each approval must be limited to its stated scope and supported by a linked detailed record and evidence.
 
 ## Memory rules
 - Memory is curated project knowledge, not a conversation transcript.
