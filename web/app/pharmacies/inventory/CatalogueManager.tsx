@@ -13,6 +13,7 @@ type Conversion = {
   toUnitId: string; toUnitName: string; numerator: number; denominator: number; status: string;
 };
 type Permission = { canManage: boolean };
+type AuditEvent = { id: string; actorSubject: string; action: string; resourceType: string; resourceId: string; occurredAtUtc: string; reason: string | null; correlationId: string };
 
 async function payload<T>(response: Response): Promise<T> {
   const body = await response.json().catch(() => null);
@@ -24,6 +25,7 @@ export default function CatalogueManager() {
   const [products, setProducts] = useState<Product[]>([]);
   const [units, setUnits] = useState<Unit[]>([]);
   const [conversions, setConversions] = useState<Conversion[]>([]);
+  const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([]);
   const [canManage, setCanManage] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [search, setSearch] = useState("");
@@ -81,6 +83,16 @@ export default function CatalogueManager() {
       .catch(e => { if (active) setError(e instanceof Error ? e.message : "Conversions could not be loaded."); });
     return () => { active = false; };
   }, [selectedId]);
+
+  useEffect(() => {
+    if (!canManage) { setAuditEvents([]); return; }
+    let active = true;
+    fetch("/api/pharmacy/catalogue/audit", { cache: "no-store" })
+      .then(response => payload<AuditEvent[]>(response))
+      .then(rows => { if (active) setAuditEvents(rows); })
+      .catch(e => { if (active) setError(e instanceof Error ? e.message : "Audit history could not be loaded."); });
+    return () => { active = false; };
+  }, [canManage]);
 
   const filteredProducts = useMemo(() => {
     const q = search.trim().toLocaleLowerCase();
