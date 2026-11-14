@@ -143,7 +143,7 @@ This is an AI-assisted evidence assessment, not qualified pharmacist, quality, r
 ## 11. Generic implementation boundary — owner-approved 2026-11-14
 
 The owner explicitly answered yes to proceeding with generic implementation while Q38 remains pending. This authorization is limited to:
-- Generic product display name, optional description, immutable UUID and Draft-only status.
+- Generic product display name, immutable UUID and Draft-only status; free-text descriptions are excluded to avoid storing unreviewed regulatory or clinical attributes.
 - Generic unit code/name/symbol.
 - Product-scoped unit conversions stored as positive, reduced integer numerator/denominator pairs. The API does not calculate quantities or apply rounding.
 - Authenticated reads; Administrator-role writes as a temporary least-privilege control pending the final role matrix.
