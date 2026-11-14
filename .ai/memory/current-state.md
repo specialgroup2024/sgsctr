@@ -40,21 +40,17 @@ The owner confirms that the three branches may transfer medicines and supplies d
 - Web routes include overview, organization, pharmacies, contracting and pharmacy Regulatory Intelligence.
 - Organization API returns owner-provided sector and location reference data; legal identity remains VerificationPending.
 - Location create/edit/deactivate requires the configured Organization:ManagerSubjects allowlist, empty by default.
-- No pharmacy inventory, dispensing, purchasing, claims, patient balances, contracting transactions or financial posting is implemented.
+- No pharmacy inventory API, database schema, supplier/purchasing, receiving, stock balance, transfer ledger, dispensing, claims, patient balances or financial posting is implemented.
 
-## Pharmacy inventory INV-00 — 2026-11-14
-- PR #27 merged the Phase 0 discovery package. Current work branch prepares INV-00 requirements; see .ai/delivery/pharmacy-inventory-inv00-requirements.md and .ai/delivery/pharmacy-inventory-costing-worked-examples.md.
-- The dated Egypt scan now includes EDA warehouse licensing guideline EDREX:GL.CALI/CIP.002 v05/2026 (July 2026) and EPTTS Phase 1 FAQ v03/2026 (23-Apr-2026). Warehouse-only requirements, including electronic records and five-year inbound/outbound invoice-document retention, must not be generalized until site classification/licence is verified.
-- The in-app EDA monitor's latest live status was not accessible during this repository-only task; last owner-provided run remains 2026-11-11.
-- No application code, schema, migration, seed data, stock balance, movement or costing implementation was created. Worked examples are synthetic and non-posting; accountant/pharmacy approval remains pending.
-
-## Pharmacy inventory discovery — 2026-11-14
-- Master repository review found no inventory implementation: AppDbContext contains organization and EDA entities only; no inventory DbSets or inventory migrations were found in the inspected API tree.
-- The Pharmacies route remains foundation-only and explicitly says inventory, purchasing, receiving, dispensing and branch transfers are not enabled.
-- Existing stock-transfer workflow, acceptance criteria, domain model and persistence design remain proposals, not approved business rules.
-- Owner-confirmed: Mokattam main warehouse, Student Hospital, Qasr El-Aini and Manial branches; direct branch-to-branch transfer is required.
-- Bounded EDA inventory scan is recorded in .ai/governance/egypt-pharmacy-inventory-scan-2026-11-14.md. GSDP v05/2025 identifies stock-record updates after each operation, periodic reconciliation, expiry checks, FEFO, segregation/quarantine, recall traceability, receiving checks and storage monitoring. Site/product applicability requires qualified review.
-- No inventory code, schema, migration, seed data, stock balance or business rule was changed. Requirements, site licensing, supplier/receiving SOPs, lot/expiry controls, roles, costing and opening-stock reconciliation remain approval gates.
+## Pharmacy inventory INV-00
+- PR #27 delivered Phase 0 discovery; PR #28 delivered INV-00 requirements, costing examples, deliberation and regulatory scan.
+- The inventory UI implementation is in .ai/delivery/pharmacy-inventory-ui-inv00.md and the /pharmacies/inventory route. It is a connected, non-posting prototype, not a production inventory module.
+- The UI reads active pharmacy location reference records from the existing Organization API and reports API liveness separately from PostgreSQL readiness through /api/system-status.
+- UI sections: Overview, Product Catalogue, Receiving, Stock Transfers, Batches & Expiry and Reports. Empty states are honest; no synthetic stock or product data is displayed; all stock-changing controls are disabled.
+- The owner-confirmed direct branch-to-branch route is represented in the UI, but transfer workflows are not enabled.
+- No inventory API, schema, migration, seed data, product master, supplier, receipt, stock balance, movement, batch, transfer, valuation or GL posting exists.
+- Site licensing, product taxonomy, receipt/storage controls, EPTTS applicability, cost inputs and weighted-average policy remain open under Q37–Q46 and earlier questions. No business or professional rule is approved by the UI.
+- No authentication verification, Data Protection volume verification or live VM/Docker deployment verification was performed in this UI phase.
 
 ## EDA regulatory intelligence
 - Owner-approved EDA ingestion MVP is merged to master (PR #22); duplicate-index migration correction is merged (PR #24).
@@ -64,5 +60,4 @@ The owner confirms that the three branches may transfer medicines and supplies d
 
 ## Governance and next milestone
 - AGENT.md, AGENTS.md and .ai define dynamic five-role operation and human/professional approval boundaries.
-- Direct branch transfer route is owner-confirmed; workflow and acceptance criteria remain proposals pending approval.
-- Next gate: verify real Identity login and authorization with authentication enabled; verify Data Protection volume survives API recreation; establish backup/restore evidence; reconcile open business/legal questions before business workflow implementation.
+- Next inventory gate: named owner/pharmacist/regulatory/accountant decisions for INV-01 reference-data scope, site classification and product/unit rules; only then implement approved persistence. Stock movements and costing remain later gated work.
