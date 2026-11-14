@@ -48,8 +48,8 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - INV-00 screens: Overview, Product Catalogue, Receiving, Stock Transfers, Batches & Expiry and Reports. The overview reads active pharmacy locations through the existing organization API and shows API liveness separately from PostgreSQL readiness.
 - All inventory write actions remain disabled. No synthetic products, quantities, receipts, expiry alerts or transactions are displayed.
 - No inventory API, entity, DbSet, migration, seed data, product master, supplier, receipt, stock balance, movement, batch, transfer, valuation or GL posting exists.
-- Q37 site classification/licence, Q38 product taxonomy and controls, and Q46 INV-01 data boundary/permissions remain open. Other inventory questions Q39–Q45 remain open.
-- INV-01 approval package is being prepared separately; no production persistence is authorized until owner and qualified pharmacy/regulatory/procurement approvals are recorded.
+- Q37: owner confirmed on 2026-11-14 that Mokattam is an EDA-licensed pharmaceutical warehouse under Chairman Decree 725/2024. Licence copy/number, holder, operator, validity and scope still require documentary/regulatory verification; the three hospital branches require separate classification. Q38 product taxonomy/controls and Q46 INV-01 data boundary/permissions remain open. Other inventory questions Q39–Q45 remain open.
+- INV-01 approval package is recorded in .ai/delivery/pharmacy-inventory-inv01-approval-pack.md. Mokattam's warehouse type is owner-confirmed, not yet independently licence-verified. No production persistence is authorized until Q37 documentary review and the remaining owner/qualified pharmacy/regulatory/procurement approvals are recorded.
 - No authentication verification, Data Protection volume verification or live VM/browser deployment verification was performed for PR #29.
 
 ## EDA regulatory intelligence
