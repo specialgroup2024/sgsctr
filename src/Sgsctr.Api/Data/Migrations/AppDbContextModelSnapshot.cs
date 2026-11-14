@@ -146,7 +146,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.Property(x => x.UpdatedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
             entity.HasKey(x => x.Id);
             entity.HasIndex(x => x.DisplayName);
-            entity.ToTable("CatalogueProducts");
+            entity.ToTable("CatalogueProducts", t => t.HasCheckConstraint("CK_CatalogueProducts_DraftOnly", "\"Status\" = 'Draft'"));
         });
 
         modelBuilder.Entity<UnitOfMeasure>(entity =>
@@ -180,7 +180,11 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.HasOne(x => x.Product).WithMany(x => x.UnitConversions).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(x => x.FromUnit).WithMany().HasForeignKey(x => x.FromUnitId).OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(x => x.ToUnit).WithMany().HasForeignKey(x => x.ToUnitId).OnDelete(DeleteBehavior.Restrict);
-            entity.ToTable("ProductUnitConversions", t => t.HasCheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0"));
+            entity.ToTable("ProductUnitConversions", t =>
+            {
+                t.HasCheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0");
+                t.HasCheckConstraint("CK_ProductUnitConversions_DraftOnly", "\"Status\" = 'Draft'");
+            });
         });
 
         modelBuilder.Entity<CatalogueAuditEvent>(entity =>
