@@ -152,6 +152,7 @@ app.MapGet("/api/v1/system/info", () => Results.Ok(new
 app.MapRegulatoryIntelligenceEndpoints();
 app.MapPharmacyCatalogueEndpoints();
 app.MapPharmacyProductGovernanceEndpoints();
+app.MapGovernanceApprovalEndpoints();
 
 var authRoutes = app.MapGroup("/api/v1/auth");
 authRoutes.MapIdentityApi<IdentityUser>();
