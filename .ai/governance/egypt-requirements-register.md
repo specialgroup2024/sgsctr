@@ -33,3 +33,17 @@ Use: discovered, source-verified, applicability-pending, professional-review, ow
 ## Change-control rule
 
 A new or amended requirement must be linked to the source evidence, impact assessment, qualified review, owner decision, implementation work package and acceptance tests. Retain historical versions and effective dates. No legal rule may be silently overwritten.
+
+
+## Inventory evidence mapped — discovered, applicability pending
+
+| ID | Evidence / requirement area | Candidate control | Status and gate |
+|---|---|---|---|
+| INV-REG-01 | EDA GSDP v05/2025, stock control 12.1–12.4 | Update stock records after each operation; periodic physical reconciliation; investigate discrepancies/CAPA; monitor expiry/retest. | Source-verified guidance; site/product applicability and SOP review pending. |
+| INV-REG-02 | EDA GSDP v05/2025, receipt/storage 13.2–13.3 | Supplier eligibility, product/batch/expiry/quantity/packaging/transport checks; separate nonconforming stock; store per label. | Source-verified guidance; pharmacist/regulatory review pending. |
+| INV-REG-03 | EDA GSDP v05/2025, returns/recalls 10–11 | Quarantine returns; qualified disposition; isolate recalled stock; trace and reconcile quantities. | Source-verified guidance; approved SOP and reviewer assignment pending. |
+| INV-REG-04 | EDA warehouse licensing EDREX:GL.CALI/CIP.002 v05/2026 | For covered licensed medicine warehouses: electronic record system, retrieval of stock/supplier/customer and invoice information, at least five-year retention of inbound/outbound invoices and supporting documents; batch/manufacture/expiry identification. | Official Arabic guide found; site class/licence and legal applicability pending. Do not generalize to all pharmacy branches. |
+| INV-REG-05 | EDA EPTTS FAQ EDREX:NP.CIP.009 v03/2026 | Phase 1 serialization/reporting data for covered human/biological pharmaceutical products; importer accountability; CSV initial submission model. | Official technical guidance found; Special Group role/product/location applicability pending. |
+| INV-REG-06 | EDA 2026 guidance index: misuse-potential products and reserve antibiotics | Product-specific handling/dispensing controls may affect catalogue classification and access. | Index verified; full Arabic instruments and SKU-level mapping pending. |
+
+Source evidence, exact URLs, dates and limitations are recorded in [the 2026-11-14 inventory scan](egypt-pharmacy-inventory-scan-2026-11-14.md). No entry is marked owner-approved or implemented.
