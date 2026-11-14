@@ -17,7 +17,7 @@ Repository baseline: ASP.NET Core 10, EF Core/Npgsql, PostgreSQL 18 and Next.js 
 3. Unit master contains code, name and optional symbol. Code is normalized to uppercase and unique.
 4. Product-unit conversion stores a product, source unit, target unit and positive reduced integer numerator/denominator. Meaning: one source unit equals numerator divided by denominator target units. The API stores the ratio; it does not calculate quantities, round, or validate dimensional compatibility.
 5. Product and conversion records are always Draft. There is no activation, retirement or deletion endpoint.
-6. Authenticated users may read. Administrator role is the interim write permission; final role/location matrix remains open.
+6. API authorization protects reads. Administrator role is the interim write permission when authentication is enabled; only in Development with Authentication:Enabled=false, the existing local-development mode may write. Production cannot disable authentication. Final role/location matrix remains open.
 7. Catalogue change and audit event are saved together in one EF Core SaveChanges transaction. Audit rows are append-only by application behavior, not claimed tamper-proof. Retention/export and database-level tamper-evidence remain unapproved.
 8. Use Next.js server-side BFF routes; browser never connects to PostgreSQL.
 9. Additive PostgreSQL migration only; no seed data.
