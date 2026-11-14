@@ -98,10 +98,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         unit.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
 
         var conversion = modelBuilder.Entity<ProductUnitConversion>();
-        conversion.ToTable("ProductUnitConversions");
+        conversion.ToTable("ProductUnitConversions", table => table.HasCheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0"));
         conversion.HasKey(x => x.Id);
         conversion.HasIndex(x => new { x.ProductId, x.FromUnitId, x.ToUnitId }).IsUnique();
-        conversion.HasCheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0");
         conversion.Property(x => x.Numerator).IsRequired();
         conversion.Property(x => x.Denominator).IsRequired();
         conversion.Property(x => x.Status).HasMaxLength(16).IsRequired();
