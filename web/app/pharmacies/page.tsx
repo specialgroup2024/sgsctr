@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { readSession } from "@/lib/auth";
 import { AppShell } from "@/components/app-shell";
 
@@ -7,5 +8,12 @@ export const dynamic = "force-dynamic";
 export default async function PharmaciesPage() {
   const session = await readSession();
   if (!session) redirect("/login");
-  return <AppShell><div className="content"><section className="welcome-row"><div><p className="eyebrow">SECTOR 01</p><h1>Pharmacies <span>workspace</span></h1><p className="welcome-copy">Authenticated sector workspace.</p></div><span className="read-only-pill">FOUNDATION ONLY</span></section><section className="notice-panel"><strong>Egypt regulatory intelligence is available.</strong><p>Automatic EDA source monitoring, document ingestion and in-app review alerts are available in the dedicated workspace.</p><a className="text-link" href="/pharmacies/regulatory-intelligence">Open regulatory intelligence ↗</a></section><section className="notice-panel"><strong>Operational features are not enabled.</strong><p>Inventory, purchasing, receiving, dispensing, branch transfers, claims, patient balances and costing remain outside this implementation phase and require separate approval.</p></section><p className="muted">Use Organization to manage approved location reference records. This page does not create pharmacy transactions.</p></div></AppShell>;
+  return <AppShell><div className="content">
+    <section className="welcome-row"><div><p className="eyebrow">SECTOR 01</p><h1>Pharmacies <span>workspace</span></h1><p className="welcome-copy">Pharmacy operations, inventory preparation and Egyptian regulatory intelligence.</p></div><span className="read-only-pill">FOUNDATION + INV-00</span></section>
+    <section className="pharmacy-entry-grid">
+      <Link className="pharmacy-entry-card pharmacy-entry-primary" href="/pharmacies/inventory"><span className="pharmacy-entry-icon">▦</span><div><p className="eyebrow">INVENTORY · INV-00</p><h2>Inventory workspace</h2><p>View pharmacy locations, inventory capability status and the staged screens for products, receiving, transfers, batches and reports.</p><strong>Open inventory workspace <span>→</span></strong></div></Link>
+      <Link className="pharmacy-entry-card" href="/pharmacies/regulatory-intelligence"><span className="pharmacy-entry-icon">◎</span><div><p className="eyebrow">EGYPT · REGULATORY</p><h2>Regulatory intelligence</h2><p>Review configured EDA source monitoring, ingested documents, scan history and human review alerts.</p><strong>Open regulatory intelligence <span>→</span></strong></div></Link>
+    </section>
+    <section className="notice-panel secondary-notice"><strong>Implementation boundary</strong><p>The inventory workspace is a connected, non-posting UI prototype. It reads the existing organization location register and API/database health status. Product data, supplier records, receipts, stock balances, transfers, batch records, valuation and financial postings are not yet implemented. Business and professional approvals remain required.</p></section>
+  </div></AppShell>;
 }

@@ -7,13 +7,14 @@ const navigation: Array<{ href: string; label: string; icon: string; status?: st
   { href: "/", label: "Overview", icon: "▦" },
   { href: "/organization", label: "Organization", icon: "⌂" },
   { href: "/pharmacies", label: "Pharmacies", icon: "✚", status: "Foundation" },
-  { href: "/pharmacies/regulatory-intelligence", label: "Regulatory Intelligence", icon: "◎", status: "New" },
+  { href: "/pharmacies/inventory", label: "Pharmacy Inventory", icon: "▤", status: "INV-00" },
+  { href: "/pharmacies/regulatory-intelligence", label: "Regulatory Intelligence", icon: "◎", status: "EDA" },
   { href: "/contracting", label: "Specialized Contracting", icon: "▤", status: "Foundation" }
 ];
 type Identity = { authenticated: boolean; user?: { subject: string; displayName: string; email: string } };
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const current = navigation.find(item => item.href === pathname);
+  const current = navigation.find(item => item.href === pathname) ?? navigation.find(item => item.href !== "/" && pathname.startsWith(item.href));
   const [identity, setIdentity] = useState<Identity | null>(null);
   useEffect(() => {
     let active = true;
@@ -29,8 +30,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="nav-label">WORKSPACE</div>
       <nav className="nav-list" aria-label="Main navigation">
         {navigation.map(item => {
-          const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-          return <Link className={`nav-item ${active ? "active" : ""}`} href={item.href} key={item.href} aria-current={active ? "page" : undefined}>
+          const active = item.href === "/" ? pathname === "/" : item.href === "/pharmacies" ? pathname === item.href : pathname === item.href || pathname.startsWith(item.href + "/");
+          return <Link className={"nav-item " + (active ? "active" : "")} href={item.href} key={item.href} aria-current={active ? "page" : undefined}>
             <span className="nav-icon" aria-hidden="true">{item.icon}</span><span>{item.label}</span>
             {item.status && <span className="nav-status">{item.status}</span>}
           </Link>;
