@@ -40,7 +40,7 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - Web routes include overview, organization, pharmacies, contracting, Pharmacy Inventory and Regulatory Intelligence.
 - Organization API returns owner-provided sector and location reference data; legal identity remains VerificationPending.
 - Location create/edit/deactivate requires configured Organization:ManagerSubjects allowlist, empty by default.
-- No pharmacy inventory API, product catalogue persistence, supplier/purchasing, receiving, stock balance, transfer ledger, dispensing, claims, patient balances or financial posting exists.
+- Master currently has no pharmacy inventory API or product catalogue persistence. Feature branch `feat/inv01-generic-product-catalogue` adds category-neutral draft product, unit and conversion persistence/API/BFF/UI plus catalogue audit events; it is not merged or runtime-verified. No supplier/purchasing, receiving, stock balance, transfer ledger, dispensing, claims, patient balances or financial posting is implemented.
 
 ## Pharmacy inventory phases
 - PR #27 delivered Phase 0 discovery; PR #28 merged INV-00 requirements, costing examples, deliberation and Egypt regulatory scan.
@@ -62,6 +62,6 @@ The owner confirms the three branches may transfer medicines and supplies direct
 
 ## Governance and next milestone
 - AGENT.md, AGENTS.md and .ai define dynamic five-role operation and human/professional approval boundaries.
-- Next gate for INV-01: complete the Q38 qualified review worksheet for the four product families; then approve the detailed data dictionary, internal code/unit rules, permissions, provenance/import-source and duplicate-resolution/audit decisions. Implement reference-data-only persistence only after those gates. Supplier master remains deferred unless separately approved.
+- Next gate for generic INV-01 branch: CI/code review, .NET build and tests, web typecheck/build, PostgreSQL migration upgrade test and VM/browser verification. Then obtain owner acceptance and a separate merge/release decision. Q38 qualified review remains required before family-specific fields, regulatory identifiers, classification or product activation. Detailed identity, conversion, permissions, audit retention/export, import provenance and duplicate-resolution decisions remain open. Supplier master remains deferred.
 - Stock movements and costing remain later gated work.
 - Authentication verification and Data Protection volume verification remain on hold per owner instruction.
