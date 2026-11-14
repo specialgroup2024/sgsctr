@@ -17,12 +17,12 @@ Assume one stock item and one location, with no lot restrictions for this arithm
 
 If 20 units are issued at this average:
 - Remaining quantity: 130 units.
-- Remaining inventory value: 130 × 10.6666667 = **EGP 1,386.67** (illustrative rounding).
+- Remaining inventory value: 130 × 10.6666667 = **EGP 1,386.6666667** (unrounded calculation; display may round to EGP 1,386.67).
 
 If a later receipt adds 20 units at EGP 11.00:
-- New value: 1,386.67 + 220.00 = EGP 1,606.67.
+- New value: 1,386.6666667 + 220.00 = EGP 1,606.6666667.
 - New quantity: 150.
-- New moving average: 1,606.67 / 150 = **EGP 10.7111333**.
+- New moving average: 1,606.6666667 / 150 = **EGP 10.7111111**.
 
 Question for accountant: which receipt costs are included in inventory cost, and at what point is the average recalculated?
 
@@ -32,8 +32,8 @@ Starting point: after the first receipt and 20-unit issue, 130 units carry EGP 1
 
 | Treatment | Return value | Remaining quantity | Remaining value | Indicative new average |
 |---|---:|---:|---:|---:|
-| A — original receipt/invoice cost | 5 × 12 = 60.00 | 125 | 1,326.67 | 10.613336 |
-| B — current moving average | 5 × 10.6666667 = 53.33 | 125 | 1,333.34 | 10.666672 |
+| A — original receipt/invoice cost | 5 × 12 = 60.00 | 125 | 1,326.6666667 | 10.6133333 |
+| B — current moving average | 5 × 10.6666667 = 53.33 | 125 | 1,333.3333333 | 10.6666667 |
 
 The owner's earlier preference was recorded as **purchase returns: original**, but it remains proposed and unapproved. Confirm whether “original” means invoice unit price, lot's capitalized landed cost, or another basis; also define returns after partial issue or mixed-cost receipt.
 
@@ -42,9 +42,9 @@ The owner's earlier preference was recorded as **purchase returns: original**, b
 Assume Location A has 130 units at EGP 10.6666667 (EGP 1,386.67). Location B has 40 units at EGP 9.00 (EGP 360.00). Transfer 30 units from A to B.
 
 - Source carrying value at A's current average: 30 × 10.6666667 = EGP 320.00.
-- A after dispatch: 100 units, EGP 1,066.67.
+- A after dispatch: 100 units, EGP 1,066.6666667.
 - If B receives at source carrying value and uses a **location-level** moving average: (EGP 360 + EGP 320) / 70 = **EGP 9.7142857** per unit.
-- If cost is pooled at sector level, a transfer between locations does not change the sector's total quantity or total value; the pool remains 170 units and EGP 1,746.67, average **EGP 10.2745098** per unit.
+- If cost is pooled at sector level, a transfer between locations does not change the sector's total quantity or total value; the pool remains 170 units and EGP 1,746.6666667, average **EGP 10.2745098** per unit.
 
 These are alternative models, not recommendations. Decide whether the average pool is per legal entity, sector, location, item, or another approved dimension; define transit valuation and whether source cost is carried unchanged.
 
