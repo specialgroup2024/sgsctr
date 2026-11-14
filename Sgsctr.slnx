@@ -1,1 +1,2 @@
-<Solution><Project Path="src/Sgsctr.Api/Sgsctr.Api.csproj" /></Solution>
+<Solution><Project Path="src/Sgsctr.Api/Sgsctr.Api.csproj" />  <Project Path="tests/Sgsctr.Api.Tests/Sgsctr.Api.Tests.csproj" />
+</Solution>
