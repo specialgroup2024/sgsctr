@@ -1,3 +1,4 @@
+using Xunit;
 using Sgsctr.Api.PharmacyCatalogue;
 
 namespace Sgsctr.Api.Tests;
