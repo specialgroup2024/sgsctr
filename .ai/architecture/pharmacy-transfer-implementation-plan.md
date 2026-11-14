@@ -1,16 +1,16 @@
 # Pharmacy inventory and stock-transfer implementation plan
 
-- Status: Phase 0 and INV-00 requirements completed; INV-00 UI prototype merged; INV-01 approval package prepared. Production inventory implementation remains gated by owner and qualified professional decisions.
+- Status: Phase 0 and INV-00 completed. Generic INV-01 draft catalogue foundation is implemented on branch `feat/inv01-generic-product-catalogue`; Q38 remains open for family-specific fields/classification/activation. Branch is not merged or runtime-verified.
 - Current master baseline: 7114e0cd499e371d2e08c71f8f86bcd6148c6deb (2026-11-14).
 - Discovery: [inventory discovery](../delivery/pharmacy-inventory-discovery.md); [INV-00 requirements](../delivery/pharmacy-inventory-inv00-requirements.md); [costing examples](../delivery/pharmacy-inventory-costing-worked-examples.md); [Egypt scan](../governance/egypt-pharmacy-inventory-scan-2026-11-14.md); [INV-01 approval pack](../delivery/pharmacy-inventory-inv01-approval-pack.md).
 
 ## 1. Verified repository baseline
 
 - ASP.NET Core 10 API, EF Core/Npgsql, PostgreSQL 18 Compose service and Next.js web shell.
-- AppDbContext exposes organization-location and EDA regulatory-intelligence DbSets only; inspected migration tree has no inventory migration.
+- Master baseline has organization-location and EDA regulatory-intelligence DbSets. The feature branch adds CatalogueProducts, UnitsOfMeasure, ProductUnitConversions and CatalogueAuditEvents with an additive migration.
 - PR #29 merged the non-posting UI route /pharmacies/inventory with Overview, Product Catalogue, Receiving, Stock Transfers, Batches & Expiry and Reports.
 - UI location reference data uses the existing Organization API; API liveness and PostgreSQL readiness are displayed separately.
-- No product catalogue persistence, supplier purchasing, receiving, stock ledger/balances, lots, stock transfers or costing implementation exists.
+- Generic product identity, units and draft conversion references are implemented on the feature branch only. No family-specific fields, supplier purchasing, receiving, stock ledger/balances, lots, stock transfers or costing implementation exists.
 - Existing transfer workflow, acceptance criteria, domain and persistence design are proposals only.
 
 ## 2. Owner-confirmed scope facts
@@ -34,11 +34,11 @@
 | INV-06 | Costing and reports | Accountant-approved moving weighted-average examples, valuation and reconciliation |
 | INV-07 | Pilot and release | Opening-stock count/reconciliation, automated tests, user acceptance and signed release gate |
 
-## 4. Required approvals before INV-01 schema or feature code
+## 4. Remaining approvals before regulated catalogue extensions and release
 
-- Owner: legal entity/site operators, INV-01 boundary, supplier scope, record ownership and permissions.
-- Licensed pharmacist/pharmacy operations: product categories, category-specific fields, identifiers, units and product handling metadata.
-- Egyptian regulatory-affairs/legal reviewer: current instruments, site licences, product-class applicability and track-and-trace obligations.
+- Owner: detailed internal-code/duplicate rules, final catalogue role matrix, audit retention/export, provenance/import authority and release acceptance. Generic draft foundation boundary is owner-authorized.
+- Licensed pharmacist/pharmacy operations: product-family taxonomy, category-specific fields, regulated identifiers and product handling metadata before those are implemented or products are activated.
+- Egyptian regulatory-affairs/legal reviewer: current instruments, site licences, product-class applicability and track-and-trace obligations before regulated extensions or operational use.
 - Procurement: supplier master scope, evidence, eligibility and verification ownership.
 - Accountant: unit precision/conversion consequences and future costing boundary; no valuation implementation in INV-01.
 - Technical/security owner: resource authorization, audit, import controls and migration strategy.
@@ -55,4 +55,4 @@
 
 ## 6. Current next action
 
-Update Q37 with the owner-confirmed Mokattam warehouse type and obtain its current licence copy/details for regulatory verification; classify each hospital branch independently. Then obtain the pharmacist/quality/regulatory decision for Q38 and owner/pharmacist/procurement decision for Q46. Only after these gates are documented may the approved data dictionary and INV-01 schema/API/UI implementation PR be prepared. Until then, only documentation, review and non-posting prototype work are in scope.
+Review the generic implementation branch, run CI/build/typecheck/tests, inspect the additive migration against a preserved PostgreSQL database, and verify the connected catalogue UI/API. Obtain owner acceptance and a separate merge/release decision. Complete Q38 with qualified reviewers before adding product-family fields, regulatory identifiers, classification or activation. Verify Q37 site licensing separately before adding pharmacy legal/site metadata. Supplier master and all transactional/financial workflows remain excluded.

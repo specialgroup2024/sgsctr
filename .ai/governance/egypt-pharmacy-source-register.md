@@ -57,3 +57,7 @@ See [Egypt pharmacy market and regulatory scan — 2026-11-11](egypt-pharmacy-cu
 - EDA EPTTS Phase 1 FAQ v03/2026: https://edaegypt.gov.eg/media/fs1folht/egyptian-track-trace-for-pharmaceutical-eptts-technical-faq-v3_20262.pdf
 - EDA Q3 2026 licensing news: https://edaegypt.gov.eg/en/media-center/news/egyptian-drug-authority-highlights-key-achievements-in-pharmaceutical-establishments-licensing-during-q3-2026/
 - UPA access was blocked in the current review; Pharmacists Syndicate and supplier/distributor sources still need authenticated, named contacts. Treat market news as signals only.
+
+## Catalogue-specific dated source scan
+
+See [Egypt pharmacy catalogue scan — 2026-11-14](egypt-pharmacy-catalogue-scan-2026-11-14.md) for the latest bounded EDA human-product, medical-device UDI, cosmetics and EPTTS source refresh. It records current indexes, individual documents reviewed, uncovered source channels and the live-monitor check limitation. This does not replace the broader monthly market scan.

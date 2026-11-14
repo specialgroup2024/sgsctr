@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AppShell } from "@/components/app-shell";
+import CatalogueManager from "./CatalogueManager";
 
 type Location = { id: string; code: string; name: string; sectorCode: string; locationType: string; isActive: boolean; recordStatus: string };
 type Organization = { locations: Location[] };
+type ProductSummary = { id: string; status: string };
 type SystemStatus = { api: string; database: string; checkedAt: string };
 type Tab = "overview" | "products" | "receiving" | "transfers" | "batches" | "reports";
 
@@ -31,13 +33,15 @@ export default function InventoryWorkspace() {
   const [tab, setTab] = useState<Tab>("overview");
   const [locations, setLocations] = useState<Location[]>([]);
   const [system, setSystem] = useState<SystemStatus | null>(null);
+  const [productCount, setProductCount] = useState<number | null>(null);
   const [loadingLocations, setLoadingLocations] = useState(true);
   const [locationError, setLocationError] = useState("");
   const [lastChecked, setLastChecked] = useState("");
   const load = useCallback(async () => {
-    const [orgResult, statusResult] = await Promise.allSettled([
+    const [orgResult, statusResult, catalogueResult] = await Promise.allSettled([
       fetch("/api/organization", { cache: "no-store" }),
-      fetch("/api/system-status", { cache: "no-store" })
+      fetch("/api/system-status", { cache: "no-store" }),
+      fetch("/api/pharmacy/catalogue", { cache: "no-store" })
     ]);
     if (orgResult.status === "fulfilled") {
       if (orgResult.value.status === 401) { window.location.assign("/login"); return; }
@@ -47,6 +51,10 @@ export default function InventoryWorkspace() {
         setLocationError("");
       } else setLocationError("The pharmacy location register could not be loaded.");
     } else setLocationError("The organization API could not be reached.");
+    if (catalogueResult?.status === "fulfilled" && catalogueResult.value.ok) {
+      const products = await catalogueResult.value.json() as ProductSummary[];
+      setProductCount(products.length);
+    } else setProductCount(null);
     if (statusResult.status === "fulfilled" && statusResult.value.ok) {
       const payload = await statusResult.value.json() as SystemStatus;
       setSystem(payload); setLastChecked(payload.checkedAt);
@@ -57,7 +65,7 @@ export default function InventoryWorkspace() {
   const pageTitle = tabs.find(x => x.id === tab)?.label ?? "Overview";
 
   return <AppShell><div className="content inventory-content">
-    <section className="welcome-row inventory-welcome"><div><p className="eyebrow">SECTOR 01 · PHARMACIES</p><h1>Pharmacy <span>inventory</span></h1><p className="welcome-copy">Inventory workspace foundation · reference visibility and workflow preparation.</p></div><span className="inventory-phase-pill">INV-00 · NON-POSTING</span></section>
+    <section className="welcome-row inventory-welcome"><div><p className="eyebrow">SECTOR 01 · PHARMACIES</p><h1>Pharmacy <span>inventory</span></h1><p className="welcome-copy">Inventory workspace foundation · reference visibility and workflow preparation.</p></div><span className="inventory-phase-pill">INV-01 · DRAFT CATALOGUE</span></section>
     <section className="inventory-connection-bar" aria-label="Live service connections">
       <div><strong>Core service connections</strong><small>Checked through the application server; the browser never connects directly to PostgreSQL.</small></div>
       <div className="inventory-connection-list"><Connection label="API" value={system?.api ?? "unavailable"} /><Connection label="Database" value={system?.database ?? "unavailable"} /><button className="inventory-refresh" type="button" onClick={() => void load()}>Refresh</button></div>
@@ -66,10 +74,10 @@ export default function InventoryWorkspace() {
       {tabs.map(item => <button key={item.id} type="button" className={tab === item.id ? "active" : ""} aria-current={tab === item.id ? "page" : undefined} onClick={() => setTab(item.id)}>{item.label}</button>)}
     </nav>
     {tab === "overview" && <>
-      <div className="inventory-section-heading"><div><p className="eyebrow">CURRENT CAPABILITY</p><h2>Inventory overview</h2><p>Live location reference data is loaded from the existing Organization API. No stock figures are fabricated.</p></div><span className="inventory-status-chip">Reference mode</span></div>
+      <div className="inventory-section-heading"><div><p className="eyebrow">CURRENT CAPABILITY</p><h2>Inventory overview</h2><p>Pharmacy locations and generic draft catalogue records are persisted through the API. No stock figures are fabricated.</p></div><span className="inventory-status-chip">Reference mode</span></div>
       <section className="inventory-kpi-grid">
         <article className="inventory-kpi"><span>Active pharmacy locations</span><strong>{loadingLocations ? "…" : locations.length}</strong><small>From PostgreSQL-backed organization register</small></article>
-        <article className="inventory-kpi"><span>Product records</span><strong>Not configured</strong><small>Product master awaits INV-01 approval</small></article>
+        <article className="inventory-kpi"><span>Catalogue records loaded</span><strong>{productCount === null ? "Unavailable" : productCount}</strong><small>Up to 100 generic identities · all remain Draft</small></article>
         <article className="inventory-kpi"><span>Stock on hand</span><strong>Not available</strong><small>No inventory ledger or balances exist</small></article>
         <article className="inventory-kpi"><span>Stock movements</span><strong>Not enabled</strong><small>No receiving, transfer or adjustment posting</small></article>
       </section>
@@ -81,19 +89,16 @@ export default function InventoryWorkspace() {
         </section>
         <section className="inventory-panel"><div className="inventory-panel-heading"><div><p className="eyebrow">INVENTORY CONTROL</p><h3>What is available now?</h3></div></div>
           <ul className="inventory-check-list">
-            <li><span className="check-pending">○</span><div><strong>Product catalogue</strong><small>Not implemented · approval questions Q38 and Q46</small></div></li>
+            <li><span className="check-pending">○</span><div><strong>Generic product catalogue</strong><small>Implemented as draft-only reference data · Q38 family rules remain gated</small></div></li>
             <li><span className="check-pending">○</span><div><strong>Receiving and quality release</strong><small>Not implemented · SOP and role approvals required</small></div></li>
             <li><span className="check-pending">○</span><div><strong>Batch, expiry and FEFO</strong><small>Not implemented · pharmacist/quality approval required</small></div></li>
             <li><span className="check-pending">○</span><div><strong>Transfers and stock ledger</strong><small>Not implemented · workflow and custody approvals required</small></div></li>
           </ul><Link className="inventory-text-link" href="/pharmacies/regulatory-intelligence">Open Egypt regulatory intelligence ↗</Link>
         </section>
       </div>
-      <GateNotice title="No live stock or valuation data is available yet." detail="This screen is a working, non-posting UI prototype. It uses real organization location records and live API/database health checks, but no inventory quantities, products, suppliers, receipts, transfers or costing records are stored or simulated." />
+      <GateNotice title="No live stock or valuation data is available yet." detail="Generic product identities, units and draft conversion references are persisted. Product-family classification, regulatory identifiers and activation remain gated; no inventory quantities, suppliers, receipts, transfers or costing records are stored or simulated." />
     </>}
-    {tab === "products" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">REFERENCE DATA · INV-01</p><h2>Product catalogue</h2><p>Medicines, chemotherapy products, medical supplies and cosmetics.</p></div><button className="inventory-disabled-action" disabled title="Requires owner and pharmacist approval">+ Add product</button></div>
-      <div className="inventory-empty-state"><span className="inventory-empty-icon">▤</span><h3>Product master is not configured</h3><p>No product records are loaded because the product taxonomy, identifiers, units, pack conversions and site/product controls have not been approved. The Add product action remains disabled to avoid creating ungoverned reference data.</p><span className="inventory-state-tag">AWAITING Q38 + Q46 APPROVAL</span></div>
-      <GateNotice title="Next catalogue gate" detail="Approve product categories and attributes, barcode/GTIN policy, unit conversions, duplicate matching, regulatory classification ownership and reference-data permissions before enabling catalogue creation." />
-    </section>}
+    {tab === "products" && <CatalogueManager />}
     {tab === "receiving" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">INBOUND STOCK</p><h2>Receiving & inspection</h2><p>Purchase-order matching, delivery checks and quality disposition.</p></div><button className="inventory-disabled-action" disabled>New receipt</button></div>
       <div className="inventory-flow-grid"><article><b>01</b><strong>Delivery evidence</strong><small>Supplier, documents, item, quantity and unit</small></article><article><b>02</b><strong>Batch inspection</strong><small>Lot, manufacture/expiry, packaging and transport evidence</small></article><article><b>03</b><strong>Disposition</strong><small>Accepted, rejected or quarantined quantities</small></article><article><b>04</b><strong>Authorized release</strong><small>Only approved release can make stock available</small></article></div>
       <div className="inventory-empty-state compact-empty"><h3>No receipts recorded</h3><p>Receiving is not connected to a purchasing or inventory ledger API. No receipt can be created, accepted or released in this phase.</p></div>
@@ -114,6 +119,6 @@ export default function InventoryWorkspace() {
       <div className="inventory-report-grid">{["Stock by location and product","Movement history","Near-expiry and expired stock","Quarantine and recall status","In-transit and transfer discrepancies","Inventory valuation and reconciliation"].map(label => <article key={label}><span>▥</span><strong>{label}</strong><small>Report becomes available after the relevant approved data source exists.</small></article>)}</div>
       <GateNotice title="Reports are not populated with sample numbers." detail="Inventory reports will be connected only to approved, persisted data and reconciled ledger queries. Valuation and financial reconciliation remain blocked until accountant-approved costing policy and examples are signed." />
     </section>}
-    <footer className="inventory-footer"><span>SGSCTR · Pharmacy inventory workspace</span><span>{pageTitle} · Non-posting prototype</span><span>Last service check: {lastChecked ? new Date(lastChecked).toLocaleTimeString() : "Not available"}</span></footer>
+    <footer className="inventory-footer"><span>SGSCTR · Pharmacy inventory workspace</span><span>{pageTitle} · Draft catalogue / non-posting inventory</span><span>Last service check: {lastChecked ? new Date(lastChecked).toLocaleTimeString() : "Not available"}</span></footer>
   </div></AppShell>;
 }

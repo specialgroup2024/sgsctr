@@ -1,7 +1,7 @@
 # Pharmacy inventory INV-01 — reference-data approval pack
 
 - Prepared: 2026-11-14.
-- Status: **initial reference-data boundary owner-approved on 2026-11-14; Q38 professional review and detailed field/permission decisions remain pending**.
+- Status: **generic catalogue foundation owner-authorized and implemented on branch `feat/inv01-generic-product-catalogue`; Q38 professional review remains pending; branch is not merged or runtime-verified**.
 - Purpose: record the approved scope without inventing pharmacy, regulatory, procurement or accounting policy.
 - Prerequisites: read AGENT.md, AGENTS.md, .ai/README.md, dynamic role selection, deliberation protocol, pharmacy profile and Egypt compliance-review skill.
 
@@ -16,11 +16,11 @@ On 2026-11-14, the owner explicitly approved this initial INV-01 scope in ChatGP
 
 INV-01 does not include purchasing orders, receiving, stock balances, lots, movements, dispensing, transfers, valuation, claims or GL posting.
 
-PR #29 is merged to master as commit 7114e0cd499e371d2e08c71f8f86bcd6148c6deb. The INV-00 UI exists at /pharmacies/inventory. It remains a non-posting prototype; no inventory API, entity, DbSet, migration or product records exist.
+PR #29 is merged to master as commit 7114e0cd499e371d2e08c71f8f86bcd6148c6deb. The INV-00 UI was extended on the current feature branch with the generic draft catalogue. The branch adds generic product, unit, conversion and catalogue-audit persistence/API/BFF/UI; it is not yet merged or runtime-verified.
 
 **Approval meaning:** the owner has approved the phase boundary and the general implementation principles listed below. This does not approve the detailed product data dictionary, category-specific mandatory fields, regulatory classification, internal-code semantics, create/edit/retire permissions, import sources, duplicate-resolution rules, supplier master, or any stock/financial workflow.
 
-**Implementation gate:** Q38 product taxonomy and mandatory fields still require qualified pharmacist, quality and regulatory review. The owner approvals do not waive professional approval, security review, or the remaining detailed design decisions. No production schema, seed data, import or write endpoint is authorized until the Q38 review and detailed implementation gates are recorded. The UI may be refined as a non-posting prototype.
+**Implementation gate and owner-approved carve-out:** Q38 product taxonomy and family-specific mandatory fields still require qualified pharmacist, quality and regulatory review. On 2026-11-14 the owner explicitly authorized generic implementation while Q38 remains pending. This latest approval supersedes the earlier blanket implementation hold only for the category-neutral, draft-only foundation described in section 11. It does not waive Q38 or authorize regulated fields, identifiers, classification, activation, import, supplier, stock or financial workflows.
 
 ### Owner approvals recorded — 2026-11-14
 
@@ -28,7 +28,7 @@ The owner explicitly approved the following implementation directions in ChatGPT
 - Product identity/catalogue: proceed with a persistent product identity and catalogue within the INV-01 boundary. Exact internal-code format, uniqueness scope, category taxonomy and duplicate-resolution behavior remain undecided.
 - Units and packaging: model units of measure and explicit packaging conversions. Precision, fractional quantities, rounding, effective-date behavior and family-specific applicability remain subject to detailed technical and qualified review.
 - Security and audit: protected catalogue operations must use server-side authorization and auditable changes. The exact role/permission matrix, event catalogue, retention, evidence and export rules remain to be specified and reviewed.
-- Implementation: proceed within the approved INV-01 boundary, subject to the existing Q38 and detailed implementation gates. This is not permission to bypass those gates.
+- Implementation: proceed with the generic catalogue foundation while Q38 is pending, preserving the restrictions in section 11. This is an explicit owner-approved carve-out from the earlier blanket persistence hold, not a waiver of professional review.
 
 These approvals are owner-level direction, not pharmacist, quality, regulatory, legal or accounting sign-off. No family-specific fields or operational rules are approved by them.
 
@@ -57,9 +57,9 @@ Operators need to find the exact item quickly by name, strength/form where appli
 
 Separate stable product identity from versioned descriptive/regulatory attributes, packaging identifiers and unit definitions. Category-specific fields should be enabled only after a qualified reviewer defines them. Keep source, evidence, reviewer, effective date and verification status for externally sourced identifiers/classification. Do not infer registration, controlled status, EPTTS applicability, storage conditions or clinical handling from product names or generic category labels. A catalogue import must enter a staging/review process and never activate records automatically.
 
-### Maestro technical determination
+### Maestro technical determination — updated by owner authorization 2026-11-14
 
-Proceed with approval and data-dictionary preparation only. After required approvals, implement reference-data-only endpoints and persistence with server-side authorization, audit, effective-dated changes, import staging, duplicate review and PostgreSQL tests. No stock or financial tables, costing, purchase workflow, receiving or production data mutation in INV-01. No default product catalogue should be seeded from assumptions.
+Implement only category-neutral draft product identity, unit masters, exact rational product-unit conversion references, server-side authorization and application-layer append-only audit events. Do not add family-specific fields, external identifiers, activation/retirement, import staging, suppliers, stock, purchasing, receiving or financial behavior. No default product or unit catalogue is seeded.
 
 ## 3. Proposed reference-data boundaries (not approved fields)
 
@@ -108,20 +108,18 @@ The 2026-11-14 INV-00 scan records EDA GSDP v05/2025, EDA pharmaceutical warehou
 
 Before implementation, repeat the mandatory current Egyptian primary-source review under .ai/skills/egypt-compliance-review/SKILL.md, inspect the in-app monitor if deployed, record source failures/coverage, and update the evidence and requirements registers. Do not treat a search result, supplier file or market article as a legal determination.
 
-## 7. Implementation sequence after signed approvals
+## 7. Remaining implementation and release sequence
 
-1. Freeze the approved data dictionary and Q37 site register as versioned decision records.
-2. Inspect current API patterns, Identity authorization, audit facilities, AppDbContext, migrations, tests and web BFF again at implementation time.
-3. Produce an ADR and reviewable logical schema; obtain technical/security review.
-4. Implement domain validation and unit tests before persistence.
-5. Implement EF Core entities, DbSets, migration and PostgreSQL constraints; review generated SQL and test upgrade/rollback strategy without resetting existing data.
-6. Add authorized API/BFF read/write endpoints, audit and import staging; keep activation/review states explicit.
-7. Add catalogue screens with search, duplicate-review and controlled edit workflows; remove disabled controls only for approved actions.
-8. Run build, unit/integration/security tests and VM/browser verification; obtain user acceptance before release.
+1. Review the generic implementation branch and the proposed technical ADR; resolve any code-review findings.
+2. Run .NET build/tests, Next.js typecheck/build, PostgreSQL migration upgrade test and browser/API smoke tests in the repository environment.
+3. Verify audit persistence and Administrator-only write authorization; define the final role matrix and audit retention/export policy before production release.
+4. Complete Q38 with qualified pharmacist, quality and regulatory reviewers before adding family-specific fields, identifiers, classifications or activation.
+5. Resolve detailed product identity, import provenance, duplicate-resolution and Q37 site metadata decisions before expanding the model.
+6. Obtain owner acceptance and a separate release decision. Do not merge or deploy without the required review and explicit release authorization.
 
 ## 8. Current disposition
 
-**The initial INV-01 scope boundary is owner-approved; production implementation remains gated.** The approved boundary is product catalogue/identity, units/conversions and pharmacy-location reference metadata. Supplier master is deferred. Q38 product taxonomy and mandatory fields still require qualified pharmacist, quality and regulatory review. Detailed field, permission, import-source and duplicate-resolution decisions remain to be approved. Q37 Mokattam licence details and other-site classifications remain pending documentary/regulatory verification. This pack is a scope-approval record, not a claim that product catalogue persistence has been implemented. Authentication verification and Data Protection volume verification remain on hold per owner instruction.
+**The generic INV-01 foundation is implemented on a review branch, not yet merged or runtime-verified.** The branch contains draft-only product identity, unit masters, exact product-unit conversion references, API/BFF/UI, additive EF migration and catalogue audit events. No product/unit seed data was added. Q38 remains OPEN; Q37 documentary verification remains pending. Detailed code/duplicate, permission, audit retention/export and import decisions remain open. Authentication and Data Protection verification remain on hold per owner instruction.
 
 
 ## 9. INV-01 next-phase review artifacts
@@ -140,3 +138,19 @@ Next gate: complete and sign Q38 with qualified human reviewers; then resolve in
 A bounded EDA-primary-source desk assessment for regular human medicines, chemotherapy, medical supplies/devices and cosmetics is recorded at .ai/delivery/pharmacy-inventory-inv01-q38-evidence-assessment.md. It distinguishes human-product registration, EPTTS, medical-device UDI and cosmetics notification/claims evidence and proposes family-specific catalogue considerations.
 
 This is an AI-assisted evidence assessment, not qualified pharmacist, quality, regulatory-affairs or legal sign-off. Q38 remains OPEN. The professional worksheet at .ai/delivery/pharmacy-inventory-inv01-q38-review-worksheet.md remains uncompleted and must be validated by designated qualified reviewers. No production fields, activation rules, storage rules, regulatory applicability or stock controls are approved by this assessment.
+
+
+## 11. Generic implementation boundary — owner-approved 2026-11-14
+
+The owner explicitly answered yes to proceeding with generic implementation while Q38 remains pending. This authorization is limited to:
+- Generic product display name, immutable UUID and Draft-only status; free-text descriptions are excluded to avoid storing unreviewed regulatory or clinical attributes.
+- Generic unit code/name/symbol.
+- Product-scoped unit conversions stored as positive, reduced integer numerator/denominator pairs. The API does not calculate quantities or apply rounding.
+- API-authorized reads; Administrator-role writes when authentication is enabled; the existing local Development mode with authentication explicitly disabled permits local writes only. The final role matrix remains pending.
+- Catalogue audit rows written in the same EF SaveChanges transaction as the associated catalogue change. Audit is append-only by application behavior only; no tamper-proof or retention claim is made.
+- No seed products or units, imports, human SKU, barcode/GTIN/UDI/EPTTS identifiers, family/category fields, registration/notification fields, storage, lot, serial, expiry, clinical or claims fields.
+- No product activation, retirement or deletion. Product and conversion status is always Draft.
+- No supplier master, purchasing, receiving, stock, dispensing, transfer, valuation, claims, accounting or GL workflow.
+- Location metadata is not changed by this branch; Q37 site licensing classification remains pending.
+
+Implementation branch: `feat/inv01-generic-product-catalogue`. Application build, test execution, migration execution and VM/browser verification have not yet been performed through the available repository connection. This branch is a code implementation proposal awaiting CI/review, not a production release.

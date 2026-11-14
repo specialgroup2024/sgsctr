@@ -23,6 +23,8 @@ jobs:
         run: dotnet restore Sgsctr.slnx
       - name: Build
         run: dotnet build Sgsctr.slnx --configuration Release --no-restore
+      - name: Run automated tests
+        run: dotnet test Sgsctr.slnx --configuration Release --no-build
 
       - name: Validate EF Core migration snapshots
         run: |
