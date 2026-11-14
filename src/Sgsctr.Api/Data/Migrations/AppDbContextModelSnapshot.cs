@@ -202,5 +202,88 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.ToTable("CatalogueAuditEvents");
         });
 
+        modelBuilder.Entity<CatalogueProductFamilyAssignment>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.ProductId).HasColumnType("uuid");
+            entity.Property(x => x.FamilyCode).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.ReviewStatus).IsRequired().HasMaxLength(40).HasColumnType("character varying(40)");
+            entity.Property(x => x.ProposedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.ProposedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.ProductId).IsUnique();
+            entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("CatalogueProductFamilyAssignments", t =>
+            {
+                t.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_FamilyCode", "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalDevice','MedicalSupply','Cosmetic')");
+                t.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_ReviewStatus", "\"ReviewStatus\" = 'PendingProfessionalReview'");
+            });
+        });
+
+        modelBuilder.Entity<CatalogueProductIdentifier>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.ProductId).HasColumnType("uuid");
+            entity.Property(x => x.SchemeCode).IsRequired().HasMaxLength(40).HasColumnType("character varying(40)");
+            entity.Property(x => x.Value).IsRequired().HasMaxLength(160).HasColumnType("character varying(160)");
+            entity.Property(x => x.PackagingLevel).HasMaxLength(64).HasColumnType("character varying(64)");
+            entity.Property(x => x.VerificationStatus).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.SourceUri).HasMaxLength(2000).HasColumnType("character varying(2000)");
+            entity.Property(x => x.CreatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.CreatedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => new { x.SchemeCode, x.Value }).IsUnique();
+            entity.HasIndex(x => x.ProductId);
+            entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("CatalogueProductIdentifiers", t =>
+            {
+                t.HasCheckConstraint("CK_CatalogueProductIdentifiers_SchemeCode", "\"SchemeCode\" IN ('GTIN','UDI-DI','EDA-Registration','EDA-Cosmetics-Notification')");
+                t.HasCheckConstraint("CK_CatalogueProductIdentifiers_VerificationStatus", "\"VerificationStatus\" = 'PendingVerification'");
+            });
+        });
+
+        modelBuilder.Entity<CatalogueRegulatoryEvidence>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.ProductId).HasColumnType("uuid");
+            entity.Property(x => x.AuthorityCode).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
+            entity.Property(x => x.EvidenceType).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
+            entity.Property(x => x.ReferenceNumber).IsRequired().HasMaxLength(160).HasColumnType("character varying(160)");
+            entity.Property(x => x.DocumentUri).HasMaxLength(2000).HasColumnType("character varying(2000)");
+            entity.Property(x => x.RegulatoryDocumentId).HasColumnType("uuid");
+            entity.Property(x => x.PublishedOn).HasColumnType("date");
+            entity.Property(x => x.EffectiveFrom).HasColumnType("date");
+            entity.Property(x => x.ExpiresOn).HasColumnType("date");
+            entity.Property(x => x.VerificationStatus).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.CreatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.CreatedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.ProductId);
+            entity.HasIndex(x => x.RegulatoryDocumentId);
+            entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(x => x.RegulatoryDocument).WithMany().HasForeignKey(x => x.RegulatoryDocumentId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("CatalogueRegulatoryEvidence", t =>
+                t.HasCheckConstraint("CK_CatalogueRegulatoryEvidence_VerificationStatus", "\"VerificationStatus\" = 'PendingReview'"));
+        });
+
+        modelBuilder.Entity<CatalogueLifecycleRequest>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.ProductId).HasColumnType("uuid");
+            entity.Property(x => x.RequestedAction).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.ReviewStatus).IsRequired().HasMaxLength(40).HasColumnType("character varying(40)");
+            entity.Property(x => x.Reason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.RequestedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.RequestedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => new { x.ProductId, x.RequestedAtUtc });
+            entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("CatalogueLifecycleRequests", t =>
+            {
+                t.HasCheckConstraint("CK_CatalogueLifecycleRequests_Action", "\"RequestedAction\" IN ('Activate','Retire')");
+                t.HasCheckConstraint("CK_CatalogueLifecycleRequests_ReviewStatus", "\"ReviewStatus\" = 'PendingProfessionalReview'");
+            });
+        });
+
     }
 }

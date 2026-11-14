@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
+import ProductGovernanceManager from "./ProductGovernanceManager";
 
 type Product = {
   id: string; displayName: string; status: string;
@@ -161,7 +162,7 @@ export default function CatalogueManager() {
   }
 
   return <div className="catalogue-manager">
-    <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>Generic catalogue only · Q38 professional review remains pending</strong><p>Records and conversions remain drafts. No medicine/device/cosmetics classification, regulatory identifiers, product activation, stock, dispensing or valuation is enabled.</p></div></div>
+    <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>Generic catalogue only · Q38 professional review remains pending</strong><p>Records and conversions remain drafts. Family and identifier entries are provisional only; no verified classification, product activation, stock, dispensing or valuation is enabled.</p></div></div>
     {error && <p className="form-error" role="alert">{error}</p>}
     {notice && <p className="form-success" role="status">{notice}</p>}
     <section className="catalogue-layout">
@@ -227,6 +228,7 @@ export default function CatalogueManager() {
         </> : <p className="inventory-empty">Select a product to view or add its draft conversions.</p>}
       </div>
     </section>
-    <p className="catalogue-footer-note">No import, activation, retirement, supplier, purchasing, receiving, stock, lot, transfer, pricing, valuation or financial posting is available in this generic phase.</p>
+    <ProductGovernanceManager productId={selectedId} canManage={canManage} />
+    <p className="catalogue-footer-note">Family, identifier and lifecycle submissions remain unverified review records. No product activation, supplier, purchasing, receiving, stock, lot, transfer, pricing, valuation or financial posting is available.</p>
   </div>;
 }
