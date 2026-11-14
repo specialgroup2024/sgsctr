@@ -18,6 +18,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<CatalogueProductIdentifier> CatalogueProductIdentifiers => Set<CatalogueProductIdentifier>();
     public DbSet<CatalogueRegulatoryEvidence> CatalogueRegulatoryEvidence => Set<CatalogueRegulatoryEvidence>();
     public DbSet<CatalogueLifecycleRequest> CatalogueLifecycleRequests => Set<CatalogueLifecycleRequest>();
+    public DbSet<GovernanceApproval> GovernanceApprovals => Set<GovernanceApproval>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -180,6 +181,24 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         lifecycle.Property(x => x.Reason).HasMaxLength(500).IsRequired();
         lifecycle.Property(x => x.RequestedBySubject).HasMaxLength(256).IsRequired();
         lifecycle.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+
+        var approval = modelBuilder.Entity<GovernanceApproval>();
+        approval.ToTable("GovernanceApprovals", table =>
+            table.HasCheckConstraint("CK_GovernanceApprovals_Status",
+                "\"Status\" IN ('Pending','Approved','ApprovedWithConditions','Rejected','Withdrawn','Superseded')"));
+        approval.HasKey(x => x.Id);
+        approval.HasIndex(x => x.ApprovalCode).IsUnique();
+        approval.HasIndex(x => new { x.Status, x.RequiredApproverRole });
+        approval.Property(x => x.ApprovalCode).HasMaxLength(32).IsRequired();
+        approval.Property(x => x.Title).HasMaxLength(200).IsRequired();
+        approval.Property(x => x.RequiredApproverRole).HasMaxLength(100).IsRequired();
+        approval.Property(x => x.Status).HasMaxLength(32).IsRequired();
+        approval.Property(x => x.ScopeDescription).HasMaxLength(2000).IsRequired();
+        approval.Property(x => x.EvidenceReference).HasMaxLength(500).IsRequired();
+        approval.Property(x => x.DecisionBySubject).HasMaxLength(256);
+        approval.Property(x => x.DecisionReference).HasMaxLength(500);
+        approval.Property(x => x.DecisionNotes).HasMaxLength(2000);
+        approval.Property(x => x.Conditions).HasMaxLength(2000);
 
         var audit = modelBuilder.Entity<CatalogueAuditEvent>();
         audit.ToTable("CatalogueAuditEvents");

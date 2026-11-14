@@ -93,3 +93,14 @@
 .catalogue-manager .inventory-state-tag{display:inline-block}
 .catalogue-manager textarea{resize:vertical}
 @media(max-width:900px){.catalogue-layout{grid-template-columns:1fr}}
+
+
+/* Persisted approval register */
+.inventory-approval-list{display:grid;gap:12px;margin:16px 0}
+.inventory-approval-list>.inventory-panel{padding:17px}
+.inventory-approval-list .inventory-panel-heading{align-items:flex-start}
+.inventory-approval-list .inventory-panel-heading h3{font-size:13px;line-height:1.45}
+.inventory-approval-list p{font-size:10px;line-height:1.7;color:#718078;margin:8px 0}
+.inventory-approval-list .approval-pending{background:#fff4df;color:#89652a}
+.inventory-approval-list .approval-recorded{background:#edf5ef;color:#3e7653}
+.inventory-approval-list code{white-space:normal;overflow-wrap:anywhere}
