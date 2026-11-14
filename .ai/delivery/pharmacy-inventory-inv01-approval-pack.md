@@ -146,7 +146,7 @@ The owner explicitly answered yes to proceeding with generic implementation whil
 - Generic product display name, immutable UUID and Draft-only status; free-text descriptions are excluded to avoid storing unreviewed regulatory or clinical attributes.
 - Generic unit code/name/symbol.
 - Product-scoped unit conversions stored as positive, reduced integer numerator/denominator pairs. The API does not calculate quantities or apply rounding.
-- Authenticated reads; Administrator-role writes as a temporary least-privilege control pending the final role matrix.
+- API-authorized reads; Administrator-role writes when authentication is enabled; the existing local Development mode with authentication explicitly disabled permits local writes only. The final role matrix remains pending.
 - Catalogue audit rows written in the same EF SaveChanges transaction as the associated catalogue change. Audit is append-only by application behavior only; no tamper-proof or retention claim is made.
 - No seed products or units, imports, human SKU, barcode/GTIN/UDI/EPTTS identifiers, family/category fields, registration/notification fields, storage, lot, serial, expiry, clinical or claims fields.
 - No product activation, retirement or deletion. Product and conversion status is always Draft.
