@@ -1,57 +1,44 @@
 # EDA regulatory ingestion operations
 
-Status: initial operational runbook for the EDA ingestion MVP.
+Status: MVP merged to master. Owner supplied one successful scan log dated 2026-11-11. Continue to treat this as a bounded MVP, not exhaustive monitoring or a regulatory compliance service.
 
 ## Expected behavior
-
 - API startup starts the background worker after the application host is running.
-- The worker attempts a first due-source scan, then wakes every 15 minutes.
-- Each source is checked every 360 minutes unless an administrator requests a forced scan.
-- A successful scan stores new HTML/PDF documents and creates unread alerts. Existing URL/hash matches are not re-imported.
-- Failed source checks update LastError and the scan-run history; other sources continue.
+- Worker wakes every 15 minutes; each source is due every 360 minutes unless an administrator requests a forced scan.
+- Successful scans store new HTML/PDF documents and create unread alerts. URL/hash matches are not re-imported.
+- Failed source checks update LastError and scan history; other sources continue.
+
+## Observed verification
+Owner-provided API logs on 2026-11-11 reported five sources, 100 discovered links, 12 new documents and zero failures. This proves one successful observed cycle only. It does not establish continuous operation, exhaustive source coverage, legal applicability or completion of qualified review.
 
 ## Deployment and migration
+1. Deploy API and web from the same commit.
+2. Preserve PostgreSQL data and take a verified backup before production migration.
+3. Development Compose enables startup migrations; production must use an approved migration job/process.
+4. Confirm five RegulatorySources seed records and inspect last-check/last-success/error after deployment.
+5. Do not remove source/document history to silence ingestion errors.
 
-1. Deploy the API and web build from the same commit.
-2. Apply the additive AppDbContext migration 20261111140000_EdaRegulatoryIntelligence before enabling the worker in production.
-3. Development Compose has Database__ApplyMigrations=true; production must use the approved migration job/process rather than enabling startup migrations by default.
-4. Preserve the PostgreSQL data volume and take a verified backup before production migration.
-5. Confirm the five RegulatorySources seed records appear after the first worker cycle.
-
-## Monitoring
-
+## Monitoring and review
 - Open Pharmacies → Regulatory Intelligence.
 - Check each source's last check, last successful check and error.
 - Check last scan status, discovered link count and new document count.
 - Review unread alerts and open the ingested copy or original EDA page.
-- Acknowledge an alert only after assigning it to the responsible reviewer; acknowledgement is not regulatory verification or approval.
-- Administrator users can select Scan EDA now and acknowledge alerts. Standard authenticated users can view alerts but cannot acknowledge or trigger scans. In local Development only, when authentication is explicitly disabled, the local development user can perform these actions.
+- Acknowledge only after assigning the item to a responsible reviewer; acknowledgement is not regulatory verification or approval.
+- Manual scan and acknowledgement require the configured administrative/authenticated controls. When local Development authentication is explicitly disabled, do not mistake the local development identity for production access control.
 
-## Failure handling
+## Storage and Data Protection
+- Original HTML/PDF bytes are stored in PostgreSQL. Each document is limited to 5 MiB and each cycle imports at most 12 new documents.
+- Database backups include original documents. Monitor database size, backup duration and restore time.
+- Retention/deletion policy is not approved; do not implement automatic purging.
+- Compose defines named volume sgsctr_dataprotection_keys mounted at /var/lib/sgsctr/data-protection-keys. Verify it contains the existing key ring and survives API-container recreation before relying on it operationally.
+- Production requires DataProtection certificate path/password supplied through secrets. Development key files are not encrypted at rest by the current configuration.
 
-- DNS, TLS, timeout, HTTP status, redirect, changed page markup and size-limit failures appear in source LastError and scan history.
-- Do not bypass access controls, change user-agent to evade restrictions, or fetch arbitrary hosts.
-- Confirm the URL manually in a browser and check the EDA website before changing the seed URL.
-- If EDA changes page structure, update the parser and add regression fixtures using permitted public samples.
-- Do not delete a source or document to silence an error; retain evidence and history.
-
-## Storage and data protection
-
-- Original HTML/PDF bytes are stored in PostgreSQL. Each document is limited to 5 MiB and each scan cycle imports at most 12 new documents.
-- Database backups include the original documents. Monitor database size, backup duration and restore time.
-- Retention and deletion policy is not yet approved; do not implement automatic purging.
-- Do not upload confidential supplier correspondence, patient information or internal records into the public-source ingestion pipeline.
-- Restrict API access using authenticated sessions; manual scans require Administrator.
-- Review downloaded documents as untrusted files; do not execute embedded content.
-
-## Human review and escalation
-
-- All documents start Unverified / Pending.
-- Recall and safety title keywords only set a triage hint UrgentReview; immediately route apparent safety/recall material to the designated pharmacist/quality lead.
+## Failure handling and human review
+- DNS, TLS, timeout, HTTP status, redirect, changed markup and size-limit failures appear in source LastError and scan history.
+- Do not bypass access controls, evade restrictions, or fetch arbitrary hosts.
+- All documents start Unverified/Pending. Recall/safety keywords create an UrgentReview triage hint, not a clinical risk classification.
 - Verify original Arabic text, issuing authority, instrument number, publication/effective dates, amendments and applicability.
-- Record the evidence and decision in .ai/governance/evidence-register.md and .ai/governance/egypt-requirements-register.md when it affects agent development work.
-- Only authorized Egyptian professionals and business owners may approve legal interpretation, pharmacy practice, clinical/quality disposition, pricing, inventory, reimbursement or accounting changes.
+- Qualified Egyptian professionals and business owners must approve legal interpretation, pharmacy practice, clinical/quality disposition, pricing, inventory, reimbursement or accounting changes.
 
 ## Current exclusions
-
-No email/SMS/push notification, OCR, automated translation, legal interpretation, automatic effective-date extraction, product matching, market price feed, external paid feed, or automatic business-rule update is configured.
+No email/SMS/push, OCR, automated translation, legal interpretation, reliable effective-date extraction, product matching, market-price feed, external paid feed or automatic business-rule update is configured.
