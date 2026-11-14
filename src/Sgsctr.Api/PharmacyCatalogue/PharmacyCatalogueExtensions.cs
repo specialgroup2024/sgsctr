@@ -58,7 +58,7 @@ public static class PharmacyCatalogueExtensions
         {
             var error = ValidateProduct(input);
             if (error is not null) return Results.ValidationProblem(error);
-            var actor = Actor(user);
+            var actor = Actor(user, localDevelopmentWrites);
             var now = DateTimeOffset.UtcNow;
             var product = new CatalogueProduct
             {
@@ -87,7 +87,7 @@ public static class PharmacyCatalogueExtensions
             if (product.Status != "Draft") return Results.Conflict(new { error = "Only draft catalogue records can be edited." });
             if (input.Version != product.Version) return Results.Conflict(new { error = "The catalogue record changed. Reload it before editing." });
 
-            var actor = Actor(user);
+            var actor = Actor(user, localDevelopmentWrites);
             var now = DateTimeOffset.UtcNow;
             product.DisplayName = input.DisplayName.Trim();
             product.UpdatedAtUtc = now;
@@ -111,7 +111,7 @@ public static class PharmacyCatalogueExtensions
                 input.Symbol?.Length > 24 || input.ChangeReason?.Length > 500)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["unit"] = ["Provide a unit code (max 24), name (max 100), and optional symbol (max 24)."] });
 
-            var actor = Actor(user);
+            var actor = Actor(user, localDevelopmentWrites);
             var now = DateTimeOffset.UtcNow;
             var unit = new UnitOfMeasure
             {
@@ -156,7 +156,7 @@ public static class PharmacyCatalogueExtensions
             var unitsExist = await db.UnitsOfMeasure.CountAsync(x => x.Id == input.FromUnitId || x.Id == input.ToUnitId, ct);
             if (unitsExist != 2) return Results.ValidationProblem(new Dictionary<string, string[]> { ["units"] = ["Both selected units must exist."] });
 
-            var actor = Actor(user);
+            var actor = Actor(user, localDevelopmentWrites);
             var now = DateTimeOffset.UtcNow;
             var conversion = new ProductUnitConversion
             {
@@ -185,7 +185,8 @@ public static class PharmacyCatalogueExtensions
         return errors.Count == 0 ? null : errors;
     }
 
-    private static string Actor(ClaimsPrincipal user) =>
+    private static string Actor(ClaimsPrincipal user, bool localDevelopmentWrites) =>
+        localDevelopmentWrites ? "local-development" :
         user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? user.FindFirst("sub")?.Value ?? "unknown-subject";
 
     private static void AddAudit(AppDbContext db, string actor, string action, string resourceType,
