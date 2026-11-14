@@ -1,6 +1,6 @@
 # Audit and application logging baseline
 
-Status: proposed technical baseline; event catalogue and retention approval pending.
+Status: proposed technical baseline; minimal generic catalogue write events are implemented on branch `feat/inv01-generic-product-catalogue` under the owner's audit-control approval. Enterprise event catalogue, retention and tamper-evidence approval remain pending.
 
 ## Purpose and separation
 
@@ -43,4 +43,4 @@ Never log passwords, access/refresh tokens, cookies, authorization headers, conn
 
 ## Implementation boundary
 
-The current API has framework logging and a readiness warning but no persisted audit model, event catalogue, retention policy or tamper-evidence mechanism. Do not add a speculative audit schema until event ownership, data classification, retention and required evidence are reviewed.
+The generic catalogue branch adds a narrow `CatalogueAuditEvents` record for successful product create/update, unit create and product-unit conversion create operations. The resource change and event are persisted in the same EF Core SaveChanges transaction. The API exposes the latest 100 events to Administrators only. This is not the enterprise security/business audit catalogue: authentication/authorization failures, role changes, location scopes, actor type, event schema version, source application, legal-entity/sector scope, retention, export, database-level append-only enforcement, tamper detection and restore evidence remain unimplemented or unapproved. Do not expand the event model or claim tamper-proof storage without the required review.
