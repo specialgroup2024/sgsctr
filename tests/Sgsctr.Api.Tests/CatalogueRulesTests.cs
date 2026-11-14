@@ -23,6 +23,7 @@ public sealed class CatalogueRulesTests
     [InlineData(1, 0)]
     [InlineData(-1, 2)]
     [InlineData(2, -1)]
+    [InlineData(9_007_199_254_740_992, 1)]
     public void TryNormalizeRatio_RejectsNonPositiveValues(long numerator, long denominator)
     {
         Assert.False(CatalogueRules.TryNormalizeRatio(numerator, denominator, out _, out _));
