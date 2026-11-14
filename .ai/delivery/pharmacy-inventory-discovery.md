@@ -1,5 +1,7 @@
 # Pharmacy inventory discovery and implementation gate
 
+> Historical baseline: this document records the discovery/INV-00 state before the generic INV-01 implementation branch. For current repository state, read [current-state](../memory/current-state.md), [INV-01 approval pack](pharmacy-inventory-inv01-approval-pack.md) and [ADR-0004](../architecture/ADR-0004-generic-pharmacy-catalogue.md). The generic branch is not merged or runtime-verified.
+
 - Review date: 2026-11-14.
 - Status: Phase 0 repository and regulatory discovery completed; business requirements and professional approvals remain open.
 - Scope: Pharmacy inventory only. No authentication or Data Protection verification was performed.
