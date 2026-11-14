@@ -6,7 +6,8 @@ public static class CatalogueRules
     {
         normalizedNumerator = 0;
         normalizedDenominator = 0;
-        if (numerator <= 0 || denominator <= 0) return false;
+        const long maxSafeInteger = 9_007_199_254_740_991;
+        if (numerator <= 0 || denominator <= 0 || numerator > maxSafeInteger || denominator > maxSafeInteger) return false;
 
         var a = numerator;
         var b = denominator;
