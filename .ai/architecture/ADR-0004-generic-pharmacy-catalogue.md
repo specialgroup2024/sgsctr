@@ -13,7 +13,7 @@ Repository baseline: ASP.NET Core 10, EF Core/Npgsql, PostgreSQL 18 and Next.js 
 ## Decision proposal
 
 1. Keep generic catalogue persistence in the existing Pharmacy API/AppDbContext.
-2. Product identity consists only of immutable UUID, display name, optional description, Draft status, version and creation/update metadata. UUID is not a human SKU or external identifier.
+2. Product identity consists only of immutable UUID, display name, Draft status, version and creation/update metadata. No free-text description is stored in this generic phase. UUID is not a human SKU or external identifier.
 3. Unit master contains code, name and optional symbol. Code is normalized to uppercase and unique.
 4. Product-unit conversion stores a product, source unit, target unit and positive reduced integer numerator/denominator. Meaning: one source unit equals numerator divided by denominator target units. The API stores the ratio; it does not calculate quantities, round, or validate dimensional compatibility.
 5. Product and conversion records are always Draft. There is no activation, retirement or deletion endpoint.
