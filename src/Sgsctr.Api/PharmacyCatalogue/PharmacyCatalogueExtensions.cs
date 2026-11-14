@@ -10,6 +10,9 @@ public static class PharmacyCatalogueExtensions
     {
         var api = app.MapGroup("/api/v1/pharmacy/catalogue").RequireAuthorization();
 
+        api.MapGet("/permissions", (ClaimsPrincipal user) =>
+            Results.Ok(new { canManage = user.IsInRole("Administrator") }));
+
         api.MapGet("/products", async (string? q, AppDbContext db, CancellationToken ct) =>
         {
             var query = db.CatalogueProducts.AsNoTracking();
