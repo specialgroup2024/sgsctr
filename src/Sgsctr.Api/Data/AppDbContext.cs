@@ -78,7 +78,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         scan.Property(x => x.ErrorMessage).HasMaxLength(1000);
         scan.HasOne(x => x.Source).WithMany(x => x.ScanRuns).HasForeignKey(x => x.SourceId).OnDelete(DeleteBehavior.Restrict);
         var product = modelBuilder.Entity<CatalogueProduct>();
-        product.ToTable("CatalogueProducts");
+        product.ToTable("CatalogueProducts", table => table.HasCheckConstraint("CK_CatalogueProducts_DraftOnly", "\"Status\" = 'Draft'"));
         product.HasKey(x => x.Id);
         product.HasIndex(x => x.DisplayName);
         product.Property(x => x.DisplayName).HasMaxLength(200).IsRequired();
@@ -98,7 +98,11 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         unit.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
 
         var conversion = modelBuilder.Entity<ProductUnitConversion>();
-        conversion.ToTable("ProductUnitConversions", table => table.HasCheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0"));
+        conversion.ToTable("ProductUnitConversions", table =>
+        {
+            table.HasCheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0");
+            table.HasCheckConstraint("CK_ProductUnitConversions_DraftOnly", "\"Status\" = 'Draft'");
+        });
         conversion.HasKey(x => x.Id);
         conversion.HasIndex(x => new { x.ProductId, x.FromUnitId, x.ToUnitId }).IsUnique();
         conversion.Property(x => x.Numerator).IsRequired();
