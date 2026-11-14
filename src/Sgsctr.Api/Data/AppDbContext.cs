@@ -14,6 +14,10 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<UnitOfMeasure> UnitsOfMeasure => Set<UnitOfMeasure>();
     public DbSet<ProductUnitConversion> ProductUnitConversions => Set<ProductUnitConversion>();
     public DbSet<CatalogueAuditEvent> CatalogueAuditEvents => Set<CatalogueAuditEvent>();
+    public DbSet<CatalogueProductFamilyAssignment> CatalogueProductFamilyAssignments => Set<CatalogueProductFamilyAssignment>();
+    public DbSet<CatalogueProductIdentifier> CatalogueProductIdentifiers => Set<CatalogueProductIdentifier>();
+    public DbSet<CatalogueRegulatoryEvidence> CatalogueRegulatoryEvidence => Set<CatalogueRegulatoryEvidence>();
+    public DbSet<CatalogueLifecycleRequest> CatalogueLifecycleRequests => Set<CatalogueLifecycleRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -111,6 +115,71 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         conversion.HasOne(x => x.Product).WithMany(x => x.UnitConversions).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
         conversion.HasOne(x => x.FromUnit).WithMany().HasForeignKey(x => x.FromUnitId).OnDelete(DeleteBehavior.Restrict);
         conversion.HasOne(x => x.ToUnit).WithMany().HasForeignKey(x => x.ToUnitId).OnDelete(DeleteBehavior.Restrict);
+
+        var familyAssignment = modelBuilder.Entity<CatalogueProductFamilyAssignment>();
+        familyAssignment.ToTable("CatalogueProductFamilyAssignments", table =>
+        {
+            table.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_FamilyCode",
+                "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalSupplyDevice','Cosmetic')");
+            table.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_ReviewStatus",
+                "\"ReviewStatus\" = 'PendingProfessionalReview'");
+        });
+        familyAssignment.HasKey(x => x.Id);
+        familyAssignment.HasIndex(x => x.ProductId).IsUnique();
+        familyAssignment.Property(x => x.FamilyCode).HasMaxLength(32).IsRequired();
+        familyAssignment.Property(x => x.ReviewStatus).HasMaxLength(40).IsRequired();
+        familyAssignment.Property(x => x.ProposedBySubject).HasMaxLength(256).IsRequired();
+        familyAssignment.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+
+        var identifier = modelBuilder.Entity<CatalogueProductIdentifier>();
+        identifier.ToTable("CatalogueProductIdentifiers", table =>
+        {
+            table.HasCheckConstraint("CK_CatalogueProductIdentifiers_SchemeCode",
+                "\"SchemeCode\" IN ('GTIN','UDI-DI','EDA-Registration','EDA-Cosmetics-Notification')");
+            table.HasCheckConstraint("CK_CatalogueProductIdentifiers_VerificationStatus",
+                "\"VerificationStatus\" = 'PendingVerification'");
+        });
+        identifier.HasKey(x => x.Id);
+        identifier.HasIndex(x => new { x.SchemeCode, x.Value }).IsUnique();
+        identifier.HasIndex(x => x.ProductId);
+        identifier.Property(x => x.SchemeCode).HasMaxLength(40).IsRequired();
+        identifier.Property(x => x.Value).HasMaxLength(160).IsRequired();
+        identifier.Property(x => x.PackagingLevel).HasMaxLength(64);
+        identifier.Property(x => x.VerificationStatus).HasMaxLength(32).IsRequired();
+        identifier.Property(x => x.SourceUri).HasMaxLength(2000);
+        identifier.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+        identifier.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+
+        var evidence = modelBuilder.Entity<CatalogueRegulatoryEvidence>();
+        evidence.ToTable("CatalogueRegulatoryEvidence", table =>
+            table.HasCheckConstraint("CK_CatalogueRegulatoryEvidence_VerificationStatus",
+                "\"VerificationStatus\" = 'PendingReview'"));
+        evidence.HasKey(x => x.Id);
+        evidence.HasIndex(x => x.ProductId);
+        evidence.Property(x => x.AuthorityCode).HasMaxLength(48).IsRequired();
+        evidence.Property(x => x.EvidenceType).HasMaxLength(48).IsRequired();
+        evidence.Property(x => x.ReferenceNumber).HasMaxLength(160).IsRequired();
+        evidence.Property(x => x.DocumentUri).HasMaxLength(2000);
+        evidence.Property(x => x.VerificationStatus).HasMaxLength(32).IsRequired();
+        evidence.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+        evidence.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+        evidence.HasOne(x => x.RegulatoryDocument).WithMany().HasForeignKey(x => x.RegulatoryDocumentId).OnDelete(DeleteBehavior.Restrict);
+
+        var lifecycle = modelBuilder.Entity<CatalogueLifecycleRequest>();
+        lifecycle.ToTable("CatalogueLifecycleRequests", table =>
+        {
+            table.HasCheckConstraint("CK_CatalogueLifecycleRequests_Action",
+                "\"RequestedAction\" IN ('Activate','Retire')");
+            table.HasCheckConstraint("CK_CatalogueLifecycleRequests_ReviewStatus",
+                "\"ReviewStatus\" = 'PendingProfessionalReview'");
+        });
+        lifecycle.HasKey(x => x.Id);
+        lifecycle.HasIndex(x => new { x.ProductId, x.RequestedAtUtc });
+        lifecycle.Property(x => x.RequestedAction).HasMaxLength(16).IsRequired();
+        lifecycle.Property(x => x.ReviewStatus).HasMaxLength(40).IsRequired();
+        lifecycle.Property(x => x.Reason).HasMaxLength(500).IsRequired();
+        lifecycle.Property(x => x.RequestedBySubject).HasMaxLength(256).IsRequired();
+        lifecycle.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
 
         var audit = modelBuilder.Entity<CatalogueAuditEvent>();
         audit.ToTable("CatalogueAuditEvents");
