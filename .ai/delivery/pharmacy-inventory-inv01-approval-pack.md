@@ -123,3 +123,10 @@ The owner-approved boundary has been translated into two review-only artifacts:
 These documents are proposals, not approved schema or production contracts. The 2026-11-14 bounded EDA source refresh identified the current medical-device UDI guideline EDREX:GL.CAMD.005 v02/2026 in addition to the warehouse licensing guideline and EPTTS Phase 1 FAQ already recorded. Device UDI, ordinary barcodes and EPTTS identifiers must remain distinct. See the data dictionary for exact source URLs and limitations.
 
 Next gate: complete and sign Q38 with qualified human reviewers; then resolve internal code, unit model, provenance, permissions, duplicate-resolution, audit and import decisions. Only after those decisions and technical/security review may production persistence be designed for implementation.
+
+
+## 10. Q38 evidence assessment update — 2026-11-14
+
+A bounded EDA-primary-source desk assessment for regular human medicines, chemotherapy, medical supplies/devices and cosmetics is recorded at .ai/delivery/pharmacy-inventory-inv01-q38-evidence-assessment.md. It distinguishes human-product registration, EPTTS, medical-device UDI and cosmetics notification/claims evidence and proposes family-specific catalogue considerations.
+
+This is an AI-assisted evidence assessment, not qualified pharmacist, quality, regulatory-affairs or legal sign-off. Q38 remains OPEN. The professional worksheet at .ai/delivery/pharmacy-inventory-inv01-q38-review-worksheet.md remains uncompleted and must be validated by designated qualified reviewers. No production fields, activation rules, storage rules, regulatory applicability or stock controls are approved by this assessment.
