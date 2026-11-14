@@ -135,7 +135,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<CatalogueProduct>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.DisplayName).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
             entity.Property(x => x.Description).HasMaxLength(1000).HasColumnType("character varying(1000)");
             entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
@@ -151,7 +151,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<UnitOfMeasure>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.Code).IsRequired().HasMaxLength(24).HasColumnType("character varying(24)");
             entity.Property(x => x.Name).IsRequired().HasMaxLength(100).HasColumnType("character varying(100)");
             entity.Property(x => x.Symbol).HasMaxLength(24).HasColumnType("character varying(24)");
@@ -164,7 +164,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<ProductUnitConversion>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.ProductId).HasColumnType("uuid");
             entity.Property(x => x.FromUnitId).HasColumnType("uuid");
             entity.Property(x => x.ToUnitId).HasColumnType("uuid");
@@ -185,7 +185,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity<CatalogueAuditEvent>(entity =>
         {
-            entity.Property(x => x.Id).ValueGeneratedNever().HasColumnType("uuid");
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.ActorSubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
             entity.Property(x => x.Action).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
             entity.Property(x => x.ResourceType).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
