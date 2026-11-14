@@ -285,5 +285,28 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             });
         });
 
+        modelBuilder.Entity<GovernanceApproval>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.ApprovalCode).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.Title).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
+            entity.Property(x => x.RequiredApproverRole).IsRequired().HasMaxLength(100).HasColumnType("character varying(100)");
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.ScopeDescription).IsRequired().HasMaxLength(2000).HasColumnType("character varying(2000)");
+            entity.Property(x => x.EvidenceReference).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.CreatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.UpdatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.DecisionAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.DecisionBySubject).HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.DecisionReference).HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.DecisionNotes).HasMaxLength(2000).HasColumnType("character varying(2000)");
+            entity.Property(x => x.Conditions).HasMaxLength(2000).HasColumnType("character varying(2000)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.ApprovalCode).IsUnique();
+            entity.HasIndex(x => new { x.Status, x.RequiredApproverRole });
+            entity.ToTable("GovernanceApprovals", t =>
+                t.HasCheckConstraint("CK_GovernanceApprovals_Status", "\\"Status\\" IN ('Pending','Approved','ApprovedWithConditions','Rejected','Withdrawn','Superseded')"));
+        });
+
     }
 }
