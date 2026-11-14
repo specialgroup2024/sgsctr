@@ -65,7 +65,7 @@ export default function InventoryWorkspace() {
   const pageTitle = tabs.find(x => x.id === tab)?.label ?? "Overview";
 
   return <AppShell><div className="content inventory-content">
-    <section className="welcome-row inventory-welcome"><div><p className="eyebrow">SECTOR 01 · PHARMACIES</p><h1>Pharmacy <span>inventory</span></h1><p className="welcome-copy">Inventory workspace foundation · reference visibility and workflow preparation.</p></div><span className="inventory-phase-pill">INV-00 · NON-POSTING</span></section>
+    <section className="welcome-row inventory-welcome"><div><p className="eyebrow">SECTOR 01 · PHARMACIES</p><h1>Pharmacy <span>inventory</span></h1><p className="welcome-copy">Inventory workspace foundation · reference visibility and workflow preparation.</p></div><span className="inventory-phase-pill">INV-01 · DRAFT CATALOGUE</span></section>
     <section className="inventory-connection-bar" aria-label="Live service connections">
       <div><strong>Core service connections</strong><small>Checked through the application server; the browser never connects directly to PostgreSQL.</small></div>
       <div className="inventory-connection-list"><Connection label="API" value={system?.api ?? "unavailable"} /><Connection label="Database" value={system?.database ?? "unavailable"} /><button className="inventory-refresh" type="button" onClick={() => void load()}>Refresh</button></div>
@@ -77,7 +77,7 @@ export default function InventoryWorkspace() {
       <div className="inventory-section-heading"><div><p className="eyebrow">CURRENT CAPABILITY</p><h2>Inventory overview</h2><p>Pharmacy locations and generic draft catalogue records are persisted through the API. No stock figures are fabricated.</p></div><span className="inventory-status-chip">Reference mode</span></div>
       <section className="inventory-kpi-grid">
         <article className="inventory-kpi"><span>Active pharmacy locations</span><strong>{loadingLocations ? "…" : locations.length}</strong><small>From PostgreSQL-backed organization register</small></article>
-        <article className="inventory-kpi"><span>Draft catalogue records</span><strong>{productCount === null ? "Unavailable" : productCount}</strong><small>Generic identities only · not activated</small></article>
+        <article className="inventory-kpi"><span>Catalogue records loaded</span><strong>{productCount === null ? "Unavailable" : productCount}</strong><small>Up to 100 generic identities · all remain Draft</small></article>
         <article className="inventory-kpi"><span>Stock on hand</span><strong>Not available</strong><small>No inventory ledger or balances exist</small></article>
         <article className="inventory-kpi"><span>Stock movements</span><strong>Not enabled</strong><small>No receiving, transfer or adjustment posting</small></article>
       </section>
