@@ -18,9 +18,19 @@ INV-01 does not include purchasing orders, receiving, stock balances, lots, move
 
 PR #29 is merged to master as commit 7114e0cd499e371d2e08c71f8f86bcd6148c6deb. The INV-00 UI exists at /pharmacies/inventory. It remains a non-posting prototype; no inventory API, entity, DbSet, migration or product records exist.
 
-**Approval meaning:** the owner has approved the phase boundary only. This does not approve the detailed product data dictionary, category-specific mandatory fields, regulatory classification, create/edit/retire permissions, import sources, duplicate-resolution rules, supplier master, or any stock/financial workflow.
+**Approval meaning:** the owner has approved the phase boundary and the general implementation principles listed below. This does not approve the detailed product data dictionary, category-specific mandatory fields, regulatory classification, internal-code semantics, create/edit/retire permissions, import sources, duplicate-resolution rules, supplier master, or any stock/financial workflow.
 
-**Implementation gate:** Q38 product taxonomy and mandatory fields still require qualified pharmacist, quality and regulatory review. The owner-approved scope does not waive professional approval, security review, or the remaining detailed design decisions. No production schema, seed data, import or write endpoint is authorized until the Q38 review and detailed implementation gates are recorded. The UI may be refined as a non-posting prototype.
+**Implementation gate:** Q38 product taxonomy and mandatory fields still require qualified pharmacist, quality and regulatory review. The owner approvals do not waive professional approval, security review, or the remaining detailed design decisions. No production schema, seed data, import or write endpoint is authorized until the Q38 review and detailed implementation gates are recorded. The UI may be refined as a non-posting prototype.
+
+### Owner approvals recorded — 2026-11-14
+
+The owner explicitly approved the following implementation directions in ChatGPT:
+- Product identity/catalogue: proceed with a persistent product identity and catalogue within the INV-01 boundary. Exact internal-code format, uniqueness scope, category taxonomy and duplicate-resolution behavior remain undecided.
+- Units and packaging: model units of measure and explicit packaging conversions. Precision, fractional quantities, rounding, effective-date behavior and family-specific applicability remain subject to detailed technical and qualified review.
+- Security and audit: protected catalogue operations must use server-side authorization and auditable changes. The exact role/permission matrix, event catalogue, retention, evidence and export rules remain to be specified and reviewed.
+- Implementation: proceed within the approved INV-01 boundary, subject to the existing Q38 and detailed implementation gates. This is not permission to bypass those gates.
+
+These approvals are owner-level direction, not pharmacist, quality, regulatory, legal or accounting sign-off. No family-specific fields or operational rules are approved by them.
 
 ## 2. Dynamic five-role deliberation
 
