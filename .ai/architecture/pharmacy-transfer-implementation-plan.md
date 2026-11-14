@@ -1,8 +1,8 @@
 # Pharmacy inventory and stock-transfer implementation plan
 
-- Status: Phase 0 discovery documented; implementation blocked pending business, pharmacy, regulatory/site and accounting approvals.
+- Status: Phase 0 discovery and INV-00 requirements preparation documented; implementation blocked pending business, pharmacy, regulatory/site and accounting approvals.
 - Current baseline: master commit d448e996df45101ca90ff615d4cd06cac60df105 (2026-11-14).
-- Discovery: [pharmacy inventory discovery](../delivery/pharmacy-inventory-discovery.md); [Egypt inventory regulatory scan](../governance/egypt-pharmacy-inventory-scan-2026-11-14.md).
+- Discovery: [pharmacy inventory discovery](../delivery/pharmacy-inventory-discovery.md); [INV-00 requirements](../delivery/pharmacy-inventory-inv00-requirements.md); [costing worked examples](../delivery/pharmacy-inventory-costing-worked-examples.md); [Egypt inventory regulatory scan](../governance/egypt-pharmacy-inventory-scan-2026-11-14.md).
 
 ## 1. Verified repository baseline
 
@@ -52,4 +52,4 @@
 
 ## 6. Next action
 
-Obtain the decisions listed in .ai/memory/open-questions.md (Q29–Q36) and approvals in the discovery document. Until then, only repository discovery, documentation, mockups and non-posting prototypes are in scope. No schema migration, seed data, stock movement or production record is authorized.
+Review INV-00 requirements and costing examples, then obtain the decisions listed in .ai/memory/open-questions.md (Q29–Q46) and approvals in the discovery document. Until then, only repository discovery, documentation, mockups and non-posting prototypes are in scope. No schema migration, seed data, stock movement or production record is authorized.
