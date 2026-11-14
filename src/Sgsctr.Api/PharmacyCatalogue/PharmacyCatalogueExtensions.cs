@@ -13,6 +13,18 @@ public static class PharmacyCatalogueExtensions
         api.MapGet("/permissions", (ClaimsPrincipal user) =>
             Results.Ok(new { canManage = user.IsInRole("Administrator") }));
 
+        api.MapGet("/products/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct) =>
+        {
+            var product = await db.CatalogueProducts.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, ct);
+            return product is null ? Results.NotFound() : Results.Ok(ToResponse(product));
+        });
+
+        api.MapGet("/units/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct) =>
+        {
+            var unit = await db.UnitsOfMeasure.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, ct);
+            return unit is null ? Results.NotFound() : Results.Ok(new UnitResponse(unit.Id, unit.Code, unit.Name, unit.Symbol));
+        });
+
         api.MapGet("/products", async (string? q, AppDbContext db, CancellationToken ct) =>
         {
             var query = db.CatalogueProducts.AsNoTracking();
@@ -145,8 +157,7 @@ public static class PharmacyCatalogueExtensions
                 input.ChangeReason, http.TraceIdentifier, now);
             try { await db.SaveChangesAsync(ct); }
             catch (DbUpdateException) { return Results.Conflict(new { error = "This product already has a conversion for the selected unit pair." }); }
-            return Results.Created($"/api/v1/pharmacy/catalogue/products/{id}/conversions/{conversion.Id}",
-                new ConversionResponse(conversion.Id, id, input.FromUnitId, "", input.ToUnitId, "", numerator, denominator, "Draft"));
+            return Results.Ok(new ConversionResponse(conversion.Id, id, input.FromUnitId, "", input.ToUnitId, "", numerator, denominator, "Draft"));
         }).RequireAuthorization(policy => policy.RequireRole("Administrator"));
 
         return app;
