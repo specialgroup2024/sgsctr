@@ -137,7 +137,6 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
         {
             entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
             entity.Property(x => x.DisplayName).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
-            entity.Property(x => x.Description).HasMaxLength(1000).HasColumnType("character varying(1000)");
             entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
             entity.Property(x => x.Version).IsConcurrencyToken().HasColumnType("integer");
             entity.Property(x => x.CreatedAtUtc).HasColumnType("timestamp with time zone");
