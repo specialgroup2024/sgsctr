@@ -120,7 +120,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         familyAssignment.ToTable("CatalogueProductFamilyAssignments", table =>
         {
             table.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_FamilyCode",
-                "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalSupplyDevice','Cosmetic')");
+                "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalDevice','MedicalSupply','Cosmetic')");
             table.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_ReviewStatus",
                 "\"ReviewStatus\" = 'PendingProfessionalReview'");
         });
