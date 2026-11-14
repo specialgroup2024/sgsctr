@@ -42,8 +42,7 @@ public static class PharmacyProductGovernanceExtensions
         api.MapPost("/products/{id:guid}/family", async (
             Guid id, FamilyInput input, ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
         {
-            var allowed = new[] { "RegularMedicine", "Chemotherapy", "MedicalDevice","MedicalSupply", "Cosmetic" };
-            if (!allowed.Contains(input.FamilyCode, StringComparer.Ordinal))
+            if (!CatalogueGovernanceRules.IsAllowedFamilyCode(input.FamilyCode))
                 return Results.ValidationProblem(new Dictionary<string, string[]> {
                     ["familyCode"] = ["Choose one of the four provisional pharmacy families."]
                 });
@@ -69,8 +68,7 @@ public static class PharmacyProductGovernanceExtensions
         api.MapPost("/products/{id:guid}/identifiers", async (
             Guid id, IdentifierInput input, ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
         {
-            var schemes = new[] { "GTIN", "UDI-DI", "EDA-Registration", "EDA-Cosmetics-Notification" };
-            if (!schemes.Contains(input.SchemeCode, StringComparer.Ordinal) ||
+            if (!CatalogueGovernanceRules.IsAllowedIdentifierScheme(input.SchemeCode) ||
                 string.IsNullOrWhiteSpace(input.Value) || input.Value.Trim().Length > 160 ||
                 input.PackagingLevel?.Length > 64 || input.ChangeReason?.Length > 500 ||
                 !IsHttpsOrNull(input.SourceUri))
