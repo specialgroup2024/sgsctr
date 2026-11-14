@@ -112,3 +112,14 @@ Before implementation, repeat the mandatory current Egyptian primary-source revi
 ## 8. Current disposition
 
 **The initial INV-01 scope boundary is owner-approved; production implementation remains gated.** The approved boundary is product catalogue/identity, units/conversions and pharmacy-location reference metadata. Supplier master is deferred. Q38 product taxonomy and mandatory fields still require qualified pharmacist, quality and regulatory review. Detailed field, permission, import-source and duplicate-resolution decisions remain to be approved. Q37 Mokattam licence details and other-site classifications remain pending documentary/regulatory verification. This pack is a scope-approval record, not a claim that product catalogue persistence has been implemented. Authentication verification and Data Protection volume verification remain on hold per owner instruction.
+
+
+## 9. INV-01 next-phase review artifacts
+
+The owner-approved boundary has been translated into two review-only artifacts:
+- [Candidate reference-data dictionary](pharmacy-inventory-inv01-data-dictionary-draft.md) — logical records, candidate common fields, identifier separation, unit/conversion questions, location boundary, technical direction and acceptance-test proposals.
+- [Q38 qualified review worksheet](pharmacy-inventory-inv01-q38-review-worksheet.md) — family-by-family pharmacist, quality and regulatory decisions.
+
+These documents are proposals, not approved schema or production contracts. The 2026-11-14 bounded EDA source refresh identified the current medical-device UDI guideline EDREX:GL.CAMD.005 v02/2026 in addition to the warehouse licensing guideline and EPTTS Phase 1 FAQ already recorded. Device UDI, ordinary barcodes and EPTTS identifiers must remain distinct. See the data dictionary for exact source URLs and limitations.
+
+Next gate: complete and sign Q38 with qualified human reviewers; then resolve internal code, unit model, provenance, permissions, duplicate-resolution, audit and import decisions. Only after those decisions and technical/security review may production persistence be designed for implementation.
