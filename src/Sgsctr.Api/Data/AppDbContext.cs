@@ -10,6 +10,10 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<RegulatoryDocument> RegulatoryDocuments => Set<RegulatoryDocument>();
     public DbSet<RegulatoryAlert> RegulatoryAlerts => Set<RegulatoryAlert>();
     public DbSet<RegulatoryScanRun> RegulatoryScanRuns => Set<RegulatoryScanRun>();
+    public DbSet<CatalogueProduct> CatalogueProducts => Set<CatalogueProduct>();
+    public DbSet<UnitOfMeasure> UnitsOfMeasure => Set<UnitOfMeasure>();
+    public DbSet<ProductUnitConversion> ProductUnitConversions => Set<ProductUnitConversion>();
+    public DbSet<CatalogueAuditEvent> CatalogueAuditEvents => Set<CatalogueAuditEvent>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -73,5 +77,49 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         scan.Property(x => x.Status).HasMaxLength(24).IsRequired();
         scan.Property(x => x.ErrorMessage).HasMaxLength(1000);
         scan.HasOne(x => x.Source).WithMany(x => x.ScanRuns).HasForeignKey(x => x.SourceId).OnDelete(DeleteBehavior.Restrict);
+        var product = modelBuilder.Entity<CatalogueProduct>();
+        product.ToTable("CatalogueProducts");
+        product.HasKey(x => x.Id);
+        product.HasIndex(x => x.DisplayName);
+        product.Property(x => x.DisplayName).HasMaxLength(200).IsRequired();
+        product.Property(x => x.Description).HasMaxLength(1000);
+        product.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        product.Property(x => x.Version).IsConcurrencyToken();
+        product.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+        product.Property(x => x.UpdatedBySubject).HasMaxLength(256).IsRequired();
+
+        var unit = modelBuilder.Entity<UnitOfMeasure>();
+        unit.ToTable("UnitsOfMeasure");
+        unit.HasKey(x => x.Id);
+        unit.HasIndex(x => x.Code).IsUnique();
+        unit.Property(x => x.Code).HasMaxLength(24).IsRequired();
+        unit.Property(x => x.Name).HasMaxLength(100).IsRequired();
+        unit.Property(x => x.Symbol).HasMaxLength(24);
+        unit.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+
+        var conversion = modelBuilder.Entity<ProductUnitConversion>();
+        conversion.ToTable("ProductUnitConversions");
+        conversion.HasKey(x => x.Id);
+        conversion.HasIndex(x => new { x.ProductId, x.FromUnitId, x.ToUnitId }).IsUnique();
+        conversion.HasCheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0");
+        conversion.Property(x => x.Numerator).IsRequired();
+        conversion.Property(x => x.Denominator).IsRequired();
+        conversion.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        conversion.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+        conversion.HasOne(x => x.Product).WithMany(x => x.UnitConversions).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+        conversion.HasOne(x => x.FromUnit).WithMany().HasForeignKey(x => x.FromUnitId).OnDelete(DeleteBehavior.Restrict);
+        conversion.HasOne(x => x.ToUnit).WithMany().HasForeignKey(x => x.ToUnitId).OnDelete(DeleteBehavior.Restrict);
+
+        var audit = modelBuilder.Entity<CatalogueAuditEvent>();
+        audit.ToTable("CatalogueAuditEvents");
+        audit.HasKey(x => x.Id);
+        audit.HasIndex(x => new { x.ResourceType, x.ResourceId, x.OccurredAtUtc });
+        audit.Property(x => x.ActorSubject).HasMaxLength(256).IsRequired();
+        audit.Property(x => x.Action).HasMaxLength(48).IsRequired();
+        audit.Property(x => x.ResourceType).HasMaxLength(48).IsRequired();
+        audit.Property(x => x.Outcome).HasMaxLength(24).IsRequired();
+        audit.Property(x => x.Reason).HasMaxLength(500);
+        audit.Property(x => x.CorrelationId).HasMaxLength(128).IsRequired();
+
     }
 }
