@@ -58,7 +58,6 @@ public static class PharmacyCatalogueExtensions
             {
                 Id = Guid.NewGuid(),
                 DisplayName = input.DisplayName.Trim(),
-                Description = string.IsNullOrWhiteSpace(input.Description) ? null : input.Description.Trim(),
                 Status = "Draft",
                 Version = 1,
                 CreatedAtUtc = now,
@@ -75,7 +74,7 @@ public static class PharmacyCatalogueExtensions
         api.MapPut("/products/{id:guid}", async (
             Guid id, ProductUpdateInput input, ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
         {
-            var error = ValidateProduct(new ProductInput(input.DisplayName, input.Description, input.ChangeReason));
+            var error = ValidateProduct(new ProductInput(input.DisplayName, input.ChangeReason));
             if (error is not null) return Results.ValidationProblem(error);
             var product = await db.CatalogueProducts.SingleOrDefaultAsync(x => x.Id == id, ct);
             if (product is null) return Results.NotFound();
@@ -85,7 +84,6 @@ public static class PharmacyCatalogueExtensions
             var actor = Actor(user);
             var now = DateTimeOffset.UtcNow;
             product.DisplayName = input.DisplayName.Trim();
-            product.Description = string.IsNullOrWhiteSpace(input.Description) ? null : input.Description.Trim();
             product.UpdatedAtUtc = now;
             product.UpdatedBySubject = actor;
             product.Version++;
@@ -176,8 +174,6 @@ public static class PharmacyCatalogueExtensions
         var errors = new Dictionary<string, string[]>();
         if (string.IsNullOrWhiteSpace(input.DisplayName) || input.DisplayName.Trim().Length > 200)
             errors["displayName"] = ["A display name is required and must be at most 200 characters."];
-        if (input.Description?.Length > 1000)
-            errors["description"] = ["Description must be 1,000 characters or fewer."];
         if (input.ChangeReason?.Length > 500)
             errors["changeReason"] = ["Change reason must be 500 characters or fewer."];
         return errors.Count == 0 ? null : errors;
@@ -196,13 +192,13 @@ public static class PharmacyCatalogueExtensions
         });
 
     private static ProductResponse ToResponse(CatalogueProduct x) =>
-        new(x.Id, x.DisplayName, x.Description, x.Status, x.Version, x.CreatedAtUtc, x.UpdatedAtUtc);
+        new(x.Id, x.DisplayName, x.Status, x.Version, x.CreatedAtUtc, x.UpdatedAtUtc);
 
-    public sealed record ProductInput(string DisplayName, string? Description, string? ChangeReason);
-    public sealed record ProductUpdateInput(string DisplayName, string? Description, int Version, string? ChangeReason);
+    public sealed record ProductInput(string DisplayName, string? ChangeReason);
+    public sealed record ProductUpdateInput(string DisplayName, int Version, string? ChangeReason);
     public sealed record UnitInput(string Code, string Name, string? Symbol, string? ChangeReason);
     public sealed record ConversionInput(Guid FromUnitId, Guid ToUnitId, long Numerator, long Denominator, string? ChangeReason);
-    public sealed record ProductResponse(Guid Id, string DisplayName, string? Description, string Status, int Version, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
+    public sealed record ProductResponse(Guid Id, string DisplayName, string Status, int Version, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
     public sealed record UnitResponse(Guid Id, string Code, string Name, string? Symbol);
     public sealed record ConversionResponse(Guid Id, Guid ProductId, Guid FromUnitId, string FromUnitName, Guid ToUnitId, string ToUnitName, long Numerator, long Denominator, string Status);
     public sealed record AuditResponse(Guid Id, string ActorSubject, string Action, string ResourceType, Guid ResourceId, DateTimeOffset OccurredAtUtc, string? Reason, string CorrelationId);
