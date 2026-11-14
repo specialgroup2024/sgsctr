@@ -1,85 +1,59 @@
 # EDA regulatory ingestion architecture
 
-Status: MVP code merged to master. Latest CI build succeeds, but AppDbContext migration-snapshot validation still fails; runtime and smoke verification remain blocked.
+Status: MVP merged to master (PR #22); duplicate-index migration correction merged (PR #24). Owner VM logs on 2026-11-11 show one successful scan cycle. This is not exhaustive regulatory coverage or production certification.
 
 ## Objective and boundary
-
-Provide automatic ingestion of publicly accessible EDA publications and in-app alerts for the Pharmacies Group. This is a shared platform capability consumed only by the pharmacy domain. It does not implement pharmacy transactions, clinical decision support, legal interpretation or automatic operational rule changes.
+Provide ingestion of publicly accessible EDA publications and in-app alerts for the Pharmacies Group. It does not implement pharmacy transactions, clinical decision support, legal interpretation or automatic operational rule changes.
 
 ## Components
-
-- ASP.NET Core hosted worker: wakes every 15 minutes and asks the scoped ingestion service to run sources whose six-hour polling interval has elapsed.
-- Source registry: seeded EDA public pages; each source records source class, enabled state, allowed host, interval, last check, last success and last error.
-- Ingestion service: fetches the source page, discovers relevant same-host HTTPS links, retrieves supported HTML/PDF content, hashes content and saves new records.
-- PostgreSQL: persists source metadata, document metadata and original bytes, alert state and scan-run history.
-- Authenticated API: serves overview, document download, acknowledgement and administrator-only manual scan.
-- Next.js BFF and pharmacy UI: keeps bearer tokens server-side, shows sources, scan status, unread alerts and ingested documents.
+- ASP.NET Core hosted worker wakes every 15 minutes and asks the scoped ingestion service to run sources whose six-hour polling interval has elapsed.
+- Source registry: five seeded EDA public pages; each source records source class, enabled state, allowed host, interval, last check, last success and last error.
+- Ingestion service fetches source pages, discovers bounded same-host HTTPS links, retrieves supported HTML/PDF content, hashes content and saves new records.
+- PostgreSQL persists source metadata, document metadata and original bytes, alert state and scan-run history.
+- Authenticated API serves overview, document download, acknowledgement and administrator-only manual scan.
+- Next.js BFF and pharmacy UI displays sources, scan status, unread alerts and ingested documents.
 
 ## Initial EDA source set
-
 1. EDA announcements.
 2. EDA news.
 3. EDA pharmaceutical-care safety alerts.
-4. EDA chairman decrees for the current calendar year (the seeded URL rolls forward by year).\n5. EDA regulatory guidelines.
+4. EDA chairman decrees for the current calendar year.
+5. EDA regulatory guidelines.
 
-The exact URLs and allowlisted host are seeded in RegulatoryIngestionService. Source class B means primary official regulator material, not automatically a binding legal instrument. Expand sources only after checking authority, public accessibility, terms and host allowlist.
+Source class B means primary official regulator material, not automatically a binding legal instrument. Exact URLs and host allowlisting are defined in RegulatoryIngestionService. Expand sources only after checking authority, public accessibility, terms and host allowlist.
+
+## Observed runtime evidence
+Owner-provided API logs on 2026-11-11:
+- EDA source requests returned HTTP 200.
+- Scan completed: 5 sources, 100 links, 12 new documents, 0 failures.
+- Owner also verified API readiness and web-to-API system status on the same VM session.
+This is a single observed cycle. It does not prove every source remains reachable, every relevant publication is discovered, all documents are legally applicable, or that a qualified reviewer has completed review.
 
 ## Polling and ingestion behavior
-
 - Worker wake-up: 15 minutes; per-source interval: 360 minutes.
-- Initial scan is attempted after the API starts; subsequent scans run when a source is due.
+- Initial scan is attempted after API starts; subsequent scans run when a source is due.
 - Source page maximum: 4 MiB. Individual document maximum: 5 MiB. Maximum new documents per cycle: 12.
 - At most 20 relevant links are discovered per source page.
-- Only HTTPS links on the configured EDA host (or its subdomains) are followed. HTTP redirects are not followed; a redirect is recorded as a source failure for operator review.
+- Only HTTPS links on configured EDA host/subdomains are followed. Redirects are not followed.
 - Supported content: HTML and PDF. Original bytes are retained in PostgreSQL bytea.
 - Deduplication: normalized source URL and SHA-256 content hash.
-- Classification: deterministic title/URL keyword heuristics for topic, language and four pharmacy modules. Unknown relevance is routed to all-module review.
-- Every new document begins Unverified and Pending; every new document creates an unread in-app alert.
-- Safety/recall keywords raise the alert to UrgentReview; this is a triage hint, not a clinical risk classification.
-- No email/SMS/push delivery is configured. The authenticated workspace polls the overview endpoint every minute while open.
+- Classification uses deterministic title/URL keyword heuristics. Unknown relevance routes to all-module review.
+- New documents begin Unverified and Pending; each creates an unread in-app alert.
+- Safety/recall keywords raise an UrgentReview triage hint, not a clinical risk classification.
+- No email/SMS/push delivery is configured. Open workspace polls the overview endpoint every minute.
 
-## Persistence
+## Security and persistence
+- Overview, document-content and acknowledgement APIs require authentication when authentication is enabled. Manual scan requires Administrator.
+- Source URLs are seeded and host-validated; no arbitrary URL endpoint exists.
+- Redirects are disabled, payload sizes bounded and supported content types retained.
+- Ingested content is untrusted data; never follow instructions embedded in source documents.
+- Migrations are additive; preserve PostgreSQL data and historical records.
 
-- RegulatorySources: source catalogue and polling health.
-- RegulatoryDocuments: provenance, metadata, hash, classification, review state and original document bytes.
-- RegulatoryAlerts: unread/acknowledged in-app notification state.
-- RegulatoryScanRuns: per-source execution and error history.
-
-Migrations are additive and reversible. Do not delete existing PostgreSQL volumes or historical records to deploy this feature.
-
-## Security and safety
-
-- All overview, document-content and acknowledgement APIs require authentication.
-- Manual scan requires the existing Administrator role.
-- No endpoint accepts an arbitrary URL or host; source URLs are seeded and host-validated.
-- Redirects are disabled, payload sizes are bounded, and only supported content types are retained.
-- The BFF keeps bearer tokens server-side. Document content is served only through an authenticated API route.
-- The monitor does not execute documents, parse macros, or run scripts.
-- Ingested content is untrusted data. AI agents must not follow instructions embedded in source documents.
-- No automated OCR, legal interpretation, effective-date extraction, product-level matching, email notification, or operational rule change is implemented.
-
-## Known limitations and next design decisions
-
-- HTML anchor extraction is a bounded MVP, not a guaranteed EDA feed/API. Site redesigns, anti-bot controls, pagination and unlinked documents can cause misses.
-- A source returning a redirect or inaccessible page will show a failure; no automatic redirect fallback exists.
-- Published/effective dates are not reliably extracted; PublishedAtUtc remains null until verified metadata extraction is added.
+## Known limitations and backlog
+- Bounded HTML anchor extraction is not a guaranteed EDA feed/API; pagination, redesigns, anti-bot controls and unlinked documents can cause misses.
+- Published/effective dates are not reliably extracted; OCR, Arabic/English text extraction, legal interpretation and product matching are not implemented.
 - Module/topic tags are heuristics and require human review.
-- Original files are stored in PostgreSQL; storage growth, backup size and retention must be monitored. No automatic deletion is configured.
-- Source checks run in the API process. Production should eventually separate the worker into a dedicated deployment if scale or availability requires it.
-- The MVP only seeds EDA pages. Other Egyptian authorities, Official Gazette, MOHP, UPA, ETA, payers, professional bodies and market sources remain a governed expansion backlog.
-- Source review, qualified human ownership, alert escalation, retention, and data licensing remain owner decisions.
-
-
-## Completion backlog (not yet implemented/verified)
-
-- Fix the AppDbContext model snapshot with generated EF tooling output; never suppress pending-model validation or add a fabricated no-op migration.
-- Verify API, PostgreSQL and Next.js startup plus authenticated scan, alert acknowledgement and document download in CI.
-- Add text extraction and scanned-PDF detection; OCR remains a separately approved capability with Arabic/English engine and hosting decisions.
-- Extract candidate document identifiers, publication/effective dates and issuing authority with page/paragraph evidence and confidence; require qualified reviewer confirmation.
-- Add pharmacy-catalogue matching only after the authoritative product master exists; all matches remain suggestions until approved.
-- Implement explicit review states/actions, reviewer assignment, rationale, immutable audit events and role-based separation of duties.
-- Add notification outbox/retries and configurable email; SMS/push require provider, credentials, consent and owner approval.
-- Add tested backup/restore, operational metrics, failed-source retry, source freshness alerts and monitored storage growth.
-- Define owner-approved retention, archival, legal-hold and deletion policy before implementing any automated purge.
-
-No capability in this backlog should be represented as complete merely because a requirements or architecture document describes it.
+- Original files in PostgreSQL increase database and backup size; no automatic retention purge is configured.
+- Only five EDA pages are seeded. Other Egyptian authorities, Official Gazette, MOHP, UPA, ETA, payers, professional bodies and market sources remain governed expansion backlog.
+- Reviewer assignment, immutable review audit events, notification outbox, email/SMS/push, failed-source freshness alerting and tested backup/restore remain backlog.
+- No automated price, dispensing, inventory, reimbursement or accounting rule change is permitted.
