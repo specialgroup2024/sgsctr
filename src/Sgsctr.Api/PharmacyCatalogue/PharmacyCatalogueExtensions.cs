@@ -42,7 +42,7 @@ public static class PharmacyCatalogueExtensions
             }
 
             var products = await query.OrderBy(x => x.DisplayName).Take(100)
-                .Select(x => new ProductResponse(x.Id, x.DisplayName, x.Description, x.Status, x.Version, x.CreatedAtUtc, x.UpdatedAtUtc))
+                .Select(x => new ProductResponse(x.Id, x.DisplayName, x.Status, x.Version, x.CreatedAtUtc, x.UpdatedAtUtc))
                 .ToListAsync(ct);
             return Results.Ok(products);
         });
