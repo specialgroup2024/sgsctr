@@ -62,6 +62,13 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   rm -f "$ADMIN_RESPONSE_FILE"
   ADMIN_TOKEN="$(printf '%s' "$ADMIN_RESPONSE" | jq -r '.accessToken // empty')"
   if [[ -z "$ADMIN_TOKEN" ]]; then echo "ERROR: Native administrator login failed (HTTP ${ADMIN_HTTP_STATUS}). API response: ${ADMIN_RESPONSE}" >&2; exit 1; fi
+  echo "Checking the persisted pharmacy approval register through the authenticated API..."
+  APPROVALS_API_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -H "Authorization: Bearer $ADMIN_TOKEN" "$BASE_URL/api/v1/pharmacy/catalogue/approvals")"
+  printf '%s\n' "$APPROVALS_API_RESPONSE"
+  if ! printf '%s' "$APPROVALS_API_RESPONSE" | jq -e 'length == 8 and ([.[] | select(.status == "Pending")] | length) == 7 and ([.[] | select(.approvalCode == "INV-OWN-001" and .status == "Approved")] | length) == 1 and ([.[] | select((.approvalCode == "INV-PRO-001" or .approvalCode == "INV-REG-001" or .approvalCode == "INV-QLT-001" or .approvalCode == "INV-ACC-001" or .approvalCode == "INV-OWN-002" or .approvalCode == "INV-SEC-001" or .approvalCode == "INV-REL-001") and .status == "Pending")] | length) == 7' >/dev/null; then
+    echo "ERROR: PostgreSQL approval register did not return the expected eight records and pending/approved statuses." >&2
+    exit 1
+  fi
   ME_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" "${BASE_URL}/api/v1/auth/me")"
   if [[ "$ME_STATUS" != "200" ]]; then echo "ERROR: Native access token was not accepted by /me (HTTP ${ME_STATUS})." >&2; exit 1; fi
 
@@ -85,6 +92,19 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   if [[ "$BFF_STATUS" != "303" ]]; then echo "ERROR: BFF login should redirect after successful sign-in, got ${BFF_STATUS}." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
   BFF_SESSION_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" "${WEB_URL}/api/auth/session")"
   if [[ "$BFF_SESSION_STATUS" != "200" ]]; then echo "ERROR: BFF session was not established (HTTP ${BFF_SESSION_STATUS})." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
+  echo "Checking approval register BFF data and authenticated Pharmacy Inventory UI..."
+  APPROVALS_UI_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -b "$COOKIE_JAR" "$WEB_URL/api/pharmacy/approvals")"
+  if ! printf '%s' "$APPROVALS_UI_RESPONSE" | jq -e 'length == 8 and ([.[] | select(.status == "Pending")] | length) == 7 and ([.[] | select(.approvalCode == "INV-OWN-001" and .status == "Approved")] | length) == 1' >/dev/null; then
+    echo "ERROR: Pharmacy UI BFF did not return the expected persisted approval register." >&2
+    rm -f "$COOKIE_JAR"
+    exit 1
+  fi
+  INVENTORY_PAGE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -b "$COOKIE_JAR" "$WEB_URL/pharmacies/inventory")"
+  if ! printf '%s' "$INVENTORY_PAGE" | grep -q "Approvals"; then
+    echo "ERROR: Authenticated Pharmacy Inventory page did not render the Approvals tab." >&2
+    rm -f "$COOKIE_JAR"
+    exit 1
+  fi
   LOGOUT_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" -c "$COOKIE_JAR" -X POST -H "Origin: ${ORIGIN}" "${WEB_URL}/api/auth/logout")"
   if [[ "$LOGOUT_STATUS" != "303" ]]; then echo "ERROR: BFF sign-out did not complete (HTTP ${LOGOUT_STATUS})." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
   AFTER_LOGOUT_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" "${WEB_URL}/api/auth/session")"
@@ -99,7 +119,7 @@ for ROUTE in organization pharmacies pharmacies/regulatory-intelligence contract
 done
 
 echo "Checking anonymous BFF session and organization endpoints reject access..."
-for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence; do
+for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence /api/pharmacy/approvals; do
   STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}${ROUTE}")"
   if [[ "$STATUS" != "401" ]]; then echo "ERROR: Expected 401 for ${ROUTE}, got ${STATUS}." >&2; exit 1; fi
 done
