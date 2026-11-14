@@ -1,7 +1,7 @@
 # Pharmacy inventory INV-01 — reference-data approval pack
 
 - Prepared: 2026-11-14.
-- Status: **decision package only — no business or professional approval recorded**.
+- Status: **decision package updated with owner-confirmed Mokattam warehouse classification; documentary verification and professional approvals remain pending**.
 - Branch: feat/pharmacy-inventory-inv01-approval-pack.
 - Purpose: make INV-01 implementation-ready without inventing pharmacy, regulatory, procurement or accounting policy.
 - Prerequisites: read AGENT.md, AGENTS.md, .ai/README.md, dynamic role selection, deliberation protocol, pharmacy profile and Egypt compliance-review skill.
@@ -12,7 +12,7 @@ INV-01 is limited to controlled reference data: product identity/catalogue, unit
 
 PR #29 is merged to master as commit 7114e0cd499e371d2e08c71f8f86bcd6148c6deb. The INV-00 UI exists at /pharmacies/inventory. It remains a non-posting prototype; no inventory API, entity, DbSet, migration or product records exist.
 
-**Implementation gate:** Q37, Q38 and Q46 must be resolved by the owner and qualified pharmacy/regulatory/procurement reviewers before production catalogue persistence. The UI may be refined as a non-posting prototype, but no production schema, seed data, import or write endpoint is authorized by this pack.
+**Implementation gate:** Q37 is partially answered for Mokattam by owner confirmation; documentary verification and classification of each hospital branch remain pending. Q38 and Q46 must be resolved by the owner and qualified pharmacy/regulatory/procurement reviewers before production catalogue persistence. The UI may be refined as a non-posting prototype, but no production schema, seed data, import or write endpoint is authorized by this pack.
 
 ## 2. Dynamic five-role deliberation
 
@@ -61,7 +61,7 @@ Fields above are discussion candidates, not a schema contract. Product-specific 
 
 | Gate | Decision required | Approver/evidence |
 |---|---|---|
-| Q37 | Classify Mokattam and each hospital site; identify licence holder, operator, activity and current licence scope | Owner + Egyptian regulatory/legal reviewer; licence copies |
+| Q37 | Mokattam is owner-confirmed as an EDA-licensed pharmaceutical warehouse under Chairman Decree 725/2024. Verify current licence number/copy, holder, operator, validity, address and scope; classify each hospital branch separately | Owner confirmation recorded 2026-11-14; documentary check by Egyptian regulatory/legal reviewer remains required |
 | Q38 | Approve category taxonomy and product-specific mandatory fields, identifiers, lot/expiry/serial/GTIN applicability and permitted movement scope | Licensed pharmacist + quality + regulatory reviewer |
 | Q46 | Approve exact INV-01 scope: product, unit, location and supplier fields; who can create/edit/retire; source/import authority; duplicate resolution | Owner + pharmacist + procurement |
 | Identity | Decide internal SKU/code ownership, uniqueness scope, generation and reuse prohibition | Owner + pharmacy operations |
@@ -87,7 +87,7 @@ No approval is implied by a blank, suggested value or technical recommendation.
 
 ## 6. Regulatory and evidence boundary
 
-The 2026-11-14 INV-00 scan records EDA GSDP v05/2025 and EDA pharmaceutical warehouse licensing guideline v05/2026, plus EPTTS Phase 1 FAQ v03/2026. These sources are not a substitute for site licences, product-specific determinations or qualified interpretation. Warehouse-specific requirements must not be generalized to hospital branches until Q37 is resolved. EPTTS applicability must not be inferred for every product or intra-group transfer. The in-app EDA monitor's latest live status was not checked in this documentation-only preparation; the last owner-provided scan remains 2026-11-11.
+The 2026-11-14 INV-00 scan records EDA GSDP v05/2025, EDA pharmaceutical warehouse licensing guideline v05/2026 (EDREX:GL.CALI/CIP.002, issue 5, July 2026), and EPTTS Phase 1 FAQ v03/2026. EDA's official guideline identifies Chairman Decree 725/2024 as its legal basis. The owner confirmed on 2026-11-14 that Mokattam is licensed by EDA as a pharmaceutical warehouse under that decree. This is owner-provided information; the licence itself, licence holder, operator, validity, approved activities and exact scope have not yet been inspected or independently verified. Apply warehouse-specific analysis to Mokattam provisionally, subject to licence verification. Do not generalize this classification to Student Hospital, Qasr El-Aini Hospital or Manial Hospital; each site's legal operator and licence/activity must be established separately. EPTTS applicability must not be inferred for every product or intra-group transfer. Official EDA sources: warehouse guideline https://edaegypt.gov.eg/media/gzxpsmon/الدليل-التنظيمى-لمخازن-الادوية_ar2026.pdf and Decree 725/2024 https://edaegypt.gov.eg/media/op1iuxvk/minestreal-decree-725-2024.pdf. The in-app EDA monitor's latest live status was not checked; last owner-provided scan remains 2026-11-11.
 
 Before implementation, repeat the mandatory current Egyptian primary-source review under .ai/skills/egypt-compliance-review/SKILL.md, inspect the in-app monitor if deployed, record source failures/coverage, and update the evidence and requirements registers. Do not treat a search result, supplier file or market article as a legal determination.
 
@@ -104,4 +104,4 @@ Before implementation, repeat the mandatory current Egyptian primary-source revi
 
 ## 8. Current disposition
 
-**INV-01 production implementation is blocked.** No signed pharmacist, regulatory, procurement or owner decision for Q37/Q38/Q46 is recorded in the repository. This pack is the completed safe preparation step; it is not a claim that product catalogue persistence has been implemented. Authentication verification and Data Protection volume verification remain on hold per owner instruction.
+**INV-01 production implementation remains blocked.** The owner has answered the Mokattam site-type portion of Q37; licence evidence and other-site classifications remain pending. Q38 product taxonomy/controls and Q46 reference-data scope/permissions still require owner and qualified professional decisions. This pack is the completed safe preparation step; it is not a claim that product catalogue persistence has been implemented. Authentication verification and Data Protection volume verification remain on hold per owner instruction.

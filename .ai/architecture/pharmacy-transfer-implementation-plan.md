@@ -16,6 +16,7 @@
 ## 2. Owner-confirmed scope facts
 
 - Locations: Mokattam main warehouse; Student Hospital, Qasr El-Aini and Manial Hospital branches.
+- Owner confirmed 2026-11-14 that Mokattam is an EDA-licensed pharmaceutical warehouse under Chairman Decree 725/2024. Licence details and scope require documentary/regulatory verification; hospital branch classifications remain separate and unverified.
 - Direct branch-to-branch transfers are required; routes must not be forced through Mokattam.
 - Pharmacy categories named by owner: regular medicines, chemotherapy drugs, medical supplies and cosmetics.
 - Weighted-average costing is requested; calculation pool, timing and transaction treatment are not approved.
@@ -25,7 +26,7 @@
 | ID | Work package | Gate / deliverable |
 |---|---|---|
 | INV-00 | Discovery, requirements and UI foundation | Requirements, costing examples, regulatory scan and connected non-posting screens |
-| INV-01 | Product, unit, location and supplier reference data | Q37/Q38/Q46 approvals; signed taxonomy/data dictionary, identifiers, units, supplier boundary and access policy |
+| INV-01 | Product, unit, location and supplier reference data | Q37 Mokattam licence verification + separate hospital-site classification; Q38/Q46 approvals; signed taxonomy/data dictionary, identifiers, units, supplier boundary and access policy |
 | INV-02 | Receiving and quality status | Approved receiving SOP; supplier/document checks; lot/expiry and quarantine controls |
 | INV-03 | Stock ledger and balances | Append-only movements, location/lot balances, reconciliation and physical-count controls |
 | INV-04 | Transfers | Approved lifecycle/custody/roles; warehouse↔branch and direct branch↔branch; partial receipt and discrepancies |
@@ -54,4 +55,4 @@
 
 ## 6. Current next action
 
-Complete the decision package at [pharmacy-inventory-inv01-approval-pack.md](../delivery/pharmacy-inventory-inv01-approval-pack.md). Obtain and record named owner, pharmacist, regulatory and procurement approvals for Q37/Q38/Q46. Only then freeze the approved data dictionary and prepare the INV-01 schema/API/UI implementation PR. Until approvals exist, only documentation, review and non-posting prototype work are in scope.
+Update Q37 with the owner-confirmed Mokattam warehouse type and obtain its current licence copy/details for regulatory verification; classify each hospital branch independently. Then obtain the pharmacist/quality/regulatory decision for Q38 and owner/pharmacist/procurement decision for Q46. Only after these gates are documented may the approved data dictionary and INV-01 schema/API/UI implementation PR be prepared. Until then, only documentation, review and non-posting prototype work are in scope.
