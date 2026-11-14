@@ -1,8 +1,12 @@
 # INV-01 Q38 pharmacist and quality review worksheet
 
 - Prepared: 2026-11-14 (Africa/Cairo).
-- Status: awaiting qualified human completion; no professional approval is implied.
+- Status: awaiting qualified human completion; an AI-assisted evidence assessment is available at .ai/delivery/pharmacy-inventory-inv01-q38-evidence-assessment.md. No professional approval is implied.
 - Purpose: obtain one explicit decision for each product family before production catalogue fields are finalized.
+
+## Evidence assessment prepared
+
+The evidence assessment is a desk review only. It proposes category-specific catalogue considerations and records current EDA sources, but it does not fill or sign the professional decisions below. Reviewers must independently validate the original instruments and complete this worksheet.
 
 ## Reviewer details
 
