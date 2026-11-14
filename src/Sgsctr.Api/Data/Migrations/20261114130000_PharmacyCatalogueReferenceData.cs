@@ -24,7 +24,11 @@ public sealed class PharmacyCatalogueReferenceData : Migration
                 CreatedBySubject = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                 UpdatedBySubject = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
             },
-            constraints: table => table.PrimaryKey("PK_CatalogueProducts", x => x.Id));
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_CatalogueProducts", x => x.Id);
+                table.CheckConstraint("CK_CatalogueProducts_DraftOnly", "\"Status\" = 'Draft'");
+            });
 
         migrationBuilder.CreateTable(
             name: "UnitsOfMeasure",
@@ -73,6 +77,7 @@ public sealed class PharmacyCatalogueReferenceData : Migration
             {
                 table.PrimaryKey("PK_ProductUnitConversions", x => x.Id);
                 table.CheckConstraint("CK_ProductUnitConversions_PositiveRatio", "\"Numerator\" > 0 AND \"Denominator\" > 0");
+                table.CheckConstraint("CK_ProductUnitConversions_DraftOnly", "\"Status\" = 'Draft'");
                 table.ForeignKey("FK_ProductUnitConversions_CatalogueProducts_ProductId", x => x.ProductId, "CatalogueProducts", "Id", onDelete: ReferentialAction.Restrict);
                 table.ForeignKey("FK_ProductUnitConversions_UnitsOfMeasure_FromUnitId", x => x.FromUnitId, "UnitsOfMeasure", "Id", onDelete: ReferentialAction.Restrict);
                 table.ForeignKey("FK_ProductUnitConversions_UnitsOfMeasure_ToUnitId", x => x.ToUnitId, "UnitsOfMeasure", "Id", onDelete: ReferentialAction.Restrict);
