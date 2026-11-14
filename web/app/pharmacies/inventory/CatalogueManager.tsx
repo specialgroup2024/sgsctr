@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 
 type Product = {
-  id: string; displayName: string; description: string | null; status: string;
+  id: string; displayName: string; status: string;
   version: number; createdAtUtc: string; updatedAtUtc: string;
 };
 type Unit = { id: string; code: string; name: string; symbol: string | null };
@@ -30,7 +30,6 @@ export default function CatalogueManager() {
   const [selectedId, setSelectedId] = useState("");
   const [search, setSearch] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [description, setDescription] = useState("");
   const [changeReason, setChangeReason] = useState("");
   const [editing, setEditing] = useState<Product | null>(null);
   const [unitCode, setUnitCode] = useState("");
@@ -100,12 +99,12 @@ export default function CatalogueManager() {
   }, [products, search]);
 
   function resetProduct() {
-    setEditing(null); setDisplayName(""); setDescription(""); setChangeReason("");
+    setEditing(null); setDisplayName(""); setChangeReason("");
   }
 
   function editProduct(product: Product) {
     setEditing(product); setSelectedId(product.id);
-    setDisplayName(product.displayName); setDescription(product.description ?? "");
+    setDisplayName(product.displayName);
     setChangeReason("");
   }
 
@@ -116,7 +115,7 @@ export default function CatalogueManager() {
         method: editing ? "PUT" : "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          displayName, description: description || null, changeReason: changeReason || null,
+          displayName, changeReason: changeReason || null,
           ...(editing ? { version: editing.version } : {})
         })
       });
@@ -172,7 +171,7 @@ export default function CatalogueManager() {
         {loading ? <p className="loading-state">Loading catalogue from PostgreSQL…</p> :
           filteredProducts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>Product name</th><th>Status</th><th>Action</th></tr></thead><tbody>
             {filteredProducts.map(product => <tr key={product.id} className={selectedId === product.id ? "catalogue-selected-row" : ""}>
-              <td><strong>{product.displayName}</strong><small className="catalogue-description">{product.description || "No description"}</small></td>
+              <td><strong>{product.displayName}</strong></td>
               <td><span className="inventory-state-tag">DRAFT</span></td>
               <td><div className="table-actions"><button type="button" className="table-action" onClick={() => setSelectedId(product.id)}>View</button>{canManage && <button type="button" className="table-action" onClick={() => editProduct(product)}>Edit</button>}</div></td>
             </tr>)}
@@ -185,8 +184,7 @@ export default function CatalogueManager() {
         {canManage ? <form className="location-form catalogue-form" onSubmit={saveProduct}>
           <div className="form-grid">
             <label className="wide-field">Display name<input required maxLength={200} value={displayName} onChange={e => setDisplayName(e.target.value)} /></label>
-            <label className="wide-field">Description (optional)<textarea maxLength={1000} value={description} onChange={e => setDescription(e.target.value)} rows={3} /></label>
-            <label className="wide-field">Change reason (optional)<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label>
+            <label className="wide-field">Change reason (optional; do not enter patient or health data)<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label>
           </div>
           <div className="form-actions"><span className="inventory-state-tag">STATUS IS ALWAYS DRAFT</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>Cancel</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? "Saving…" : editing ? "Save draft" : "Create draft"}</button></div></div>
         </form> : <p className="inventory-empty">Catalogue changes require the Administrator role. Your account currently has read-only access.</p>}
