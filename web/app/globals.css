@@ -77,3 +77,19 @@
 .inventory-report-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:18px 0}.inventory-report-grid article{display:grid;gap:8px;padding:16px;border:1px solid var(--line);border-radius:9px;background:#fff}.inventory-report-grid article>span{color:#438265;font-size:18px}.inventory-report-grid strong{font-size:10px}.inventory-report-grid small{font-size:9px;line-height:1.6;color:#849188}.inventory-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#9aa59e;font-size:9px;padding:24px 0 5px}
 @media(max-width:1050px){.inventory-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.inventory-main-grid{grid-template-columns:1fr}.inventory-flow-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.inventory-report-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.pharmacy-entry-grid{grid-template-columns:1fr}.inventory-connection-bar{align-items:flex-start;flex-direction:column}.inventory-connection-list{gap:12px}.inventory-tabs button{padding:11px 10px;font-size:10px}.inventory-section-heading{align-items:flex-start;flex-direction:column}.inventory-kpi-grid{grid-template-columns:1fr 1fr}.inventory-kpi{padding:13px}.inventory-kpi strong{font-size:15px}.inventory-flow-grid,.inventory-report-grid{grid-template-columns:1fr}.inventory-transfer-route{gap:10px;padding:15px}.inventory-transfer-route>div{min-width:0}.inventory-transfer-route strong{font-size:10px}.inventory-toolbar{align-items:stretch;flex-direction:column}}
+
+
+/* INV-01 generic draft catalogue */
+.catalogue-manager{display:grid;gap:16px}
+.catalogue-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.catalogue-units-layout{align-items:start}
+.catalogue-selected-row{background:#f4faf5}
+.catalogue-description{display:block;margin-top:4px;color:#87948c;font-size:9px;max-width:320px;overflow-wrap:anywhere}
+.catalogue-form{margin:14px 0 0;padding:14px}
+.catalogue-new-button{margin-top:14px}
+.catalogue-id-note,.catalogue-ratio-note,.catalogue-footer-note{font-size:10px;line-height:1.7;color:#7e8b83;margin:12px 0 0;overflow-wrap:anywhere}
+.catalogue-ratio-note{padding:11px 13px;background:#f7faf7;border:1px solid #e4ece6;border-radius:7px;margin:0 0 12px}
+.catalogue-footer-note{padding:12px 14px;background:#f8faf8;border:1px solid var(--line);border-radius:8px;margin:0}
+.catalogue-manager .inventory-state-tag{display:inline-block}
+.catalogue-manager textarea{resize:vertical}
+@media(max-width:900px){.catalogue-layout{grid-template-columns:1fr}}
