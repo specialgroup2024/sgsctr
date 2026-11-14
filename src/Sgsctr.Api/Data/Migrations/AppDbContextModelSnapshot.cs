@@ -215,7 +215,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
             entity.ToTable("CatalogueProductFamilyAssignments", t =>
             {
-                t.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_FamilyCode", "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalSupplyDevice','Cosmetic')");
+                t.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_FamilyCode", "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalDevice','MedicalSupply','Cosmetic')");
                 t.HasCheckConstraint("CK_CatalogueProductFamilyAssignments_ReviewStatus", "\"ReviewStatus\" = 'PendingProfessionalReview'");
             });
         });
