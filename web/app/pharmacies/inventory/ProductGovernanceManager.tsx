@@ -1,0 +1,119 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import type { FormEvent } from "react";
+
+type Family = { id: string; familyCode: string; reviewStatus: string; proposedAtUtc: string; proposedBySubject: string } | null;
+type Identifier = { id: string; schemeCode: string; value: string; packagingLevel: string | null; verificationStatus: string; sourceUri: string | null; createdAtUtc: string };
+type Evidence = { id: string; authorityCode: string; evidenceType: string; referenceNumber: string; documentUri: string | null; regulatoryDocumentId: string | null; publishedOn: string | null; effectiveFrom: string | null; expiresOn: string | null; verificationStatus: string; createdAtUtc: string };
+type Lifecycle = { id: string; requestedAction: string; reviewStatus: string; reason: string; requestedAtUtc: string };
+type Governance = { family: Family; identifiers: Identifier[]; evidence: Evidence[]; lifecycleRequests: Lifecycle[] };
+
+async function readPayload<T>(response: Response): Promise<T> {
+  const body = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(body?.error ?? body?.title ?? `Request failed (${response.status}).`);
+  return body as T;
+}
+
+export default function ProductGovernanceManager({ productId, canManage }: { productId: string; canManage: boolean }) {
+  const [data, setData] = useState<Governance | null>(null);
+  const [familyCode, setFamilyCode] = useState("RegularMedicine");
+  const [schemeCode, setSchemeCode] = useState("GTIN");
+  const [identifierValue, setIdentifierValue] = useState("");
+  const [packagingLevel, setPackagingLevel] = useState("");
+  const [sourceUri, setSourceUri] = useState("");
+  const [authorityCode, setAuthorityCode] = useState("EDA");
+  const [evidenceType, setEvidenceType] = useState("Registration");
+  const [referenceNumber, setReferenceNumber] = useState("");
+  const [documentUri, setDocumentUri] = useState("");
+  const [publishedOn, setPublishedOn] = useState("");
+  const [effectiveFrom, setEffectiveFrom] = useState("");
+  const [expiresOn, setExpiresOn] = useState("");
+  const [lifecycleAction, setLifecycleAction] = useState("Activate");
+  const [reason, setReason] = useState("");
+  const [changeReason, setChangeReason] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+
+  const load = useCallback(async () => {
+    if (!productId) { setData(null); return; }
+    try {
+      const response = await fetch(`/api/pharmacy/catalogue/${encodeURIComponent(productId)}/governance`, { cache: "no-store" });
+      if (response.status === 401) { window.location.assign("/login"); return; }
+      setData(await readPayload<Governance>(response));
+    } catch (e) { setError(e instanceof Error ? e.message : "Product governance records could not be loaded."); }
+  }, [productId]);
+
+  useEffect(() => { void load(); }, [load]);
+
+  async function submit(event: FormEvent<HTMLFormElement>, suffix: string, body: Record<string, unknown>, success: string) {
+    event.preventDefault(); setBusy(true); setError(""); setNotice("");
+    try {
+      await readPayload(await fetch(`/api/pharmacy/catalogue/${encodeURIComponent(productId)}/${suffix}`, {
+        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body)
+      }));
+      await load(); setNotice(success);
+    } catch (e) { setError(e instanceof Error ? e.message : "The record could not be saved."); }
+    finally { setBusy(false); }
+  }
+
+  if (!productId) return <section className="inventory-panel"><h3>Product regulatory profile</h3><p className="inventory-empty">Select a product to manage its provisional family, identifiers and evidence.</p></section>;
+
+  return <section className="inventory-panel">
+    <div className="inventory-panel-heading"><div><p className="eyebrow">REGULATORY PROFILE · REVIEW QUEUE</p><h3>Family, identifiers and evidence</h3></div><span className="inventory-state-tag">UNVERIFIED</span></div>
+    <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>All entries are proposals, not regulatory approvals</strong><p>Family assignment and evidence remain pending qualified review. GTIN, UDI-DI and EDA registration/notification references are kept distinct. EPTTS serials, UDI-PI, lots and expiry are not product-level identifiers.</p></div></div>
+    {error && <p className="form-error" role="alert">{error}</p>}
+    {notice && <p className="form-success" role="status">{notice}</p>}
+    {data?.family ? <p className="catalogue-id-note">Provisional family: <strong>{data.family.familyCode}</strong> · {data.family.reviewStatus}</p> :
+      canManage ? <form className="location-form catalogue-form" onSubmit={e => submit(e, "family", { familyCode, changeReason: changeReason || null }, "Provisional family assignment recorded for review.")}>
+        <div className="form-grid"><label>Provisional family<select value={familyCode} onChange={e => setFamilyCode(e.target.value)}><option value="RegularMedicine">Regular medicines</option><option value="Chemotherapy">Chemotherapy medicines (operational tag only)</option><option value="MedicalDevice">Medical devices</option><option value="MedicalSupply">Medical supplies</option><option value="Cosmetic">Cosmetics</option></select></label><label>Change reason<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label></div>
+        <button className="primary-button" type="submit" disabled={busy}>Submit family for review</button>
+      </form> : <p className="inventory-empty">No provisional family assignment.</p>}
+
+    <div className="catalogue-layout catalogue-units-layout">
+      <div className="inventory-panel">
+        <h4>External identifiers</h4>
+        {data?.identifiers.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.schemeCode}</strong>: <code>{x.value}</code> · {x.verificationStatus}{x.packagingLevel ? ` · ${x.packagingLevel}` : ""}</p>)}
+        {!data?.identifiers.length && <p className="inventory-empty">No identifier proposals recorded.</p>}
+        {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "identifiers", { schemeCode, value: identifierValue, packagingLevel: packagingLevel || null, sourceUri: sourceUri || null, changeReason: changeReason || null }, "Identifier proposal saved as pending verification.")}>
+          <div className="form-grid">
+            <label>Identifier system<select value={schemeCode} onChange={e => setSchemeCode(e.target.value)}><option value="GTIN">GTIN</option><option value="UDI-DI">UDI-DI</option><option value="EDA-Registration">EDA registration</option><option value="EDA-Cosmetics-Notification">EDA cosmetics notification</option></select></label>
+            <label>Identifier value<input required maxLength={160} value={identifierValue} onChange={e => setIdentifierValue(e.target.value)} /></label>
+            <label>Packaging level (unverified)<input maxLength={64} value={packagingLevel} onChange={e => setPackagingLevel(e.target.value)} /></label>
+            <label>Source URL (HTTPS)<input type="url" value={sourceUri} onChange={e => setSourceUri(e.target.value)} /></label>
+          </div>
+          <button className="primary-button" type="submit" disabled={busy}>Add identifier proposal</button>
+        </form>}
+      </div>
+      <div className="inventory-panel">
+        <h4>Regulatory evidence</h4>
+        {data?.evidence.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.authorityCode} · {x.evidenceType}</strong>: {x.referenceNumber} · {x.verificationStatus}{x.expiresOn ? ` · expires ${x.expiresOn}` : ""}</p>)}
+        {!data?.evidence.length && <p className="inventory-empty">No evidence references recorded.</p>}
+        {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "evidence", { authorityCode, evidenceType, referenceNumber, documentUri: documentUri || null, regulatoryDocumentId: null, publishedOn: publishedOn || null, effectiveFrom: effectiveFrom || null, expiresOn: expiresOn || null, changeReason: changeReason || null }, "Regulatory evidence recorded as pending review.")}>
+          <div className="form-grid">
+            <label>Authority<input required maxLength={48} value={authorityCode} onChange={e => setAuthorityCode(e.target.value)} /></label>
+            <label>Evidence type<input required maxLength={48} value={evidenceType} onChange={e => setEvidenceType(e.target.value)} /></label>
+            <label>Reference number<input required maxLength={160} value={referenceNumber} onChange={e => setReferenceNumber(e.target.value)} /></label>
+            <label>Document URL (HTTPS)<input type="url" value={documentUri} onChange={e => setDocumentUri(e.target.value)} /></label>
+            <label>Published on<input type="date" value={publishedOn} onChange={e => setPublishedOn(e.target.value)} /></label>
+            <label>Effective from<input type="date" value={effectiveFrom} onChange={e => setEffectiveFrom(e.target.value)} /></label>
+            <label>Expires on<input type="date" value={expiresOn} onChange={e => setExpiresOn(e.target.value)} /></label>
+          </div>
+          <button className="primary-button" type="submit" disabled={busy}>Add evidence reference</button>
+        </form>}
+      </div>
+    </div>
+
+    <div className="inventory-panel">
+      <h4>Lifecycle review requests</h4>
+      {data?.lifecycleRequests.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.requestedAction}</strong> · {x.reviewStatus} · {x.reason}</p>)}
+      {!data?.lifecycleRequests.length && <p className="inventory-empty">No activation or retirement requests.</p>}
+      {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "lifecycle-requests", { requestedAction: lifecycleAction, reason, changeReason: changeReason || null }, "Lifecycle request submitted. Product status remains Draft pending review.")}>
+        <div className="form-grid"><label>Request<select value={lifecycleAction} onChange={e => setLifecycleAction(e.target.value)}><option value="Activate">Request activation</option><option value="Retire">Request retirement</option></select></label><label>Reason<input required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label></div>
+        <button className="primary-button" type="submit" disabled={busy}>Submit review request</button>
+      </form>}
+    </div>
+    <p className="catalogue-footer-note">This interface does not verify identifiers, grant regulatory approval, activate/retire products, or create clinical, handling, stock or financial permissions. Review and evidence verification remain external human gates.</p>
+  </section>;
+}
