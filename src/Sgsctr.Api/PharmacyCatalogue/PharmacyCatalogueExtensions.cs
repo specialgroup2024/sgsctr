@@ -13,6 +13,12 @@ public static class PharmacyCatalogueExtensions
         api.MapGet("/permissions", (ClaimsPrincipal user) =>
             Results.Ok(new { canManage = user.IsInRole("Administrator") }));
 
+        api.MapGet("/audit", async (AppDbContext db, CancellationToken ct) =>
+            Results.Ok(await db.CatalogueAuditEvents.AsNoTracking().OrderByDescending(x => x.OccurredAtUtc).Take(100)
+                .Select(x => new AuditResponse(x.Id, x.ActorSubject, x.Action, x.ResourceType, x.ResourceId,
+                    x.OccurredAtUtc, x.Reason, x.CorrelationId)).ToListAsync(ct)))
+            .RequireAuthorization(policy => policy.RequireRole("Administrator"));
+
         api.MapGet("/products/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct) =>
         {
             var product = await db.CatalogueProducts.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, ct);
@@ -197,4 +203,5 @@ public static class PharmacyCatalogueExtensions
     public sealed record ProductResponse(Guid Id, string DisplayName, string? Description, string Status, int Version, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
     public sealed record UnitResponse(Guid Id, string Code, string Name, string? Symbol);
     public sealed record ConversionResponse(Guid Id, Guid ProductId, Guid FromUnitId, string FromUnitName, Guid ToUnitId, string ToUnitName, long Numerator, long Denominator, string Status);
+    public sealed record AuditResponse(Guid Id, string ActorSubject, string Action, string ResourceType, Guid ResourceId, DateTimeOffset OccurredAtUtc, string? Reason, string CorrelationId);
 }
