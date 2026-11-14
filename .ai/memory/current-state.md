@@ -42,6 +42,14 @@ The owner confirms that the three branches may transfer medicines and supplies d
 - Location create/edit/deactivate requires the configured Organization:ManagerSubjects allowlist, empty by default.
 - No pharmacy inventory, dispensing, purchasing, claims, patient balances, contracting transactions or financial posting is implemented.
 
+## Pharmacy inventory discovery — 2026-11-14
+- Master repository review found no inventory implementation: AppDbContext contains organization and EDA entities only; no inventory DbSets or inventory migrations were found in the inspected API tree.
+- The Pharmacies route remains foundation-only and explicitly says inventory, purchasing, receiving, dispensing and branch transfers are not enabled.
+- Existing stock-transfer workflow, acceptance criteria, domain model and persistence design remain proposals, not approved business rules.
+- Owner-confirmed: Mokattam main warehouse, Student Hospital, Qasr El-Aini and Manial branches; direct branch-to-branch transfer is required.
+- Bounded EDA inventory scan is recorded in .ai/governance/egypt-pharmacy-inventory-scan-2026-11-14.md. GSDP v05/2025 identifies stock-record updates after each operation, periodic reconciliation, expiry checks, FEFO, segregation/quarantine, recall traceability, receiving checks and storage monitoring. Site/product applicability requires qualified review.
+- No inventory code, schema, migration, seed data, stock balance or business rule was changed. Requirements, site licensing, supplier/receiving SOPs, lot/expiry controls, roles, costing and opening-stock reconciliation remain approval gates.
+
 ## EDA regulatory intelligence
 - Owner-approved EDA ingestion MVP is merged to master (PR #22); duplicate-index migration correction is merged (PR #24).
 - Owner-provided VM log on 2026-11-11: 5 sources, 100 discovered links, 12 new documents, 0 failures.
