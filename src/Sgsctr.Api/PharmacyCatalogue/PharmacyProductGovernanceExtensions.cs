@@ -42,7 +42,7 @@ public static class PharmacyProductGovernanceExtensions
         api.MapPost("/products/{id:guid}/family", async (
             Guid id, FamilyInput input, ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
         {
-            var allowed = new[] { "RegularMedicine", "Chemotherapy", "MedicalSupplyDevice", "Cosmetic" };
+            var allowed = new[] { "RegularMedicine", "Chemotherapy", "MedicalDevice","MedicalSupply", "Cosmetic" };
             if (!allowed.Contains(input.FamilyCode, StringComparer.Ordinal))
                 return Results.ValidationProblem(new Dictionary<string, string[]> {
                     ["familyCode"] = ["Choose one of the four provisional pharmacy families."]
