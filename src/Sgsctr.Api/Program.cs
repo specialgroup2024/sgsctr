@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sgsctr.Api.Data;
 using Sgsctr.Api.RegulatoryIntelligence;
+using Sgsctr.Api.PharmacyCatalogue;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -149,6 +150,7 @@ app.MapGet("/api/v1/system/info", () => Results.Ok(new
 })).AllowAnonymous();
 
 app.MapRegulatoryIntelligenceEndpoints();
+app.MapPharmacyCatalogueEndpoints();
 
 var authRoutes = app.MapGroup("/api/v1/auth");
 authRoutes.MapIdentityApi<IdentityUser>();
