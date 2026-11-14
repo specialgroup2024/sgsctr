@@ -27,7 +27,7 @@ Repository baseline: ASP.NET Core 10, EF Core/Npgsql, PostgreSQL 18 and Next.js 
 Branch: `feat/inv01-generic-product-catalogue`.
 
 - Entities: CatalogueProduct, UnitOfMeasure, ProductUnitConversion, CatalogueAuditEvent.
-- API: authenticated product/unit/conversion read endpoints; Administrator-only create/update endpoints.
+- API: authorization-protected product/unit/conversion read endpoints; Administrator-only writes when authentication is enabled, with the existing local Development/authentication-disabled exception.
 - UI: product search, create/edit draft product, create unit and add draft conversion.
 - Tests added for ratio normalization and unit-code normalization.
 - No product-family/category fields, internal SKU, barcode/GTIN/UDI/EPTTS, registration/notification, manufacturer, strength, dosage/form, batch, serial, expiry, storage, pricing or clinical data.
@@ -43,7 +43,7 @@ Branch: `feat/inv01-generic-product-catalogue`.
 
 ## Risks and unresolved decisions
 
-- Administrator-only writes may be too narrow or too broad; final role/sector/location permissions need owner/security approval.
+- Administrator-only writes may be too narrow or too broad; the local Development exception is not a production control. Final role/sector/location permissions need owner/security approval.
 - Unit code semantics, dimensions and compatibility rules are not approved.
 - Ratio values are bounded to browser-safe positive integers; no arithmetic engine uses them.
 - Product name duplicates are allowed; no automatic merge or identity resolution is attempted.
@@ -55,7 +55,7 @@ Branch: `feat/inv01-generic-product-catalogue`.
 
 - CI: .NET build/test, web typecheck/build, Markdown line-limit check.
 - PostgreSQL: apply additive migration against a preserved database; verify no existing migration history or data is reset.
-- API: authenticated read; non-Administrator write denied; Administrator write succeeds; invalid/duplicate units and invalid ratios rejected; product version conflict rejected.
+- API: authenticated read; non-Administrator write denied when authentication is enabled; Administrator write succeeds; local Development/authentication-disabled writes remain local-only; invalid/duplicate units and invalid ratios rejected; product version conflict rejected.
 - Audit: create/update/unit/conversion events commit atomically with resource changes; no sensitive payloads are stored.
 - UI: read persisted records, create/edit draft product, create units and add draft conversions; display Q38 pending and no operational use.
 - Owner acceptance and explicit merge/release decision required. Q38 professional sign-off is required before family-specific extensions or product activation.
