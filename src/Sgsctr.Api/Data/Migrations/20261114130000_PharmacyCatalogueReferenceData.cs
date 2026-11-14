@@ -16,7 +16,6 @@ public sealed class PharmacyCatalogueReferenceData : Migration
             {
                 Id = table.Column<Guid>(type: "uuid", nullable: false),
                 DisplayName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                 Status = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                 Version = table.Column<int>(type: "integer", nullable: false),
                 CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
