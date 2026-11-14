@@ -75,7 +75,7 @@ public static class PharmacyCatalogueExtensions
             AddAudit(db, actor, "ProductCreated", "CatalogueProduct", product.Id, input.ChangeReason, http.TraceIdentifier, now);
             await db.SaveChangesAsync(ct);
             return Results.Created($"/api/v1/pharmacy/catalogue/products/{product.Id}", ToResponse(product));
-        }).RequireAuthorization(policy => policy.RequireRole("Administrator"));
+        }).RequireAuthorization(writePolicy);
 
         api.MapPut("/products/{id:guid}", async (
             Guid id, ProductUpdateInput input, ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
@@ -97,7 +97,7 @@ public static class PharmacyCatalogueExtensions
             try { await db.SaveChangesAsync(ct); }
             catch (DbUpdateConcurrencyException) { return Results.Conflict(new { error = "The catalogue record changed. Reload it before editing." }); }
             return Results.Ok(ToResponse(product));
-        }).RequireAuthorization(policy => policy.RequireRole("Administrator"));
+        }).RequireAuthorization(writePolicy);
 
         api.MapGet("/units", async (AppDbContext db, CancellationToken ct) =>
             Results.Ok(await db.UnitsOfMeasure.AsNoTracking().OrderBy(x => x.Code)
@@ -127,7 +127,7 @@ public static class PharmacyCatalogueExtensions
             try { await db.SaveChangesAsync(ct); }
             catch (DbUpdateException) { return Results.Conflict(new { error = "A unit with this code already exists." }); }
             return Results.Created($"/api/v1/pharmacy/catalogue/units/{unit.Id}", new UnitResponse(unit.Id, unit.Code, unit.Name, unit.Symbol));
-        }).RequireAuthorization(policy => policy.RequireRole("Administrator"));
+        }).RequireAuthorization(writePolicy);
 
         api.MapGet("/products/{id:guid}/conversions", async (Guid id, AppDbContext db, CancellationToken ct) =>
         {
@@ -170,7 +170,7 @@ public static class PharmacyCatalogueExtensions
             try { await db.SaveChangesAsync(ct); }
             catch (DbUpdateException) { return Results.Conflict(new { error = "This product already has a conversion for the selected unit pair." }); }
             return Results.Ok(new ConversionResponse(conversion.Id, id, input.FromUnitId, "", input.ToUnitId, "", numerator, denominator, "Draft"));
-        }).RequireAuthorization(policy => policy.RequireRole("Administrator"));
+        }).RequireAuthorization(writePolicy);
 
         return app;
     }
