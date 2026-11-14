@@ -57,6 +57,18 @@ The following are **not approved by INV-OWN-001**. Keep them pending until the r
 | INV-SEC-001 | Security review and residual-risk acceptance | Pending | Server-side access controls, separation of duties, audit integrity, privacy and production security. |
 | INV-REL-001 | Controlled production release | Pending | End-to-end acceptance, professional sign-offs, migration rehearsal, recovery, opening-stock reconciliation and explicit release authorization. |
 
+## Application tracking
+
+The application approval register is implemented as a read-only, PostgreSQL-backed view in the Pharmacy Inventory workspace:
+
+- UI: `/pharmacies/inventory` → **Approvals**.
+- BFF: `GET /api/pharmacy/approvals`.
+- ASP.NET Core API: `GET /api/v1/pharmacy/catalogue/approvals` (authenticated).
+- Persistence: `GovernanceApprovals` table, introduced by migration `20261114170000_GovernanceApprovalRegister`.
+- The migration seeds INV-OWN-001 as Approved (with its repository evidence and the limitation that application identity was not captured) and INV-PRO-001 through INV-REL-001 as Pending.
+
+The first application increment intentionally does not provide a decision-write endpoint. It cannot promote a Pending item to Approved, Rejected or another terminal state. Reviewer identity, professional qualification, delegated authority and server-side role separation must be designed and verified before decision entry is enabled. Update this document and the database together when an approval is later recorded.
+
 ## How to record a new approval
 
 1. Create or update the detailed source record (ADR, requirement decision, professional review, security review or release record).
