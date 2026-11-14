@@ -47,3 +47,7 @@ A new or amended requirement must be linked to the source evidence, impact asses
 | INV-REG-06 | EDA 2026 guidance index: misuse-potential products and reserve antibiotics | Product-specific handling/dispensing controls may affect catalogue classification and access. | Index verified; full Arabic instruments and SKU-level mapping pending. |
 
 Source evidence, exact URLs, dates and limitations are recorded in [the 2026-11-14 inventory scan](egypt-pharmacy-inventory-scan-2026-11-14.md). No entry is marked owner-approved or implemented.
+
+## INV-01 generic catalogue safeguard — 2026-11-14
+
+This is an internal design control derived from the bounded EDA source review, not a new legal requirement: keep generic product identity and unit reference data separate from product-family regulatory evidence. EDA's current public indexes and UDI guideline distinguish human pharmaceutical registration, medical-device UDI, cosmetics notification/claims and EPTTS requirements. Therefore the generic implementation contains no product-family classification, registration/notification status, UDI/GTIN/EPTTS identifiers, lot/serial/expiry, storage or activation rules. Q38 qualified reviewers must define applicability and required fields before those are added. See [catalogue-specific Egypt scan](egypt-pharmacy-catalogue-scan-2026-11-14.md) and [ADR-0004](../architecture/ADR-0004-generic-pharmacy-catalogue.md).
