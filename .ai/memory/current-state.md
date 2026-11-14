@@ -42,6 +42,12 @@ The owner confirms that the three branches may transfer medicines and supplies d
 - Location create/edit/deactivate requires the configured Organization:ManagerSubjects allowlist, empty by default.
 - No pharmacy inventory, dispensing, purchasing, claims, patient balances, contracting transactions or financial posting is implemented.
 
+## Pharmacy inventory INV-00 — 2026-11-14
+- PR #27 merged the Phase 0 discovery package. Current work branch prepares INV-00 requirements; see .ai/delivery/pharmacy-inventory-inv00-requirements.md and .ai/delivery/pharmacy-inventory-costing-worked-examples.md.
+- The dated Egypt scan now includes EDA warehouse licensing guideline EDREX:GL.CALI/CIP.002 v05/2026 (July 2026) and EPTTS Phase 1 FAQ v03/2026 (23-Apr-2026). Warehouse-only requirements, including electronic records and five-year inbound/outbound invoice-document retention, must not be generalized until site classification/licence is verified.
+- The in-app EDA monitor's latest live status was not accessible during this repository-only task; last owner-provided run remains 2026-11-11.
+- No application code, schema, migration, seed data, stock balance, movement or costing implementation was created. Worked examples are synthetic and non-posting; accountant/pharmacy approval remains pending.
+
 ## Pharmacy inventory discovery — 2026-11-14
 - Master repository review found no inventory implementation: AppDbContext contains organization and EDA entities only; no inventory DbSets or inventory migrations were found in the inspected API tree.
 - The Pharmacies route remains foundation-only and explicitly says inventory, purchasing, receiving, dispensing and branch transfers are not enabled.
