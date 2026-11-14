@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Sgsctr.Api.Data;
 
@@ -9,15 +10,20 @@ public static class PharmacyCatalogueExtensions
     public static WebApplication MapPharmacyCatalogueEndpoints(this WebApplication app)
     {
         var api = app.MapGroup("/api/v1/pharmacy/catalogue").RequireAuthorization();
+        var authenticationEnabled = app.Configuration.GetValue<bool>("Authentication:Enabled", true);
+        var localDevelopmentWrites = app.Environment.IsDevelopment() && !authenticationEnabled;
+        var writePolicy = new AuthorizationPolicyBuilder()
+            .RequireAssertion(context => localDevelopmentWrites || context.User.IsInRole("Administrator"))
+            .Build();
 
         api.MapGet("/permissions", (ClaimsPrincipal user) =>
-            Results.Ok(new { canManage = user.IsInRole("Administrator") }));
+            Results.Ok(new { canManage = localDevelopmentWrites || user.IsInRole("Administrator") }));
 
         api.MapGet("/audit", async (AppDbContext db, CancellationToken ct) =>
             Results.Ok(await db.CatalogueAuditEvents.AsNoTracking().OrderByDescending(x => x.OccurredAtUtc).Take(100)
                 .Select(x => new AuditResponse(x.Id, x.ActorSubject, x.Action, x.ResourceType, x.ResourceId,
                     x.OccurredAtUtc, x.Reason, x.CorrelationId)).ToListAsync(ct)))
-            .RequireAuthorization(policy => policy.RequireRole("Administrator"));
+            .RequireAuthorization(writePolicy);
 
         api.MapGet("/products/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct) =>
         {
