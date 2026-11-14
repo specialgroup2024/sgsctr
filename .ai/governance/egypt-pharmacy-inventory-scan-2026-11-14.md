@@ -1,44 +1,49 @@
-# Egypt pharmacy inventory regulatory scan — 2026-11-14
+# Egypt pharmacy inventory regulatory and market scan — 2026-11-14
 
-Status: bounded discovery scan for inventory requirements. This is not legal advice, a licensing determination, exhaustive monitoring or approval to implement stock rules.
-Review date: 2026-11-14 (Africa/Cairo).
-Scope: EDA public regulatory material relevant to pharmacy inventory, storage, receipt, lot/expiry, stock reconciliation, returns, recall, distribution and track-and-trace. English and Arabic EDA pages/documents were checked.
+Status: bounded manual review for INV-00; not legal advice, licensing determination, exhaustive market monitoring or professional approval.
+Review date: 2026-11-14 (Africa/Cairo). Sources checked in Arabic and English where available.
 
-## Primary EDA findings
+## Material primary EDA evidence
 
-| ID | Source and class | Verified evidence | Inventory impact / status |
+| ID | Source / class | Verified finding | Inventory impact and limitation |
 |---|---|---|---|
-| INV-EG-001 | EDA Regulatory Guide for Good Storage and Distribution Practices (GSDP), EDREX:GL.CIP.005, v05/2025; Class B official guidance | Applies to medicines, biologicals, medical devices, cosmetics and other listed product categories. Sections 12–13 require stock records updated after each operation, periodic physical-to-record reconciliation, root-cause review/CAPA, regular expiry/retest checks, receipt checks and product-specific storage controls. | Candidate requirements for stock ledger, receiving, stock count, discrepancy/CAPA and expiry management. Applicability and enforceable status for each Special Group site/activity require qualified review. |
-| INV-EG-002 | Same GSDP guide, pages 7–8 and 12–13; Class B | Temperature/humidity mapping, calibrated instruments and retained readings; FEFO rotation; damaged/broken/expired goods removed from usable stock and segregated; returned goods quarantined pending disposition; recalled goods secured and isolated with traceability/reconciliation. | Requires quality/status controls separate from sellable/available stock. Do not auto-release returned, damaged, recalled or temperature-excursion stock. |
-| INV-EG-003 | Same GSDP guide, pages 6 and 14–15; Class B | Incoming deliveries are checked against documents including product, batch, production/expiry dates and quantity; transport temperature evidence is reviewed where applicable. Dispatch documentation includes batch and expiry to support traceability; expired products must not be supplied. | Receiving and movement records need lot/expiry and evidence references when applicable. Exact required fields vary by product and process. |
-| INV-EG-004 | EDA organizational guideline for warehouse licensing, EDREX:GL.CAO.002, v2/2023; official licensing guidance (Class B) | The document defines a licensed warehouse and license holder. Its annexed requirements include identifying stored products by batch, production and expiry dates, segregating expired stock and using a computer program to preserve incoming/outgoing invoices and documents. | Do not assume the Mokattam location is legally an EDA-licensed pharmaceutical warehouse. Confirm licence holder, activity, site classification and applicability before configuring production operations. |
-| INV-EG-005 | EDA inspection-guideline index, checked 2026-11-14; Class B | Lists GSDP v05/2025, 2026 sampling/release guideline, 2026 misuse-potential product import/distribution/monitoring/dispensing guideline, 2026 corrective-action follow-up guidance for warehouses/depots/pharmacies and reserve-antibiotic dispensing guidance. | Retrieve full applicable Arabic instruments and map product-specific rules with regulatory/pharmacy professionals. Index entries alone are not full legal evidence. |
-| INV-EG-006 | EDA licensing-guideline index, checked 2026-11-14; Class B | Lists July 2026 warehouse licensing and health-requirements guidance under Chairman Decree 725/2024, v05, and intermediary-depot licensing guidance, v03. | Site/activity classification and licensing must be verified before system workflows or role assumptions. |
-| INV-EG-007 | EDA national track-and-trace service and technical-document index; Class B | EDA publishes unified track-and-trace guidance for human and biological medicinal products, technical requirements, Phase 1 FAQ/user guide, product/location identifier guidance and EPCIS event guidance. EDA event material describes digital receipt/shipping event requirements for relevant supply-chain participants. | Potential integration/data requirements for covered products and participants. Do not assume every retail branch or all product categories are in Phase 1. Confirm applicability, onboarding, identifiers, deadlines and interfaces with EDA/qualified regulatory staff. |
+| INV-EG-001 | EDA GSDP EDREX:GL.CIP.005 v05/2025, Class B | Applies to relevant pharmaceutical/biological products, medical devices and cosmetics. Stock records updated after each operation; periodic reconciliation and root-cause/CAPA for discrepancies; regular expiry/retest checks. | Propose append-only movement ledger, count/reconciliation, expiry and discrepancy workflow. Applicability to each site and category needs review. |
+| INV-EG-002 | Same GSDP, sections 1.2, 1.3, 10–13, Class B | Receipt checks supplier, PO, product, batch, production/expiry, quantity, packaging and transport conditions; rejected products separated. FEFO; temperature/humidity monitoring and calibrated instruments; returned goods quarantined; recalls isolated, traced and reconciled. | Require receipt evidence, quality statuses, storage profiles, FEFO support, quarantine and recall traceability. Do not automate quality release or disposition. |
+| INV-EG-003 | EDA warehouse licensing guideline EDREX:GL.CALI/CIP.002, v05/2026, issued/effective July 2026, Class B | Official Arabic original under Chairman Decree 725/2024. For the covered licensed medicine warehouses: record batch, manufacture and expiry; separate expired medicines; electronic/computer program records medicine data, purchase/sales invoices, suppliers/customers and warehouse data; retrieve records; retain inbound/outbound invoices and supporting documents at least five years. | Material update to prior 2023 warehouse guidance. Site classification/licence holder is a blocking question: do not apply warehouse-only rules to a pharmacy or hospital branch without qualified confirmation. Build configurable retention only after legal review. |
+| INV-EG-004 | Same EDA warehouse licensing v05/2026, Class B | The covered warehouse guide specifies ambient premises limits up to 30°C and 65% RH, regular readings, and 2–8°C refrigeration for products requiring it; label/product-specific conditions still govern each product. It also specifies separate expired-product storage and vehicle conditions for licensed warehouse distribution. | Capture product storage profile and site/equipment evidence. Do not hard-code a universal 30°C/65% product rule or infer branch requirements. |
+| INV-EG-005 | EDA EPTTS Phase 1 FAQ EDREX:NP.CIP.009 v03, 23-Apr-2026, Class B | Defines Phase 1 technical/data/serialization/reporting requirements for human and biological pharmaceutical products. Importing entity is accountable for reporting commissioning, aggregation, shipping and receiving events; secondary-package serialization and GTIN/serial/expiry/lot DataMatrix elements are specified. Phase 1 FAQ says CSV is mandatory, API integration not yet available, and requirements apply to shipments shipped on/after 1-Feb-2026. | Preserve fields/integration boundary for potentially covered items. Applicability to Special Group's role and retail branches must be confirmed; do not claim all branch transfers are EPTTS-reportable. |
+| INV-EG-006 | EDA 2026 inspection-guideline index, Class B | Index lists 2026 guidance for inspection/CAPA follow-up for warehouses, depots and pharmacies, and misuse-potential product import/distribution/monitoring/dispensing; reserve-antibiotic dispensing guidance also appears. | Obtain full Arabic documents and determine affected SKUs, roles and pharmacy processes before configuration. |
+| INV-EG-007 | EDA Q3 2026 licensing update, Class B official news | EDA reports continued licensing/renewal of pharmaceutical warehouses and other establishments. | Supports the need to verify actual current site licences; news is not proof of Special Group site status. |
 
-## Original sources checked
+## Other Egyptian market and public-sector signals
 
-- GSDP v05/2025 PDF: https://edaegypt.gov.eg/media/ziepfko3/regulatory-guide-for-good-storage-and-distribution-practices-gsdp-_en-vr5.pdf
-- EDA inspection guidelines index: https://edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ca-of-inspection-of-pharmaceutical-institutions/
-- EDA warehouse licensing guidance index: https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ca-of-pharmaceutical-institutions-licensing/
-- Warehouse licensing guideline PDF (EDREX:GL.CAO.002): https://edaegypt.gov.eg/media/rqdk1mb0/%D8%A7%D9%84%D8%AF%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%89-%D9%85%D8%B3%D8%AA%D9%88%D8%AF%D8%B9%D8%A7%D8%AA-%D8%A7%D9%84%D9%88%D8%B3%D8%B7%D8%A7%D8%A1-en-2026.pdf
+| ID | Source / class | Finding | Use and limitation |
+|---|---|---|---|
+| INV-EG-008 | State Information Service, 2-Sep-2026, Class C | Reports Prime Minister direction for continuous monitoring of medicine and medical-supply stocks at hospitals. | Hospital stock visibility and supply continuity are relevant context; not a binding software specification for Special Group. |
+| INV-EG-009 | EnterpriseAM, 9-Nov-2026, Class E | Reports competing claims about a new drug-pricing formula and possible price pressure; article says EDA denied receiving the reported exceptional requests. | Treat as conflicting market signal only. Never update product prices or inventory cost from press reports. Require EDA official product-level price evidence. |
+| INV-EG-010 | UPA public portal, access limitation | UPA domain was blocked to this review tool; no procurement dataset or current UPA stock source was verified. | Coverage gap; manual official-portal review or authorized data access needed. |
+| INV-EG-011 | Egyptian Pharmacists Syndicate / supplier / distributor channels | No authoritative inventory SOP or product-level supplier source was authenticated in this bounded review. | Coverage gap; nominate trusted contacts and source URLs before relying on market signals. |
+
+## Source URLs
+
+- EDA GSDP v05/2025: https://edaegypt.gov.eg/media/ziepfko3/regulatory-guide-for-good-storage-and-distribution-practices-gsdp-_en-vr5.pdf
+- EDA warehouse licensing v05/2026 Arabic original: https://edaegypt.gov.eg/media/gzxpsmon/الدليل-التنظيمى-لمخازن-الادوية_ar2026.pdf
+- EDA licensing-guideline index: https://www.edaegypt.gov.eg/ar/المرجع-التنظيمي-لهيئة-الدواء-المصرية/الأدلة-التنظيمية/الأدلة-التنظيمية-الخاصة-بالإدارة-المركزية-لتراخيص-المؤسسات-الصيدلية/
+- EDA EPTTS Phase 1 FAQ: https://edaegypt.gov.eg/media/fs1folht/egyptian-track-trace-for-pharmaceutical-eptts-technical-faq-v3_20262.pdf
 - EDA track-and-trace service: https://www.edaegypt.gov.eg/en/services/track-and-trace/
-- EDA track-and-trace implementation lecture: https://www.edaegypt.gov.eg/en/media-center/events/eda-holds-a-series-of-lectures-to-explain-the-mechanism-of-implementing-the-pharmaceutical-track-and-trace-system/
+- EDA inspection guidance index: https://edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ca-of-inspection-of-pharmaceutical-institutions/
+- EDA Q3 2026 licensing news: https://edaegypt.gov.eg/en/media-center/news/egyptian-drug-authority-highlights-key-achievements-in-pharmaceutical-establishments-licensing-during-q3-2026/
+- State Information Service hospital-stock news: https://sis.gov.eg/en/media-center/news/pm-directs-continuous-monitoring-of-medicine-medical-supply-stocks-at-various-hospitals/
+- EnterpriseAM market report, 9-Nov-2026: https://enterpriseam.com/egypt/2026/11/09/new-drug-pricing-formula-faces-its-first-test-as-drugmakers-reportedly-push-for-20-hike/
 
-## Impact and limits
+## Monitoring status and review gaps
 
-- The EDA GSDP document is official guidance. This scan does not decide which requirements are legally binding for each location, whether a site is a pharmacy, warehouse, depot or another licensed establishment, or whether all product categories are handled under the same controls.
-- The warehouse licensing PDF found at the EDA URL is an organizational guideline issued 15 January 2023, effective 18 January 2023. The separate EDA index lists a July 2026 v05 warehouse-licensing guide. The 2026 full document and current legal instruments must be obtained and reconciled; do not treat the 2023 PDF as the latest version.
-- No Official Gazette original, company/site licence, supplier licence, product registration/price, live recall, product-specific controlled-item schedule or site-level temperature SOP was verified.
-- UPA, MOHP, ETA, payer, professional association, supplier, tender and media sources were not comprehensively searched in this inventory-focused scan. No claim of exhaustive Egyptian market coverage is made.
-- The in-app EDA monitor's operational status was not queried in this documentation-only task; its last owner-provided scan evidence remains 2026-11-11.
-- No stock, costing, dispensing, recall-disposition, pricing or accounting rule is approved by this scan.
+- The in-app EDA monitor's live latest-run status was not accessible in this repository-only task. Last owner-provided run remains 2026-11-11: five sources, 100 links, 12 new documents, zero failures.
+- UPA portal access was blocked; professional syndicate and supplier/distributor primary channels were not verified in this bounded scan.
+- No Official Gazette original, Special Group site licence, signed supplier contract, product-level registration/price, controlled-item schedule, site SOP or cold-chain excursion log was reviewed.
+- The 2026 warehouse licensing guide is a material update to the older 2023 guide previously referenced; this scan indexes the current v05/2026 Arabic original. Qualified reviewer must confirm legal effect and site applicability.
+- EDA documents are official guidance/instructions, but their application depends on establishment role, product class and current instruments. This scan is not a legal compliance conclusion.
 
-## Required human review
+## Human review required
 
-1. Licensed pharmacist / pharmacy operations: product categories, storage conditions, lot/expiry, FEFO, quarantine, return, recall, count and adjustment SOPs.
-2. Egyptian regulatory-affairs professional / counsel: current Arabic instruments, licensing classification and site/product applicability.
-3. Accountant: weighted-average costing, receipt/return/transfer/adjustment valuation, in-transit treatment and reconciliation.
-4. Business owner: locations, operating scope, role authority, approval limits and release priorities.
-
-Next review: before inventory requirements sign-off and before any inventory code, migration, import or operational pilot.
+Licensed pharmacist/quality lead: operating procedures and product handling. Regulatory-affairs/legal: current Arabic instruments, licence type and applicability. Accountant: costing/valuation. Business owner: sites, custody, authorities and release decisions.

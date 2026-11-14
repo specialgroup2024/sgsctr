@@ -16,7 +16,7 @@ Status: technical foundation and application shell implemented; business discove
 - API readiness requires PostgreSQL reachability through both application and Identity contexts. Owner VM checks returned HTTP 200 for readiness and web-to-API system status on 2026-11-11.
 
 ## Current boundary
-The application is a technical foundation, not a completed ERP. No production pharmacy or contracting operations are enabled. Pharmacy inventory is at Phase 0 discovery; see [inventory discovery](../delivery/pharmacy-inventory-discovery.md) and the [2026-11-14 Egypt inventory scan](../governance/egypt-pharmacy-inventory-scan-2026-11-14.md).
+The application is a technical foundation, not a completed ERP. No production pharmacy or contracting operations are enabled. Pharmacy inventory is in INV-00 requirements review; see [requirements](../delivery/pharmacy-inventory-inv00-requirements.md) and [costing examples](../delivery/pharmacy-inventory-costing-worked-examples.md). Pharmacy inventory is at Phase 0 discovery; see [inventory discovery](../delivery/pharmacy-inventory-discovery.md) and the [2026-11-14 Egypt inventory scan](../governance/egypt-pharmacy-inventory-scan-2026-11-14.md).
 
 ## Explicitly not implemented
 - Product catalogue, suppliers, purchasing, receiving, batches/expiry, stock balances, transfers or inventory valuation.

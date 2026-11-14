@@ -68,6 +68,10 @@ See [Egypt pharmacy inventory regulatory scan — 2026-11-14](../governance/egyp
 
 Each package requires tests, review and named approval. Production stock posting and migrations remain blocked until the applicable business/accounting/legal gates are recorded.
 
+## INV-00 continuation
+
+The next requirements package is drafted in [pharmacy-inventory-inv00-requirements.md](pharmacy-inventory-inv00-requirements.md), with illustrative arithmetic in [pharmacy-inventory-costing-worked-examples.md](pharmacy-inventory-costing-worked-examples.md). The regulatory scan was refreshed to include EDA warehouse licensing v05/2026 and EPTTS Phase 1 FAQ v03/2026. These are drafts and evidence, not approvals.
+
 ## Current outcome
 
-Phase 0 discovery and bounded EDA source review are documented. No application code, database schema, EF migration, seed data, stock balance, production record or business policy was changed. Next action is owner/pharmacy/accountant decisions, not a guessed implementation.
+Phase 0 discovery and INV-00 requirements preparation are documented. No application code, database schema, EF migration, seed data, stock balance, production record or business policy was changed. Next action is named owner and professional review of Q29–Q46 and signed decisions, not a guessed implementation.

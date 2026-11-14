@@ -48,3 +48,12 @@ See [Egypt pharmacy market and regulatory scan — 2026-11-11](egypt-pharmacy-cu
 - Record inaccessible sources, login/paywall restrictions and missing archives as coverage gaps.
 - Never scrape, bypass access controls or violate terms. Use permitted feeds/APIs or manual review.
 - Keep source class, last checked, next review and owner in the evidence register.
+
+
+## Inventory-focused source expansion
+
+- EDA warehouse licensing v05/2026 Arabic original under Chairman Decree 725/2024: https://edaegypt.gov.eg/media/gzxpsmon/الدليل-التنظيمى-لمخازن-الادوية_ar2026.pdf
+- EDA GSDP v05/2025: https://edaegypt.gov.eg/media/ziepfko3/regulatory-guide-for-good-storage-and-distribution-practices-gsdp-_en-vr5.pdf
+- EDA EPTTS Phase 1 FAQ v03/2026: https://edaegypt.gov.eg/media/fs1folht/egyptian-track-trace-for-pharmaceutical-eptts-technical-faq-v3_20262.pdf
+- EDA Q3 2026 licensing news: https://edaegypt.gov.eg/en/media-center/news/egyptian-drug-authority-highlights-key-achievements-in-pharmaceutical-establishments-licensing-during-q3-2026/
+- UPA access was blocked in the current review; Pharmacists Syndicate and supplier/distributor sources still need authenticated, named contacts. Treat market news as signals only.
