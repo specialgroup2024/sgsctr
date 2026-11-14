@@ -51,7 +51,7 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - Q37: owner confirmed on 2026-11-14 that Mokattam is an EDA-licensed pharmaceutical warehouse under Chairman Decree 725/2024. Licence copy/number, holder, operator, validity and scope still require documentary/regulatory verification; the three hospital branches require separate classification.
 - Q38: product taxonomy and mandatory fields for medicines, chemotherapy, devices/supplies and cosmetics require qualified pharmacist, quality and regulatory review.
 - Q46: owner approved the initial INV-01 scope on 2026-11-14: persistent product catalogue/product identity, units of measure and explicit packaging conversions, and pharmacy-location reference metadata. Supplier master is deferred. Purchasing, receiving, stock balances, lots, movements, dispensing, transfers, valuation, claims and accounting postings are excluded. Detailed fields, import source, duplicate-resolution rules and create/edit/retire permissions remain open.
-- The INV-01 approval package is recorded in .ai/delivery/pharmacy-inventory-inv01-approval-pack.md. The approved scope boundary does not itself authorize production schema, seed data, imports or write endpoints. Q38 qualified review and detailed technical/security approvals remain gates.
+- The INV-01 approval package is recorded in .ai/delivery/pharmacy-inventory-inv01-approval-pack.md. The approved scope boundary does not itself authorize production schema, seed data, imports or write endpoints. A review-only candidate data dictionary and Q38 pharmacist/quality worksheet were added on branch docs/pharmacy-inv01-data-dictionary-review; neither is an approved schema. Q38 qualified review and detailed technical/security approvals remain gates.
 - Mokattam's warehouse type is owner-confirmed, not independently licence-verified; other sites require separate classification.
 - No authentication verification, Data Protection volume verification or live VM/browser deployment verification was performed for PR #29. Authentication and Data Protection verification remain on hold per owner instruction.
 
@@ -62,6 +62,6 @@ The owner confirms the three branches may transfer medicines and supplies direct
 
 ## Governance and next milestone
 - AGENT.md, AGENTS.md and .ai define dynamic five-role operation and human/professional approval boundaries.
-- Next gate for INV-01: obtain qualified Q38 product-category/data-field review; then approve the detailed data dictionary, permissions, import-source and duplicate-resolution ADR. Implement reference-data-only persistence only after those gates. Supplier master remains deferred unless separately approved.
+- Next gate for INV-01: complete the Q38 qualified review worksheet for the four product families; then approve the detailed data dictionary, internal code/unit rules, permissions, provenance/import-source and duplicate-resolution/audit decisions. Implement reference-data-only persistence only after those gates. Supplier master remains deferred unless separately approved.
 - Stock movements and costing remain later gated work.
 - Authentication verification and Data Protection volume verification remain on hold per owner instruction.
