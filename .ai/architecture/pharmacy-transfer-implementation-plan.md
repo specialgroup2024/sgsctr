@@ -1,55 +1,57 @@
 # Pharmacy inventory and stock-transfer implementation plan
 
-- Status: Phase 0 discovery and INV-00 requirements preparation documented; implementation blocked pending business, pharmacy, regulatory/site and accounting approvals.
-- Current baseline: master commit d448e996df45101ca90ff615d4cd06cac60df105 (2026-11-14).
-- Discovery: [pharmacy inventory discovery](../delivery/pharmacy-inventory-discovery.md); [INV-00 requirements](../delivery/pharmacy-inventory-inv00-requirements.md); [costing worked examples](../delivery/pharmacy-inventory-costing-worked-examples.md); [Egypt inventory regulatory scan](../governance/egypt-pharmacy-inventory-scan-2026-11-14.md).
+- Status: Phase 0 and INV-00 requirements completed; INV-00 UI prototype merged; INV-01 approval package prepared. Production inventory implementation remains gated by owner and qualified professional decisions.
+- Current master baseline: 7114e0cd499e371d2e08c71f8f86bcd6148c6deb (2026-11-14).
+- Discovery: [inventory discovery](../delivery/pharmacy-inventory-discovery.md); [INV-00 requirements](../delivery/pharmacy-inventory-inv00-requirements.md); [costing examples](../delivery/pharmacy-inventory-costing-worked-examples.md); [Egypt scan](../governance/egypt-pharmacy-inventory-scan-2026-11-14.md); [INV-01 approval pack](../delivery/pharmacy-inventory-inv01-approval-pack.md).
 
 ## 1. Verified repository baseline
 
 - ASP.NET Core 10 API, EF Core/Npgsql, PostgreSQL 18 Compose service and Next.js web shell.
-- `src/Sgsctr.Api/Data/AppDbContext.cs` currently exposes organization-location and EDA regulatory-intelligence DbSets only.
-- The inspected API migration tree contains organization, Identity and EDA migrations; no inventory migration was found.
-- `web/app/pharmacies/page.tsx` explicitly marks operational features as not enabled.
-- No product catalogue, supplier purchasing, receiving, stock ledger/balances, lots, stock transfers, inventory UI or costing implementation was found in the inspected master tree.
+- AppDbContext exposes organization-location and EDA regulatory-intelligence DbSets only; inspected migration tree has no inventory migration.
+- PR #29 merged the non-posting UI route /pharmacies/inventory with Overview, Product Catalogue, Receiving, Stock Transfers, Batches & Expiry and Reports.
+- UI location reference data uses the existing Organization API; API liveness and PostgreSQL readiness are displayed separately.
+- No product catalogue persistence, supplier purchasing, receiving, stock ledger/balances, lots, stock transfers or costing implementation exists.
 - Existing transfer workflow, acceptance criteria, domain and persistence design are proposals only.
 
 ## 2. Owner-confirmed scope facts
 
 - Locations: Mokattam main warehouse; Student Hospital, Qasr El-Aini and Manial Hospital branches.
 - Direct branch-to-branch transfers are required; routes must not be forced through Mokattam.
-- Pharmacy categories include regular medicines, chemotherapy drugs, medical supplies and cosmetics.
-- Weighted-average costing is the requested method; its calculation level, timing and transaction treatment are not approved.
+- Pharmacy categories named by owner: regular medicines, chemotherapy drugs, medical supplies and cosmetics.
+- Weighted-average costing is requested; calculation pool, timing and transaction treatment are not approved.
 
 ## 3. Work packages and gates
 
 | ID | Work package | Gate / deliverable |
 |---|---|---|
-| INV-00 | Discovery and approvals | Verified entity/site/licence register; signed workflow, product classification and owner/professional decisions |
-| INV-01 | Product, unit, location and supplier reference data | Approved taxonomy, barcode policy, pack conversions, supplier qualification and access tests |
+| INV-00 | Discovery, requirements and UI foundation | Requirements, costing examples, regulatory scan and connected non-posting screens |
+| INV-01 | Product, unit, location and supplier reference data | Q37/Q38/Q46 approvals; signed taxonomy/data dictionary, identifiers, units, supplier boundary and access policy |
 | INV-02 | Receiving and quality status | Approved receiving SOP; supplier/document checks; lot/expiry and quarantine controls |
 | INV-03 | Stock ledger and balances | Append-only movements, location/lot balances, reconciliation and physical-count controls |
 | INV-04 | Transfers | Approved lifecycle/custody/roles; warehouse↔branch and direct branch↔branch; partial receipt and discrepancies |
-| INV-05 | Quality and traceability | Expiry/FEFO, recall, returns, damaged/expired quarantine, temperature evidence and EDA track-and-trace applicability |
-| INV-06 | Costing and reports | Accountant-approved moving weighted-average worked examples, valuation and reconciliation |
+| INV-05 | Quality and traceability | Expiry/FEFO, recall, returns, damage/expiry quarantine, temperature evidence and EDA track-and-trace applicability |
+| INV-06 | Costing and reports | Accountant-approved moving weighted-average examples, valuation and reconciliation |
 | INV-07 | Pilot and release | Opening-stock count/reconciliation, automated tests, user acceptance and signed release gate |
 
-## 4. Required approvals before schema or feature code
+## 4. Required approvals before INV-01 schema or feature code
 
-- Business owner: legal entity, sites, operating scope, role authority, approval limits and release priority.
-- Pharmacy operations/licensed pharmacist: product categories, units, receiving, storage, lot/expiry, FEFO, counts, adjustments, transfer lifecycle, custody, returns and exceptions.
-- Regulatory-affairs/legal professional: current Egyptian instruments, site licences, product-class applicability and track-and-trace obligations.
-- Accountant: moving weighted-average level/timing, returns, transfers, in-transit stock, losses, expiry, adjustments, rounding, period close and reconciliation examples.
-- Technical/security owner: resource authorization, audit, migration, data import and recovery controls.
+- Owner: legal entity/site operators, INV-01 boundary, supplier scope, record ownership and permissions.
+- Licensed pharmacist/pharmacy operations: product categories, category-specific fields, identifiers, units and product handling metadata.
+- Egyptian regulatory-affairs/legal reviewer: current instruments, site licences, product-class applicability and track-and-trace obligations.
+- Procurement: supplier master scope, evidence, eligibility and verification ownership.
+- Accountant: unit precision/conversion consequences and future costing boundary; no valuation implementation in INV-01.
+- Technical/security owner: resource authorization, audit, import controls and migration strategy.
 
 ## 5. Engineering quality gates after approval
 
-- Pure domain tests before persistence; real PostgreSQL integration tests for constraints, concurrency, idempotency and rollback.
-- Server-side sector/location authorization; immutable movement/audit history; no direct database access from clients.
-- Lot/expiry traceability and quality status must not be bypassed by transfer, receipt or retry.
-- Review generated migration SQL and test upgrade against representative data; never reset or overwrite production history.
-- No negative stock by default; any exception requires explicit approved policy and audit.
-- No valuation or GL posting until accountant-approved examples and policy are implemented and tested.
+- Pure domain validation tests before persistence; PostgreSQL integration tests for constraints, concurrency, duplicate detection, effective dates and rollback.
+- Server-side sector/location authorization; audit history; no direct database access from clients.
+- Product identity, external packaging identifiers and unit conversions remain distinct concepts.
+- Imports are staged and human-reviewed; never overwrite verified records silently.
+- Retired records remain resolvable for historical references.
+- Review generated migration SQL and test upgrade without resetting existing data.
+- No inventory movement, negative-stock policy, costing or GL posting in INV-01.
 
-## 6. Next action
+## 6. Current next action
 
-Review INV-00 requirements and costing examples, then obtain the decisions listed in .ai/memory/open-questions.md (Q29–Q46) and approvals in the discovery document. Until then, only repository discovery, documentation, mockups and non-posting prototypes are in scope. No schema migration, seed data, stock movement or production record is authorized.
+Complete the decision package at [pharmacy-inventory-inv01-approval-pack.md](../delivery/pharmacy-inventory-inv01-approval-pack.md). Obtain and record named owner, pharmacist, regulatory and procurement approvals for Q37/Q38/Q46. Only then freeze the approved data dictionary and prepare the INV-01 schema/API/UI implementation PR. Until approvals exist, only documentation, review and non-posting prototype work are in scope.
