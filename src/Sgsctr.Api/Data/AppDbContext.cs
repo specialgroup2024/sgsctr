@@ -82,7 +82,6 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         product.HasKey(x => x.Id);
         product.HasIndex(x => x.DisplayName);
         product.Property(x => x.DisplayName).HasMaxLength(200).IsRequired();
-        product.Property(x => x.Description).HasMaxLength(1000);
         product.Property(x => x.Status).HasMaxLength(16).IsRequired();
         product.Property(x => x.Version).IsConcurrencyToken();
         product.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
