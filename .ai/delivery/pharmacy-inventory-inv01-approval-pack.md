@@ -1,7 +1,7 @@
 # Pharmacy inventory INV-01 — reference-data approval pack
 
 - Prepared: 2026-11-14.
-- Status: **generic catalogue foundation owner-authorized and implemented on branch `feat/inv01-generic-product-catalogue`; Q38 professional review remains pending; branch is not merged or runtime-verified**.
+- Status: **generic catalogue foundation merged to master by PR #36; GitHub Actions build/test/smoke checks passed. INV-02 provisional governance work is on branch `feat/inv02-regulated-product-profiles`; Q38 professional review remains pending.**
 - Purpose: record the approved scope without inventing pharmacy, regulatory, procurement or accounting policy.
 - Prerequisites: read AGENT.md, AGENTS.md, .ai/README.md, dynamic role selection, deliberation protocol, pharmacy profile and Egypt compliance-review skill.
 
@@ -16,11 +16,11 @@ On 2026-11-14, the owner explicitly approved this initial INV-01 scope in ChatGP
 
 INV-01 does not include purchasing orders, receiving, stock balances, lots, movements, dispensing, transfers, valuation, claims or GL posting.
 
-PR #29 is merged to master as commit 7114e0cd499e371d2e08c71f8f86bcd6148c6deb. The INV-00 UI was extended on the current feature branch with the generic draft catalogue. The branch adds generic product, unit, conversion and catalogue-audit persistence/API/BFF/UI; it is not yet merged or runtime-verified.
+PR #29 is merged to master as commit 7114e0cd499e371d2e08c71f8f86bcd6148c6deb. PR #36 merged generic product, unit, conversion and catalogue-audit persistence/API/BFF/UI. CI run 43597393903 passed .NET build/tests, EF snapshot validation and Docker API/database/web smoke tests.
 
 **Approval meaning:** the owner has approved the phase boundary and the general implementation principles listed below. This does not approve the detailed product data dictionary, category-specific mandatory fields, regulatory classification, internal-code semantics, create/edit/retire permissions, import sources, duplicate-resolution rules, supplier master, or any stock/financial workflow.
 
-**Implementation gate and owner-approved carve-out:** Q38 product taxonomy and family-specific mandatory fields still require qualified pharmacist, quality and regulatory review. On 2026-11-14 the owner explicitly authorized generic implementation while Q38 remains pending. This latest approval supersedes the earlier blanket implementation hold only for the category-neutral, draft-only foundation described in section 11. It does not waive Q38 or authorize regulated fields, identifiers, classification, activation, import, supplier, stock or financial workflows.
+**Implementation gate and owner-approved carve-out:** Q38 product taxonomy and family-specific mandatory fields still require qualified pharmacist, quality and regulatory review. On 2026-11-14 the owner explicitly authorized generic implementation while Q38 remains pending. The later owner instruction authorizes implementation of provisional catalogue governance records on a separate branch while preserving Q38: family proposals, separate product-level identifier schemes, regulatory evidence references and lifecycle requests, all pending review. It does not waive qualified review or authorize verification, activation, import, supplier, stock or financial workflows.
 
 ### Owner approvals recorded — 2026-11-14
 
@@ -59,7 +59,7 @@ Separate stable product identity from versioned descriptive/regulatory attribute
 
 ### Maestro technical determination — updated by owner authorization 2026-11-14
 
-Implement only category-neutral draft product identity, unit masters, exact rational product-unit conversion references, server-side authorization and application-layer append-only audit events. Do not add family-specific fields, external identifiers, activation/retirement, import staging, suppliers, stock, purchasing, receiving or financial behavior. No default product or unit catalogue is seeded.
+The generic foundation is implemented on master. The owner subsequently instructed the next catalogue governance tranche: provisional family labels, separate product-level identifiers, evidence provenance and activation/retirement requests that remain pending review. This does not approve family-specific mandatory fields, identifier authenticity, lifecycle decisions or operational workflows. No default product or unit catalogue is seeded.
 
 ## 3. Proposed reference-data boundaries (not approved fields)
 
