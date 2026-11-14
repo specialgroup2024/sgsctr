@@ -25,7 +25,7 @@ public sealed class PharmacyProductGovernanceDrafts : Migration
             {
                 table.PrimaryKey("PK_CatalogueProductFamilyAssignments", x => x.Id);
                 table.CheckConstraint("CK_CatalogueProductFamilyAssignments_FamilyCode",
-                    "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalSupplyDevice','Cosmetic')");
+                    "\"FamilyCode\" IN ('RegularMedicine','Chemotherapy','MedicalDevice','MedicalSupply','Cosmetic')");
                 table.CheckConstraint("CK_CatalogueProductFamilyAssignments_ReviewStatus",
                     "\"ReviewStatus\" = 'PendingProfessionalReview'");
                 table.ForeignKey("FK_CatalogueProductFamilyAssignments_CatalogueProducts_ProductId",
