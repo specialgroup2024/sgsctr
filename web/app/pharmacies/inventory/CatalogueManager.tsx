@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { FormEvent } from "react";
 
 type Product = {
   id: string; displayName: string; description: string | null; status: string;
@@ -208,8 +209,8 @@ export default function CatalogueManager() {
             <div className="form-grid">
               <label>Source unit<select required value={fromUnitId} onChange={e => setFromUnitId(e.target.value)}><option value="">Choose unit</option>{units.map(x => <option key={x.id} value={x.id}>{x.name} ({x.code})</option>)}</select></label>
               <label>Target unit<select required value={toUnitId} onChange={e => setToUnitId(e.target.value)}><option value="">Choose unit</option>{units.map(x => <option key={x.id} value={x.id}>{x.name} ({x.code})</option>)}</select></label>
-              <label>Numerator<input type="number" min="1" step="1" required value={numerator} onChange={e => setNumerator(e.target.value)} /></label>
-              <label>Denominator<input type="number" min="1" step="1" required value={denominator} onChange={e => setDenominator(e.target.value)} /></label>
+              <label>Numerator<input type="number" min="1" max="9007199254740991" step="1" required value={numerator} onChange={e => setNumerator(e.target.value)} /></label>
+              <label>Denominator<input type="number" min="1" max="9007199254740991" step="1" required value={denominator} onChange={e => setDenominator(e.target.value)} /></label>
             </div>
             <button type="submit" className="primary-button" disabled={busy || fromUnitId === toUnitId}>Add draft conversion</button>
           </form>}
