@@ -44,7 +44,7 @@ Assume Location A has 130 units at EGP 10.6666667 (EGP 1,386.67). Location B has
 - Source carrying value at A's current average: 30 × 10.6666667 = EGP 320.00.
 - A after dispatch: 100 units, EGP 1,066.67.
 - If B receives at source carrying value and uses a **location-level** moving average: (EGP 360 + EGP 320) / 70 = **EGP 9.7142857** per unit.
-- If cost is pooled at sector level, a transfer between locations does not change the sector's total quantity or total value; the pool remains 170 units and EGP 1,706.67, average **EGP 10.0392357** per unit.
+- If cost is pooled at sector level, a transfer between locations does not change the sector's total quantity or total value; the pool remains 170 units and EGP 1,746.67, average **EGP 10.2745098** per unit.
 
 These are alternative models, not recommendations. Decide whether the average pool is per legal entity, sector, location, item, or another approved dimension; define transit valuation and whether source cost is carried unchanged.
 
