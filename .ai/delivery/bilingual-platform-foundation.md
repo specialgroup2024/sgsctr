@@ -1,6 +1,6 @@
 # Bilingual platform foundation
 
-Status: initial implementation on feature branch; review and route-complete verification pending. This is a shared platform capability, not a business-domain decision.
+Status: shared locale foundation merged in PR #50; extended screen coverage and responsive RTL verification are proposed in PR #52 and remain unmerged pending CI and owner review. This is a shared platform capability, not a business-domain decision.
 
 ## Requirement
 
