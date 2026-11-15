@@ -134,12 +134,12 @@ export default function TestReadiness() {
                 <option value="Passed">{t("Passed" )}</option><option value="Failed">{t("Failed" )}</option><option value="Blocked">{t("Blocked" )}</option>
               </select>
             </label>
-            <label>Evidence reference
-              <input maxLength={500} value={draft.evidenceReference} placeholder="CI run, test report or evidence ID"
+            <label>{t("Evidence reference")}
+              <input maxLength={500} value={draft.evidenceReference} placeholder={t("CI run, test report or evidence ID")}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, evidenceReference: event.target.value } }))} />
             </label>
-            <label>Notes
-              <textarea maxLength={2000} rows={2} value={draft.notes} placeholder="Required for failed or blocked tests"
+            <label>{t("Notes")}
+              <textarea maxLength={2000} rows={2} value={draft.notes} placeholder={t("Required for failed or blocked tests")}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, notes: event.target.value } }))} />
             </label>
             <button className="inventory-refresh" type="submit" disabled={saving === test.id}>{saving === test.id ? "Recording…" : "Record test result"}</button>

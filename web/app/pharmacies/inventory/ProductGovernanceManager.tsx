@@ -67,7 +67,7 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
     <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("All entries are proposals, not regulatory approvals")}</strong><p>{t("Family assignment and evidence remain pending qualified review. GTIN, UDI-DI and EDA registration/notification references are kept distinct. EPTTS serials, UDI-PI, lots and expiry are not product-level identifiers.")}</p></div></div>
     {error && <p className="form-error" role="alert">{t(error)}</p>}
     {notice && <p className="form-success" role="status">{notice}</p>}
-    {data?.family ? <p className="catalogue-id-note">{t("Provisional family:")} <strong>{data.family.familyCode}</strong> · {data.family.reviewStatus}</p> :
+    {data?.family ? <p className="catalogue-id-note">{t("Provisional family:")} <strong>{data.family.familyCode}</strong> · {t(data.family.reviewStatus)}</p> :
       canManage ? <form className="location-form catalogue-form" onSubmit={e => submit(e, "family", { familyCode, changeReason: changeReason || null }, "Provisional family assignment recorded for review.")}>
         <div className="form-grid"><label>{t("Provisional family")}<select value={familyCode} onChange={e => setFamilyCode(e.target.value)}><option value="RegularMedicine">{t("Regular medicines")}</option><option value="Chemotherapy">{t("Chemotherapy medicines (operational tag only)")}</option><option value="MedicalDevice">{t("Medical devices")}</option><option value="MedicalSupply">{t("Medical supplies")}</option><option value="Cosmetic">{t("Cosmetics")}</option></select></label><label>{t("Change reason")}<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label></div>
         <button className="primary-button" type="submit" disabled={busy}>{t("Submit family for review")}</button>
@@ -76,7 +76,7 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
     <div className="catalogue-layout catalogue-units-layout">
       <div className="inventory-panel">
         <h4>{t("External identifiers")}</h4>
-        {data?.identifiers.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.schemeCode}</strong>: <code>{x.value}</code> · {x.verificationStatus}{x.packagingLevel ? ` · ${x.packagingLevel}` : ""}</p>)}
+        {data?.identifiers.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.schemeCode}</strong>: <code>{x.value}</code> · {t(x.verificationStatus)}{x.packagingLevel ? ` · ${x.packagingLevel}` : ""}</p>)}
         {!data?.identifiers.length && <p className="inventory-empty">{t("No identifier proposals recorded.")}</p>}
         {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "identifiers", { schemeCode, value: identifierValue, packagingLevel: packagingLevel || null, sourceUri: sourceUri || null, changeReason: changeReason || null }, "Identifier proposal saved as pending verification.")}>
           <div className="form-grid">
@@ -90,7 +90,7 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
       </div>
       <div className="inventory-panel">
         <h4>{t("Regulatory evidence")}</h4>
-        {data?.evidence.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.authorityCode} · {x.evidenceType}</strong>: {x.referenceNumber} · {x.verificationStatus}{x.expiresOn ? ` · expires ${x.expiresOn}` : ""}</p>)}
+        {data?.evidence.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.authorityCode} · {t(x.evidenceType)}</strong>: {x.referenceNumber} · {x.verificationStatus}{x.expiresOn ? ` · expires ${x.expiresOn}` : ""}</p>)}
         {!data?.evidence.length && <p className="inventory-empty">{t("No evidence references recorded.")}</p>}
         {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "evidence", { authorityCode, evidenceType, referenceNumber, documentUri: documentUri || null, regulatoryDocumentId: null, publishedOn: publishedOn || null, effectiveFrom: effectiveFrom || null, expiresOn: expiresOn || null, changeReason: changeReason || null }, "Regulatory evidence recorded as pending review.")}>
           <div className="form-grid">
@@ -109,7 +109,7 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
 
     <div className="inventory-panel">
       <h4>{t("Lifecycle review requests")}</h4>
-      {data?.lifecycleRequests.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.requestedAction}</strong> · {x.reviewStatus} · {x.reason}</p>)}
+      {data?.lifecycleRequests.map(x => <p className="catalogue-id-note" key={x.id}><strong>{t(x.requestedAction)}</strong> · {t(x.reviewStatus)} · {x.reason}</p>)}
       {!data?.lifecycleRequests.length && <p className="inventory-empty">{t("No activation or retirement requests.")}</p>}
       {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "lifecycle-requests", { requestedAction: lifecycleAction, reason, changeReason: changeReason || null }, "Lifecycle request submitted. Product status remains Draft pending review.")}>
         <div className="form-grid"><label>{t("Request")}<select value={lifecycleAction} onChange={e => setLifecycleAction(e.target.value)}><option value="Activate">{t("Request activation")}</option><option value="Retire">{t("Request retirement")}</option></select></label><label>{t("Reason")}<input required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label></div>

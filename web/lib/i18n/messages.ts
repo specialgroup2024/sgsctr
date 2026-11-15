@@ -487,6 +487,23 @@ export const messages:Record<string,string>={
   "Scan completed: ": "اكتمل الفحص: ",
   " new documents from ": " مستندات جديدة من ",
   " sources.": " مصادر.",
+  "Professional qualification certificate": "شهادة مؤهل مهني",
+  "Pharmacist registration/license record": "سجل قيد/ترخيص الصيدلي",
+  "Pharmacy workflow review authorization letter": "خطاب تفويض مراجعة سير عمل الصيدلية",
+  "Workflow review checklist": "قائمة مراجعة سير العمل",
+  "Medication safety assessment report": "تقرير تقييم سلامة الدواء",
+  "No example above is stored as a GovernanceApproval or returned by the real approval API.": "لا يتم حفظ أي مثال أعلاه باعتباره موافقة حوكمة أو إرجاعه من واجهة الموافقات الفعلية.",
+  "Last service check:": "آخر فحص للخدمة:",
+  "SGSCTR · Pharmacy inventory workspace": "SGSCTR · مساحة عمل مخزون الصيدليات",
+  "CI run, test report or evidence ID": "رقم تشغيل CI أو تقرير اختبار أو معرّف دليل",
+  "Required for failed or blocked tests": "مطلوب عند الفشل أو الحظر",
+  "Development": "بيئة التطوير",
+  "Activate": "تفعيل",
+  "Retire": "إيقاف",
+  "Registration": "تسجيل",
+  "Notification": "إخطار",
+  "Verified": "تم التحقق",
+  "Unverified": "غير متحقق",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}

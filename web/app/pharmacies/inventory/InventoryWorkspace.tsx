@@ -23,10 +23,11 @@ const tabs: Array<{ id: Tab; label: string }> = [
 const locationLabels: Record<string, string> = { MainWarehouse: "Main warehouse", Branch: "Hospital branch", Office: "Office", ProjectSite: "Project site" };
 
 function Connection({ label, value }: { label: string; value: string }) {
+  const { t } = useI18n();
   const ok = value === "online" || value === "connected";
   const pending = value === "not_verified";
   const state = ok ? "is-ok" : pending ? "is-pending" : "is-down";
-  const text = ok ? (label === "API" ? "Online" : "Connected") : pending ? "Not verified" : "Unavailable";
+  const text = ok ? (label === "API" ? t("Online") : t("Connected")) : pending ? t("Not verified") : t("Unavailable");
   return <span className={"inventory-connection " + state}><i />{label}: {text}</span>;
 }
 function GateNotice({ title, detail }: { title: string; detail: string }) {
@@ -34,7 +35,7 @@ function GateNotice({ title, detail }: { title: string; detail: string }) {
 }
 
 export default function InventoryWorkspace() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [tab, setTab] = useState<Tab>("overview");
   const [locations, setLocations] = useState<Location[]>([]);
   const [system, setSystem] = useState<SystemStatus | null>(null);
@@ -123,9 +124,9 @@ export default function InventoryWorkspace() {
       <GateNotice title={t("Quality rules require qualified review.")} detail="A licensed pharmacist/quality lead must approve product-specific lot, expiry, FEFO, temperature, returns, recall and disposition requirements. Site licensing applicability is still open (Q37)." />
     </section>}
     {tab === "reports" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("MANAGEMENT VISIBILITY" )}</p><h2>{t("Inventory reports" )}</h2><p>{t("Location, product, movement, expiry, discrepancy and valuation reporting." )}</p></div><span className="inventory-status-chip">{t("Not connected")}</span></div>
-      <div className="inventory-report-grid">{["Stock by location and product","Movement history","Near-expiry and expired stock","Quarantine and recall status","In-transit and transfer discrepancies","Inventory valuation and reconciliation"].map(label => <article key={label}><span>▥</span><strong>{label}</strong><small>{t("Report becomes available after the relevant approved data source exists.")}</small></article>)}</div>
+      <div className="inventory-report-grid">{["Stock by location and product","Movement history","Near-expiry and expired stock","Quarantine and recall status","In-transit and transfer discrepancies","Inventory valuation and reconciliation"].map(label => <article key={label}><span>▥</span><strong>{t(label)}</strong><small>{t("Report becomes available after the relevant approved data source exists.")}</small></article>)}</div>
       <GateNotice title={t("Reports are not populated with sample numbers.")} detail="Inventory reports will be connected only to approved, persisted data and reconciled ledger queries. Valuation and financial reconciliation remain blocked until accountant-approved costing policy and examples are signed." />
     </section>}
-    <footer className="inventory-footer"><span>SGSCTR · Pharmacy inventory workspace</span><span>{t(pageTitle)} · {t("Draft catalogue / non-posting inventory")}</span><span>Last service check: {lastChecked ? new Date(lastChecked).toLocaleTimeString() : "Not available"}</span></footer>
+    <footer className="inventory-footer"><span>{t("SGSCTR · Pharmacy inventory workspace")}</span><span>{t(pageTitle)} · {t("Draft catalogue / non-posting inventory")}</span><span>{t("Last service check:")} {lastChecked ? new Date(lastChecked).toLocaleTimeString(locale === "ar" ? "ar-EG" : "en-GB") : t("Not available")}</span></footer>
   </div></AppShell>;
 }
