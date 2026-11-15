@@ -27,13 +27,13 @@ See [INV-B technical acceptance deliberation](../roles/invb-technical-acceptance
 | Check | Required result | Status |
 |---|---|---|
 | .NET restore/build/test | All succeed | Not evidenced — workflow job failed before steps; no executable acceptance result |
-| Supplier unit tests | All pass | Blocked before runner execution |
-| EF Core AppDbContext snapshot parity | No pending model changes | Blocked before runner execution |
-| PostgreSQL migration | Fresh CI database migrates successfully | Blocked before runner execution |
-| API authorization and lifecycle | All positive/negative cases pass | Blocked before runner execution |
-| Audit persistence | Supplier, evidence, review and audit rows verified | Blocked before runner execution |
-| BFF session/origin behavior | Authenticated same-origin succeeds; missing Origin rejected | Blocked before runner execution |
-| UI | Supplier tab and guardrails render in English/Arabic on desktop/mobile | Blocked before runner execution |
+| Supplier unit tests | All pass | Not evidenced — workflow job failed before steps; no executable acceptance result |
+| EF Core AppDbContext snapshot parity | No pending model changes | Not evidenced — workflow job failed before steps; no executable acceptance result |
+| PostgreSQL migration | Fresh CI database migrates successfully | Not evidenced — workflow job failed before steps; no executable acceptance result |
+| API authorization and lifecycle | All positive/negative cases pass | Not evidenced — workflow job failed before steps; no executable acceptance result |
+| Audit persistence | Supplier, evidence, review and audit rows verified | Not evidenced — workflow job failed before steps; no executable acceptance result |
+| BFF session/origin behavior | Authenticated same-origin succeeds; missing Origin rejected | Not evidenced — workflow job failed before steps; no executable acceptance result |
+| UI | Supplier tab and guardrails render in English/Arabic on desktop/mobile | Not evidenced — workflow job failed before steps; no executable acceptance result |
 | Production readiness | Separate security, professional and release gates approved | Blocked |
 
 ## CI execution blocker
