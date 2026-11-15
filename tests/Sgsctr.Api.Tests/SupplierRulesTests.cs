@@ -52,10 +52,11 @@ public sealed class SupplierRulesTests
     [Fact]
     public void IsValidBusinessContact_RequiresBusinessChannelAndDepartment()
     {
-        Assert.True(SupplierRules.IsValidBusinessContact("DepartmentEmail", "procurement@example.test", "Procurement", "Initial capture"));
-        Assert.False(SupplierRules.IsValidBusinessContact("PersonalMobile", "01000000000", "General", "Reason"));
-        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "name@example.test", "Individual", "Reason"));
-        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "mail@example.test", "General", " "));
+        Assert.True(SupplierRules.IsValidBusinessContact("DepartmentEmail", "procurement@example.test", "Procurement", true, "Initial capture"));
+        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "procurement@example.test", "Procurement", false, "Initial capture"));
+        Assert.False(SupplierRules.IsValidBusinessContact("PersonalMobile", "01000000000", "General", true, "Reason"));
+        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "name@example.test", "Individual", true, "Reason"));
+        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "mail@example.test", "General", true, " "));
     }
 
     [Fact]
