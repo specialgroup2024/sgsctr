@@ -512,6 +512,8 @@ export const messages:Record<string,string>={
   "candidate links": "روابط مرشحة",
   "new documents": "مستندات جديدة",
   "SOURCE CLASS": "فئة المصدر",
+  "Live service connections": "اتصالات الخدمات المباشرة",
+  "Pharmacy inventory sections": "أقسام مخزون الصيدليات",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}

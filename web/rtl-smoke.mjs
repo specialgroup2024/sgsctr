@@ -41,10 +41,24 @@ try {
       if (root.lang !== locale || root.dir !== expectedDir) throw new Error(`Inventory root metadata mismatch for ${locale}: ${JSON.stringify(root)}`);
       if (root.documentWidth > root.width || root.bodyWidth > root.width) throw new Error(`Horizontal overflow at ${viewport.name} for ${locale}: ${JSON.stringify(root)}`);
       if (!root.sidebar || !root.main) throw new Error("Expected authenticated application shell was not rendered.");
+      const productTab = locale === "ar" ? "دليل المنتجات" : "Product catalogue";
+      await page.getByRole("button", { name: productTab }).click();
+      await page.getByRole("heading", { name: locale === "ar" ? "سجلات المنتجات" : "Product records" }).waitFor();
+      await page.getByRole("button", { name: locale === "ar" ? "الموافقات" : "Approvals" }).click();
+      await page.getByRole("heading", { name: locale === "ar" ? "سجل الموافقات" : "Approval register" }).waitFor();
+      await page.getByRole("button", { name: locale === "ar" ? "جاهزية الاختبار" : "Test readiness" }).click();
+      await page.getByRole("heading", { name: locale === "ar" ? "جاهزية الاختبار" : "Test readiness" }).waitFor();
       if (locale === "ar" && viewport.name === "desktop" && root.sidebar.left < root.main.left) throw new Error(`RTL desktop sidebar is not on the right: ${JSON.stringify(root)}`);
       if (viewport.name === "mobile" && root.sidebar.top > root.main.top) throw new Error(`Mobile navigation appears after the content: ${JSON.stringify(root)}`);
       await page.screenshot({ path: `artifacts/rtl-${locale}-${viewport.name}.png`, fullPage: true });
-      console.log(`PASS ${locale.toUpperCase()} ${viewport.name}: lang/dir, authenticated inventory shell and no horizontal overflow`);
+      for (const route of ["/", "/organization", "/pharmacies", "/pharmacies/regulatory-intelligence", "/contracting"]) {
+        await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+        const routeLayout = await page.evaluate(() => ({ width: window.innerWidth, documentWidth: document.documentElement.scrollWidth, bodyWidth: document.body.scrollWidth, lang: document.documentElement.lang, dir: document.documentElement.dir }));
+        if (routeLayout.lang !== locale || routeLayout.dir !== expectedDir || routeLayout.documentWidth > routeLayout.width || routeLayout.bodyWidth > routeLayout.width) {
+          throw new Error(`Route ${route} failed ${locale}/${viewport.name} layout check: ${JSON.stringify(routeLayout)}`);
+        }
+      }
+      console.log(`PASS ${locale.toUpperCase()} ${viewport.name}: login, inventory tabs and five authenticated routes; lang/dir and no horizontal overflow`);
       await context.close();
     }
   }

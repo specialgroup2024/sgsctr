@@ -72,11 +72,11 @@ export default function InventoryWorkspace() {
 
   return <AppShell><div className="content inventory-content">
     <section className="welcome-row inventory-welcome"><div><p className="eyebrow">{t("SECTOR 01 · PHARMACIES")}</p><h1>{t("Pharmacy")} <span>{t("inventory")}</span></h1><p className="welcome-copy">{t("Inventory workspace foundation · reference visibility and workflow preparation.")}</p></div><span className="inventory-phase-pill">{t("INV-01 · DRAFT CATALOGUE")}</span></section>
-    <section className="inventory-connection-bar" aria-label="Live service connections">
+    <section className="inventory-connection-bar" aria-label={t("Live service connections")}>
       <div><strong>{t("Core service connections" )}</strong><small>{t("Checked through the application server; the browser never connects directly to PostgreSQL." )}</small></div>
       <div className="inventory-connection-list"><Connection label={t("API")} value={system?.api ?? "unavailable"} /><Connection label={t("Database")} value={system?.database ?? "unavailable"} /><button className="inventory-refresh" type="button" onClick={() => void load()}>{t("Refresh" )}</button></div>
     </section>
-    <nav className="inventory-tabs" aria-label="Pharmacy inventory sections">
+    <nav className="inventory-tabs" aria-label={t("Pharmacy inventory sections")}>
       {tabs.map(item => <button key={item.id} type="button" className={tab === item.id ? "active" : ""} aria-current={tab === item.id ? "page" : undefined} onClick={() => setTab(item.id)}>{t(item.label)}</button>)}
     </nav>
     {tab === "overview" && <>
