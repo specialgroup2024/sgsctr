@@ -14,6 +14,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<PharmacySupplierBusinessContact> PharmacySupplierBusinessContacts => Set<PharmacySupplierBusinessContact>();
     public DbSet<PharmacySupplierDueDiligenceCase> PharmacySupplierDueDiligenceCases => Set<PharmacySupplierDueDiligenceCase>();
     public DbSet<PharmacySupplierReviewRequest> PharmacySupplierReviewRequests => Set<PharmacySupplierReviewRequest>();
+    public DbSet<PharmacySupplierAssuranceCase> PharmacySupplierAssuranceCases => Set<PharmacySupplierAssuranceCase>();
     public DbSet<RegulatorySource> RegulatorySources => Set<RegulatorySource>();
     public DbSet<RegulatoryDocument> RegulatoryDocuments => Set<RegulatoryDocument>();
     public DbSet<RegulatoryAlert> RegulatoryAlerts => Set<RegulatoryAlert>();
@@ -160,6 +161,27 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         supplierReview.Property(x => x.CorrelationId).HasMaxLength(128).IsRequired();
         supplierReview.HasOne(x => x.Supplier).WithMany(x => x.ReviewRequests)
             .HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+
+        var supplierAssurance = modelBuilder.Entity<PharmacySupplierAssuranceCase>();
+        supplierAssurance.ToTable("PharmacySupplierAssuranceCases", table =>
+        {
+            table.HasCheckConstraint("CK_PharmacySupplierAssuranceCases_CaseType",
+                "\"CaseType\" IN ('LegalLicenceVerification','DueDiligenceExecution','ReviewerAuthorityApplication','QualificationReview','PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation')");
+            table.HasCheckConstraint("CK_PharmacySupplierAssuranceCases_GatedState",
+                "((\"CaseType\" IN ('PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation') AND \"Status\" = 'Blocked' AND \"BlockerCode\" IS NOT NULL) OR (\"CaseType\" NOT IN ('PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation') AND \"Status\" = 'Pending' AND \"BlockerCode\" IS NULL))");
+        });
+        supplierAssurance.HasKey(x => x.Id);
+        supplierAssurance.HasIndex(x => new { x.SupplierId, x.RequestedAtUtc });
+        supplierAssurance.HasIndex(x => x.EvidenceId);
+        supplierAssurance.Property(x => x.CaseType).HasMaxLength(40).IsRequired();
+        supplierAssurance.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        supplierAssurance.Property(x => x.RequestedBySubject).HasMaxLength(256).IsRequired();
+        supplierAssurance.Property(x => x.Reason).HasMaxLength(500).IsRequired();
+        supplierAssurance.Property(x => x.ScopeReference).HasMaxLength(200);
+        supplierAssurance.Property(x => x.BlockerCode).HasMaxLength(80);
+        supplierAssurance.Property(x => x.CorrelationId).HasMaxLength(128).IsRequired();
+        supplierAssurance.HasOne(x => x.Supplier).WithMany().HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+        supplierAssurance.HasOne(x => x.Evidence).WithMany().HasForeignKey(x => x.EvidenceId).OnDelete(DeleteBehavior.Restrict);
 
         var source = modelBuilder.Entity<RegulatorySource>();
         source.ToTable("RegulatorySources");
