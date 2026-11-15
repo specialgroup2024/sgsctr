@@ -1,6 +1,6 @@
 # Bilingual platform foundation
 
-Status: initial implementation on feature branch; review and route-complete verification pending. This is a shared platform capability, not a business-domain decision.
+Status: shared locale foundation merged in PR #50; extended screen coverage and responsive RTL verification are proposed in PR #52 and remain unmerged pending CI and owner review. This is a shared platform capability, not a business-domain decision.
 
 ## Requirement
 
@@ -40,3 +40,12 @@ Provide English (LTR) and Arabic (RTL) across the web application with a persist
 - Arabic legal, regulatory, clinical, pharmacy, quality, accounting and contractual wording requires qualified review.
 - Full route coverage, accessibility, print/export and mobile integration remain test gates until evidenced.
 - Authentication and Data Protection verification holds remain unchanged.
+
+
+## Screen translation and responsive RTL increment
+
+The follow-up implementation extends presentation translations to product catalogue, provisional product governance, pharmacist demo examples, inventory tabs and states, approval register, test readiness, regulatory intelligence and organization management. Persisted status codes, API values, identifiers and source evidence remain unchanged.
+
+RTL styling uses logical borders and alignment, keeps technical identifiers and numeric inputs LTR, and protects narrow layouts from table overflow. CI runs Playwright against the authenticated inventory workspace at 1440px desktop and 390px mobile widths in both locales, checks root language/direction and horizontal overflow, and uploads screenshots as evidence.
+
+Arabic domain wording remains provisional and requires qualified human review. This is responsive web verification, not a React Native localization claim. Authentication/Data Protection holds and all business approval gates remain unchanged.

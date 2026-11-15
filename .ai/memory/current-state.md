@@ -66,9 +66,9 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - Stock movements and costing remain later gated work.
 - Authentication verification and Data Protection volume verification remain on hold per owner instruction.
 
-
 ## Bilingual application foundation
-- Feature branch feat/platform-bilingual-arabic-rtl adds a shared English/Arabic locale provider, persistent locale cookie, root language/direction attributes, language switcher, initial shared-shell/dashboard translations and RTL layout rules.
-- English remains the initial default; Arabic is selectable and formatting helpers use ar-EG. API/database values and identifiers remain language-neutral.
-- This is an initial increment, not proof that all nested inventory/regulatory screens, validation/errors, exports, accessibility strings or mobile UI are fully translated. Route-complete acceptance remains open until automated and visual verification.
-- Authentication and Data Protection verification holds remain unchanged. Arabic legal/regulatory terminology requires qualified review.
+- PR #50 merged the shared English/Arabic locale provider, persistent locale cookie, server-rendered root lang/dir, EN/AR switcher, initial shell/dashboard/organization/sector labels and RTL base styles. English remains the technical default; Arabic uses ar-EG formatting. API/database values, enum codes, identifiers and source evidence remain language-neutral/original.
+- PR #52 (branch feat/complete-bilingual-screen-coverage) extends translations through catalogue/product governance, pharmacist demo examples, inventory tabs/states, approvals, test readiness, regulatory intelligence and organization screens. It adds Playwright checks for both locales at desktop (1440px) and mobile (390px), covering the authenticated inventory tabs and five authenticated routes, root lang/dir, desktop sidebar placement and horizontal overflow; screenshot artifacts are configured.
+- PR #52 is open and unmerged. Latest branch commit: 156aefc14ad107b836c304377d549fbd3426f569. A Docker web typecheck found and prompted correction of a missing translation-catalogue comma. Subsequent GitHub Actions attempts have failed before runner assignment (runner_id=0; no steps/logs), so post-fix typecheck, Docker smoke tests and Playwright desktop/mobile verification remain unverified. PR #52 remains open/unmerged; no VM deployment is claimed. No VM deployment or local runtime test is claimed.
+- This is responsive web localization, not React Native client localization. Print/export coverage and qualified human acceptance of Arabic domain terminology remain open. Arabic legal/regulatory/pharmacy/quality/accounting wording is provisional presentation text pending qualified review.
+- Authentication and Data Protection verification holds remain unchanged.

@@ -11,7 +11,11 @@ const evidence = [
 ];
 
 export default function PharmacistReviewExamples() {
+
+  const { t, formatDate } = useI18n();
+
   const { t } = useI18n();
+
   return <section className="inventory-demo-examples" aria-labelledby="pharmacist-demo-examples-title">
     <div className="inventory-demo-heading">
       <div>
@@ -24,7 +28,11 @@ export default function PharmacistReviewExamples() {
     <article className="inventory-demo-card">
       <h4>{t("Example A — conditional-approval scenario")}</h4>
       <dl>
+
+        <div><dt>{t("Decision date")}</dt><dd>{formatDate("2026-11-15T00:00:00Z", { dateStyle: "long", timeZone: "UTC" })}</dd></div>
+
         <div><dt>{t("Decision date")}</dt><dd>{t("15 November 2026")}</dd></div>
+
         <div><dt>{t("Review ID")}</dt><dd>REV-DEMO-2026-015</dd></div>
         <div><dt>{t("Workflow version")}</dt><dd>WF-V1.4</dd></div>
         <div><dt>{t("Conditions")}</dt><dd>{t("Staff must complete medication safety refresher training.")}</dd></div>
@@ -43,12 +51,20 @@ export default function PharmacistReviewExamples() {
         <div><dt>{t("Pharmacy")}</dt><dd>Nile Care Pharmacy</dd></div>
         <div><dt>{t("Authorization")}</dt><dd>AUTH-DEMO-2026-018</dd></div>
         <div><dt>{t("Decision")}</dt><dd><strong>{t("REJECT")}</strong></dd></div>
+
+        <div><dt>{t("Decision date")}</dt><dd>{formatDate("2026-11-15T00:00:00Z", { dateStyle: "long", timeZone: "UTC" })}</dd></div>
+
         <div><dt>{t("Decision date")}</dt><dd>{t("15 November 2026")}</dd></div>
+
         <div><dt>{t("Reason")}</dt><dd>{t("Insufficient evidence of prescription verification controls")}</dd></div>
         <div><dt>{t("Conditions / required follow-up")}</dt><dd>{t("Correct identified workflow gaps and submit updated evidence")}</dd></div>
         <div><dt>{t("Supporting evidence references")}</dt><dd>REJ-EVD-DEMO-001, REJ-EVD-DEMO-002</dd></div>
       </dl>
     </article>
+
+    <p className="inventory-demo-footnote">{t("Full provenance and limitations:")} <code>.ai/delivery/pharmacy-inventory-pharmacist-review-examples.md</code>. {t("No example above is stored as a GovernanceApproval or returned by the real approval API.")}</p>
+
     <p className="inventory-demo-footnote">{t("Full provenance and limitations:")} <code>.ai/delivery/pharmacy-inventory-pharmacist-review-examples.md</code>{t(". No example above is stored as a GovernanceApproval or returned by the real approval API.")}</p>
+
   </section>;
 }

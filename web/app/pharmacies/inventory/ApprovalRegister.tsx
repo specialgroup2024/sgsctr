@@ -61,7 +61,7 @@ export default function ApprovalRegister() {
   return <section className="inventory-workspace-panel">
     <div className="inventory-section-heading">
       <div>
-        <p className="eyebrow">GOVERNANCE · HUMAN SIGN-OFF</p>
+        <p className="eyebrow">{t("GOVERNANCE · HUMAN SIGN-OFF")}</p>
         <h2>{t("Approval register" )}</h2>
         <p>{t("Approval requirements are persisted in PostgreSQL and read through the ASP.NET Core API." )}</p>
       </div>
@@ -72,10 +72,10 @@ export default function ApprovalRegister() {
       <span className="inventory-gate-icon">!</span>
       <div>
         <strong>{t("Pending means no professional approval has been recorded." )}</strong>
-        <p>This screen tracks the required sign-offs. It does not grant approval. Decision entry remains disabled until designated reviewer identities, qualifications, delegated authority and server-side role permissions are verified.</p>
+        <p>{t("This screen tracks the required sign-offs. It does not grant approval. Decision entry remains disabled until designated reviewer identities, qualifications, delegated authority and server-side role permissions are verified.")}</p>
       </div>
     </div>
-    {error && <p className="form-error" role="alert">{error}</p>}
+    {error && <p className="form-error" role="alert">{t(error)}</p>}
     {loading && <p className="loading-state">{t("Loading approval records from PostgreSQL…" )}</p>}
     {!loading && !error && items.length === 0 && <p className="inventory-empty">{t("No approval records were returned by the API." )}</p>}
 
@@ -88,11 +88,15 @@ export default function ApprovalRegister() {
           </div>
           <span className={"inventory-status-chip " + (item.status === "Pending" ? "approval-pending" : "approval-recorded")}>{t(statusLabel(item.status))}</span>
         </div>
-        <p><strong>Required approver:</strong> {item.requiredApproverRole}</p>
+        <p><strong>{t("Required approver:")}</strong> {item.requiredApproverRole}</p>
         <p>{item.scopeDescription}</p>
-        <p className="catalogue-footer-note"><strong>Evidence:</strong> <code>{item.evidenceReference}</code></p>
+        <p className="catalogue-footer-note"><strong>{t("Evidence:")}</strong> <code>{item.evidenceReference}</code></p>
         {item.status !== "Pending" && <div className="catalogue-id-note">
+
+          <strong>{t("Recorded decision:")}</strong> {t(statusLabel(item.status))}
+
           <strong>Recorded decision:</strong> {t(statusLabel(item.status))}
+
           {item.decisionAtUtc ? " · " + new Date(item.decisionAtUtc).toLocaleString() : ""}
           {item.decisionBySubject ? " · " + item.decisionBySubject : " · " + t("Approver identity not captured in the application")}
           {item.decisionReference ? <p>{t("Reference:")} {item.decisionReference}</p> : null}
@@ -103,9 +107,9 @@ export default function ApprovalRegister() {
     </div>
     <PharmacistReviewExamples />
     <div className="inventory-panel">
-      <h3>How an approval will be recorded</h3>
+      <h3>{t("How an approval will be recorded")}</h3>
       <p>The authorized reviewer must be authenticated, hold the designated role, and provide a decision, date, evidence reference and any conditions. The application must retain the decision history. This first increment is deliberately read-only; it cannot mark a pending item as approved.</p>
-      <button className="inventory-refresh" type="button" onClick={() => void load()} disabled={loading}>Refresh approvals</button>
+      <button className="inventory-refresh" type="button" onClick={() => void load()} disabled={loading}>{t("Refresh approvals")}</button>
     </div>
   </section>;
 }

@@ -29,7 +29,11 @@ type Draft = { status: "Passed" | "Failed" | "Blocked"; evidenceReference: strin
 const initialDraft: Draft = { status: "Passed", evidenceReference: "", notes: "" };
 
 export default function TestReadiness() {
+
+  const { t, locale } = useI18n();
+
   const { t, formatDate } = useI18n();
+
   const [payload, setPayload] = useState<Payload | null>(null);
   const [drafts, setDrafts] = useState<Record<string, Draft>>({});
   const [loading, setLoading] = useState(true);
@@ -106,7 +110,11 @@ export default function TestReadiness() {
       <article className="inventory-kpi"><span>{t("Blocked" )}</span><strong>{blocked}</strong><small>{t("Professional, owner or implementation gate" )}</small></article>
     </div>
     {error && <p className="form-error" role="alert">{t(error)}</p>}
+
+    {message && <p className="catalogue-id-note" role="status">{message}</p>}
+
     {message && <p className="catalogue-id-note" role="status">{t(message)}</p>}
+
     {loading && <p className="loading-state">{t("Loading test cases from PostgreSQL…" )}</p>}
     {!loading && !error && <div className="test-readiness-list">
       {cases.map(test => {
@@ -114,6 +122,17 @@ export default function TestReadiness() {
         const latest = test.latestExecution;
         return <article className="inventory-panel test-readiness-card" key={test.testCode}>
           <div className="inventory-panel-heading">
+
+            <div><p className="eyebrow">{test.gateCode} · {test.testCode}</p><h3>{test.title}</h3></div>
+            <span className={"inventory-status-chip " + (latest?.status === "Passed" ? "approval-recorded" : latest?.status === "Failed" ? "approval-pending" : "approval-pending")}>{t(latest?.status ?? (test.executionBlocked ? "Blocked" : "Not run"))}</span>
+          </div>
+          <p>{test.objective}</p>
+          <p><strong>{t("Expected result:" )}</strong> {test.expectedResult}</p>
+          <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {t(test.testMode)}</p>
+          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{test.blockReason}</p></div></div>}
+          {latest && <div className="catalogue-id-note">
+            <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {latest.environment} · {new Date(latest.executedAtUtc).toLocaleString(locale === "ar" ? "ar-EG" : "en-GB")}
+
             <div><p className="eyebrow">{test.gateCode} · {test.testCode}</p><h3>{t(test.title)}</h3></div>
             <span className={"inventory-status-chip " + (latest?.status === "Passed" ? "approval-recorded" : latest?.status === "Failed" ? "approval-pending" : "approval-pending")}>{t(latest?.status ?? (test.executionBlocked ? "Blocked" : "Not run"))}</span>
           </div>
@@ -123,6 +142,7 @@ export default function TestReadiness() {
           {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{t(test.blockReason)}</p></div></div>}
           {latest && <div className="catalogue-id-note">
             <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {t(latest.environment)} · {(latest.executedAtUtc ? formatDate(latest.executedAtUtc) : t("Not available"))}
+
             <p>{t("Executed by subject:")} <code>{latest.executedBySubject}</code></p>
             {latest.evidenceReference && <p>{t("Evidence:")} <code>{latest.evidenceReference}</code></p>}
             {latest.notes && <p>{latest.notes}</p>}
