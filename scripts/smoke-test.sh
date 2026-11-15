@@ -85,6 +85,13 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   FORBIDDEN_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${USER_TOKEN}" -H 'Content-Type: application/json' -d "$CREATE_PAYLOAD" "${BASE_URL}/api/v1/admin/users")"
   if [[ "$FORBIDDEN_STATUS" != "403" ]]; then echo "ERROR: Standard user should receive 403 for account provisioning, got ${FORBIDDEN_STATUS}." >&2; exit 1; fi
 
+  echo "Checking PostgreSQL-backed governance test-readiness catalogue..."
+  TEST_READINESS_API_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -H "Authorization: Bearer $ADMIN_TOKEN" "$BASE_URL/api/v1/pharmacy/catalogue/test-readiness")"
+  if ! printf '%s' "$TEST_READINESS_API_RESPONSE" | jq -e '.testCases | length == 19 and any(.[]; .testCode == "PLT-DB-001" and .executionBlocked == false) and any(.[]; .testCode == "PRO-REVIEW-001" and .executionBlocked == true) and any(.[]; .testCode == "SEC-AUTH-001" and .executionBlocked == true)' >/dev/null; then
+    echo "ERROR: Governance test-readiness catalogue is incomplete or an approval-blocked test is executable." >&2
+    exit 1
+  fi
+
   echo "Checking BFF sign-in, session and sign-out..."
   COOKIE_JAR="$(mktemp)"
   ORIGIN="${WEB_BASE_URL:-http://localhost:3000}"
@@ -102,6 +109,11 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   INVENTORY_PAGE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -b "$COOKIE_JAR" "$WEB_URL/pharmacies/inventory")"
   if ! printf '%s' "$INVENTORY_PAGE" | grep -q "Approvals"; then
     echo "ERROR: Authenticated Pharmacy Inventory page did not render the Approvals tab." >&2
+    rm -f "$COOKIE_JAR"
+    exit 1
+  fi
+  if ! printf '%s' "$INVENTORY_PAGE" | grep -q "Test readiness"; then
+    echo "ERROR: Pharmacy Inventory page did not render the Test readiness tab." >&2
     rm -f "$COOKIE_JAR"
     exit 1
   fi
@@ -129,7 +141,7 @@ for ROUTE in organization pharmacies pharmacies/regulatory-intelligence contract
 done
 
 echo "Checking anonymous BFF session and organization endpoints reject access..."
-for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence /api/pharmacy/approvals; do
+for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence /api/pharmacy/approvals /api/pharmacy/test-readiness; do
   STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}${ROUTE}")"
   if [[ "$STATUS" != "401" ]]; then echo "ERROR: Expected 401 for ${ROUTE}, got ${STATUS}." >&2; exit 1; fi
 done

@@ -285,6 +285,42 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             });
         });
 
+        modelBuilder.Entity<GovernanceTestCase>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.GateCode).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.TestCode).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
+            entity.Property(x => x.Title).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
+            entity.Property(x => x.Objective).IsRequired().HasMaxLength(1000).HasColumnType("character varying(1000)");
+            entity.Property(x => x.ExpectedResult).IsRequired().HasMaxLength(2000).HasColumnType("character varying(2000)");
+            entity.Property(x => x.TestMode).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.ExecutionBlocked).HasColumnType("boolean");
+            entity.Property(x => x.BlockReason).HasMaxLength(1000).HasColumnType("character varying(1000)");
+            entity.Property(x => x.CreatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.TestCode).IsUnique();
+            entity.HasIndex(x => x.GateCode);
+            entity.ToTable("GovernanceTestCases", t =>
+                t.HasCheckConstraint("CK_GovernanceTestCases_TestMode", "\"TestMode\" IN ('Automated','Manual')"));
+        });
+
+        modelBuilder.Entity<GovernanceTestExecution>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.TestCaseId).HasColumnType("uuid");
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.Environment).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.EvidenceReference).HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.Notes).HasMaxLength(2000).HasColumnType("character varying(2000)");
+            entity.Property(x => x.ExecutedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.ExecutedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => new { x.TestCaseId, x.ExecutedAtUtc });
+            entity.HasOne(x => x.TestCase).WithMany().HasForeignKey(x => x.TestCaseId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("GovernanceTestExecutions", t =>
+                t.HasCheckConstraint("CK_GovernanceTestExecutions_Status", "\"Status\" IN ('Passed','Failed','Blocked')"));
+        });
+
         modelBuilder.Entity<GovernanceApproval>(entity =>
         {
             entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");

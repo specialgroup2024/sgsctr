@@ -153,6 +153,7 @@ app.MapRegulatoryIntelligenceEndpoints();
 app.MapPharmacyCatalogueEndpoints();
 app.MapPharmacyProductGovernanceEndpoints();
 app.MapGovernanceApprovalEndpoints();
+app.MapGovernanceTestReadinessEndpoints();
 
 var authRoutes = app.MapGroup("/api/v1/auth");
 authRoutes.MapIdentityApi<IdentityUser>();

@@ -19,6 +19,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<CatalogueRegulatoryEvidence> CatalogueRegulatoryEvidence => Set<CatalogueRegulatoryEvidence>();
     public DbSet<CatalogueLifecycleRequest> CatalogueLifecycleRequests => Set<CatalogueLifecycleRequest>();
     public DbSet<GovernanceApproval> GovernanceApprovals => Set<GovernanceApproval>();
+    public DbSet<GovernanceTestCase> GovernanceTestCases => Set<GovernanceTestCase>();
+    public DbSet<GovernanceTestExecution> GovernanceTestExecutions => Set<GovernanceTestExecution>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -199,6 +201,32 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         approval.Property(x => x.DecisionReference).HasMaxLength(500);
         approval.Property(x => x.DecisionNotes).HasMaxLength(2000);
         approval.Property(x => x.Conditions).HasMaxLength(2000);
+
+        var testCase = modelBuilder.Entity<GovernanceTestCase>();
+        testCase.ToTable("GovernanceTestCases", table =>
+            table.HasCheckConstraint("CK_GovernanceTestCases_TestMode", "\"TestMode\" IN ('Automated','Manual')"));
+        testCase.HasKey(x => x.Id);
+        testCase.HasIndex(x => x.TestCode).IsUnique();
+        testCase.HasIndex(x => x.GateCode);
+        testCase.Property(x => x.GateCode).HasMaxLength(32).IsRequired();
+        testCase.Property(x => x.TestCode).HasMaxLength(48).IsRequired();
+        testCase.Property(x => x.Title).HasMaxLength(200).IsRequired();
+        testCase.Property(x => x.Objective).HasMaxLength(1000).IsRequired();
+        testCase.Property(x => x.ExpectedResult).HasMaxLength(2000).IsRequired();
+        testCase.Property(x => x.TestMode).HasMaxLength(16).IsRequired();
+        testCase.Property(x => x.BlockReason).HasMaxLength(1000);
+
+        var testExecution = modelBuilder.Entity<GovernanceTestExecution>();
+        testExecution.ToTable("GovernanceTestExecutions", table =>
+            table.HasCheckConstraint("CK_GovernanceTestExecutions_Status", "\"Status\" IN ('Passed','Failed','Blocked')"));
+        testExecution.HasKey(x => x.Id);
+        testExecution.HasIndex(x => new { x.TestCaseId, x.ExecutedAtUtc });
+        testExecution.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        testExecution.Property(x => x.Environment).HasMaxLength(32).IsRequired();
+        testExecution.Property(x => x.EvidenceReference).HasMaxLength(500);
+        testExecution.Property(x => x.Notes).HasMaxLength(2000);
+        testExecution.Property(x => x.ExecutedBySubject).HasMaxLength(256).IsRequired();
+        testExecution.HasOne(x => x.TestCase).WithMany().HasForeignKey(x => x.TestCaseId).OnDelete(DeleteBehavior.Restrict);
 
         var audit = modelBuilder.Entity<CatalogueAuditEvent>();
         audit.ToTable("CatalogueAuditEvents");

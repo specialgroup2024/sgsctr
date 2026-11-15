@@ -44,6 +44,11 @@ Status: core API/database foundation and native Identity implementation are pres
 - [ ] Test restore into an isolated database/container, never over the only working database.
 - [ ] Obtain owner-approved retention and recovery objectives before production claims.
 
+## Governance test-readiness
+- The proposed test-readiness workspace stores platform and seven-gate test definitions and append-only execution evidence separately from professional approvals.
+- Test-result writes are Development-only and Administrator-only. Approval-blocked cases cannot be marked Passed or Failed.
+- The workspace does not lift the explicit holds on authentication verification or Data Protection volume verification.
+
 ## Verification record
 Owner-provided VM output dated 2026-11-11:
 - GET /health/live returned HTTP 200.

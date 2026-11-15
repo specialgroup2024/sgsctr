@@ -123,3 +123,16 @@
 .inventory-demo-card code,.inventory-demo-footnote code{font-size:9px;overflow-wrap:anywhere}
 .inventory-demo-footnote{font-size:9px;line-height:1.7;color:#818980;margin:0;overflow-wrap:anywhere}
 @media(max-width:650px){.inventory-demo-heading{flex-direction:column}.inventory-demo-card dl{grid-template-columns:1fr}}
+
+/* Governance test-readiness workspace */
+.test-readiness-summary{margin:18px 0 22px}
+.test-readiness-list{display:grid;gap:12px}
+.test-readiness-card{display:grid;gap:10px}
+.test-readiness-card>p{font-size:11px;line-height:1.65;color:#718078;margin:0}
+.test-readiness-card .inventory-gate{margin:4px 0}
+.test-readiness-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.test-readiness-form label{display:grid;gap:6px;font-size:10px;font-weight:700;color:#66776d}
+.test-readiness-form label:nth-child(3){grid-column:1/-1}
+.test-readiness-form input,.test-readiness-form select,.test-readiness-form textarea{width:100%;border:1px solid var(--line);border-radius:7px;padding:9px;font:inherit;font-size:11px;background:#fff;color:var(--ink)}
+.test-readiness-form button{justify-self:start}
+@media(max-width:650px){.test-readiness-form{grid-template-columns:1fr}.test-readiness-form label:nth-child(3){grid-column:auto}}
