@@ -1,13 +1,13 @@
 # Repository-wide instructions
 
-## Instruction bootstrap and precedence
+## Bootstrap and precedence
 - Read AGENT.md, this file and .ai/README.md before acting.
-- AGENT.md governs universal agent behavior; this file governs repository execution; .ai/ contains detailed project context and procedures.
+- AGENT.md governs universal behavior; this file governs repository execution; .ai/ contains project context and procedures.
 - Apply the most restrictive security, safety and approval rule. If instructions conflict, stop the affected action, record the conflict and ask for resolution.
 - Agent-host-specific files may bootstrap to these sources but must not create contradictory policy.
 
 ## Dynamic specialist operation
-- Dynamically select professional profiles for the five stable roles using .ai/governance/dynamic-role-selection.md.
+- Select professional profiles for the five stable roles using .ai/governance/dynamic-role-selection.md.
 - Follow .ai/governance/deliberation-protocol.md for substantive decisions; do not permanently assign ICT job titles.
 - Add pharmacy, Egyptian regulatory, pharmacist, pharmacovigilance/quality, supply-chain, legal, tax and accounting profiles only when relevant.
 - If multiple agents cannot run, disclose that perspectives are simulated, not independent agents or qualified professionals.
@@ -26,8 +26,8 @@
 - Respect module ownership; shared code must not absorb business-specific rules.
 - Enforce server-side authorization for every protected operation.
 - Protect financial and inventory invariants with database transactions and constraints.
-- Store money as fixed-precision decimals with explicit currency; do not use floating-point arithmetic for money. Precision, rounding and calculation order require approved rules.
-- Make timestamp/time-zone behavior explicit, using the business context rather than implicit server-local time.
+- Store money as fixed-precision decimals with explicit currency; never use floating-point arithmetic for money. Precision, rounding and calculation order require approved rules.
+- Make timestamp/time-zone behavior explicit; do not rely on implicit server-local time.
 - Make migrations reversible where feasible; document irreversible steps and recovery.
 - Make retryable integrations idempotent.
 - Keep secrets, health data and production records out of Git, logs and test fixtures.
@@ -40,10 +40,10 @@
 - Link material updates to evidence, requirements, affected modules, tests and proposed actions.
 - Legal, pharmacy, licensing, quality, tax/accounting and business-policy decisions require qualified human review and owner approval as applicable.
 - Never claim exhaustive coverage, real-time monitoring or legal compliance without evidence. Never autonomously change prices, dispensing, stock, reimbursement or accounting.
-- The EDA ingestion MVP is owner-approved and merged to master (PR #22); its observed scan evidence and limitations are recorded in memory/current-state.md.
+- The EDA ingestion MVP is owner-approved and merged to master (PR #22); observed scan evidence and limitations are recorded in memory/current-state.md.
 
 ## Approval and change controls
-- The central governance/approval-register.md is authoritative. Approval applies only to its recorded scope and conditions.
+- governance/approval-register.md is authoritative. Approval applies only to its recorded scope and conditions.
 - A recommendation, draft ADR, passing CI or merged PR is not automatically an approval.
 - Legal entity, licensing, regulatory interpretation, accounting, tax, pharmacy procedures, financial calculations, stock valuation, sensitive production-data access and irreversible operations require designated approval.
 - Do not create production schema changes, stock movements, financial postings or external side effects without required authorization.
