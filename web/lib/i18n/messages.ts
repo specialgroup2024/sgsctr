@@ -476,6 +476,9 @@ export const messages:Record<string,string>={
   "Location record saved.": "تم حفظ سجل الموقع.",
   "Could not save location.": "تعذر حفظ الموقع.",
   "Location deactivated. Its record remains in the register.": "تم تعطيل الموقع. ويظل سجله محفوظاً في السجل.",
+  "Approver identity not captured in the application": "لم يتم تسجيل هوية المعتمد داخل التطبيق",
+  "Reference:": "المرجع:",
+  "Conditions:": "الشروط:",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}

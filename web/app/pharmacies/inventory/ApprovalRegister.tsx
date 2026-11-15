@@ -65,7 +65,7 @@ export default function ApprovalRegister() {
         <h2>{t("Approval register" )}</h2>
         <p>{t("Approval requirements are persisted in PostgreSQL and read through the ASP.NET Core API." )}</p>
       </div>
-      <span className="inventory-status-chip">{loading ? "Loading" : pendingCount + " pending"}</span>
+      <span className="inventory-status-chip">{loading ? t("Loading") : `${pendingCount} ${t("pending")}`}</span>
     </div>
 
     <div className="inventory-gate" role="note">
@@ -86,17 +86,17 @@ export default function ApprovalRegister() {
             <p className="eyebrow">{item.approvalCode}</p>
             <h3>{item.title}</h3>
           </div>
-          <span className={"inventory-status-chip " + (item.status === "Pending" ? "approval-pending" : "approval-recorded")}>{statusLabel(item.status)}</span>
+          <span className={"inventory-status-chip " + (item.status === "Pending" ? "approval-pending" : "approval-recorded")}>{t(statusLabel(item.status))}</span>
         </div>
         <p><strong>Required approver:</strong> {item.requiredApproverRole}</p>
         <p>{item.scopeDescription}</p>
         <p className="catalogue-footer-note"><strong>Evidence:</strong> <code>{item.evidenceReference}</code></p>
         {item.status !== "Pending" && <div className="catalogue-id-note">
-          <strong>Recorded decision:</strong> {statusLabel(item.status)}
+          <strong>Recorded decision:</strong> {t(statusLabel(item.status))}
           {item.decisionAtUtc ? " · " + new Date(item.decisionAtUtc).toLocaleString() : ""}
-          {item.decisionBySubject ? " · " + item.decisionBySubject : " · Approver identity not captured in the application"}
-          {item.decisionReference ? <p>Reference: {item.decisionReference}</p> : null}
-          {item.conditions ? <p>Conditions: {item.conditions}</p> : null}
+          {item.decisionBySubject ? " · " + item.decisionBySubject : " · " + t("Approver identity not captured in the application")}
+          {item.decisionReference ? <p>{t("Reference:")} {item.decisionReference}</p> : null}
+          {item.conditions ? <p>{t("Conditions:")} {t(item.conditions)}</p> : null}
           {item.decisionNotes ? <p>{item.decisionNotes}</p> : null}
         </div>}
       </article>)}
