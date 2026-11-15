@@ -9,6 +9,7 @@ using Sgsctr.Api.Data;
 using Sgsctr.Api.RegulatoryIntelligence;
 using Sgsctr.Api.PharmacyCatalogue;
 using Sgsctr.Api.PharmacyInventory;
+using Sgsctr.Api.PharmacySuppliers;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -154,6 +155,7 @@ app.MapRegulatoryIntelligenceEndpoints();
 app.MapPharmacyCatalogueEndpoints();
 app.MapPharmacyProductGovernanceEndpoints();
 app.MapPharmacyReceiptDraftEndpoints();
+app.MapPharmacySupplierEndpoints();
 app.MapGovernanceApprovalEndpoints();
 app.MapGovernanceTestReadinessEndpoints();
 
