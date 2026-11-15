@@ -52,3 +52,7 @@ No business features or production financial calculations before required owner 
 - [Application shell and organization workspace plan](delivery/phase-2-application-shell-plan.md) — records the delivered shell and its remaining exclusions.
 - [Authenticated workspace setup](../docs/security/phase-3-authenticated-workspace.md) — native Identity BFF login, VM tunnel, migration and organization-manager setup.
 - [Product scope](product/scope.md) — staged product boundaries and explicit exclusions.
+
+## Bilingual application and RTL
+- See delivery/bilingual-platform-foundation.md for locale behavior, translation boundaries, acceptance criteria and remaining coverage gates.
+- English and Arabic are required platform locales. Translation is presentation-only; API/database values and identifiers remain language-neutral. Arabic legal/regulatory wording requires qualified human review.

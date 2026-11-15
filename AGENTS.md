@@ -50,3 +50,10 @@
 - Enforce the rule with scripts/check_markdown_line_limit.py in CI.
 - Never embed executable Python source in Markdown instructions.
 - Do not report the line-limit check as passed unless it was run successfully.
+
+## Internationalization and RTL
+- Use the shared locale provider and translation catalogue; do not add per-page locale state or browser-translation workarounds.
+- Persist locale through the same-site preference cookie and render matching document language and direction.
+- Use direction-aware layout and CSS logical properties; preserve LTR for identifiers, URLs, email addresses, serials and code values.
+- Add tests for locale persistence, switching, root direction, translation coverage and mixed-direction content.
+- Never translate persisted business data, API enums, regulatory evidence or audit records.

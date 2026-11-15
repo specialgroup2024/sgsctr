@@ -46,3 +46,12 @@ The EDA regulatory-ingestion MVP is owner-approved for implementation. Before ph
 ## Completion
 
 Follow .ai/delivery/definition-of-done.md. Report changed files, evidence inspected, checks run and results, unresolved risks, assumptions, decisions and human approvals still required. Update project memory only with evidence-backed state changes.
+
+## Bilingual platform requirement
+- Treat English and Arabic as first-class application locales across shared platform, pharmacy, contracting, reports and future mobile clients.
+- Persist the user's selected locale; never infer language from identity or location.
+- Apply Arabic RTL and English LTR at the document root. Preserve LTR for identifiers, URLs, codes and mixed-direction evidence.
+- Localize navigation, headings, forms, validation, errors, notifications, dates, numbers, currency and exports.
+- Keep business values, API contracts, enum codes, database identifiers and audit evidence language-neutral.
+- Arabic legal/regulatory wording requires qualified human review; machine translation is not authoritative.
+- Do not claim complete bilingual coverage until every active route and user-facing state is covered and tested.
