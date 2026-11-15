@@ -1,6 +1,6 @@
 # INV-B technical acceptance work package
 
-- Status: **blocked — technical acceptance not established**; PR #63 is merged, but the required checks did not execute.
+- Status: **blocked — technical acceptance not established**; PR #66 is merged, but both PR-triggered workflows and their reruns failed before any job steps were reported.
 - Date: 2026-11-15.
 - Base: master after PR #62 merge commit `74970b4ffdb968c95388c4d0fe4e9aab6102c543`.
 - Work branch: `fix/invb-technical-acceptance`.
@@ -26,7 +26,7 @@ See [INV-B technical acceptance deliberation](../roles/invb-technical-acceptance
 
 | Check | Required result | Status |
 |---|---|---|
-| .NET restore/build/test | All succeed | Blocked before runner execution |
+| .NET restore/build/test | All succeed | Not evidenced — workflow job failed before steps; no executable acceptance result |
 | Supplier unit tests | All pass | Blocked before runner execution |
 | EF Core AppDbContext snapshot parity | No pending model changes | Blocked before runner execution |
 | PostgreSQL migration | Fresh CI database migrates successfully | Blocked before runner execution |
@@ -47,4 +47,4 @@ Passing CI can establish technical behavior for this draft slice only. It cannot
 
 ## PR #66 — supplier draft onboarding intake
 
-PR #66 adds the owner-approved INV-OWN-003 non-operative intake slice on branch feat/invb-supplier-draft-onboarding-intake. The build-and-smoke-test and markdown-line-limit checks failed immediately with no executed steps or downloadable logs. No application build, unit tests, EF snapshot/migration validation, PostgreSQL integration, API authorization, BFF or browser command is evidenced as having started. Treat the failure as a CI runner/execution blocker; technical acceptance remains unverified. The PR is open and unmerged. No production or VM migration is authorized.
+PR #66 was merged to master on 2026-11-15 (merge commit `ed7a99eb49329e766c1b500db4febfb79e3df0bf`; head `2671e92854cfe3862bc6126775d98aae55f2adc6`). It adds the owner-approved INV-OWN-003 non-operative intake slice. The `build-and-smoke-test` and `markdown-line-limit` workflow runs both failed; both failed jobs were rerun, and both reruns also failed before reporting any steps. The job step lists are null and log download returned 404. No .NET/web build, unit test, EF snapshot/migration validation, PostgreSQL integration, API authorization, BFF or browser command is evidenced as having executed. The failure is an execution/runner evidence blocker, not a demonstrated code assertion failure and not a pass. PR #66 has no submitted reviews or discussion comments in the live connector response. No production or VM migration is authorized.
