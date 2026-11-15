@@ -138,6 +138,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         supplierEvidence.ToTable("PharmacySupplierEvidence", table =>
             table.HasCheckConstraint("CK_PharmacySupplierEvidence_Unverified", "\"VerificationStatus\" = 'Unverified'"));
         supplierEvidence.HasKey(x => x.Id);
+        supplierEvidence.HasAlternateKey(x => new { x.Id, x.SupplierId });
         supplierEvidence.HasIndex(x => x.SupplierId);
         supplierEvidence.Property(x => x.EvidenceKind).HasMaxLength(80).IsRequired();
         supplierEvidence.Property(x => x.Title).HasMaxLength(200).IsRequired();
@@ -181,7 +182,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         supplierAssurance.Property(x => x.BlockerCode).HasMaxLength(80);
         supplierAssurance.Property(x => x.CorrelationId).HasMaxLength(128).IsRequired();
         supplierAssurance.HasOne(x => x.Supplier).WithMany().HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
-        supplierAssurance.HasOne(x => x.Evidence).WithMany().HasForeignKey(x => x.EvidenceId).OnDelete(DeleteBehavior.Restrict);
+        supplierAssurance.HasOne(x => x.Evidence).WithMany().HasForeignKey(x => new { x.EvidenceId, x.SupplierId })
+            .HasPrincipalKey(x => new { x.Id, x.SupplierId }).OnDelete(DeleteBehavior.Restrict);
 
         var source = modelBuilder.Entity<RegulatorySource>();
         source.ToTable("RegulatorySources");
