@@ -43,7 +43,7 @@ export default function RegulatoryIntelligencePage() {
       });
       const payload = response.status === 204 ? null : await response.json().catch(() => null);
       if (!response.ok) throw new Error(payload?.error ?? (response.status === 403 ? "Administrator permission is required." : "Action failed."));
-      setMessage(body.action === "scan" ? `Scan completed: ${payload?.newDocuments ?? 0} new documents from ${payload?.sourcesChecked ?? 0} sources.` : "Alert acknowledged.");
+      setMessage(body.action === "scan" ? `${t("Scan completed: ")}${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(payload?.newDocuments ?? 0)}${t(" new documents from ")}${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(payload?.sourcesChecked ?? 0)}${t(" sources.")}` : t("Alert acknowledged."));
       await load();
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Action failed."); }
     finally { setBusy(false); }
@@ -85,7 +85,7 @@ export default function RegulatoryIntelligencePage() {
     <div className="section-heading"><div><p className="eyebrow">{t("REVIEW QUEUE" )}</p><h2>{t("New regulatory alerts" )}</h2></div></div>
     {loading ? <p className="muted">{t("Loading regulatory records…")}</p> : data?.alerts.length ? <section className="notice-panel">
       {data.alerts.map(alert => <div key={alert.id} style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", padding: "12px 0", borderBottom: "1px solid var(--border, #ddd)" }}>
-        <div><strong>{alert.documentTitle}</strong><p className="muted">{alert.alertType} · {date(alert.createdAtUtc, locale)}</p></div>
+        <div><strong>{alert.documentTitle}</strong><p className="muted">{t(alert.alertType)} · {date(alert.createdAtUtc, locale)}</p></div>
         {data?.canAcknowledgeAlerts ? <button className="subtle-button" disabled={busy} onClick={() => void act({ action: "acknowledge", alertId: alert.id })}>{t("Acknowledge" )}</button> : <span className="muted">{t("Administrator review access required")}</span>}
       </div>)}
     </section> : <p className="muted">{t("No unread alerts currently recorded." )}</p>}
@@ -93,7 +93,7 @@ export default function RegulatoryIntelligencePage() {
     <div className="section-heading"><div><p className="eyebrow">{t("INGESTED EVIDENCE" )}</p><h2>{t("Recent documents" )}</h2></div></div>
     <section className="notice-panel">
       {(data?.documents ?? []).length ? data!.documents.map(doc => <article key={doc.id} style={{ padding: "14px 0", borderBottom: "1px solid var(--border, #ddd)" }}>
-        <strong>{doc.title}</strong><p className="muted">{doc.topic} · Class {doc.sourceClass} · {doc.language.toUpperCase()} · {doc.reviewStatus} · {doc.severity}</p>
+        <strong>{doc.title}</strong><p className="muted">{doc.topic} · Class {doc.sourceClass} · {doc.language.toUpperCase()} · {t(doc.reviewStatus)} · {t(doc.severity)}</p>
         <p className="muted">Modules: {doc.modules} · Retrieved: {date(doc.retrievedAtUtc, locale)}</p>
         <a className="text-link" href={`/api/pharmacy-intelligence/documents/${doc.id}/content`}>{t("Download ingested copy ↓")}</a> · <a className="text-link" href={doc.sourceUrl} target="_blank" rel="noreferrer">{t("Open source publication ↗")}</a>
       </article>) : <p className="muted">{t("No documents ingested yet. Check source connectivity and scan history.")}</p>}
