@@ -20,11 +20,11 @@ public static class SupplierRules
         !string.IsNullOrWhiteSpace(value) && value.Trim().Length <= 500 &&
         !string.IsNullOrWhiteSpace(reason) && reason.Trim().Length <= 500;
 
-    public static bool IsValidBusinessContact(string? channelType, string? value, string? department, string? reason) =>
+    public static bool IsValidBusinessContact(string? channelType, string? value, string? department, bool businessUseConfirmed, string? reason) =>
         channelType is "DepartmentEmail" or "BusinessPhone" or "BusinessWebsite" &&
         !string.IsNullOrWhiteSpace(value) && value.Trim().Length <= 320 &&
         department is "Procurement" or "Sales" or "Accounts" or "Regulatory" or "Quality" or "General" &&
-        !string.IsNullOrWhiteSpace(reason) && reason.Trim().Length <= 500;
+        businessUseConfirmed && !string.IsNullOrWhiteSpace(reason) && reason.Trim().Length <= 500;
 
     public static bool IsValidEvidence(string? kind, string? title, string? reason) =>
         !string.IsNullOrWhiteSpace(kind) && kind.Trim().Length <= 80 &&
