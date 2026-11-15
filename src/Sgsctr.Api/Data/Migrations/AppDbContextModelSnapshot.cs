@@ -429,6 +429,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.Property(x => x.ChannelType).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
             entity.Property(x => x.ChannelValue).IsRequired().HasMaxLength(320).HasColumnType("character varying(320)");
             entity.Property(x => x.DepartmentLabel).IsRequired().HasMaxLength(80).HasColumnType("character varying(80)");
+            entity.Property(x => x.BusinessUseConfirmed).IsRequired().HasColumnType("boolean");
             entity.Property(x => x.AddedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
             entity.Property(x => x.AddedAtUtc).HasColumnType("timestamp with time zone");
             entity.Property(x => x.ChangeReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
