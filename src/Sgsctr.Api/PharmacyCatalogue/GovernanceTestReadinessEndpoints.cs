@@ -66,7 +66,7 @@ public static class GovernanceTestReadinessEndpoints
             };
             db.GovernanceTestExecutions.Add(execution);
             await db.SaveChangesAsync(ct);
-            return Results.Created($"/api/v1/pharmacy/catalogue/test-readiness/{test.Id}",
+            return Results.Ok(
                 new TestExecutionResponse(execution.Status, execution.Environment, execution.EvidenceReference,
                     execution.Notes, execution.ExecutedAtUtc, execution.ExecutedBySubject));
         }).RequireAuthorization(administratorOnly);
