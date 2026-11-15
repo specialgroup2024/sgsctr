@@ -88,3 +88,9 @@ Provisional planning model: one legal entity LE-01 with two sectors, separate op
 
 ## Test-only approval simulation
 - Q56: Accept the proposed technical design for a generic Approval Workflow Simulator, and confirm the exact implementation boundary. Owner: project owner. Status: design proposed; owner confirmation pending. Security reviewer must approve server-side Development/feature-flag gating before implementation merge. Any persistence, real identities, domain-specific approval rules, evidence uploads or operational integration requires a new decision and relevant approvals.
+
+
+## INV-B operational capability authorization — 2026-11-15
+- Q51 remains open for detailed business and professional decision content. The owner explicitly authorized implementation of the operational legal/licence verification, qualification-decision, reviewer-authority administration, and independent purchasing/receiving eligibility capabilities (recorded as INV-OWN-004, Approved with conditions).
+- This approval is permission to build the workflows and supporting UI/API/database foundations; it does not decide legal applicability, evidence sufficiency, qualification thresholds, risk scoring, reviewer credentials, named-person authority grants, eligibility dimensions/criteria or PO/receipt side effects. Do not invent these values. Capture them as configurable, auditable policy/decision records and keep operational outcomes fail-closed until the applicable qualified/owner decisions and security/privacy review are evidenced.
+- The owner has not identified named qualified legal/regulatory, pharmacy/quality or security/privacy reviewers in this approval. Their review/credential evidence and the authority delegation model remain required before live decisions can be made.

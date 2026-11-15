@@ -111,3 +111,19 @@ Production deployment requires all applicable approval-register gates, owner aut
 ## 9. Decision status
 
 **Proposed — not approved.** This document authorizes no code/schema change. The next action is owner and qualified-review feedback on the decisions in Sections 3, 6 and 7. Until then, preserve the current Draft/Unverified/Pending-only behavior.
+
+
+## 10. Owner authorization to implement operational capabilities — 2026-11-15
+
+The project owner explicitly authorized implementation of the following capability areas (approval register `INV-OWN-004`, Approved with conditions):
+
+1. Operational legal-entity identity and licence verification workflows.
+2. Qualification-decision workflows.
+3. Reviewer-authority administration and delegation workflows.
+4. Independent purchasing-eligibility and receiving-eligibility workflows.
+
+This authorization supersedes the earlier blanket statement that these capability areas themselves were not authorized for implementation. It authorizes engineering work on the workflows, persistence, APIs, UI and tests. It does **not** supply the substantive decision policy. In particular, implementation must not invent Egyptian legal/licence applicability, accepted authoritative sources, evidence sufficiency, risk criteria/scoring, qualification thresholds, decision outcomes, reviewer professional credentials, named reviewer grants, eligibility scope/dimensions or downstream PO/receipt effects.
+
+Until those details are approved and evidenced by the appropriate authorities, the system may support configuration, evidence capture, review preparation and controlled decision recording only where the decision-maker's identity and authority are verified. It must not represent an unverified claim as verified, grant a real person authority by default, or expose a supplier as purchasing/receiving eligible. Eligibility remains deny-by-default and disconnected from purchase-order, receipt, stock and financial side effects until the applicable policy and integration acceptance gates are satisfied.
+
+Security/privacy review, migration and model parity, PostgreSQL integration, authorization/negative tests, concurrency and maker-checker tests, append-only audit verification, bilingual UI/accessibility tests and recovery rehearsal remain required acceptance evidence. `INV-SEC-001` and `INV-REL-001` remain separate gates. This owner authorization is not a professional/legal approval or production release.
