@@ -126,7 +126,7 @@ export default function CatalogueManager() {
       await load();
       setSelectedId(saved.id);
       resetProduct();
-      setNotice(editing ? "Draft product updated." : t("Draft product created."));
+      setNotice(editing ? t("Draft product updated.") : t("Draft product created."));
     } catch (e) { setError(e instanceof Error ? e.message : t("Product could not be saved.")); }
     finally { setBusy(false); }
   }
@@ -158,7 +158,7 @@ export default function CatalogueManager() {
       setFromUnitId(""); setToUnitId(""); setNumerator("1"); setDenominator("1");
       const response = await fetch(`/api/pharmacy/catalogue/${encodeURIComponent(selectedId)}/conversions`, { cache: "no-store" });
       setConversions(await payload<Conversion[]>(response));
-      setNotice("Draft conversion added. It is reference data only and is not used in stock calculations.");
+      setNotice(t("Draft conversion added. It is reference data only and is not used in stock calculations."));
     } catch (e) { setError(e instanceof Error ? e.message : t("Conversion could not be saved.")); }
     finally { setBusy(false); }
   }
@@ -191,7 +191,7 @@ export default function CatalogueManager() {
           </div>
           <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>{t("Cancel")}</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? t("Saving…") : editing ? t("Save draft") : t("Create draft")}</button></div></div>
         </form> : <p className="inventory-empty">{t("Catalogue changes require the Administrator role. Your account currently has read-only access.")}</p>}
-        <p className="catalogue-id-note">{selectedId ? `${t("Selected record ID:")} ${selectedId}` : "A product receives a stable system identifier when created."}</p>
+        <p className="catalogue-id-note">{selectedId ? `${t("Selected record ID:")} ${selectedId}` : t("A product receives a stable system identifier when created.")}</p>
       </div>
     </section>
 
