@@ -82,3 +82,7 @@ Provisional planning model: one legal entity LE-01 with two sectors, separate op
 - Q-BI-01: Confirm whether Arabic or English should be the initial default for new user profiles; current technical default is English, with a user-selectable persistent locale. Owner: business owner. Status: open.
 - Q-BI-02: Approve authoritative Arabic terminology for legal, regulatory, pharmacy, quality, accounting and contracting terms. Owner: business owner and qualified domain reviewers. Status: open.
 - Q-BI-03: Confirm Arabic report/export formats, Arabic-Indic versus Western digits, currency presentation and document templates. Owner: business owner/accountant. Status: open.
+
+
+## Test-only approval simulation
+- Q56: Accept the proposed technical design for a generic Approval Workflow Simulator, and confirm the exact implementation boundary. Owner: project owner. Status: design proposed; owner confirmation pending. Security reviewer must approve server-side Development/feature-flag gating before implementation merge. Any persistence, real identities, domain-specific approval rules, evidence uploads or operational integration requires a new decision and relevant approvals.

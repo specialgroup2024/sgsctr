@@ -1,6 +1,6 @@
 # Governance test-readiness workspace
 
-- Status: implementation proposed on branch `feat/governance-test-readiness-workspace`; not yet merged or deployed.
+- Status: source implementation is present on master (verified by API, persistence, test and UI files on 2026-11-15); deployment/runtime validation for this discovery has not been performed. The earlier branch-only status was stale.
 - Scope: PostgreSQL-backed test case catalogue and append-only Development test execution records for platform foundation and all seven Pharmacy Inventory approval gates.
 - Authority: owner-authorized staged Pharmacy Inventory development. This work does not approve business rules, professional decisions, security risk or production release.
 
@@ -32,7 +32,11 @@
 - Development-only write API: `POST /api/v1/pharmacy/catalogue/test-readiness/executions`, Administrator role required.
 - BFF routes require an existing authenticated web session and preserve the bearer-token boundary.
 - PostgreSQL stores test definitions and append-only executions. No files are uploaded; evidence is referenced by a controlled ID/CI URL.
-- The initial seed has 19 cases: 4 platform, 3 pharmacist, 2 regulatory, 2 quality, 2 accounting, 2 owner, 2 security and 2 release cases.
+- The migration seed defines 19 cases: 4 platform, 3 pharmacist, 2 regulatory, 2 quality, 2 accounting, 2 owner, 2 security and 2 release cases.
+
+## Separate approval workflow simulator proposal
+
+A separate Development-only, synthetic, in-memory Approval Workflow Simulator is proposed in [the technical design](test-approval-simulation-design.md). It is not part of the authoritative approval register and must not write approval rows, persist scenario outcomes, create reviewer identities or call operational APIs. Owner technical-design confirmation and security review are pending; no simulator implementation is present in this work package.
 
 ## Deployment and verification
 
