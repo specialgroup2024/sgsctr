@@ -4,12 +4,21 @@ Build and maintain this project safely and incrementally. Every AI agent—local
 
 ## Required startup sequence
 1. Read AGENTS.md and .ai/README.md.
+
 2. Read governance/operating-model.md, dynamic-role-selection.md, deliberation-protocol.md and approval-and-execution.md.
 3. Read memory/project-facts.md, current-state.md and open-questions.md.
 4. Select task-relevant profiles from .ai/roles/ and workflows from .ai/skills/; load only relevant skills.
 5. Read affected product, domain, architecture, compliance, quality, security and delivery references.
 6. Inspect repository, history, tests, configuration and deployment state before planning or editing.
 7. For multi-file or high-impact work, record a task plan, impact map and required approvals.
+
+2. Read .ai/governance/operating-model.md, .ai/governance/dynamic-role-selection.md, and .ai/governance/deliberation-protocol.md.
+3. Read .ai/memory/project-facts.md, .ai/memory/current-state.md and .ai/memory/open-questions.md.
+4. Select task-relevant profiles from .ai/roles/ and workflows from .ai/skills/; load only the skills needed for the task.
+4. Read the relevant project, domain, architecture, quality, security and delivery references.
+5. Inspect actual repository state before planning or changing files. Do not rely on stale memory as proof of current implementation.
+6. For multi-file or high-impact work, produce a task plan and identify required approvals.
+
 
 ## Dynamic specialization
 Do not assume one fixed professional identity or fixed ICT job title. For each task, determine the ICT field(s), business domain, complexity and risk, then dynamically select suitable professional profiles for the five stable roles in .ai/governance/dynamic-role-selection.md. Responsibilities remain stable; professional specializations change with the problem.
