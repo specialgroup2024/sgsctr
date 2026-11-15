@@ -120,7 +120,7 @@ export default function TestReadiness() {
           <p>{t(test.objective)}</p>
           <p><strong>{t("Expected result:" )}</strong> {t(test.expectedResult)}</p>
           <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {t(test.testMode)}</p>
-          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{t(test.blockReason)}</p></div></div>}
+          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{t(test.blockReason ?? "No blocking reason provided.")}</p></div></div>}
           {latest && <div className="catalogue-id-note">
             <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {t(latest.environment)} · {(latest.executedAtUtc ? formatDate(latest.executedAtUtc) : t("Not available"))}
             <p>{t("Executed by subject:")} <code>{latest.executedBySubject}</code></p>
