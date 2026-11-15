@@ -383,5 +383,59 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
                 t.HasCheckConstraint("CK_PharmacyReceiptDraftLines_PositiveQuantity", "\"Quantity\" > 0"));
         });
 
+
+        modelBuilder.Entity<PharmacySupplier>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.Code).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.DisplayName).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.Version).IsConcurrencyToken().HasColumnType("integer");
+            entity.Property(x => x.CreatedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.CreatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.UpdatedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.UpdatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.ChangeReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.Code).IsUnique();
+            entity.ToTable("PharmacySuppliers", t => t.HasCheckConstraint("CK_PharmacySuppliers_DraftOnly", "\"Status\" = 'Draft'"));
+        });
+
+        modelBuilder.Entity<PharmacySupplierEvidence>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.SupplierId).HasColumnType("uuid");
+            entity.Property(x => x.EvidenceKind).IsRequired().HasMaxLength(80).HasColumnType("character varying(80)");
+            entity.Property(x => x.Title).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
+            entity.Property(x => x.Issuer).HasMaxLength(200).HasColumnType("character varying(200)");
+            entity.Property(x => x.ReferenceNumber).HasMaxLength(120).HasColumnType("character varying(120)");
+            entity.Property(x => x.SourceReference).HasMaxLength(1000).HasColumnType("character varying(1000)");
+            entity.Property(x => x.IssuedOn).HasColumnType("date");
+            entity.Property(x => x.ExpiresOn).HasColumnType("date");
+            entity.Property(x => x.VerificationStatus).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.AddedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.AddedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.ChangeReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.SupplierId);
+            entity.HasOne(x => x.Supplier).WithMany(x => x.Evidence).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacySupplierEvidence", t => t.HasCheckConstraint("CK_PharmacySupplierEvidence_Unverified", "\"VerificationStatus\" = 'Unverified'"));
+        });
+
+        modelBuilder.Entity<PharmacySupplierReviewRequest>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.SupplierId).HasColumnType("uuid");
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.RequestedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.RequestedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.Reason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.CorrelationId).IsRequired().HasMaxLength(128).HasColumnType("character varying(128)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => new { x.SupplierId, x.RequestedAtUtc });
+            entity.HasOne(x => x.Supplier).WithMany(x => x.ReviewRequests).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacySupplierReviewRequests", t => t.HasCheckConstraint("CK_PharmacySupplierReviewRequests_PendingOnly", "\"Status\" = 'Pending'"));
+        });
+
     }
 }
