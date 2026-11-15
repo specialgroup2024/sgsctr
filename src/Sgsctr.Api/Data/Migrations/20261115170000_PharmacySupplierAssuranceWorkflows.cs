@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Sgsctr.Api.Data;
 
 namespace Sgsctr.Api.Data.Migrations;
 
