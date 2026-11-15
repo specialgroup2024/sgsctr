@@ -56,6 +56,11 @@ public sealed class SupplierRulesTests
         Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "procurement@example.test", "Procurement", false, "Initial capture"));
         Assert.False(SupplierRules.IsValidBusinessContact("PersonalMobile", "01000000000", "General", true, "Reason"));
         Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "name@example.test", "Individual", true, "Reason"));
+        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "not-an-email", "General", true, "Reason"));
+        Assert.False(SupplierRules.IsValidBusinessContact("BusinessWebsite", "javascript:alert(1)", "General", true, "Reason"));
+        Assert.False(SupplierRules.IsValidBusinessContact("BusinessPhone", "123", "General", true, "Reason"));
+        Assert.True(SupplierRules.IsValidBusinessContact("BusinessPhone", "+20 (2) 1234-5678", "General", true, "Initial capture"));
+        Assert.True(SupplierRules.IsValidBusinessContact("BusinessWebsite", "https://supplier.example.test", "General", true, "Initial capture"));
         Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "mail@example.test", "General", true, " "));
     }
 
