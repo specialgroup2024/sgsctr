@@ -48,6 +48,8 @@ REGULATORY_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /de
 if [[ "$REGULATORY_STATUS" != "401" ]]; then echo "ERROR: Regulatory intelligence overview must reject anonymous access (HTTP ${REGULATORY_STATUS})." >&2; exit 1; fi
 AUTH_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${BASE_URL}/api/v1/auth/me")"
 if [[ "$AUTH_STATUS" != "401" ]]; then echo "ERROR: Expected 401 for anonymous request, got ${AUTH_STATUS}." >&2; exit 1; fi
+SUPPLIER_ANON_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${BASE_URL}/api/v1/pharmacy/suppliers/")"
+if [[ "$SUPPLIER_ANON_STATUS" != "401" ]]; then echo "ERROR: Anonymous supplier reads must return 401, got ${SUPPLIER_ANON_STATUS}." >&2; exit 1; fi
 
 echo "Checking public account registration is disabled..."
 REGISTER_STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' -H 'Content-Type: application/json' -d '{"email":"public@example.test","password":"NotAllowed-123!"}' "${BASE_URL}/api/v1/auth/register")"
@@ -124,7 +126,7 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   if [[ "${VERIFY_DOCKER_DATABASE:-false}" == "true" ]]; then
     echo "Checking persisted supplier, evidence, review and audit records in PostgreSQL..."
     DB_SQL="SELECT (SELECT count(*) FROM \"PharmacySuppliers\" WHERE \"Code\" = '${SUPPLIER_CODE}')::text || ':' || (SELECT count(*) FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}')::text || ':' || (SELECT count(*) FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}')::text || ':' || (SELECT count(*) FROM \"CatalogueAuditEvents\" a WHERE a.\"ResourceId\" IN (SELECT \"Id\" FROM \"PharmacySuppliers\" WHERE \"Code\" = '${SUPPLIER_CODE}' UNION ALL SELECT e.\"Id\" FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}' UNION ALL SELECT r.\"Id\" FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}'))::text"
-    DB_COUNTS="$(docker compose exec -T db sh -lc 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "$1"' sh "$DB_SQL")"
+    DB_COUNTS="$(docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "$1"' sh "$DB_SQL")"
     if [[ "$DB_COUNTS" != "1:1:1:3" ]]; then echo "ERROR: Expected 1 supplier, 1 evidence, 1 pending review and 3 audit events; got ${DB_COUNTS}." >&2; exit 1; fi
   fi
 
