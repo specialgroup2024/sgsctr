@@ -436,7 +436,12 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.HasKey(x => x.Id);
             entity.HasIndex(x => x.SupplierId);
             entity.HasOne(x => x.Supplier).WithMany(x => x.BusinessContacts).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
-            entity.ToTable("PharmacySupplierBusinessContacts", t => t.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ChannelType", "\"ChannelType\" IN ('DepartmentEmail','BusinessPhone','BusinessWebsite')"));
+            entity.ToTable("PharmacySupplierBusinessContacts", t =>
+            {
+                t.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ChannelType", "\"ChannelType\" IN ('DepartmentEmail','BusinessPhone','BusinessWebsite')");
+                t.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_Department", "\"DepartmentLabel\" IN ('Procurement','Sales','Accounts','Regulatory','Quality','General')");
+                t.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ConfirmedBusinessUse", "\"BusinessUseConfirmed\" = TRUE");
+            });
         });
 
         modelBuilder.Entity<PharmacySupplierDueDiligenceCase>(entity =>
