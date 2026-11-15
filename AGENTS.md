@@ -1,68 +1,63 @@
 # Repository-wide instructions
 
-## Instruction bootstrap and precedence
-- All agents must read AGENT.md, this file and .ai/README.md before acting.
-- AGENT.md defines universal agent behavior; AGENTS.md defines repository execution constraints; .ai/ contains project-specific context and detailed procedures.
-- Apply the most restrictive applicable security, safety and approval rule. A lower-level file cannot waive a higher-level restriction or owner approval.
-- If instructions conflict, stop the affected action, record the conflict and ask for resolution. Do not silently choose a convenient interpretation.
-- Agent-tool-specific files may bootstrap to these sources but must not create contradictory parallel policy.
+## Bootstrap and precedence
+- Read AGENT.md, this file and .ai/README.md before acting.
+- AGENT.md governs universal behavior; this file governs repository execution; .ai/ contains project context and procedures.
+- Apply the most restrictive security, safety and approval rule. If instructions conflict, stop the affected action, record the conflict and ask for resolution.
+- Agent-host-specific files may bootstrap to these sources but must not create contradictory policy.
 
 ## Dynamic specialist operation
-- Dynamically identify task specializations and select professional profiles for the five stable roles using .ai/governance/dynamic-role-selection.md.
-- Follow .ai/governance/deliberation-protocol.md for substantive design, architecture, security, data, business-process and high-impact decisions.
-- Do not permanently assign ICT job titles to the roles. Re-evaluate specialization for each materially different task.
-- For pharmacy work, dynamically add Egyptian regulatory affairs, licensed pharmacist/pharmacy operations, pharmacovigilance/quality, pharmaceutical supply-chain/market analysis, Egyptian legal, tax/accounting and relevant ICT profiles as the task requires. These are selected profiles, not fictitious independent experts.
-- When a tool cannot support multiple agents, conduct clearly labeled perspective-based analysis; do not imply independent agents participated.
+- Select professional profiles for the five stable roles using .ai/governance/dynamic-role-selection.md.
+- Follow .ai/governance/deliberation-protocol.md for substantive decisions; do not permanently assign ICT job titles.
+- Add pharmacy, Egyptian regulatory, pharmacist, pharmacovigilance/quality, supply-chain, legal, tax and accounting profiles only when relevant.
+- If multiple agents cannot run, disclose that perspectives are simulated, not independent agents or qualified professionals.
 
 ## Dynamic agent work cycle
-- Use the living cycle: Discover → Understand → Analyze → Impact-map → Select specialists → Deliberate → Resolve approval gates → Implement authorized scope → Verify → Document → Remember → Reassess.
-- Inspect actual repository state, relevant history, tests, configuration and current state before changing files; plans and memory are not proof of implementation.
-- For each task, identify affected business domains, technical boundaries, data classes, users, dependencies, risks and acceptance evidence. Select specialist profiles dynamically; do not permanently assign ICT job titles.
-- For substantive decisions, enforce all five deliberation stages and mandatory independent challenges described in .ai/governance/deliberation-protocol.md. The Maestro speaks last and cannot waive owner/professional approval.
-- Map every proposed change to requirements, affected components, migration/data impact, security/privacy, tests, documentation, rollback and approval gates.
-- If a prerequisite or source is unavailable, record it as unknown/open; do not fill it with invented content. Stop only the affected gated action, while safe discovery and draft work may continue.
-- Keep plans, ADRs, work packages and current-state notes synchronized as living artifacts. Do not create a separate static master plan that overrides .ai/ governance.
+- Use: Discover → Understand → Analyze → Impact-map → Select specialists → Deliberate → Resolve approval gates → Implement authorized scope → Verify → Document → Remember → Reassess.
+- Inspect repository state, history, tests, configuration and current state; plans and memory are not proof of implementation.
+- Identify affected domains, users, data classes, dependencies, risks and acceptance evidence.
+- Map changes to requirements, components, data/migrations, security/privacy, tests, documentation, rollback and approvals.
+- If a source or prerequisite is unavailable, record it as unknown; continue only safe discovery or authorized draft work.
+- Keep ADRs, work packages, current-state notes and open questions synchronized. Do not create a static master plan that overrides .ai/.
 
 ## Architecture and implementation
-- Confirm selected .NET, PostgreSQL and React Native versions in .ai/architecture/system-context.md before changing dependencies.
-- Inspect current code, configuration, tests, migrations and deployment assets before proposing implementation.
-- Follow module ownership; shared code must not absorb business-specific rules.
-- Use server-side authorization for every protected operation.
-- Use database constraints and transactions for approved financial and stock invariants.
-- Use fixed-precision monetary values with explicit currency; follow approved precision and rounding rules.
-- Make migrations reversible where feasible; document irreversible steps.
+- Confirm .NET, PostgreSQL and React Native versions in architecture/system-context.md before dependency changes.
+- Inspect code, configuration, tests, migrations and deployment assets before proposing implementation.
+- Respect module ownership; shared code must not absorb business-specific rules.
+- Enforce server-side authorization for every protected operation.
+- Protect financial and inventory invariants with database transactions and constraints.
+- Store money as fixed-precision decimals with explicit currency; never use floating-point arithmetic for money. Precision, rounding and calculation order require approved rules.
+- Make timestamp/time-zone behavior explicit; do not rely on implicit server-local time.
+- Make migrations reversible where feasible; document irreversible steps and recovery.
 - Make retryable integrations idempotent.
-- Keep secrets, patient information and production data out of Git, logs and test fixtures.
-- Add or update tests for behavior changes and database migrations.
-- Update relevant requirements, decisions, memory and runbooks.
-- Run applicable builds, tests, linters and security checks before reporting completion.
+- Keep secrets, health data and production records out of Git, logs and test fixtures.
+- Add/update tests for behavior and migrations; update relevant requirements, decisions, memory and runbooks.
+- Run applicable builds, tests, linters and security checks; report exact commands and results.
 
-## Egypt pharmacy market and regulatory controls
-- Follow the mandatory monitoring policy and source register under .ai/governance before any pharmacy-related discovery, design, implementation, testing or release.
-- Check current Egyptian primary sources and broaden discovery to professional, industry, supplier, payer, procurement and reputable media sources; record source class and retrieval time.
-- Distinguish binding instruments, regulator guidance, drafts, official announcements and unverified market signals. Verify current text, amendments, applicability and effective date.
-- Link each material update to the Egyptian requirements register, evidence register, affected modules, tests and proposed actions.
-- Legal interpretation, pharmacy practice, licensing, clinical/quality disposition, tax/accounting and business-policy decisions require qualified human review and owner approval.
-- Never claim complete market coverage, real-time monitoring or legal compliance without evidence. Do not make autonomous changes to product prices, dispensing, stock, reimbursement or financial rules.
-- The EDA ingestion MVP is owner-approved and merged to master (PR #22); the duplicate-index migration correction is merged (PR #24). Runtime evidence supplied by the owner confirms a scan of five sources and 100 links, with 12 new documents and zero failures on 2026-11-11. This does not establish exhaustive coverage or end-to-end reviewer workflow. Check .ai/architecture/eda-regulatory-ingestion.md and .ai/delivery/eda-regulatory-ingestion-runbook.md. Broader Egyptian source coverage, email/SMS/push, paid feeds and retention policy remain gated.
+## Egypt pharmacy controls
+- Follow the mandatory monitoring policy and source register before pharmacy discovery, design, implementation, testing or release.
+- Distinguish binding instruments, regulator guidance, drafts, official announcements and market signals; verify current text, amendments, applicability and effective dates.
+- Link material updates to evidence, requirements, affected modules, tests and proposed actions.
+- Legal, pharmacy, licensing, quality, tax/accounting and business-policy decisions require qualified human review and owner approval as applicable.
+- Never claim exhaustive coverage, real-time monitoring or legal compliance without evidence. Never autonomously change prices, dispensing, stock, reimbursement or accounting.
+- The EDA ingestion MVP is owner-approved and merged to master (PR #22); observed scan evidence and limitations are recorded in memory/current-state.md.
 
 ## Approval and change controls
-- The agent may inspect, analyze and propose within its access.
-- Implementation must remain within explicitly approved scope and the repository's current release gates.
-- Legal entity, licensing, regulatory interpretation, accounting policy, tax treatment, pharmacy procedures, financial calculations, stock valuation, access to sensitive production data and irreversible operations require designated qualified professional/owner approval.
-- Proposed ADRs, plans and deliberation outcomes are not approved merely because an agent or Maestro recommends them.
+- governance/approval-register.md is authoritative. Approval applies only to its recorded scope and conditions.
+- A recommendation, draft ADR, passing CI or merged PR is not automatically an approval.
+- Legal entity, licensing, regulatory interpretation, accounting, tax, pharmacy procedures, financial calculations, stock valuation, sensitive production-data access and irreversible operations require designated approval.
 - Do not create production schema changes, stock movements, financial postings or external side effects without required authorization.
+- Never merge a pull request without explicit user authorization.
 
 ## Documentation governance
-- Every Markdown file must contain fewer than 200 lines.
-- Aim for 180 lines or fewer; split long guidance into linked focused documents.
-- Enforce the rule with scripts/check_markdown_line_limit.py in CI.
-- Never embed executable Python source in Markdown instructions.
+- Every Markdown file must contain fewer than 200 lines; aim for 180 or fewer.
+- Enforce with scripts/check_markdown_line_limit.py and the CI workflow.
+- Do not embed executable Python source in Markdown instructions.
 - Do not report the line-limit check as passed unless it was run successfully.
 
 ## Internationalization and RTL
 - Use the shared locale provider and translation catalogue; do not add per-page locale state or browser-translation workarounds.
-- Persist locale through the same-site preference cookie and render matching document language and direction.
+- Persist locale through the approved preference mechanism and render matching document language/direction.
 - Use direction-aware layout and CSS logical properties; preserve LTR for identifiers, URLs, email addresses, serials and code values.
 - Add tests for locale persistence, switching, root direction, translation coverage and mixed-direction content.
 - Never translate persisted business data, API enums, regulatory evidence or audit records.
