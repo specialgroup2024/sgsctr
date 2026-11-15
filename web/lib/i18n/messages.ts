@@ -766,6 +766,7 @@ export const messages:Record<string,string>={
   "BusinessPhone": "هاتف الشركة",
   "BusinessWebsite": "موقع الشركة",
   "Pending": "معلق",
+  "I confirm this is a shared business channel, not a person's personal contact detail.": "أؤكد أن هذه قناة اتصال تجارية مشتركة وليست بيانات اتصال شخصية لشخص ما.",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}
