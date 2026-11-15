@@ -53,13 +53,13 @@ jobs:
         env:
           BOOTSTRAP_ADMIN_EMAIL: admin@example.test
           BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
-        run: node scripts/rtl-smoke.mjs
+        run: cd web && node rtl-smoke.mjs
       - name: Upload RTL visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bilingual-rtl-visual-evidence
-          path: artifacts/rtl-*.png
+          path: web/artifacts/rtl-*.png
           if-no-files-found: ignore
       - name: API, database and web smoke tests
         env:
