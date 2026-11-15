@@ -7,15 +7,16 @@ import { useI18n } from "@/components/locale-provider";
 import CatalogueManager from "./CatalogueManager";
 import ApprovalRegister from "./ApprovalRegister";
 import TestReadiness from "./TestReadiness";
+import SupplierRegister from "./SupplierRegister";
 
 type Location = { id: string; code: string; name: string; sectorCode: string; locationType: string; isActive: boolean; recordStatus: string };
 type Organization = { locations: Location[] };
 type ProductSummary = { id: string; status: string };
 type SystemStatus = { api: string; database: string; checkedAt: string };
-type Tab = "overview" | "products" | "receiving" | "transfers" | "batches" | "reports" | "approvals" | "readiness";
+type Tab = "overview" | "products" | "suppliers" | "receiving" | "transfers" | "batches" | "reports" | "approvals" | "readiness";
 
 const tabs: Array<{ id: Tab; label: string }> = [
-  { id: "overview", label: "Overview" }, { id: "products", label: "Product catalogue" },
+  { id: "overview", label: "Overview" }, { id: "products", label: "Product catalogue" }, { id: "suppliers", label: "Suppliers" },
   { id: "receiving", label: "Receiving" }, { id: "transfers", label: "Stock transfers" },
   { id: "batches", label: "Batches & expiry" }, { id: "reports", label: "Reports" },
   { id: "approvals", label: "Approvals" }, { id: "readiness", label: "Test readiness" }
@@ -104,6 +105,7 @@ export default function InventoryWorkspace() {
       <GateNotice title={t("No live stock or valuation data is available yet.")} detail="Generic product identities, units and draft conversion references are persisted. Product-family classification, regulatory identifiers and activation remain gated; no inventory quantities, suppliers, receipts, transfers or costing records are stored or simulated." />
     </>}
     {tab === "products" && <CatalogueManager />}
+    {tab === "suppliers" && <SupplierRegister />}
     {tab === "approvals" && <ApprovalRegister />}
     {tab === "readiness" && <TestReadiness />}
     {tab === "receiving" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("INBOUND STOCK")}</p><h2>{t("Receiving & inspection" )}</h2><p>{t("Purchase-order matching, delivery checks and quality disposition." )}</p></div><button className="inventory-disabled-action" disabled>{t("New receipt" )}</button></div>
