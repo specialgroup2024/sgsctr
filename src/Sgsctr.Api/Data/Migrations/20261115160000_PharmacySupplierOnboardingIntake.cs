@@ -54,6 +54,10 @@ public sealed class PharmacySupplierOnboardingIntake : Migration
                 table.PrimaryKey("PK_PharmacySupplierBusinessContacts", x => x.Id);
                 table.CheckConstraint("CK_PharmacySupplierBusinessContacts_ChannelType",
                     "\"ChannelType\" IN ('DepartmentEmail','BusinessPhone','BusinessWebsite')");
+                table.CheckConstraint("CK_PharmacySupplierBusinessContacts_Department",
+                    "\"DepartmentLabel\" IN ('Procurement','Sales','Accounts','Regulatory','Quality','General')");
+                table.CheckConstraint("CK_PharmacySupplierBusinessContacts_ConfirmedBusinessUse",
+                    "\"BusinessUseConfirmed\" = TRUE");
                 table.ForeignKey("FK_PharmacySupplierBusinessContacts_PharmacySuppliers_SupplierId",
                     x => x.SupplierId, "PharmacySuppliers", "Id", onDelete: ReferentialAction.Restrict);
             });
