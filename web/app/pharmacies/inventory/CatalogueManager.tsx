@@ -82,7 +82,7 @@ export default function CatalogueManager() {
     fetch(`/api/pharmacy/catalogue/${encodeURIComponent(selectedId)}/conversions`, { cache: "no-store" })
       .then(response => payload<Conversion[]>(response))
       .then(rows => { if (active) setConversions(rows); })
-      .catch(e => { if (active) setError(e instanceof Error ? e.message : "Conversions could not be loaded."); });
+      .catch(e => { if (active) setError(e instanceof Error ? e.message : t("Conversions could not be loaded.")); });
     return () => { active = false; };
   }, [selectedId]);
 
@@ -126,8 +126,8 @@ export default function CatalogueManager() {
       await load();
       setSelectedId(saved.id);
       resetProduct();
-      setNotice(editing ? "Draft product updated." : "Draft product created.");
-    } catch (e) { setError(e instanceof Error ? e.message : "Product could not be saved."); }
+      setNotice(editing ? "Draft product updated." : t("Draft product created."));
+    } catch (e) { setError(e instanceof Error ? e.message : t("Product could not be saved.")); }
     finally { setBusy(false); }
   }
 
@@ -139,8 +139,8 @@ export default function CatalogueManager() {
         body: JSON.stringify({ code: unitCode, name: unitName, symbol: unitSymbol || null })
       }));
       setUnitCode(""); setUnitName(""); setUnitSymbol("");
-      await load(); setNotice("Unit of measure added.");
-    } catch (e) { setError(e instanceof Error ? e.message : "Unit could not be saved."); }
+      await load(); setNotice(t("Unit of measure added."));
+    } catch (e) { setError(e instanceof Error ? e.message : t("Unit could not be saved.")); }
     finally { setBusy(false); }
   }
 
@@ -159,7 +159,7 @@ export default function CatalogueManager() {
       const response = await fetch(`/api/pharmacy/catalogue/${encodeURIComponent(selectedId)}/conversions`, { cache: "no-store" });
       setConversions(await payload<Conversion[]>(response));
       setNotice("Draft conversion added. It is reference data only and is not used in stock calculations.");
-    } catch (e) { setError(e instanceof Error ? e.message : "Conversion could not be saved."); }
+    } catch (e) { setError(e instanceof Error ? e.message : t("Conversion could not be saved.")); }
     finally { setBusy(false); }
   }
 
@@ -231,6 +231,6 @@ export default function CatalogueManager() {
       </div>
     </section>
     <ProductGovernanceManager productId={selectedId} canManage={canManage} />
-    <p className="catalogue-footer-note">Family, identifier and lifecycle submissions remain unverified review records. No product activation, supplier, purchasing, receiving, stock, lot, transfer, pricing, valuation or financial posting is available.</p>
+    <p className="catalogue-footer-note">{t("Family, identifier and lifecycle submissions remain unverified review records. No product activation, supplier, purchasing, receiving, stock, lot, transfer, pricing, valuation or financial posting is available.")}</p>
   </div>;
 }

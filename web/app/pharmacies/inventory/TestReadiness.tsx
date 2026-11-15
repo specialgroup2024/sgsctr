@@ -44,10 +44,10 @@ export default function TestReadiness() {
       const response = await fetch("/api/pharmacy/test-readiness", { cache: "no-store" });
       if (response.status === 401) { window.location.assign("/login"); return; }
       const body = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(body?.error ?? "Test readiness could not be loaded.");
+      if (!response.ok) throw new Error(body?.error ?? t("Test readiness could not be loaded."));
       setPayload(body as Payload);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Test readiness could not be loaded.");
+      setError(e instanceof Error ? e.message : t("Test readiness could not be loaded."));
     } finally {
       setLoading(false);
     }
@@ -68,11 +68,11 @@ export default function TestReadiness() {
         })
       });
       const body = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(body?.detail ?? body?.error ?? "Test result could not be recorded.");
-      setMessage("Test execution recorded in PostgreSQL. Approval statuses were not changed.");
+      if (!response.ok) throw new Error(body?.detail ?? body?.error ?? t("Test result could not be recorded."));
+      setMessage(t("Test execution recorded in PostgreSQL. Approval statuses were not changed."));
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Test result could not be recorded.");
+      setError(e instanceof Error ? e.message : t("Test result could not be recorded."));
     } finally {
       setSaving("");
     }
@@ -90,7 +90,7 @@ export default function TestReadiness() {
         <h2>{t("Test readiness" )}</h2>
         <p>{t("Version-controlled test cases are stored in PostgreSQL. Results are append-only and separate from professional approvals.")}</p>
       </div>
-      <button className="inventory-refresh" type="button" onClick={() => void load()} disabled={loading}>Refresh</button>
+      <button className="inventory-refresh" type="button" onClick={() => void load()} disabled={loading}>{t("Refresh")}</button>
     </div>
     <div className="inventory-gate" role="note">
       <span className="inventory-gate-icon">!</span>
