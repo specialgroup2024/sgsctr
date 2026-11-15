@@ -3,7 +3,7 @@
 - Date: 2026-11-15.
 - Status: owner approved the limited non-operative intake slice on 2026-11-15 (INV-OWN-003); legal/professional rules and operational decisions remain pending.
 - Related approvals: INV-OWN-001 (staged development authorization, approved); INV-OWN-002 (supplier operating policy, pending); Q51 (supplier master policy, open); INV-SEC-001 (security/privacy acceptance, pending).
-- Current implementation: Draft supplier, Unverified evidence references and Pending review requests only.
+- Current implementation on master after PR #66: Draft supplier records and Unverified evidence references; OwnerProvided / Unverified identity/licence declarations; department-level shared business contact channels; and Pending due-diligence intake cases. No verification or operational qualification is implemented.
 
 ## Owner request received
 
@@ -81,4 +81,4 @@ The state names, decision transitions and review intervals above are design prop
 
 ## Current determination
 
-Proceed with this limited implementation under INV-OWN-003. Actual legal/licence verification, qualification decisions, reviewer authorization and purchasing/receiving eligibility remain blocked by Q51 / INV-OWN-002 and applicable professional/security gates. The free-text business phone/email value still depends on user honesty and requires privacy/security review; no automated personal-data detection is claimed.
+PR #66 merged the limited implementation under INV-OWN-003 to master on 2026-11-15 (merge commit `ed7a99eb49329e766c1b500db4febfb79e3df0bf`). Actual legal/licence verification, qualification decisions, due-diligence execution, reviewer authorization and purchasing/receiving eligibility remain blocked by Q51 / INV-OWN-002 and applicable professional/security gates. The free-text business channel value still depends on user honesty and requires privacy/security review; no automated personal-data detection is claimed. Technical acceptance remains unverified because the two PR-triggered CI workflows and their reruns failed before any job steps were reported.
