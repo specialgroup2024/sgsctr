@@ -152,7 +152,8 @@ public static class PharmacySupplierExtensions
     private static string? Actor(ClaimsPrincipal user, bool localWrites)
     {
         if (localWrites) return "local-development";
-        var subject = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? user.FindFirst("sub")?.Value;
+        var subject = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrWhiteSpace(subject)) subject = user.FindFirst("sub")?.Value;
         return string.IsNullOrWhiteSpace(subject) ? null : subject;
     }
     private static string? Clean(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
