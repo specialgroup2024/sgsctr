@@ -305,7 +305,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.HasIndex(x => x.ApprovalCode).IsUnique();
             entity.HasIndex(x => new { x.Status, x.RequiredApproverRole });
             entity.ToTable("GovernanceApprovals", t =>
-                t.HasCheckConstraint("CK_GovernanceApprovals_Status", "\"Status\" IN ('Pending','Approved','DemoApproved','ApprovedWithConditions','Rejected','Withdrawn','Superseded')"));
+                t.HasCheckConstraint("CK_GovernanceApprovals_Status", "\"Status\" IN ('Pending','Approved','ApprovedWithConditions','Rejected','Withdrawn','Superseded')"));
         });
 
     }

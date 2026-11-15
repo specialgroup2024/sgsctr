@@ -34,6 +34,12 @@ services:
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${POSTGRES_DB:-sgsctr_dev};Username=${POSTGRES_USER:-sgsctr};Password=${POSTGRES_PASSWORD:-local_dev_only_change_me}
     ports:
       - "127.0.0.1:8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://127.0.0.1:8080/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 90s
     volumes:
       - sgsctr_dataprotection_keys:/var/lib/sgsctr/data-protection-keys
     depends_on:
@@ -57,7 +63,7 @@ services:
       - "127.0.0.1:3000:3000"
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
 
   pgadmin:
     image: dpage/pgadmin4:latest
