@@ -10,6 +10,9 @@ public sealed class PharmacySupplierAssuranceWorkflows : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
+        migrationBuilder.AddUniqueConstraint("AK_PharmacySupplierEvidence_Id_SupplierId",
+            "PharmacySupplierEvidence", new[] { "Id", "SupplierId" });
+
         migrationBuilder.CreateTable(
             name: "PharmacySupplierAssuranceCases",
             columns: table => new
@@ -35,8 +38,8 @@ public sealed class PharmacySupplierAssuranceWorkflows : Migration
                     "((\"CaseType\" IN ('PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation') AND \"Status\" = 'Blocked' AND \"BlockerCode\" IS NOT NULL) OR (\"CaseType\" NOT IN ('PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation') AND \"Status\" = 'Pending' AND \"BlockerCode\" IS NULL))");
                 table.ForeignKey("FK_PharmacySupplierAssuranceCases_PharmacySuppliers_SupplierId",
                     x => x.SupplierId, "PharmacySuppliers", "Id", onDelete: ReferentialAction.Restrict);
-                table.ForeignKey("FK_PharmacySupplierAssuranceCases_PharmacySupplierEvidence_EvidenceId",
-                    x => x.EvidenceId, "PharmacySupplierEvidence", "Id", onDelete: ReferentialAction.Restrict);
+                table.ForeignKey("FK_PharmacySupplierAssuranceCases_PharmacySupplierEvidence_EvidenceId_SupplierId",
+                    x => new { x.EvidenceId, x.SupplierId }, "PharmacySupplierEvidence", new[] { "Id", "SupplierId" }, onDelete: ReferentialAction.Restrict);
             });
         migrationBuilder.CreateIndex("IX_PharmacySupplierAssuranceCases_SupplierId_RequestedAtUtc",
             "PharmacySupplierAssuranceCases", new[] { "SupplierId", "RequestedAtUtc" });
@@ -44,6 +47,9 @@ public sealed class PharmacySupplierAssuranceWorkflows : Migration
             "PharmacySupplierAssuranceCases", "EvidenceId");
     }
 
-    protected override void Down(MigrationBuilder migrationBuilder) =>
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
         migrationBuilder.DropTable("PharmacySupplierAssuranceCases");
+        migrationBuilder.DropUniqueConstraint("AK_PharmacySupplierEvidence_Id_SupplierId", "PharmacySupplierEvidence");
+    }
 }
