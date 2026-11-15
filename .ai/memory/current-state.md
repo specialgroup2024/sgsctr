@@ -115,3 +115,14 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - Owner explicitly approved implementation of operational legal/licence verification, qualification-decision, reviewer-authority administration and separate purchasing/receiving eligibility capabilities. Recorded in the governance approval register as `INV-OWN-004` Approved with conditions on branch `docs/invb-owner-operational-scope-approval`.
 - This is an implementation authorization, not a legal/regulatory or professional determination, not approval of any supplier, not proof/assignment of reviewer credentials or authority, and not approval for PO/receipt/stock/financial side effects. Detailed criteria, evidence sources, reviewer credentials/delegation, eligibility dimensions and security/privacy review remain required before live operational decisions. Eligibility stays fail-closed and disconnected from downstream transactions until approved and tested.
 - No UI/API/database operational capability is claimed implemented by this documentation update.
+
+## INV-B supplier assurance workflow implementation — 2026-11-15
+
+- Branch: feat/invb-supplier-assurance-workflows.
+- Added source-level assurance request workflow foundations: six distinct request types (legal/licence verification, due-diligence execution, reviewer-authority application, qualification review, purchasing eligibility evaluation and receiving eligibility evaluation), ASP.NET Core API, Next.js BFF route, per-supplier UI queue/form, EF entity/migration/model snapshot and audit event.
+- Server controls initial states. Non-eligibility requests are Pending. Purchasing and receiving eligibility requests are Blocked with POLICY_AND_QUALIFICATION_NOT_APPROVED. The client cannot submit a decision or status.
+- Read/write assurance routes require Administrator; the existing Development-only authentication-disabled path remains. Evidence references are checked for supplier ownership and use a composite database foreign key.
+- This is a non-operative work-request queue only. It does not execute verification or due diligence, issue reviewer grants, make qualification decisions or confer purchasing/receiving eligibility. It has no PO, receipt, stock or financial integration.
+- The implementation does not complete INV-B operational assurance. Detailed policy, qualified reviewers, credential/delegation evidence, security/privacy acceptance and release gates remain open.
+- Unit tests were added for request type validation and fail-closed eligibility initialization. No build, test run, EF migration parity, PostgreSQL migration, BFF/browser test, CI result or VM runtime validation is claimed yet.
+- Deliberation: .ai/roles/invb-supplier-assurance-workflows-deliberation.md.
