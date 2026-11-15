@@ -29,6 +29,8 @@ The EDA ingestion MVP is owner-approved and merged to master (PR #22); the dupli
 The five role responsibilities are stable, while their ICT and business professional identities are selected dynamically for each problem. See governance/dynamic-role-selection.md. All agents must use the same principles across local and online environments.
 
 ## Approval system
+[Governance test-readiness workspace](delivery/governance-test-readiness-workspace.md) — PostgreSQL-backed test cases and Development-only test execution records for the platform and seven approval gates. Test results never substitute for professional or release approval.
+
 [Central approval register](governance/approval-register.md) is the authoritative index of owner, business, professional, regulatory, accounting, security and release approvals. Owner authorization to develop is not professional sign-off or permission to activate operational/production behavior. Each approval must be limited to its stated scope and supported by a linked detailed record and evidence.
 
 ## Memory rules

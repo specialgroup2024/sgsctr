@@ -5,18 +5,19 @@ import { useCallback, useEffect, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import CatalogueManager from "./CatalogueManager";
 import ApprovalRegister from "./ApprovalRegister";
+import TestReadiness from "./TestReadiness";
 
 type Location = { id: string; code: string; name: string; sectorCode: string; locationType: string; isActive: boolean; recordStatus: string };
 type Organization = { locations: Location[] };
 type ProductSummary = { id: string; status: string };
 type SystemStatus = { api: string; database: string; checkedAt: string };
-type Tab = "overview" | "products" | "receiving" | "transfers" | "batches" | "reports" | "approvals";
+type Tab = "overview" | "products" | "receiving" | "transfers" | "batches" | "reports" | "approvals" | "readiness";
 
 const tabs: Array<{ id: Tab; label: string }> = [
   { id: "overview", label: "Overview" }, { id: "products", label: "Product catalogue" },
   { id: "receiving", label: "Receiving" }, { id: "transfers", label: "Stock transfers" },
   { id: "batches", label: "Batches & expiry" }, { id: "reports", label: "Reports" },
-  { id: "approvals", label: "Approvals" }
+  { id: "approvals", label: "Approvals" }, { id: "readiness", label: "Test readiness" }
 ];
 const locationLabels: Record<string, string> = { MainWarehouse: "Main warehouse", Branch: "Hospital branch", Office: "Office", ProjectSite: "Project site" };
 
@@ -102,6 +103,7 @@ export default function InventoryWorkspace() {
     </>}
     {tab === "products" && <CatalogueManager />}
     {tab === "approvals" && <ApprovalRegister />}
+    {tab === "readiness" && <TestReadiness />}
     {tab === "receiving" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">INBOUND STOCK</p><h2>Receiving & inspection</h2><p>Purchase-order matching, delivery checks and quality disposition.</p></div><button className="inventory-disabled-action" disabled>New receipt</button></div>
       <div className="inventory-flow-grid"><article><b>01</b><strong>Delivery evidence</strong><small>Supplier, documents, item, quantity and unit</small></article><article><b>02</b><strong>Batch inspection</strong><small>Lot, manufacture/expiry, packaging and transport evidence</small></article><article><b>03</b><strong>Disposition</strong><small>Accepted, rejected or quarantined quantities</small></article><article><b>04</b><strong>Authorized release</strong><small>Only approved release can make stock available</small></article></div>
       <div className="inventory-empty-state compact-empty"><h3>No receipts recorded</h3><p>Receiving is not connected to a purchasing or inventory ledger API. No receipt can be created, accepted or released in this phase.</p></div>
