@@ -432,7 +432,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.Property(x => x.Reason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
             entity.Property(x => x.CorrelationId).IsRequired().HasMaxLength(128).HasColumnType("character varying(128)");
             entity.HasKey(x => x.Id);
-            entity.HasIndex(x => new { x.SupplierId, x.RequestedAtUtc });
+            entity.HasIndex(x => x.SupplierId).IsUnique().HasFilter("\"Status\" = 'Pending'");
             entity.HasOne(x => x.Supplier).WithMany(x => x.ReviewRequests).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
             entity.ToTable("PharmacySupplierReviewRequests", t => t.HasCheckConstraint("CK_PharmacySupplierReviewRequests_PendingOnly", "\"Status\" = 'Pending'"));
         });
