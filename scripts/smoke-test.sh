@@ -65,7 +65,7 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   echo "Checking the persisted pharmacy approval register through the authenticated API..."
   APPROVALS_API_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -H "Authorization: Bearer $ADMIN_TOKEN" "$BASE_URL/api/v1/pharmacy/catalogue/approvals")"
   printf '%s\n' "$APPROVALS_API_RESPONSE"
-  if ! printf '%s' "$APPROVALS_API_RESPONSE" | jq -e 'length == 8 and ([.[] | select(.status == "Pending")] | length) == 7 and ([.[] | select(.approvalCode == "INV-OWN-001" and .status == "Approved")] | length) == 1 and ([.[] | select((.approvalCode == "INV-PRO-001" or .approvalCode == "INV-REG-001" or .approvalCode == "INV-QLT-001" or .approvalCode == "INV-ACC-001" or .approvalCode == "INV-OWN-002" or .approvalCode == "INV-SEC-001" or .approvalCode == "INV-REL-001") and .status == "Pending")] | length) == 7' >/dev/null; then
+  if ! printf '%s' "$APPROVALS_API_RESPONSE" | jq -e 'length == 8 and ([.[] | select(.status == "Pending")] | length) == 6 and ([.[] | select(.approvalCode == "INV-OWN-001" and .status == "Approved")] | length) == 1 and ([.[] | select(.approvalCode == "INV-PRO-001" and .status == "DemoApproved" and (.decisionNotes | startswith("DEMO DATA ONLY")) and (.conditions | contains("does not satisfy the professional approval gate")))] | length) == 1 and ([.[] | select((.approvalCode == "INV-REG-001" or .approvalCode == "INV-QLT-001" or .approvalCode == "INV-ACC-001" or .approvalCode == "INV-OWN-002" or .approvalCode == "INV-SEC-001" or .approvalCode == "INV-REL-001") and .status == "Pending")] | length) == 6' >/dev/null; then
     echo "ERROR: PostgreSQL approval register did not return the expected eight records and pending/approved statuses." >&2
     exit 1
   fi
@@ -94,7 +94,7 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   if [[ "$BFF_SESSION_STATUS" != "200" ]]; then echo "ERROR: BFF session was not established (HTTP ${BFF_SESSION_STATUS})." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
   echo "Checking approval register BFF data and authenticated Pharmacy Inventory UI..."
   APPROVALS_UI_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -b "$COOKIE_JAR" "$WEB_URL/api/pharmacy/approvals")"
-  if ! printf '%s' "$APPROVALS_UI_RESPONSE" | jq -e 'length == 8 and ([.[] | select(.status == "Pending")] | length) == 7 and ([.[] | select(.approvalCode == "INV-OWN-001" and .status == "Approved")] | length) == 1' >/dev/null; then
+  if ! printf '%s' "$APPROVALS_UI_RESPONSE" | jq -e 'length == 8 and ([.[] | select(.status == "Pending")] | length) == 6 and ([.[] | select(.approvalCode == "INV-OWN-001" and .status == "Approved")] | length) == 1 and ([.[] | select(.approvalCode == "INV-PRO-001" and .status == "DemoApproved")] | length) == 1' >/dev/null; then
     echo "ERROR: Pharmacy UI BFF did not return the expected persisted approval register." >&2
     rm -f "$COOKIE_JAR"
     exit 1
