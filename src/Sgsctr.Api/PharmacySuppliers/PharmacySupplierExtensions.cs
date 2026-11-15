@@ -27,7 +27,7 @@ public static class PharmacySupplierExtensions
                     x.ReviewRequests.Count(r => r.Status == "Pending")))
                 .Take(200).ToListAsync(ct)));
 
-        api.MapGet("/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct) =>
+        api.MapGet("/{id:guid}", async (Guid id, ClaimsPrincipal user, AppDbContext db, CancellationToken ct) =>
         {
             var supplier = await db.PharmacySuppliers.AsNoTracking()
                 .Where(x => x.Id == id)
@@ -50,7 +50,7 @@ public static class PharmacySupplierExtensions
                         .Select(r => new ReviewResponse(r.Id, r.Status, r.RequestedAtUtc,
                             r.RequestedBySubject, r.Reason)).ToList()))
                 .SingleOrDefaultAsync(ct);
-            return supplier is null ? Results.NotFound() : Results.Ok(supplier);
+            return supplier is null ? Results.NotFound() : Results.Ok(user.IsInRole("Administrator") ? supplier : supplier with { Declarations = [], BusinessContacts = [], DueDiligenceCases = [] });
         });
 
         api.MapPost("/", async (SupplierInput input, ClaimsPrincipal user, AppDbContext db,
