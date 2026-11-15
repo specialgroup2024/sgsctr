@@ -1,16 +1,16 @@
 # INV-B supplier operational expansion — technical design proposal
 
-- Status: **Proposed — owner and qualified-review approval pending**.
+- Status: **Owner-approved technical design baseline (2026-11-15); delegated technical/security review and domain-policy gates remain pending.**
 - Date: 2026-11-15.
 - Scope basis: current master after supplier intake PR #66 and state reconciliation PR #67.
 - Related controls: Q51, INV-OWN-002, INV-SEC-001, INV-REG-001, INV-PRO-001, INV-QLT-001 and INV-REL-001.
-- This document is a technical proposal, not an approved ADR, business policy, legal interpretation or implementation authorization.
+- The project owner approved this document as the technical design baseline on 2026-11-15. This accepts the architecture and staged delivery approach only. It is not an approved ADR unless separately ratified by the delegated technical authority, and it is not business policy, legal interpretation, professional approval, security/privacy acceptance or production authorization.
 
 ## 1. Outcome and boundaries
 
 Design a controlled path from Draft supplier intake to evidence review, due-diligence execution, qualification decisions and separately evaluated purchasing/receiving eligibility.
 
-The requested expansion is not yet authorized as an operational business workflow. This proposal defines a candidate architecture and the decisions that must be supplied before implementation.
+The project owner has authorized this technical design baseline. D1 foundation work may proceed only within the existing Draft-only, non-operative boundary and subject to required technical/security review. D2–D6 operational workflows remain gated by their named business, professional, security and release approvals.
 
 **Included in design:** identity and licence evidence verification; due-diligence case/check execution; reviewer identity and scoped authority; qualification decision history and lifecycle; contact-data options; derived eligibility evaluation; audit, security, privacy, UI/API and test architecture.
 
