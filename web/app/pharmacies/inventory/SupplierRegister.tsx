@@ -14,8 +14,9 @@ type Evidence = {
   issuedOn: string | null; expiresOn: string | null; verificationStatus: string;
   addedAtUtc: string; changeReason: string;
 };
-type SupplierDetail = Supplier & {
-  updatedAtUtc: string; changeReason: string; evidence: Evidence[];
+type SupplierDetail = {
+  id: string; code: string; displayName: string; status: string; version: number;
+  createdAtUtc: string; updatedAtUtc: string; changeReason: string; evidence: Evidence[];
   reviewRequests: Array<{ id: string; status: string; requestedAtUtc: string; reason: string }>;
 };
 type ReviewItem = { id: string; supplierId: string; supplierCode: string; supplierName: string; requestedAtUtc: string; reason: string };
@@ -63,7 +64,6 @@ export default function SupplierRegister() {
         payload<Supplier[]>(s), payload<ReviewItem[]>(q), payload<Permission>(p)
       ]);
       setSuppliers(supplierRows); setQueue(reviewRows); setCanManage(access.canManage === true);
-      setSelected(current => current ? null : current);
     } catch (e) { setError(e instanceof Error ? e.message : t("Supplier records could not be loaded.")); }
     finally { setLoading(false); }
   }, [t]);
@@ -180,7 +180,7 @@ export default function SupplierRegister() {
       <form className="location-form catalogue-form" onSubmit={requestReview}>
         <div className="form-heading"><strong>{t("Request supplier review")}</strong><span className="inventory-state-tag">{t("PENDING")}</span></div>
         <div className="form-grid"><label className="wide-field">{t("Review reason")}<input required maxLength={500} value={reviewReason} onChange={e => setReviewReason(e.target.value)} /></label></div>
-        <button className="primary-button" type="submit" disabled={busy || !canManage || selected.pendingReviewCount > 0}>{t("Queue review request")}</button>
+        <button className="primary-button" type="submit" disabled={busy || !canManage || selected.reviewRequests.some(x => x.status === "Pending")}>{t("Queue review request")}</button>
         {selected.pendingReviewCount > 0 && <p className="catalogue-footer-note">{t("A review request is already pending.")}</p>}
       </form>
       {selected.reviewRequests.length > 0 && <p className="catalogue-footer-note">{t("Review history")}: {selected.reviewRequests.map(x => x.status).join(", ")}</p>}
