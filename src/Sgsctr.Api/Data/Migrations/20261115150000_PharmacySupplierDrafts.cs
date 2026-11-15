@@ -79,8 +79,8 @@ public sealed class PharmacySupplierDrafts : Migration
 
         migrationBuilder.CreateIndex("IX_PharmacySuppliers_Code", "PharmacySuppliers", "Code", unique: true);
         migrationBuilder.CreateIndex("IX_PharmacySupplierEvidence_SupplierId", "PharmacySupplierEvidence", "SupplierId");
-        migrationBuilder.CreateIndex("IX_PharmacySupplierReviewRequests_SupplierId_RequestedAtUtc",
-            "PharmacySupplierReviewRequests", new[] { "SupplierId", "RequestedAtUtc" });
+        migrationBuilder.CreateIndex("IX_PharmacySupplierReviewRequests_SupplierId",
+            "PharmacySupplierReviewRequests", "SupplierId", unique: true, filter: "\"Status\" = 'Pending'");
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
