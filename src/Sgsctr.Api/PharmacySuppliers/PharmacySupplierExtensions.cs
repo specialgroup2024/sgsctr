@@ -12,6 +12,9 @@ public static class PharmacySupplierExtensions
         var api = app.MapGroup("/api/v1/pharmacy/suppliers").RequireAuthorization();
         var authenticationEnabled = app.Configuration.GetValue<bool>("Authentication:Enabled", true);
         var localDevelopmentWrites = app.Environment.IsDevelopment() && !authenticationEnabled;
+        api.MapGet("/permissions", (ClaimsPrincipal user) =>
+            Results.Ok(new { canManage = localDevelopmentWrites || user.IsInRole("Administrator") }));
+
         var writePolicy = new AuthorizationPolicyBuilder()
             .RequireAssertion(context => localDevelopmentWrites || context.User.IsInRole("Administrator"))
             .Build();
@@ -133,7 +136,8 @@ public static class PharmacySupplierExtensions
             db.PharmacySupplierReviewRequests.Add(review);
             AddAudit(db, actor, "SupplierReviewRequested", "PharmacySupplierReviewRequest",
                 review.Id, review.Reason, http.TraceIdentifier, now);
-            await db.SaveChangesAsync(ct);
+            try { await db.SaveChangesAsync(ct); }
+            catch (DbUpdateException) { return Results.Conflict(new { error = "A pending review request already exists for this supplier." }); }
             return Results.Created($"/api/v1/pharmacy/suppliers/review-requests",
                 new { id = review.Id, supplierId = id, status = review.Status,
                     message = "Review requested only. Supplier qualification and approval are not recorded." });
