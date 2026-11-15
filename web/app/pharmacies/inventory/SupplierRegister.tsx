@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "@/components/locale-provider";
 import SupplierOnboardingIntake from "./SupplierOnboardingIntake";
+import SupplierAssuranceWorkflows from "./SupplierAssuranceWorkflows";
 import type { FormEvent } from "react";
 
 type Supplier = {
@@ -195,6 +196,7 @@ export default function SupplierRegister() {
       </>}
       {selected.dueDiligenceCases.length > 0 && <p className="catalogue-footer-note">{t("Due-diligence intake")}: {selected.dueDiligenceCases.map(item => t(item.status)).join(", ")}. {t("No checks or qualification decision have been performed.")}</p>}
       <SupplierOnboardingIntake supplierId={selected.id} canManage={canManage} onSaved={() => openSupplier(selected.id)} />
+      <SupplierAssuranceWorkflows supplierId={selected.id} canManage={canManage} />
       <form className="location-form catalogue-form" onSubmit={requestReview}>
         <div className="form-heading"><strong>{t("Request supplier review")}</strong><span className="inventory-state-tag">{t("PENDING")}</span></div>
         <div className="form-grid"><label className="wide-field">{t("Review reason")}<input required maxLength={500} value={reviewReason} onChange={e => setReviewReason(e.target.value)} /></label></div>
