@@ -43,3 +43,8 @@ PR #63 was merged by the repository owner. Its GitHub Actions jobs failed before
 ## Release boundary
 
 Passing CI can establish technical behavior for this draft slice only. It cannot approve supplier qualification, legal identity/licensing criteria, due diligence, reviewer authority, purchasing policy or production release. Q51, INV-OWN-002, INV-SEC-001 and INV-REL-001 remain pending in the central approval register.
+
+
+## PR #66 — supplier draft onboarding intake
+
+PR #66 adds the owner-approved INV-OWN-003 non-operative intake slice on branch feat/invb-supplier-draft-onboarding-intake. The build-and-smoke-test and markdown-line-limit checks failed immediately with no executed steps or downloadable logs. No application build, unit tests, EF snapshot/migration validation, PostgreSQL integration, API authorization, BFF or browser command is evidenced as having started. Treat the failure as a CI runner/execution blocker; technical acceptance remains unverified. The PR is open and unmerged. No production or VM migration is authorized.
