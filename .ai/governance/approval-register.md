@@ -44,6 +44,12 @@ A person’s name must not be invented. Where identity or qualification evidence
 | INV-OWN-001 | Pharmacy Inventory delivery authorization | Project owner | **Approved** | Owner authorization recorded 2026-11-14 in [Pharmacy Inventory owner authorization](../delivery/pharmacy-inventory-owner-authorization-and-execution.md), PR #38. Authorizes staged implementation across database, API, UI, tests and governance. Does not approve professional decisions or production use. |
 | INV-OWN-003 | Non-operative supplier onboarding intake | Project owner | **Approved with conditions** | Owner approved in chat on 2026-11-15: capture supplier-declared legal identity/licence metadata as OwnerProvided / Unverified; create Pending due-diligence intake cases; capture department-level business email, business phone/switchboard and business website only. No named-person contact data, legal/licence verification, qualification/approval decisions, reviewer authority grants, purchasing/receiving eligibility, stock/financial posting or production deployment. Implementation merged in PR #66 on 2026-11-15 (merge commit `ed7a99eb49329e766c1b500db4febfb79e3df0bf`); technical acceptance remains unverified. See [implementation deliberation](../roles/invb-supplier-draft-onboarding-implementation-deliberation.md). |
 
+## Test-only simulation design authorization
+
+| ID | Subject | Authority | Status | Evidence / scope |
+|---|---|---|---|---|
+| TEST-OWN-001 | Approval workflow simulator discovery and technical design | Project owner | **Approved with conditions** | Owner request on 2026-11-15 authorizes repository discovery and an approval-gated technical design for a generic synthetic test simulator only. It does not approve application implementation, business approval rules, real reviewer identities, persistence, production availability or operational side effects. Technical design acceptance and security review remain required before code changes. See [design proposal](../delivery/test-approval-simulation-design.md). |
+
 ## Pharmacy Inventory — separate gates
 
 The following are **not approved by INV-OWN-001**. Keep them pending until the relevant qualified reviewer and owner decision are recorded with evidence:
