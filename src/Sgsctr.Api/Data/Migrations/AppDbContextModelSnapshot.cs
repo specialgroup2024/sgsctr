@@ -344,5 +344,44 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
                 t.HasCheckConstraint("CK_GovernanceApprovals_Status", "\"Status\" IN ('Pending','Approved','ApprovedWithConditions','Rejected','Withdrawn','Superseded')"));
         });
 
+
+        modelBuilder.Entity<PharmacyReceiptDraft>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.LocationId).HasColumnType("uuid");
+            entity.Property(x => x.SupplierReference).IsRequired().HasMaxLength(200).HasColumnType("character varying(200)");
+            entity.Property(x => x.DeliveryReference).HasMaxLength(160).HasColumnType("character varying(160)");
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.CreatedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.CreatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.UpdatedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.UpdatedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.ChangeReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => new { x.LocationId, x.CreatedAtUtc });
+            entity.HasOne(x => x.Location).WithMany().HasForeignKey(x => x.LocationId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacyReceiptDrafts", t =>
+                t.HasCheckConstraint("CK_PharmacyReceiptDrafts_DraftOnly", "\"Status\" = 'Draft'"));
+        });
+
+        modelBuilder.Entity<PharmacyReceiptDraftLine>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.ReceiptDraftId).HasColumnType("uuid");
+            entity.Property(x => x.ProductId).HasColumnType("uuid");
+            entity.Property(x => x.UnitId).HasColumnType("uuid");
+            entity.Property(x => x.Quantity).HasPrecision(18, 6).HasColumnType("numeric(18,6)");
+            entity.Property(x => x.SupplierItemReference).HasMaxLength(160).HasColumnType("character varying(160)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.ReceiptDraftId);
+            entity.HasIndex(x => x.ProductId);
+            entity.HasIndex(x => x.UnitId);
+            entity.HasOne(x => x.ReceiptDraft).WithMany(x => x.Lines).HasForeignKey(x => x.ReceiptDraftId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(x => x.Unit).WithMany().HasForeignKey(x => x.UnitId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacyReceiptDraftLines", t =>
+                t.HasCheckConstraint("CK_PharmacyReceiptDraftLines_PositiveQuantity", "\"Quantity\" > 0"));
+        });
+
     }
 }
