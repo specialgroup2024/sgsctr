@@ -1,8 +1,9 @@
 # INV-B — draft supplier register and evidence references
 
 - Date: 2026-11-15.
-- Work branch: `feat/pharmacy-inventory-invb-supplier-register`.
-- Status: implementation proposal in review; not merged or production-enabled.
+- Original work branch: `feat/pharmacy-inventory-invb-supplier-register`.
+- Merge evidence: PR #61 closed as merged on 2026-11-15. Its PR body contains stale text saying it was not merged; GitHub PR metadata and master commit ancestry confirm the merge.
+- Status: source implementation merged to master via PR #61 (merge commit `cad05b42d44942e1ddcf0aa5ffa6062cee258670`); technical acceptance is blocked/unverified; not production-enabled.
 - Authority: INV-OWN-001 authorizes staged inventory implementation. Supplier qualification and operating policy remain pending under INV-OWN-002 / Q51.
 
 ## Scope boundary
@@ -52,14 +53,37 @@ Profiles are simulated analytical perspectives, not independent agents or qualif
 
 **Maestro determination:** proceed with this limited implementation proposal. Preserve all business/professional gates and do not claim supplier onboarding or qualification is complete.
 
+## Implemented source scope on master
+
+- Entities and migration: `PharmacySupplier`, `PharmacySupplierEvidence`, `PharmacySupplierReviewRequest`, migration `20261115150000_PharmacySupplierDrafts`, and `AppDbContext` mappings/snapshot.
+- API: authenticated list/detail, create draft, add unverified evidence reference, request review, read pending queue and permission check.
+- UI integration: Next.js BFF routes and Supplier Register workspace component.
+- Audit: supplier, evidence and review-request creation events are persisted in the same EF Core save as their corresponding records.
+- Constraints: supplier status is Draft only; evidence is Unverified only; review requests are Pending only; supplier code is unique; one pending review per supplier is enforced by a filtered unique index.
+- The API does not expose supplier qualification/approval or connect draft suppliers to purchase orders or receipt eligibility.
+
+## Technical acceptance status
+
+- PR #61 merge commit: `cad05b42d44942e1ddcf0aa5ffa6062cee258670`.
+- The `build-and-smoke-test` and `markdown-line-limit` GitHub checks both failed immediately on the merged commit. The available job records showed runner_id 0, no executed steps and no downloadable logs; reruns also failed before useful execution evidence was produced.
+- Consequently, these checks are **not evidenced as passed**: application build, automated tests, EF Core model/snapshot parity, PostgreSQL migration/integration, API authorization, BFF/UI, English/Arabic localization, browser behavior and live deployment.
+- The unit tests exist in `tests/Sgsctr.Api.Tests/SupplierRulesTests.cs`, but the PR record says they were not run locally. Source presence is not a test pass.
+- No migration has been applied to the owner's VM or production database as part of INV-B.
+
 ## Acceptance evidence
 
 - EF Core model, additive migration and snapshot must match.
 - Supplier code normalization/validation has unit tests.
 - API authorization is Administrator-only for writes when authentication is enabled; existing Development/authentication-disabled exception is retained.
 - Supplier/evidence/review creation writes audit events in the same database save.
-- PostgreSQL CI must validate migration snapshot and build; API/UI checks remain required.
+- PostgreSQL CI must validate migration snapshot and build; API/UI checks remain required. Current CI history does not provide successful evidence.
 - No production migration or stock/purchasing operation is authorized.
+
+## Current external-source check — 2026-11-15
+
+- EDA's current regulatory index lists GSDP v05/2025 and updated 2026 guidance for medical-product store licensing and warehouse licensing organization. The EDA warehouse-licensing service describes the licensing process and inspection steps.
+- These sources establish that licensing and good-storage/distribution controls are regulated topics; they do not provide a universal supplier qualification checklist for this application. No supplier legal criteria, accepted evidence list or qualification logic has been inferred or encoded.
+- Sources: [EDA GSDP v05/2025](https://edaegypt.gov.eg/media/ziepfko3/regulatory-guide-for-good-storage-and-distribution-practices-gsdp-_en-vr5.pdf), [EDA medical-products institution licensing index](https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ca-of-pharmaceutical-institutions-licensing/), [EDA warehouse licensing service](https://edaegypt.gov.eg/en/services/services/licensing-services/procedural-service-licensing/warehouse-licensing/). Checked 2026-11-15.
 
 ## Open approvals
 
