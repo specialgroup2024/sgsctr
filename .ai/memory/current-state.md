@@ -126,3 +126,4 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - The implementation does not complete INV-B operational assurance. Detailed policy, qualified reviewers, credential/delegation evidence, security/privacy acceptance and release gates remain open.
 - Unit tests were added for request type validation and fail-closed eligibility initialization. No build, test run, EF migration parity, PostgreSQL migration, BFF/browser test, CI result or VM runtime validation is claimed yet.
 - Deliberation: .ai/roles/invb-supplier-assurance-workflows-deliberation.md.
+- Review record: draft PR #72 is open at https://github.com/specialgroup2024/sgsctr/pull/72. GitHub reports no workflow runs or commit status checks for its current head. The PR is intentionally not merged.
