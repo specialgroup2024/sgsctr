@@ -1,6 +1,6 @@
 # ADR-0005 — provisional product governance and regulatory evidence
 
-- Status: implemented as draft/review-only technical support on branch `feat/inv02-regulated-product-profiles`; CI/runtime validation pending.
+- Status: merged to master by PR #37 as draft/review-only technical support. The later demo-status snapshot mismatch is corrected by PR #47; its CI has passed build, API tests and EF snapshot validation, with Docker startup and smoke tests still running. Runtime deployment is not yet verified.
 - Owner instruction: on 2026-11-14, proceed with the previously excluded catalogue governance capabilities while preserving Q38 professional-review restrictions.
 - This ADR is not a qualified pharmacist, medical-device quality, cosmetics regulatory, Egyptian legal or EDA approval.
 

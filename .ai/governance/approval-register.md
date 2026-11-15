@@ -66,6 +66,7 @@ The application approval register is implemented as a read-only, PostgreSQL-back
 - ASP.NET Core API: `GET /api/v1/pharmacy/catalogue/approvals` (authenticated).
 - Persistence: `GovernanceApprovals` table, introduced by migration `20261114170000_GovernanceApprovalRegister`.
 - The migration seeds INV-OWN-001 as Approved and INV-PRO-001 plus INV-REG-001 through INV-REL-001 as Pending.
+- Historical demo migrations `20261115090000_SeedPharmacistApprovalDemo` and `20261115103000_PharmacyApprovalDemoStatus` introduced the synthetic `DemoApproved` state. PR #47 merged forward correction migration `20261115120000_RemovePharmacistApprovalDemo`, which restores `INV-PRO-001` to Pending only when its status is the synthetic `DemoApproved` and removes that value from the database constraint. A deployed database is not corrected until this migration is applied and verified.
 
 Illustrative pharmacist review examples supplied by the owner are documented separately in [Pharmacist review examples — proposed/demo only](../delivery/pharmacy-inventory-pharmacist-review-examples.md). They are not `GovernanceApprovals` rows, do not appear in the authoritative API response, and do not change INV-PRO-001 from Pending.
 
