@@ -23,6 +23,7 @@ public sealed class PharmacySupplierBusinessContact
     public string ChannelType { get; set; } = string.Empty;
     public string ChannelValue { get; set; } = string.Empty;
     public string DepartmentLabel { get; set; } = string.Empty;
+    public bool BusinessUseConfirmed { get; set; }
     public string AddedBySubject { get; set; } = string.Empty;
     public DateTimeOffset AddedAtUtc { get; set; }
     public string ChangeReason { get; set; } = string.Empty;
