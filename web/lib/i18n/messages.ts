@@ -778,15 +778,11 @@ export const messages:Record<string,string>={
   "Receiving eligibility evaluation": "تقييم أهلية الاستلام",
   "Scope reference (optional)": "مرجع النطاق (اختياري)",
   "Related evidence ID (optional)": "معرّف الدليل المرتبط (اختياري)",
-  "Reason": "السبب",
   "Create assurance work request": "إنشاء طلب عمل ضمان",
-  "Requested": "تاريخ الطلب",
   "Blocker": "سبب المنع",
   "Policy and qualification approvals are not recorded.": "لم يتم تسجيل اعتماد السياسة والتأهيل.",
   "No assurance work requests have been created.": "لم يتم إنشاء طلبات عمل ضمان.",
   "POLICY_AND_QUALIFICATION_NOT_APPROVED": "لم يتم اعتماد السياسة والتأهيل",
-  "Blocked": "محظور",
-  "Pending": "معلق",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}
