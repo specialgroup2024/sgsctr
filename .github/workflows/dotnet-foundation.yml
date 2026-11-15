@@ -63,7 +63,7 @@ jobs:
           if-no-files-found: ignore
       - name: API, database and web smoke tests
         env:
-          SKIP_AUTHENTICATION_SMOKE_TESTS: "true"
+          VERIFY_DOCKER_DATABASE: "true"
           BOOTSTRAP_ADMIN_EMAIL: admin@example.test
           BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
           PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password

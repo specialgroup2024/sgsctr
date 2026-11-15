@@ -85,6 +85,10 @@ Profiles are simulated analytical perspectives, not independent agents or qualif
 - These sources establish that licensing and good-storage/distribution controls are regulated topics; they do not provide a universal supplier qualification checklist for this application. No supplier legal criteria, accepted evidence list or qualification logic has been inferred or encoded.
 - Sources: [EDA GSDP v05/2025](https://edaegypt.gov.eg/media/ziepfko3/regulatory-guide-for-good-storage-and-distribution-practices-gsdp-_en-vr5.pdf), [EDA medical-products institution licensing index](https://www.edaegypt.gov.eg/en/the-regulatory-reference-of-the-egyptian-drug-authority-eda/regulatory-guidelines/ca-of-pharmaceutical-institutions-licensing/), [EDA warehouse licensing service](https://edaegypt.gov.eg/en/services/services/licensing-services/procedural-service-licensing/warehouse-licensing/). Checked 2026-11-15.
 
+## Technical acceptance follow-up
+
+The merged INV-B slice is being hardened under [INV-B technical acceptance](pharmacy-inventory-invb-technical-acceptance.md). This follow-up adds API/BFF/PostgreSQL/English-Arabic UI acceptance coverage and fail-closed audit attribution. It does not expand supplier business authority. Until the recorded CI matrix passes, technical acceptance remains **in progress**; production release remains blocked by INV-OWN-002, INV-SEC-001 and INV-REL-001, and supplier qualification remains blocked by Q51.
+
 ## Open approvals
 
 Q51 remains open for supplier scope, legal identity evidence, licensing, due diligence, contacts, duplicate resolution, qualification criteria and reviewer authority. INV-OWN-002 remains pending. INV-SEC-001 and INV-REL-001 remain pending. See the central approval register and `.ai/memory/open-questions.md`.

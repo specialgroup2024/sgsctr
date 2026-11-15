@@ -59,6 +59,7 @@ public static class PharmacySupplierExtensions
                 return Results.Conflict(new { error = "This supplier code already exists. Supplier-name similarity is not automatically resolved." });
 
             var actor = Actor(user, localDevelopmentWrites);
+            if (actor is null) return Results.Forbid();
             var now = DateTimeOffset.UtcNow;
             var supplier = new PharmacySupplier
             {
@@ -91,6 +92,7 @@ public static class PharmacySupplierExtensions
             var supplier = await db.PharmacySuppliers.SingleOrDefaultAsync(x => x.Id == id, ct);
             if (supplier is null) return Results.NotFound();
             var actor = Actor(user, localDevelopmentWrites);
+            if (actor is null) return Results.Forbid();
             var now = DateTimeOffset.UtcNow;
             var evidence = new PharmacySupplierEvidence
             {
@@ -126,6 +128,7 @@ public static class PharmacySupplierExtensions
                 return Results.Conflict(new { error = "A pending review request already exists for this supplier." });
 
             var actor = Actor(user, localDevelopmentWrites);
+            if (actor is null) return Results.Forbid();
             var now = DateTimeOffset.UtcNow;
             var review = new PharmacySupplierReviewRequest
             {
@@ -146,8 +149,13 @@ public static class PharmacySupplierExtensions
         return app;
     }
 
-    private static string Actor(ClaimsPrincipal user, bool localWrites) => localWrites ? "local-development" :
-        user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? user.FindFirst("sub")?.Value ?? "unknown-subject";
+    private static string? Actor(ClaimsPrincipal user, bool localWrites)
+    {
+        if (localWrites) return "local-development";
+        var subject = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrWhiteSpace(subject)) subject = user.FindFirst("sub")?.Value;
+        return string.IsNullOrWhiteSpace(subject) ? null : subject;
+    }
     private static string? Clean(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     private static void AddAudit(AppDbContext db, string actor, string action, string resourceType,
         Guid resourceId, string reason, string correlationId, DateTimeOffset now) =>
