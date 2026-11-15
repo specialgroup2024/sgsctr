@@ -42,7 +42,7 @@ public static class PharmacySupplierExtensions
                             d.ReviewStatus, d.AddedAtUtc, d.ChangeReason)).ToList(),
                     x.BusinessContacts.OrderByDescending(b => b.AddedAtUtc)
                         .Select(b => new BusinessContactResponse(b.Id, b.ChannelType, b.ChannelValue,
-                            b.DepartmentLabel, b.AddedAtUtc, b.ChangeReason)).ToList(),
+                            b.DepartmentLabel, b.BusinessUseConfirmed, b.AddedAtUtc, b.ChangeReason)).ToList(),
                     x.DueDiligenceCases.OrderByDescending(d => d.RequestedAtUtc)
                         .Select(d => new DueDiligenceResponse(d.Id, d.Status, d.RequestedAtUtc,
                             d.RequestReason)).ToList(),
@@ -151,7 +151,7 @@ public static class PharmacySupplierExtensions
             ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
         {
             if (!SupplierRules.IsValidBusinessContact(input.ChannelType, input.ChannelValue,
-                    input.DepartmentLabel, input.ChangeReason))
+                    input.DepartmentLabel, input.BusinessUseConfirmed, input.ChangeReason))
                 return Results.ValidationProblem(new Dictionary<string, string[]>
                 {
                     ["businessContact"] = ["Use a department mailbox, business phone or business website; do not enter a person's name or personal contact details."]
@@ -164,7 +164,7 @@ public static class PharmacySupplierExtensions
             var item = new PharmacySupplierBusinessContact
             {
                 Id = Guid.NewGuid(), SupplierId = id, ChannelType = input.ChannelType,
-                ChannelValue = input.ChannelValue.Trim(), DepartmentLabel = input.DepartmentLabel.Trim(),
+                ChannelValue = input.ChannelValue.Trim(), DepartmentLabel = input.DepartmentLabel.Trim(), BusinessUseConfirmed = input.BusinessUseConfirmed,
                 AddedBySubject = actor, AddedAtUtc = now, ChangeReason = input.ChangeReason.Trim()
             };
             db.PharmacySupplierBusinessContacts.Add(item);
@@ -262,7 +262,7 @@ public static class PharmacySupplierExtensions
         string? ReferenceNumber, string? SourceReference, DateOnly? IssuedOn, DateOnly? ExpiresOn, string ChangeReason);
     public sealed record ReviewRequestInput(string Reason);
     public sealed record DeclarationInput(string ClaimType, string DeclaredValue, string ChangeReason);
-    public sealed record BusinessContactInput(string ChannelType, string ChannelValue, string DepartmentLabel, string ChangeReason);
+    public sealed record BusinessContactInput(string ChannelType, string ChannelValue, string DepartmentLabel, bool BusinessUseConfirmed, string ChangeReason);
     public sealed record DueDiligenceInput(string Reason);
     public sealed record SupplierSummary(Guid Id, string Code, string DisplayName, string Status,
         int Version, DateTimeOffset CreatedAtUtc, int EvidenceCount, int PendingReviewCount);
@@ -277,7 +277,7 @@ public static class PharmacySupplierExtensions
     public sealed record DeclarationResponse(Guid Id, string ClaimType, string DeclaredValue, string Provenance,
         string ReviewStatus, DateTimeOffset AddedAtUtc, string ChangeReason);
     public sealed record BusinessContactResponse(Guid Id, string ChannelType, string ChannelValue,
-        string DepartmentLabel, DateTimeOffset AddedAtUtc, string ChangeReason);
+        string DepartmentLabel, bool BusinessUseConfirmed, DateTimeOffset AddedAtUtc, string ChangeReason);
     public sealed record DueDiligenceResponse(Guid Id, string Status, DateTimeOffset RequestedAtUtc, string RequestReason);
     public sealed record ReviewResponse(Guid Id, string Status, DateTimeOffset RequestedAtUtc,
         string RequestedBySubject, string Reason);
