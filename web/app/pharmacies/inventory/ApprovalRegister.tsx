@@ -65,7 +65,7 @@ export default function ApprovalRegister() {
         <h2>{t("Approval register" )}</h2>
         <p>{t("Approval requirements are persisted in PostgreSQL and read through the ASP.NET Core API." )}</p>
       </div>
-      <span className="inventory-status-chip">{loading ? "Loading" : pendingCount + " pending"}</span>
+      <span className="inventory-status-chip">{loading ? t("Loading") : `${pendingCount} ${t("pending")}`}</span>
     </div>
 
     <div className="inventory-gate" role="note">

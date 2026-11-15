@@ -150,3 +150,12 @@ html[dir="rtl"] .register-table th,html[dir="rtl"] .register-table td{text-align
 html[dir="rtl"] code,html[dir="rtl"] pre,html[dir="rtl"] input[type="email"],html[dir="rtl"] input[type="url"],html[dir="rtl"] input[type="tel"],html[dir="rtl"] input[type="number"],html[dir="rtl"] .technical-value{direction:ltr;text-align:left;unicode-bidi:plaintext}
 html[dir="rtl"] .catalogue-id-note,html[dir="rtl"] .inventory-demo-card dd{overflow-wrap:anywhere}
 @media(max-width:650px){html[dir="rtl"] .catalogue-layout,html[dir="rtl"] .pharmacy-entry-grid,html[dir="rtl"] .inventory-demo-card dl{grid-template-columns:minmax(0,1fr)}html[dir="rtl"] .register-table-wrap{max-width:100%;overflow-x:auto}html[dir="rtl"] .topbar{flex-wrap:wrap}html[dir="rtl"] .language-switcher{margin-inline-start:auto}}
+
+/* Responsive RTL completion: logical borders, spacing and form direction */
+html[dir="rtl"] .inventory-gate,html[dir="rtl"] .inventory-demo-warning{border-inline-start:1px solid #eadfc5;border-inline-end:3px solid #c49a4a}
+html[dir="rtl"] .inventory-demo-card ul{padding-inline-start:18px;padding-inline-end:0}
+html[dir="rtl"] .inventory-toolbar label,html[dir="rtl"] .location-form label,html[dir="rtl"] .test-readiness-form label{text-align:start}
+html[dir="rtl"] .register-table th,html[dir="rtl"] .register-table td{text-align:start}
+html[dir="rtl"] code,html[dir="rtl"] pre,html[dir="rtl"] input[type="email"],html[dir="rtl"] input[type="url"],html[dir="rtl"] input[type="tel"],html[dir="rtl"] input[type="number"],html[dir="rtl"] .technical-value{direction:ltr;text-align:left;unicode-bidi:plaintext}
+html[dir="rtl"] .catalogue-id-note,html[dir="rtl"] .inventory-demo-card dd{overflow-wrap:anywhere}
+@media(max-width:650px){html[dir="rtl"] .catalogue-layout,html[dir="rtl"] .pharmacy-entry-grid,html[dir="rtl"] .inventory-demo-card dl{grid-template-columns:minmax(0,1fr)}html[dir="rtl"] .register-table-wrap{max-width:100%;overflow-x:auto}html[dir="rtl"] .topbar{flex-wrap:wrap}html[dir="rtl"] .language-switcher{margin-inline-start:auto}}
