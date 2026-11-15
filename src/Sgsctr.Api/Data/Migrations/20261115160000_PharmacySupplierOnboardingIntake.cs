@@ -44,6 +44,7 @@ public sealed class PharmacySupplierOnboardingIntake : Migration
                 ChannelType = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                 ChannelValue = table.Column<string>(type: "character varying(320)", maxLength: 320, nullable: false),
                 DepartmentLabel = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                BusinessUseConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                 AddedBySubject = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                 AddedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                 ChangeReason = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
