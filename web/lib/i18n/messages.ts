@@ -180,7 +180,14 @@ export const messages:Record<string,string>={
   "Recent documents": "المستندات الحديثة",
   "Acknowledge": "تأكيد الاطلاع",
   "No unread alerts currently recorded.": "لا توجد تنبيهات غير مقروءة حالياً.",
-  "Important: ingestion is not approval.": "تنبيه: استيراد المستند لا يعني اعتماده"
+  "Important: ingestion is not approval.": "تنبيه: استيراد المستند لا يعني اعتماده",
+  "Organization reference data and future pharmacy operations in one workspace.": "البيانات المرجعية للمؤسسة وعمليات الصيدليات المستقبلية في مساحة عمل واحدة.",
+  "A separate business domain with its own future project and commercial controls.": "مجال أعمال مستقل له ضوابطه المستقبلية للمشروعات والتجارة.",
+  "View the owner-provided sectors and locations, add or edit location records when your account has the separately configured organization-manager permission, and deactivate records without deleting history.": "اعرض القطاعات والمواقع المقدمة من المالك، وأضف أو عدل سجلات المواقع إذا كان حسابك يمتلك صلاحية مدير المؤسسة المحددة، وعطّل السجلات دون حذف تاريخها.",
+  "Open organization workspace": "فتح مساحة عمل المؤسسة",
+  "No inventory movements, patient records, financial calculations or accounting postings are enabled in this phase.": "لا تتوفر في هذه المرحلة حركات مخزون أو سجلات مرضى أو حسابات مالية أو قيود محاسبية.",
+  "FOUNDATION + INV-01 DRAFT": "الأساس + مسودة INV-01",
+  "Draft catalogue / non-posting inventory": "دليل مسودات / مخزون دون ترحيل"
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}
