@@ -17,7 +17,7 @@ public static class PharmacySupplierAssuranceExtensions
                 context.User.IsInRole("Administrator"))
             .Build();
 
-        api.MapGet("/{id:guid}/assurance-cases", async (Guid id, AppDbContext db, CancellationToken ct) =>
+        api.MapGet("/{id:guid}/assurance-cases", async Task<IResult> (Guid id, AppDbContext db, CancellationToken ct) =>
         {
             var exists = await db.PharmacySuppliers.AnyAsync(x => x.Id == id, ct);
             if (!exists) return Results.NotFound();
@@ -30,7 +30,7 @@ public static class PharmacySupplierAssuranceExtensions
                 .Take(200).ToListAsync(ct));
         }).RequireAuthorization(adminPolicy);
 
-        api.MapPost("/{id:guid}/assurance-cases", async (Guid id, AssuranceCaseInput input,
+        api.MapPost("/{id:guid}/assurance-cases", async Task<IResult> (Guid id, AssuranceCaseInput input,
             ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
         {
             if (!SupplierAssuranceRules.IsValidRequest(input.CaseType, input.Reason, input.ScopeReference))
