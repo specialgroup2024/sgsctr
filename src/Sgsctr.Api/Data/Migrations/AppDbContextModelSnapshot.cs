@@ -475,6 +475,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.Property(x => x.AddedAtUtc).HasColumnType("timestamp with time zone");
             entity.Property(x => x.ChangeReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
             entity.HasKey(x => x.Id);
+            entity.HasAlternateKey(x => new { x.Id, x.SupplierId });
             entity.HasIndex(x => x.SupplierId);
             entity.HasOne(x => x.Supplier).WithMany(x => x.Evidence).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
             entity.ToTable("PharmacySupplierEvidence", t => t.HasCheckConstraint("CK_PharmacySupplierEvidence_Unverified", "\"VerificationStatus\" = 'Unverified'"));
@@ -512,7 +513,7 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.HasIndex(x => new { x.SupplierId, x.RequestedAtUtc });
             entity.HasIndex(x => x.EvidenceId);
             entity.HasOne(x => x.Supplier).WithMany().HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(x => x.Evidence).WithMany().HasForeignKey(x => x.EvidenceId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(x => x.Evidence).WithMany().HasForeignKey(x => new { x.EvidenceId, x.SupplierId }).HasPrincipalKey(x => new { x.Id, x.SupplierId }).OnDelete(DeleteBehavior.Restrict);
             entity.ToTable("PharmacySupplierAssuranceCases", t =>
             {
                 t.HasCheckConstraint("CK_PharmacySupplierAssuranceCases_CaseType", "\"CaseType\" IN ('LegalLicenceVerification','DueDiligenceExecution','ReviewerAuthorityApplication','QualificationReview','PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation')");
