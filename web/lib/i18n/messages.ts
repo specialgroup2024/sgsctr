@@ -554,6 +554,7 @@ export const messages:Record<string,string>={
   "Data Protection volume verification remains on hold; backup/recovery objectives and security acceptance are pending.": "يظل التحقق من وحدة تخزين حماية البيانات معلقاً؛ ولا تزال أهداف النسخ الاحتياطي/الاستعادة والقبول الأمني قيد الانتظار.",
   "Blocked until implementation is complete and all required professional, owner and security gates are resolved.": "محظور حتى اكتمال التنفيذ وحسم جميع البوابات المهنية والإدارية والأمنية المطلوبة.",
   "No production/release authorization exists; the required professional, security and owner approvals remain pending.": "لا يوجد تفويض للإنتاج/الإصدار؛ ولا تزال الموافقات المهنية والأمنية والإدارية المطلوبة قيد الانتظار.",
+  "pending": "قيد الانتظار",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}
