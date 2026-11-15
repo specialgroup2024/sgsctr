@@ -72,7 +72,62 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   ME_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" "${BASE_URL}/api/v1/auth/me")"
   if [[ "$ME_STATUS" != "200" ]]; then echo "ERROR: Native access token was not accepted by /me (HTTP ${ME_STATUS})." >&2; exit 1; fi
 
-  TEMP_EMAIL="smoke-$(date +%s)-$@example.test"
+  echo "Checking authenticated supplier draft lifecycle and authorization..."
+  SUPPLIER_CODE="CI-SUP-$(date +%s)-${RANDOM}"
+  SUPPLIER_PAYLOAD="$(jq -n --arg code "$SUPPLIER_CODE" '{code:$code,displayName:"CI Supplier Draft",changeReason:"Automated technical acceptance test"}')"
+  SUPPLIER_RESPONSE_FILE="$(mktemp)"
+  SUPPLIER_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --output "$SUPPLIER_RESPONSE_FILE" --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$SUPPLIER_PAYLOAD" "${BASE_URL}/api/v1/pharmacy/suppliers/")"
+  SUPPLIER_RESPONSE="$(cat "$SUPPLIER_RESPONSE_FILE")"
+  rm -f "$SUPPLIER_RESPONSE_FILE"
+  if [[ "$SUPPLIER_STATUS" != "201" ]] || ! printf '%s' "$SUPPLIER_RESPONSE" | jq -e '.status == "Draft" and .qualified == false and (.id | type == "string")' >/dev/null; then
+    echo "ERROR: Supplier creation must return a Draft record with qualified=false (HTTP ${SUPPLIER_STATUS}): ${SUPPLIER_RESPONSE}" >&2; exit 1
+  fi
+  SUPPLIER_ID="$(printf '%s' "$SUPPLIER_RESPONSE" | jq -r '.id')"
+
+  DUPLICATE_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$SUPPLIER_PAYLOAD" "${BASE_URL}/api/v1/pharmacy/suppliers/")"
+  if [[ "$DUPLICATE_STATUS" != "409" ]]; then echo "ERROR: Duplicate supplier code should return 409, got ${DUPLICATE_STATUS}." >&2; exit 1; fi
+
+  SUPPLIER_DETAIL="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -H "Authorization: Bearer ${ADMIN_TOKEN}" "${BASE_URL}/api/v1/pharmacy/suppliers/${SUPPLIER_ID}")"
+  if ! printf '%s' "$SUPPLIER_DETAIL" | jq -e '.status == "Draft" and (.evidence | length == 0)' >/dev/null; then
+    echo "ERROR: Supplier detail did not preserve Draft-only state." >&2; exit 1
+  fi
+
+  EVIDENCE_PAYLOAD="$(jq -n '{evidenceKind:"CI test reference",title:"Automated evidence reference",issuer:"CI only",referenceNumber:"CI-REF-001",sourceReference:"https://example.test/evidence",issuedOn:"2026-01-01",expiresOn:"2027-01-01",changeReason:"Automated technical acceptance test"}')"
+  EVIDENCE_RESPONSE_FILE="$(mktemp)"
+  EVIDENCE_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --output "$EVIDENCE_RESPONSE_FILE" --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$EVIDENCE_PAYLOAD" "${BASE_URL}/api/v1/pharmacy/suppliers/${SUPPLIER_ID}/evidence")"
+  EVIDENCE_RESPONSE="$(cat "$EVIDENCE_RESPONSE_FILE")"
+  rm -f "$EVIDENCE_RESPONSE_FILE"
+  if [[ "$EVIDENCE_STATUS" != "201" ]] || ! printf '%s' "$EVIDENCE_RESPONSE" | jq -e '.verificationStatus == "Unverified"' >/dev/null; then
+    echo "ERROR: Evidence must be captured as Unverified (HTTP ${EVIDENCE_STATUS}): ${EVIDENCE_RESPONSE}" >&2; exit 1
+  fi
+
+  INVALID_EVIDENCE_PAYLOAD="$(jq -n '{evidenceKind:"CI test reference",title:"Invalid date reference",issuedOn:"2027-01-01",expiresOn:"2026-01-01",changeReason:"Negative validation test"}')"
+  INVALID_EVIDENCE_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$INVALID_EVIDENCE_PAYLOAD" "${BASE_URL}/api/v1/pharmacy/suppliers/${SUPPLIER_ID}/evidence")"
+  if [[ "$INVALID_EVIDENCE_STATUS" != "400" ]]; then echo "ERROR: Evidence expiry before issue date should return 400, got ${INVALID_EVIDENCE_STATUS}." >&2; exit 1; fi
+
+  REVIEW_PAYLOAD="$(jq -n '{reason:"Automated technical acceptance test; no qualification decision requested."}')"
+  REVIEW_RESPONSE_FILE="$(mktemp)"
+  REVIEW_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --output "$REVIEW_RESPONSE_FILE" --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$REVIEW_PAYLOAD" "${BASE_URL}/api/v1/pharmacy/suppliers/${SUPPLIER_ID}/review-requests")"
+  REVIEW_RESPONSE="$(cat "$REVIEW_RESPONSE_FILE")"
+  rm -f "$REVIEW_RESPONSE_FILE"
+  if [[ "$REVIEW_STATUS" != "201" ]] || ! printf '%s' "$REVIEW_RESPONSE" | jq -e '.status == "Pending"' >/dev/null; then
+    echo "ERROR: Supplier review request must remain Pending (HTTP ${REVIEW_STATUS}): ${REVIEW_RESPONSE}" >&2; exit 1
+  fi
+  DUPLICATE_REVIEW_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$REVIEW_PAYLOAD" "${BASE_URL}/api/v1/pharmacy/suppliers/${SUPPLIER_ID}/review-requests")"
+  if [[ "$DUPLICATE_REVIEW_STATUS" != "409" ]]; then echo "ERROR: A second pending review request should return 409, got ${DUPLICATE_REVIEW_STATUS}." >&2; exit 1; fi
+
+  REVIEW_QUEUE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -H "Authorization: Bearer ${ADMIN_TOKEN}" "${BASE_URL}/api/v1/pharmacy/suppliers/review-requests")"
+  if ! printf '%s' "$REVIEW_QUEUE" | jq -e --arg code "$SUPPLIER_CODE" 'any(.[]; .supplierCode == $code)' >/dev/null; then
+    echo "ERROR: Newly created supplier review request is missing from the pending queue." >&2; exit 1
+  fi
+
+  if [[ "${VERIFY_DOCKER_DATABASE:-false}" == "true" ]]; then
+    echo "Checking persisted supplier, evidence, review and audit records in PostgreSQL..."
+    DB_COUNTS="$(docker compose exec -T db sh -lc "psql -v ON_ERROR_STOP=1 -U \"\$POSTGRES_USER\" -d \"\$POSTGRES_DB\" -Atc 'SELECT (SELECT count(*) FROM \"PharmacySuppliers\" WHERE \"Code\" = \'\''${SUPPLIER_CODE}'\'\'')::text || '':'' || (SELECT count(*) FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\'')::text || '':'' || (SELECT count(*) FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\'')::text || '':'' || (SELECT count(*) FROM \"CatalogueAuditEvents\" a WHERE a.\"ResourceId\" IN (SELECT \"Id\" FROM \"PharmacySuppliers\" WHERE \"Code\" = \'\''${SUPPLIER_CODE}'\'\' UNION ALL SELECT e.\"Id\" FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\' UNION ALL SELECT r.\"Id\" FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\''))::text'")"
+    if [[ "$DB_COUNTS" != "1:1:1:3" ]]; then echo "ERROR: Expected 1 supplier, 1 evidence, 1 pending review and 3 audit events; got ${DB_COUNTS}." >&2; exit 1; fi
+  fi
+
+  TEMP_EMAIL="smoke-$(date +%s)-$-${RANDOM}@example.test"
   TEMP_PASSWORD="Smoke-Test-Only-123!"
   CREATE_PAYLOAD="$(jq -n --arg email "$TEMP_EMAIL" --arg password "$TEMP_PASSWORD" '{email:$email,password:$password}')"
   CREATE_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$CREATE_PAYLOAD" "${BASE_URL}/api/v1/admin/users")"
@@ -90,6 +145,23 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   if ! printf '%s' "$TEST_READINESS_API_RESPONSE" | jq -e '.testCases | length == 19 and any(.[]; .testCode == "PLT-DB-001" and .executionBlocked == false) and any(.[]; .testCode == "PRO-REVIEW-001" and .executionBlocked == true) and any(.[]; .testCode == "SEC-AUTH-001" and .executionBlocked == true)' >/dev/null; then
     echo "ERROR: Governance test-readiness catalogue is incomplete or an approval-blocked test is executable." >&2
     exit 1
+  fi
+
+  echo "Checking supplier BFF session, read and same-origin write controls..."
+  SUPPLIER_BFF_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -b "$COOKIE_JAR" "${WEB_URL}/api/pharmacy/suppliers")"
+  if ! printf '%s' "$SUPPLIER_BFF_RESPONSE" | jq -e --arg code "$SUPPLIER_CODE" 'any(.[]; .code == $code and .status == "Draft")' >/dev/null; then
+    echo "ERROR: Authenticated supplier BFF did not return the new Draft supplier." >&2; rm -f "$COOKIE_JAR"; exit 1
+  fi
+  BFF_SUPPLIER_CODE="CI-BFF-$(date +%s)-${RANDOM}"
+  BFF_SUPPLIER_PAYLOAD="$(jq -n --arg code "$BFF_SUPPLIER_CODE" '{code:$code,displayName:"CI BFF Supplier Draft",changeReason:"BFF integration acceptance test"}')"
+  BFF_CSRF_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" -H 'Content-Type: application/json' -d "$BFF_SUPPLIER_PAYLOAD" "${WEB_URL}/api/pharmacy/suppliers")"
+  if [[ "$BFF_CSRF_STATUS" != "403" ]]; then echo "ERROR: Supplier BFF must reject a POST without a same-origin Origin header, got ${BFF_CSRF_STATUS}." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
+  BFF_CREATE_FILE="$(mktemp)"
+  BFF_CREATE_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --output "$BFF_CREATE_FILE" --write-out '%{http_code}' -b "$COOKIE_JAR" -H "Origin: ${ORIGIN}" -H 'Content-Type: application/json' -d "$BFF_SUPPLIER_PAYLOAD" "${WEB_URL}/api/pharmacy/suppliers")"
+  BFF_CREATE_RESPONSE="$(cat "$BFF_CREATE_FILE")"
+  rm -f "$BFF_CREATE_FILE"
+  if [[ "$BFF_CREATE_STATUS" != "201" ]] || ! printf '%s' "$BFF_CREATE_RESPONSE" | jq -e '.status == "Draft" and .qualified == false' >/dev/null; then
+    echo "ERROR: Same-origin supplier BFF create did not preserve Draft-only state (HTTP ${BFF_CREATE_STATUS}): ${BFF_CREATE_RESPONSE}" >&2; rm -f "$COOKIE_JAR"; exit 1
   fi
 
   echo "Checking BFF sign-in, session and sign-out..."
@@ -141,7 +213,7 @@ for ROUTE in organization pharmacies pharmacies/regulatory-intelligence contract
 done
 
 echo "Checking anonymous BFF session and organization endpoints reject access..."
-for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence /api/pharmacy/approvals /api/pharmacy/test-readiness; do
+for ROUTE in /api/auth/session /api/organization /api/pharmacy-intelligence /api/pharmacy/approvals /api/pharmacy/test-readiness /api/pharmacy/suppliers; do
   STATUS="$(curl --connect-timeout 3 --max-time 3 --silent --output /dev/null --write-out '%{http_code}' "${WEB_URL}${ROUTE}")"
   if [[ "$STATUS" != "401" ]]; then echo "ERROR: Expected 401 for ${ROUTE}, got ${STATUS}." >&2; exit 1; fi
 done
