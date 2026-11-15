@@ -1,5 +1,7 @@
 "use client";
 
+import { useI18n } from "@/components/locale-provider";
+
 const evidence = [
   ["EVD-DEMO-001", "Professional qualification certificate"],
   ["EVD-DEMO-002", "Pharmacist registration/license record"],
