@@ -111,6 +111,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         supplierContact.Property(x => x.ChannelType).HasMaxLength(32).IsRequired();
         supplierContact.Property(x => x.ChannelValue).HasMaxLength(320).IsRequired();
         supplierContact.Property(x => x.DepartmentLabel).HasMaxLength(80).IsRequired();
+        supplierContact.Property(x => x.BusinessUseConfirmed).IsRequired();
         supplierContact.Property(x => x.AddedBySubject).HasMaxLength(256).IsRequired();
         supplierContact.Property(x => x.ChangeReason).HasMaxLength(500).IsRequired();
         supplierContact.HasOne(x => x.Supplier).WithMany(x => x.BusinessContacts)
