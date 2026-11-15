@@ -123,11 +123,12 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
 
   if [[ "${VERIFY_DOCKER_DATABASE:-false}" == "true" ]]; then
     echo "Checking persisted supplier, evidence, review and audit records in PostgreSQL..."
-    DB_COUNTS="$(docker compose exec -T db sh -lc "psql -v ON_ERROR_STOP=1 -U \"\$POSTGRES_USER\" -d \"\$POSTGRES_DB\" -Atc 'SELECT (SELECT count(*) FROM \"PharmacySuppliers\" WHERE \"Code\" = \'\''${SUPPLIER_CODE}'\'\'')::text || '':'' || (SELECT count(*) FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\'')::text || '':'' || (SELECT count(*) FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\'')::text || '':'' || (SELECT count(*) FROM \"CatalogueAuditEvents\" a WHERE a.\"ResourceId\" IN (SELECT \"Id\" FROM \"PharmacySuppliers\" WHERE \"Code\" = \'\''${SUPPLIER_CODE}'\'\' UNION ALL SELECT e.\"Id\" FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\' UNION ALL SELECT r.\"Id\" FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = \'\''${SUPPLIER_CODE}'\'\''))::text'")"
+    DB_SQL="SELECT (SELECT count(*) FROM \"PharmacySuppliers\" WHERE \"Code\" = '${SUPPLIER_CODE}')::text || ':' || (SELECT count(*) FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}')::text || ':' || (SELECT count(*) FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}')::text || ':' || (SELECT count(*) FROM \"CatalogueAuditEvents\" a WHERE a.\"ResourceId\" IN (SELECT \"Id\" FROM \"PharmacySuppliers\" WHERE \"Code\" = '${SUPPLIER_CODE}' UNION ALL SELECT e.\"Id\" FROM \"PharmacySupplierEvidence\" e JOIN \"PharmacySuppliers\" s ON s.\"Id\"=e.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}' UNION ALL SELECT r.\"Id\" FROM \"PharmacySupplierReviewRequests\" r JOIN \"PharmacySuppliers\" s ON s.\"Id\"=r.\"SupplierId\" WHERE s.\"Code\" = '${SUPPLIER_CODE}'))::text"
+    DB_COUNTS="$(docker compose exec -T db sh -lc 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "$1"' sh "$DB_SQL")"
     if [[ "$DB_COUNTS" != "1:1:1:3" ]]; then echo "ERROR: Expected 1 supplier, 1 evidence, 1 pending review and 3 audit events; got ${DB_COUNTS}." >&2; exit 1; fi
   fi
 
-  TEMP_EMAIL="smoke-$(date +%s)-$-${RANDOM}@example.test"
+  TEMP_EMAIL="smoke-$(date +%s)-${RANDOM}@example.test"
   TEMP_PASSWORD="Smoke-Test-Only-123!"
   CREATE_PAYLOAD="$(jq -n --arg email "$TEMP_EMAIL" --arg password "$TEMP_PASSWORD" '{email:$email,password:$password}')"
   CREATE_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${ADMIN_TOKEN}" -H 'Content-Type: application/json' -d "$CREATE_PAYLOAD" "${BASE_URL}/api/v1/admin/users")"
@@ -137,6 +138,8 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
   USER_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error -H 'Content-Type: application/json' -d "$USER_PAYLOAD" "${BASE_URL}/api/v1/auth/login?useCookies=false")"
   USER_TOKEN="$(printf '%s' "$USER_RESPONSE" | jq -r '.accessToken // empty')"
   if [[ -z "$USER_TOKEN" ]]; then echo "ERROR: Newly provisioned standard user could not sign in." >&2; exit 1; fi
+  STANDARD_SUPPLIER_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${USER_TOKEN}" -H 'Content-Type: application/json' -d "$SUPPLIER_PAYLOAD" "${BASE_URL}/api/v1/pharmacy/suppliers/")"
+  if [[ "$STANDARD_SUPPLIER_STATUS" != "403" ]]; then echo "ERROR: Standard user should receive 403 for supplier writes, got ${STANDARD_SUPPLIER_STATUS}." >&2; exit 1; fi
   FORBIDDEN_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer ${USER_TOKEN}" -H 'Content-Type: application/json' -d "$CREATE_PAYLOAD" "${BASE_URL}/api/v1/admin/users")"
   if [[ "$FORBIDDEN_STATUS" != "403" ]]; then echo "ERROR: Standard user should receive 403 for account provisioning, got ${FORBIDDEN_STATUS}." >&2; exit 1; fi
 
@@ -147,6 +150,13 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
     exit 1
   fi
 
+  echo "Checking BFF sign-in, session and sign-out..."
+  COOKIE_JAR="$(mktemp)"
+  ORIGIN="${WEB_BASE_URL:-http://localhost:3000}"
+  BFF_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -c "$COOKIE_JAR" -H "Origin: ${ORIGIN}" --data-urlencode "email=${BOOTSTRAP_ADMIN_EMAIL}" --data-urlencode "password=${BOOTSTRAP_ADMIN_PASSWORD}" "${WEB_URL}/api/auth/login")"
+  if [[ "$BFF_STATUS" != "303" ]]; then echo "ERROR: BFF login should redirect after successful sign-in, got ${BFF_STATUS}." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
+  BFF_SESSION_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" "${WEB_URL}/api/auth/session")"
+  if [[ "$BFF_SESSION_STATUS" != "200" ]]; then echo "ERROR: BFF session was not established (HTTP ${BFF_SESSION_STATUS})." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
   echo "Checking supplier BFF session, read and same-origin write controls..."
   SUPPLIER_BFF_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -b "$COOKIE_JAR" "${WEB_URL}/api/pharmacy/suppliers")"
   if ! printf '%s' "$SUPPLIER_BFF_RESPONSE" | jq -e --arg code "$SUPPLIER_CODE" 'any(.[]; .code == $code and .status == "Draft")' >/dev/null; then
@@ -164,13 +174,6 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
     echo "ERROR: Same-origin supplier BFF create did not preserve Draft-only state (HTTP ${BFF_CREATE_STATUS}): ${BFF_CREATE_RESPONSE}" >&2; rm -f "$COOKIE_JAR"; exit 1
   fi
 
-  echo "Checking BFF sign-in, session and sign-out..."
-  COOKIE_JAR="$(mktemp)"
-  ORIGIN="${WEB_BASE_URL:-http://localhost:3000}"
-  BFF_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -c "$COOKIE_JAR" -H "Origin: ${ORIGIN}" --data-urlencode "email=${BOOTSTRAP_ADMIN_EMAIL}" --data-urlencode "password=${BOOTSTRAP_ADMIN_PASSWORD}" "${WEB_URL}/api/auth/login")"
-  if [[ "$BFF_STATUS" != "303" ]]; then echo "ERROR: BFF login should redirect after successful sign-in, got ${BFF_STATUS}." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
-  BFF_SESSION_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" "${WEB_URL}/api/auth/session")"
-  if [[ "$BFF_SESSION_STATUS" != "200" ]]; then echo "ERROR: BFF session was not established (HTTP ${BFF_SESSION_STATUS})." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
   echo "Checking approval register BFF data and authenticated Pharmacy Inventory UI..."
   APPROVALS_UI_RESPONSE="$(curl --connect-timeout 3 --max-time 10 --silent --show-error --fail -b "$COOKIE_JAR" "$WEB_URL/api/pharmacy/approvals")"
   if ! printf '%s' "$APPROVALS_UI_RESPONSE" | jq -e 'length == 8 and ([.[] | select(.status == "Pending")] | length) == 7 and ([.[] | select(.approvalCode == "INV-OWN-001" and .status == "Approved")] | length) == 1 and ([.[] | select(.approvalCode == "INV-PRO-001" and .status == "Pending")] | length) == 1' >/dev/null; then
