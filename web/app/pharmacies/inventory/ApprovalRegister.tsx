@@ -7,7 +7,7 @@ type Approval = {
   approvalCode: string;
   title: string;
   requiredApproverRole: string;
-  status: "Pending" | "Approved" | "ApprovedWithConditions" | "Rejected" | "Withdrawn" | "Superseded";
+  status: "Pending" | "Approved" | "DemoApproved" | "ApprovedWithConditions" | "Rejected" | "Withdrawn" | "Superseded";
   scopeDescription: string;
   evidenceReference: string;
   createdAtUtc: string;
@@ -22,6 +22,7 @@ type Approval = {
 function statusLabel(status: Approval["status"]) {
   switch (status) {
     case "Approved": return "Approved";
+    case "DemoApproved": return "Approved (demo)";
     case "ApprovedWithConditions": return "Approved with conditions";
     case "Rejected": return "Rejected";
     case "Withdrawn": return "Withdrawn";
@@ -68,8 +69,15 @@ export default function ApprovalRegister() {
     <div className="inventory-gate" role="note">
       <span className="inventory-gate-icon">!</span>
       <div>
-        <strong>Pending means no approval has been recorded.</strong>
+        <strong>Pending means no professional approval has been recorded.</strong>
         <p>This screen tracks the required sign-offs. It does not grant approval. Decision entry remains disabled until designated reviewer identities, qualifications, delegated authority and server-side role permissions are verified.</p>
+      </div>
+    </div>
+    <div className="inventory-gate inventory-demo-gate" role="note">
+      <span className="inventory-gate-icon">D</span>
+      <div>
+        <strong>Demo approval is synthetic test data only.</strong>
+        <p>The red “Approved (demo)” status demonstrates how a pharmacist approval will appear. No real pharmacist identity, qualification, signed decision or regulatory evidence has been verified. INV-PRO-001 remains professionally pending and this demo must not authorize pharmacy operations.</p>
       </div>
     </div>
 
@@ -84,7 +92,7 @@ export default function ApprovalRegister() {
             <p className="eyebrow">{item.approvalCode}</p>
             <h3>{item.title}</h3>
           </div>
-          <span className={"inventory-status-chip " + (item.status === "Pending" ? "approval-pending" : "approval-recorded")}>{statusLabel(item.status)}</span>
+          <span className={"inventory-status-chip " + (item.status === "Pending" ? "approval-pending" : item.status === "DemoApproved" ? "approval-demo" : "approval-recorded")}>{statusLabel(item.status)}</span>
         </div>
         <p><strong>Required approver:</strong> {item.requiredApproverRole}</p>
         <p>{item.scopeDescription}</p>

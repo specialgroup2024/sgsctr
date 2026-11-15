@@ -103,4 +103,9 @@
 .inventory-approval-list p{font-size:10px;line-height:1.7;color:#718078;margin:8px 0}
 .inventory-approval-list .approval-pending{background:#fff4df;color:#89652a}
 .inventory-approval-list .approval-recorded{background:#edf5ef;color:#3e7653}
+.inventory-approval-list .approval-demo{background:#fde8e8;color:#a32222;border:1px solid #efb5b5}
+.inventory-demo-gate{background:#fff1f1;border-color:#f0caca;border-left-color:#c73535}
+.inventory-demo-gate .inventory-gate-icon{background:#f9dddd;color:#a32222}
+.inventory-demo-gate strong{color:#922626}
+.inventory-demo-gate p{color:#8a5555}
 .inventory-approval-list code{white-space:normal;overflow-wrap:anywhere}

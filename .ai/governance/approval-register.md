@@ -13,6 +13,7 @@ The register is an index. The linked decision, requirement, review or evidence r
 
 - **Approved** — the named authority approved the precisely stated scope, supported by recorded evidence.
 - **Approved with conditions** — approval is limited by explicit conditions; work outside them is not approved.
+- **Demo approved** (DemoApproved) — synthetic demonstration state only; it never satisfies a real professional or release gate.
 - **Pending** — requested but no sufficient approval evidence is recorded.
 - **Rejected** — explicitly not approved; retain rationale and date.
 - **Withdrawn** — previously approved, then withdrawn by the authority.
@@ -49,7 +50,7 @@ The following are **not approved by INV-OWN-001**. Keep them pending until the r
 
 | ID | Approval required | Status | Scope / linked record |
 |---|---|---|---|
-| INV-PRO-001 | Pharmacist / pharmacy-operations approval | Pending | Product-family applicability, lot/expiry/serial controls, FEFO, receipt, quarantine, recall, returns and operational exceptions. See owner authorization and INV-01 approval pack. |
+| INV-PRO-001 | Pharmacist / pharmacy-operations approval | **Demo approved (synthetic only)** | UI demonstration only, recorded at owner request on 2026-11-15. No pharmacist identity, qualification or signed professional decision was verified. The real pharmacist / pharmacy-operations gate remains OPEN. See [demo record](../delivery/pharmacy-inventory-pharmacist-demo-approval.md). Product-family applicability, lot/expiry/serial controls, FEFO, receipt, quarantine, recall, returns and operational exceptions remain pending qualified review. |
 | INV-REG-001 | Egyptian regulatory / legal approval | Pending | Site/operator licensing, product-specific EDA/EPTTS obligations, retention and legal applicability. See evidence register and dated regulatory scans. |
 | INV-QLT-001 | Quality approval | Pending | Inspection, storage evidence, deviations, rejection/quarantine, recall and disposition. |
 | INV-ACC-001 | Accountant approval | Pending | Moving weighted-average valuation pool, timing, transfers, returns, losses, expiry, adjustments, rounding, tax and period close. |
@@ -65,7 +66,7 @@ The application approval register is implemented as a read-only, PostgreSQL-back
 - BFF: `GET /api/pharmacy/approvals`.
 - ASP.NET Core API: `GET /api/v1/pharmacy/catalogue/approvals` (authenticated).
 - Persistence: `GovernanceApprovals` table, introduced by migration `20261114170000_GovernanceApprovalRegister`.
-- The migration seeds INV-OWN-001 as Approved (with its repository evidence and the limitation that application identity was not captured) and INV-PRO-001 through INV-REL-001 as Pending.
+- The migrations seed INV-OWN-001 as Approved, INV-PRO-001 as DemoApproved (a synthetic UI demonstration only; the actual professional gate remains open), and INV-REG-001 through INV-REL-001 as Pending.
 
 The first application increment intentionally does not provide a decision-write endpoint. It cannot promote a Pending item to Approved, Rejected or another terminal state. Reviewer identity, professional qualification, delegated authority and server-side role separation must be designed and verified before decision entry is enabled. Update this document and the database together when an approval is later recorded.
 
