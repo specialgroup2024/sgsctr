@@ -19,6 +19,7 @@ export default function SupplierOnboardingIntake({ supplierId, canManage, onSave
   const [channelType, setChannelType] = useState("DepartmentEmail");
   const [channelValue, setChannelValue] = useState("");
   const [departmentLabel, setDepartmentLabel] = useState("General");
+  const [businessUseConfirmed, setBusinessUseConfirmed] = useState(false);
   const [contactReason, setContactReason] = useState("");
   const [diligenceReason, setDiligenceReason] = useState("");
   const [busy, setBusy] = useState(false);
@@ -60,8 +61,8 @@ export default function SupplierOnboardingIntake({ supplierId, canManage, onSave
         <button className="primary-button" type="submit" disabled={busy}>{t("Save unverified declaration")}</button>
       </form>
       <form className="location-form catalogue-form" onSubmit={event => submit(event, async () => {
-        await send(`/api/pharmacy/suppliers/${encodeURIComponent(supplierId)}/business-contacts`, { channelType, channelValue, departmentLabel, changeReason: contactReason });
-        setChannelValue(""); setContactReason("");
+        await send(`/api/pharmacy/suppliers/${encodeURIComponent(supplierId)}/business-contacts`, { channelType, channelValue, departmentLabel, businessUseConfirmed, changeReason: contactReason });
+        setChannelValue(""); setContactReason(""); setBusinessUseConfirmed(false);
       })}>
         <div className="form-heading"><strong>{t("Business contact channel")}</strong></div>
         <div className="form-grid">
@@ -74,6 +75,7 @@ export default function SupplierOnboardingIntake({ supplierId, canManage, onSave
           </select></label>
           <label>{t("Business channel value")}<input required maxLength={320} value={channelValue} onChange={e => setChannelValue(e.target.value)} /></label>
           <label>{t("Change reason")}<input required maxLength={500} value={contactReason} onChange={e => setContactReason(e.target.value)} /></label>
+          <label className="wide-field"><input type="checkbox" required checked={businessUseConfirmed} onChange={e => setBusinessUseConfirmed(e.target.checked)} /> {t("I confirm this is a shared business channel, not a person's personal contact detail.")}</label>
         </div>
         <button className="primary-button" type="submit" disabled={busy}>{t("Save business channel")}</button>
       </form>
