@@ -6,6 +6,8 @@ namespace Sgsctr.Api.Data;
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<OrganizationLocation> OrganizationLocations => Set<OrganizationLocation>();
+    public DbSet<PharmacyReceiptDraft> PharmacyReceiptDrafts => Set<PharmacyReceiptDraft>();
+    public DbSet<PharmacyReceiptDraftLine> PharmacyReceiptDraftLines => Set<PharmacyReceiptDraftLine>();
     public DbSet<RegulatorySource> RegulatorySources => Set<RegulatorySource>();
     public DbSet<RegulatoryDocument> RegulatoryDocuments => Set<RegulatoryDocument>();
     public DbSet<RegulatoryAlert> RegulatoryAlerts => Set<RegulatoryAlert>();
@@ -34,6 +36,31 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         location.Property(x => x.LocationType).HasMaxLength(32).IsRequired();
         location.Property(x => x.Notes).HasMaxLength(500);
         location.Property(x => x.RecordStatus).HasMaxLength(32).IsRequired();
+
+
+        var receipt = modelBuilder.Entity<PharmacyReceiptDraft>();
+        receipt.ToTable("PharmacyReceiptDrafts", table =>
+            table.HasCheckConstraint("CK_PharmacyReceiptDrafts_DraftOnly", "\"Status\" = 'Draft'"));
+        receipt.HasKey(x => x.Id);
+        receipt.HasIndex(x => new { x.LocationId, x.CreatedAtUtc });
+        receipt.Property(x => x.SupplierReference).HasMaxLength(200).IsRequired();
+        receipt.Property(x => x.DeliveryReference).HasMaxLength(160);
+        receipt.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        receipt.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+        receipt.Property(x => x.UpdatedBySubject).HasMaxLength(256).IsRequired();
+        receipt.Property(x => x.ChangeReason).HasMaxLength(500).IsRequired();
+        receipt.HasOne(x => x.Location).WithMany().HasForeignKey(x => x.LocationId).OnDelete(DeleteBehavior.Restrict);
+
+        var receiptLine = modelBuilder.Entity<PharmacyReceiptDraftLine>();
+        receiptLine.ToTable("PharmacyReceiptDraftLines", table =>
+            table.HasCheckConstraint("CK_PharmacyReceiptDraftLines_PositiveQuantity", "\"Quantity\" > 0"));
+        receiptLine.HasKey(x => x.Id);
+        receiptLine.HasIndex(x => x.ReceiptDraftId);
+        receiptLine.Property(x => x.Quantity).HasPrecision(18, 6).IsRequired();
+        receiptLine.Property(x => x.SupplierItemReference).HasMaxLength(160);
+        receiptLine.HasOne(x => x.ReceiptDraft).WithMany(x => x.Lines).HasForeignKey(x => x.ReceiptDraftId).OnDelete(DeleteBehavior.Restrict);
+        receiptLine.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+        receiptLine.HasOne(x => x.Unit).WithMany().HasForeignKey(x => x.UnitId).OnDelete(DeleteBehavior.Restrict);
 
         var source = modelBuilder.Entity<RegulatorySource>();
         source.ToTable("RegulatorySources");
