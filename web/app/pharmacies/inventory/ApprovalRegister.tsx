@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import PharmacistReviewExamples from "./PharmacistReviewExamples";
+import { useI18n } from "@/components/locale-provider";
 
 type Approval = {
   id: string;
@@ -32,6 +33,7 @@ function statusLabel(status: Approval["status"]) {
 }
 
 export default function ApprovalRegister() {
+  const { t } = useI18n();
   const [items, setItems] = useState<Approval[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -60,8 +62,8 @@ export default function ApprovalRegister() {
     <div className="inventory-section-heading">
       <div>
         <p className="eyebrow">GOVERNANCE · HUMAN SIGN-OFF</p>
-        <h2>Approval register</h2>
-        <p>Approval requirements are persisted in PostgreSQL and read through the ASP.NET Core API.</p>
+        <h2>{t("Approval register" )}</h2>
+        <p>{t("Approval requirements are persisted in PostgreSQL and read through the ASP.NET Core API." )}</p>
       </div>
       <span className="inventory-status-chip">{loading ? "Loading" : pendingCount + " pending"}</span>
     </div>
@@ -69,13 +71,13 @@ export default function ApprovalRegister() {
     <div className="inventory-gate" role="note">
       <span className="inventory-gate-icon">!</span>
       <div>
-        <strong>Pending means no professional approval has been recorded.</strong>
+        <strong>{t("Pending means no professional approval has been recorded." )}</strong>
         <p>This screen tracks the required sign-offs. It does not grant approval. Decision entry remains disabled until designated reviewer identities, qualifications, delegated authority and server-side role permissions are verified.</p>
       </div>
     </div>
     {error && <p className="form-error" role="alert">{error}</p>}
-    {loading && <p className="loading-state">Loading approval records from PostgreSQL…</p>}
-    {!loading && !error && items.length === 0 && <p className="inventory-empty">No approval records were returned by the API.</p>}
+    {loading && <p className="loading-state">{t("Loading approval records from PostgreSQL…" )}</p>}
+    {!loading && !error && items.length === 0 && <p className="inventory-empty">{t("No approval records were returned by the API." )}</p>}
 
     <div className="inventory-approval-list">
       {items.map(item => <article className="inventory-panel" key={item.approvalCode}>

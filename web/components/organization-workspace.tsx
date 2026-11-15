@@ -15,7 +15,8 @@ type Workspace = {
 type Draft = { code: string; name: string; sectorCode: string; locationType: string; notes: string };
 const emptyDraft: Draft = { code: "", name: "", sectorCode: "PHARMACIES", locationType: "Branch", notes: "" };
 
-export default function OrganizationWorkspace() {\n  const { t } = useI18n();
+export default function OrganizationWorkspace() {
+  const { t } = useI18n();
   const [data, setData] = useState<Workspace | null>(null);
   const [subject, setSubject] = useState("");
   const [loading, setLoading] = useState(true);
