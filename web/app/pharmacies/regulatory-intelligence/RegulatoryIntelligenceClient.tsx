@@ -13,7 +13,7 @@ type AlertItem = { id: string; alertType: string; status: string; createdAtUtc: 
 type SourceItem = { id: string; code: string; name: string; url: string; sourceClass: string; isEnabled: boolean; pollIntervalMinutes: number; lastCheckedAtUtc: string | null; lastSuccessAtUtc: string | null; lastError: string | null };
 type Overview = { documents: DocumentItem[]; alerts: AlertItem[]; sources: SourceItem[]; lastRun: { startedAtUtc: string; completedAtUtc: string | null; status: string; discoveredCount: number; newDocumentCount: number; errorMessage: string | null } | null; monitoringEnabled: boolean; monitoringStatus: string; pollingIntervalMinutes: number; canTriggerScan: boolean; canAcknowledgeAlerts: boolean };
 
-function date(value: string | null, locale: "en" | "ar", locale) { return value ? new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : (locale === "ar" ? "غير متاح" : "Not available"); }
+function date(value: string | null, locale: "en" | "ar") { return value ? new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : (locale === "ar" ? "غير متاح" : "Not available"); }
 
 export default function RegulatoryIntelligencePage() {
   const { t, locale } = useI18n();
@@ -66,8 +66,8 @@ export default function RegulatoryIntelligencePage() {
     {message && <section className="notice-panel"><strong>{t(message)}</strong></section>}
     <section className="bottom-grid">
       <article className="info-card"><div className="info-card-heading"><span>◈</span><strong>{t("Latest scan" )}</strong></div>
-        <p className="muted">{data?.lastRun ? `${data.lastRun.status} · ${date(data.lastRun.completedAtUtc, locale)}` : "No completed scan recorded yet."}</p>
-        <p className="muted">{data?.lastRun ? `${data.lastRun.discoveredCount} candidate links · ${data.lastRun.newDocumentCount} new documents` : "The first background scan runs when the API starts."}</p>
+        <p className="muted">{data?.lastRun ? `${t(data.lastRun.status)} · ${date(data.lastRun.completedAtUtc, locale)}` : t("No completed scan recorded yet.")}</p>
+        <p className="muted">{data?.lastRun ? `${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(data.lastRun.discoveredCount)} ${t("candidate links")} · ${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(data.lastRun.newDocumentCount)} ${t("new documents")}` : t("The first background scan runs when the API starts.")}</p>
       </article>
       <article className="info-card"><div className="info-card-heading"><span>!</span><strong>{t("Unread alerts" )}</strong></div><p className="muted">{data?.alerts.length ?? 0} {t("alerts awaiting acknowledgement.")}</p><span className="safe-label">{t("HUMAN REVIEW REQUIRED")}</span></article>
     </section>
@@ -76,8 +76,8 @@ export default function RegulatoryIntelligencePage() {
     <section className="sector-grid">
       {(data?.sources ?? []).map(source => <article className="sector-card" key={source.id}>
         <div className="sector-top"><span className="sector-symbol">◎</span><span className="sector-tag">SOURCE CLASS {source.sourceClass}</span></div>
-        <h3>{source.name}</h3><p>Last checked: {date(source.lastCheckedAtUtc, locale)}</p>
-        <p>{source.lastError ? `Last error: ${source.lastError}` : source.lastSuccessAtUtc ? `Last successful check: ${date(source.lastSuccessAtUtc, locale)}` : "Awaiting first successful check."}</p>
+        <h3>{source.name}</h3><p>{t("Last checked:")} {date(source.lastCheckedAtUtc, locale)}</p>
+        <p>{source.lastError ? `${t("Last error:")} ${source.lastError}` : source.lastSuccessAtUtc ? `${t("Last successful check:")} ${date(source.lastSuccessAtUtc, locale)}` : t("Awaiting first successful check.")}</p>
         <a className="text-link" href={source.url} target="_blank" rel="noreferrer">{t("Open official source ↗")}</a>
       </article>)}
     </section>

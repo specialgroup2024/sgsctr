@@ -509,6 +509,9 @@ export const messages:Record<string,string>={
   "A licensed pharmacist/quality lead must approve product-specific lot, expiry, FEFO, temperature, returns, recall and disposition requirements. Site licensing applicability is still open (Q37).": "يجب على صيدلي مرخص/مسؤول جودة اعتماد متطلبات التشغيلة والصلاحية وFEFO ودرجة الحرارة والمرتجعات والاستدعاء والتصرف الخاصة بكل منتج. ولا يزال انطباق ترخيص الموقع مفتوحاً (Q37).",
   "Inventory reports will be connected only to approved, persisted data and reconciled ledger queries. Valuation and financial reconciliation remain blocked until accountant-approved costing policy and examples are signed.": "لن ترتبط تقارير المخزون إلا ببيانات معتمدة ومحفوظة واستعلامات دفتر أستاذ تمت تسويتها. ويظل التقييم والتسوية المالية محظورين حتى اعتماد سياسة التكلفة والأمثلة من المحاسب.",
   "Hospital branch": "فرع مستشفى",
+  "candidate links": "روابط مرشحة",
+  "new documents": "مستندات جديدة",
+  "SOURCE CLASS": "فئة المصدر",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}
