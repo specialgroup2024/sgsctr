@@ -57,7 +57,7 @@ export default function SupplierRegister() {
       const [s, q, p] = await Promise.all([
         fetch("/api/pharmacy/suppliers", { cache: "no-store" }),
         fetch("/api/pharmacy/suppliers/review-requests", { cache: "no-store" }),
-        fetch("/api/pharmacy/catalogue/permissions", { cache: "no-store" })
+        fetch("/api/pharmacy/suppliers/permissions", { cache: "no-store" })
       ]);
       if ([s, q, p].some(x => x.status === 401)) { window.location.assign("/login"); return; }
       const [supplierRows, reviewRows, access] = await Promise.all([
@@ -181,7 +181,7 @@ export default function SupplierRegister() {
         <div className="form-heading"><strong>{t("Request supplier review")}</strong><span className="inventory-state-tag">{t("PENDING")}</span></div>
         <div className="form-grid"><label className="wide-field">{t("Review reason")}<input required maxLength={500} value={reviewReason} onChange={e => setReviewReason(e.target.value)} /></label></div>
         <button className="primary-button" type="submit" disabled={busy || !canManage || selected.reviewRequests.some(x => x.status === "Pending")}>{t("Queue review request")}</button>
-        {selected.pendingReviewCount > 0 && <p className="catalogue-footer-note">{t("A review request is already pending.")}</p>}
+        {selected.reviewRequests.some(x => x.status === "Pending") && <p className="catalogue-footer-note">{t("A review request is already pending.")}</p>}
       </form>
       {selected.reviewRequests.length > 0 && <p className="catalogue-footer-note">{t("Review history")}: {selected.reviewRequests.map(x => x.status).join(", ")}</p>}
     </section>}
