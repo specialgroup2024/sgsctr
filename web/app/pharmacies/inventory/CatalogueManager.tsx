@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useI18n } from "@/components/locale-provider";
 import type { FormEvent } from "react";
 import ProductGovernanceManager from "./ProductGovernanceManager";
 
@@ -23,6 +24,7 @@ async function payload<T>(response: Response): Promise<T> {
 }
 
 export default function CatalogueManager() {
+  const { t } = useI18n();
   const [products, setProducts] = useState<Product[]>([]);
   const [units, setUnits] = useState<Unit[]>([]);
   const [conversions, setConversions] = useState<Conversion[]>([]);
@@ -162,70 +164,70 @@ export default function CatalogueManager() {
   }
 
   return <div className="catalogue-manager">
-    <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>Generic catalogue only · Q38 professional review remains pending</strong><p>Records and conversions remain drafts. Family and identifier entries are provisional only; no verified classification, product activation, stock, dispensing or valuation is enabled.</p></div></div>
+    <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Generic catalogue only · Q38 professional review remains pending")}</strong><p>{t("Records and conversions remain drafts. Family and identifier entries are provisional only; no verified classification, product activation, stock, dispensing or valuation is enabled.")}</p></div></div>
     {error && <p className="form-error" role="alert">{error}</p>}
     {notice && <p className="form-success" role="status">{notice}</p>}
     <section className="catalogue-layout">
       <div className="inventory-panel">
-        <div className="inventory-panel-heading"><div><p className="eyebrow">PERSISTENT REFERENCE DATA</p><h3>Product records</h3></div><span className="inventory-count">{products.length} drafts</span></div>
-        <div className="inventory-toolbar"><label htmlFor="catalogue-search">Search</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search product names…" /></div>
-        {loading ? <p className="loading-state">Loading catalogue from PostgreSQL…</p> :
-          filteredProducts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>Product name</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PERSISTENT REFERENCE DATA")}</p><h3>{t("Product records")}</h3></div><span className="inventory-count">{products.length} drafts</span></div>
+        <div className="inventory-toolbar"><label htmlFor="catalogue-search">{t("Search")}</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search product names…" /></div>
+        {loading ? <p className="loading-state">{t("Loading catalogue from PostgreSQL…")}</p> :
+          filteredProducts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Product name")}</th><th>{t("Status")}</th><th>{t("Action")}</th></tr></thead><tbody>
             {filteredProducts.map(product => <tr key={product.id} className={selectedId === product.id ? "catalogue-selected-row" : ""}>
               <td><strong>{product.displayName}</strong></td>
-              <td><span className="inventory-state-tag">DRAFT</span></td>
-              <td><div className="table-actions"><button type="button" className="table-action" onClick={() => setSelectedId(product.id)}>View</button>{canManage && <button type="button" className="table-action" onClick={() => editProduct(product)}>Edit</button>}</div></td>
+              <td><span className="inventory-state-tag">{t("DRAFT")}</span></td>
+              <td><div className="table-actions"><button type="button" className="table-action" onClick={() => setSelectedId(product.id)}>{t("View")}</button>{canManage && <button type="button" className="table-action" onClick={() => editProduct(product)}>{t("Edit")}</button>}</div></td>
             </tr>)}
-          </tbody></table></div> : <p className="inventory-empty">No catalogue records yet. Add a generic draft record to begin.</p>}
-        <button type="button" className="subtle-button catalogue-new-button" onClick={resetProduct} disabled={!canManage}>+ New draft product</button>
+          </tbody></table></div> : <p className="inventory-empty">{t("No catalogue records yet. Add a generic draft record to begin.")}</p>}
+        <button type="button" className="subtle-button catalogue-new-button" onClick={resetProduct} disabled={!canManage}>{t("+ New draft product")}</button>
       </div>
 
       <div className="inventory-panel">
-        <div className="inventory-panel-heading"><div><p className="eyebrow">PRODUCT IDENTITY</p><h3>{editing ? "Edit draft product" : "Create draft product"}</h3></div></div>
+        <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PRODUCT IDENTITY")}</p><h3>{editing ? "Edit draft product" : "Create draft product"}</h3></div></div>
         {canManage ? <form className="location-form catalogue-form" onSubmit={saveProduct}>
           <div className="form-grid">
-            <label className="wide-field">Display name<input required maxLength={200} value={displayName} onChange={e => setDisplayName(e.target.value)} /></label>
-            <label className="wide-field">Change reason (optional; do not enter patient or health data)<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label>
+            <label className="wide-field">{t("Display name")}<input required maxLength={200} value={displayName} onChange={e => setDisplayName(e.target.value)} /></label>
+            <label className="wide-field">{t("Change reason (optional; do not enter patient or health data)")}<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label>
           </div>
-          <div className="form-actions"><span className="inventory-state-tag">STATUS IS ALWAYS DRAFT</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>Cancel</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? "Saving…" : editing ? "Save draft" : "Create draft"}</button></div></div>
-        </form> : <p className="inventory-empty">Catalogue changes require the Administrator role. Your account currently has read-only access.</p>}
+          <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>{t("Cancel")}</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? "Saving…" : editing ? "Save draft" : "Create draft"}</button></div></div>
+        </form> : <p className="inventory-empty">{t("Catalogue changes require the Administrator role. Your account currently has read-only access.")}</p>}
         <p className="catalogue-id-note">{selectedId ? `Selected record ID: ${selectedId}` : "A product receives a stable system identifier when created."}</p>
       </div>
     </section>
 
     <section className="catalogue-layout catalogue-units-layout">
       <div className="inventory-panel">
-        <div className="inventory-panel-heading"><div><p className="eyebrow">UNIT REFERENCE</p><h3>Units of measure</h3></div><span className="inventory-count">{units.length} units</span></div>
-        {units.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>Code</th><th>Name</th><th>Symbol</th></tr></thead><tbody>
+        <div className="inventory-panel-heading"><div><p className="eyebrow">{t("UNIT REFERENCE")}</p><h3>{t("Units of measure")}</h3></div><span className="inventory-count">{units.length} units</span></div>
+        {units.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Code")}</th><th>{t("Name")}</th><th>{t("Symbol")}</th></tr></thead><tbody>
           {units.map(unit => <tr key={unit.id}><td><code>{unit.code}</code></td><td><strong>{unit.name}</strong></td><td>{unit.symbol || "—"}</td></tr>)}
-        </tbody></table></div> : <p className="inventory-empty">No units have been defined.</p>}
+        </tbody></table></div> : <p className="inventory-empty">{t("No units have been defined.")}</p>}
         {canManage && <form className="location-form catalogue-form" onSubmit={saveUnit}>
           <div className="form-grid">
-            <label>Code<input required maxLength={24} value={unitCode} onChange={e => setUnitCode(e.target.value)} placeholder="Unique unit code" /></label>
-            <label>Name<input required maxLength={100} value={unitName} onChange={e => setUnitName(e.target.value)} placeholder="Unit name" /></label>
-            <label>Symbol (optional)<input maxLength={24} value={unitSymbol} onChange={e => setUnitSymbol(e.target.value)} /></label>
+            <label>{t("Code")}<input required maxLength={24} value={unitCode} onChange={e => setUnitCode(e.target.value)} placeholder={t("Unique unit code")} /></label>
+            <label>{t("Name")}<input required maxLength={100} value={unitName} onChange={e => setUnitName(e.target.value)} placeholder={t("Unit name")} /></label>
+            <label>{t("Symbol (optional)")}<input maxLength={24} value={unitSymbol} onChange={e => setUnitSymbol(e.target.value)} /></label>
           </div>
-          <button type="submit" className="primary-button" disabled={busy}>Add unit</button>
+          <button type="submit" className="primary-button" disabled={busy}>{t("Add unit")}</button>
         </form>}
       </div>
 
       <div className="inventory-panel">
-        <div className="inventory-panel-heading"><div><p className="eyebrow">EXPLICIT CONVERSION</p><h3>Product-unit conversions</h3></div><span className="inventory-count">Draft only</span></div>
+        <div className="inventory-panel-heading"><div><p className="eyebrow">{t("EXPLICIT CONVERSION")}</p><h3>{t("Product-unit conversions")}</h3></div><span className="inventory-count">{t("Draft only")}</span></div>
         {selectedId ? <>
-          <p className="catalogue-ratio-note">A conversion means: 1 source unit = numerator ÷ denominator target units. Values are stored as exact whole-number ratios; no rounding or stock calculation is performed.</p>
-          {conversions.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>From</th><th>To</th><th>Exact ratio</th></tr></thead><tbody>
+          <p className="catalogue-ratio-note">{t("A conversion means: 1 source unit = numerator ÷ denominator target units. Values are stored as exact whole-number ratios; no rounding or stock calculation is performed.")}</p>
+          {conversions.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("From")}</th><th>{t("To")}</th><th>{t("Exact ratio")}</th></tr></thead><tbody>
             {conversions.map(x => <tr key={x.id}><td>{x.fromUnitName}</td><td>{x.toUnitName}</td><td><code>{x.numerator}/{x.denominator}</code></td></tr>)}
-          </tbody></table></div> : <p className="inventory-empty">No conversions are recorded for this product.</p>}
+          </tbody></table></div> : <p className="inventory-empty">{t("No conversions are recorded for this product.")}</p>}
           {canManage && units.length >= 2 && <form className="location-form catalogue-form" onSubmit={saveConversion}>
             <div className="form-grid">
-              <label>Source unit<select required value={fromUnitId} onChange={e => setFromUnitId(e.target.value)}><option value="">Choose unit</option>{units.map(x => <option key={x.id} value={x.id}>{x.name} ({x.code})</option>)}</select></label>
-              <label>Target unit<select required value={toUnitId} onChange={e => setToUnitId(e.target.value)}><option value="">Choose unit</option>{units.map(x => <option key={x.id} value={x.id}>{x.name} ({x.code})</option>)}</select></label>
-              <label>Numerator<input type="number" min="1" max="9007199254740991" step="1" required value={numerator} onChange={e => setNumerator(e.target.value)} /></label>
-              <label>Denominator<input type="number" min="1" max="9007199254740991" step="1" required value={denominator} onChange={e => setDenominator(e.target.value)} /></label>
+              <label>{t("Source unit")}<select required value={fromUnitId} onChange={e => setFromUnitId(e.target.value)}><option value="">{t("Choose unit")}</option>{units.map(x => <option key={x.id} value={x.id}>{x.name} ({x.code})</option>)}</select></label>
+              <label>{t("Target unit")}<select required value={toUnitId} onChange={e => setToUnitId(e.target.value)}><option value="">{t("Choose unit")}</option>{units.map(x => <option key={x.id} value={x.id}>{x.name} ({x.code})</option>)}</select></label>
+              <label>{t("Numerator")}<input type="number" min="1" max="9007199254740991" step="1" required value={numerator} onChange={e => setNumerator(e.target.value)} /></label>
+              <label>{t("Denominator")}<input type="number" min="1" max="9007199254740991" step="1" required value={denominator} onChange={e => setDenominator(e.target.value)} /></label>
             </div>
-            <button type="submit" className="primary-button" disabled={busy || fromUnitId === toUnitId}>Add draft conversion</button>
+            <button type="submit" className="primary-button" disabled={busy || fromUnitId === toUnitId}>{t("Add draft conversion")}</button>
           </form>}
-        </> : <p className="inventory-empty">Select a product to view or add its draft conversions.</p>}
+        </> : <p className="inventory-empty">{t("Select a product to view or add its draft conversions.")}</p>}
       </div>
     </section>
     <ProductGovernanceManager productId={selectedId} canManage={canManage} />
