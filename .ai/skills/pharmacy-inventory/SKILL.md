@@ -6,7 +6,7 @@ description: Discover, design or implement approved pharmacy catalogue and inven
 # Workflow
 1. Read the Egypt monitoring policy, source register, requirements/evidence registers, pharmacy-domain profile and approval register.
 2. Identify whether the task concerns catalogue, supplier, purchasing, receiving, batch/expiry, storage, stock, transfer, recall or costing.
-3. Check the exact approved phase. Current INV-01 scope is generic Draft-only product identity, units/conversions and pharmacy-location reference metadata; supplier and transactional workflows are excluded unless separately approved.
+3. Check the exact approved phase. INV-01 is generic Draft-only product identity, units/conversions and pharmacy-location reference metadata. INV-OWN-001 separately authorizes INV-B draft supplier identity/evidence references and pending review requests only; Q51 qualification and purchasing authority remain pending. Transactional stock workflows stay gated.
 4. For regulated attributes, retrieve current original Egyptian evidence and record source class, publication/effective date, applicability and coverage gaps.
 5. Separate owner-provided facts, verified evidence, provisional proposals and qualified professional decisions.
 6. Define tests for authorization, auditability, duplicate handling, unit conversions, concurrency and integrity within authorized scope.
