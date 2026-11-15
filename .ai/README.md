@@ -10,8 +10,9 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 5. Read product/vision.md, product/scope.md and relevant domain documents.
 6. For pharmacy tasks, read governance/egypt-pharmacy-market-monitoring.md, governance/egypt-pharmacy-source-register.md, governance/egypt-requirements-register.md, governance/evidence-register.md, roles/pharmacy-domain.md and skills/egypt-compliance-review/SKILL.md.
 7. Read relevant architecture, decisions, quality, security and delivery documents.
-8. Load only the skills relevant to the task.
-9. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
+8. Read governance/cross-platform-agent-compatibility.md when configuring or operating a new agent host; use roles/role-selection.md as the per-task role-selection record template.
+9. Load only the skills relevant to the task.
+10. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
 
 ## Egypt pharmacy intelligence — mandatory
 The Egypt market/regulatory monitoring policy is required for pharmacy discovery, requirements, architecture, implementation, tests and release. It defines source coverage, evidence classes, review cadence, impact mapping, human approval and limits on claims. The source register is an expandable starting point, not an exhaustive whitelist. The dated scan is an initial snapshot, not a substitute for fresh checks.
@@ -26,7 +27,7 @@ The EDA ingestion MVP is owner-approved and merged to master (PR #22); the dupli
 - [Native application authentication](../docs/security/phase-3-authenticated-workspace.md) — local account bootstrap, sign-in, session and safe migration steps.
 
 ## Governance model
-The five role responsibilities are stable, while their ICT and business professional identities are selected dynamically for each problem. See governance/dynamic-role-selection.md. All agents must use the same principles across local and online environments.
+The five role responsibilities are stable, while their ICT and business professional identities are selected dynamically for each problem. See governance/dynamic-role-selection.md, governance/deliberation-protocol.md and roles/role-selection.md. All agents must use the same principles across local and online environments. For substantive decisions, the Devil's Advocate and Clueless Client must each challenge the initial proposal with a serious evidence-based flaw; the Maestro remains silent until debate and forced evolution are complete.
 
 ## Approval system
 [Governance test-readiness workspace](delivery/governance-test-readiness-workspace.md) — PostgreSQL-backed test cases and Development-only test execution records for the platform and seven approval gates. Test results never substitute for professional or release approval.

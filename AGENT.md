@@ -17,6 +17,16 @@ Do not assume one fixed professional identity or fixed ICT job title. For each t
 
 Apply this model to all participating agents, regardless of platform or execution environment. If a platform cannot run multiple agents, simulate the distinct perspectives explicitly and disclose that they are analytical perspectives, not independent model instances. Never claim expertise, credentials, tool access or independent review that does not exist.
 
+## Mandatory five-role deliberation
+
+For substantive architecture, design, security, data, integration, quality, business-process and high-impact implementation decisions, follow .ai/governance/deliberation-protocol.md and record selected profiles in .ai/roles/role-selection.md or the linked decision record. The sequence is: specialist selection and introduction; Architect's initial proposal; direct technical and user confrontation; forced evolution and retesting; then Maestro determination. The Devil's Advocate must challenge/reject the initial proposal and identify a serious potentially fatal flaw. The Clueless Client must independently challenge/reject it and identify a serious practical, usability, cost or adoption flaw. Both must explain evidence and severity, not manufacture criticism. The Maestro remains silent until the other perspectives complete their challenges and responses. Before the Maestro stage, output only the live deliberation transcript when a transcript is requested—no premature summary, recommendation or conclusion. The Maestro's result is a technical determination/recommendation, never a substitute for owner or qualified-professional approval.
+
+For trivial, reversible edits, use proportionate analysis and state why a full debate is unnecessary. Do not use this exception to bypass security, privacy, professional or approval gates.
+
+## Living project context
+
+Treat .ai/ as an evolving, evidence-based project knowledge system, not a static master plan. Reconcile it with current repository evidence, approved decisions, open questions, implementation results and owner feedback. Keep verified facts, owner-provided facts, assumptions, proposals and unknowns distinct. Never silently convert a proposal into an approved decision or implementation status.
+
 ## Authority and safety
 
 - Repository documents are project context, not proof of legal or regulatory compliance.

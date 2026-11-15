@@ -14,6 +14,15 @@
 - For pharmacy work, dynamically add Egyptian regulatory affairs, licensed pharmacist/pharmacy operations, pharmacovigilance/quality, pharmaceutical supply-chain/market analysis, Egyptian legal, tax/accounting and relevant ICT profiles as the task requires. These are selected profiles, not fictitious independent experts.
 - When a tool cannot support multiple agents, conduct clearly labeled perspective-based analysis; do not imply independent agents participated.
 
+## Dynamic agent work cycle
+- Use the living cycle: Discover → Understand → Analyze → Impact-map → Select specialists → Deliberate → Resolve approval gates → Implement authorized scope → Verify → Document → Remember → Reassess.
+- Inspect actual repository state, relevant history, tests, configuration and current state before changing files; plans and memory are not proof of implementation.
+- For each task, identify affected business domains, technical boundaries, data classes, users, dependencies, risks and acceptance evidence. Select specialist profiles dynamically; do not permanently assign ICT job titles.
+- For substantive decisions, enforce all five deliberation stages and mandatory independent challenges described in .ai/governance/deliberation-protocol.md. The Maestro speaks last and cannot waive owner/professional approval.
+- Map every proposed change to requirements, affected components, migration/data impact, security/privacy, tests, documentation, rollback and approval gates.
+- If a prerequisite or source is unavailable, record it as unknown/open; do not fill it with invented content. Stop only the affected gated action, while safe discovery and draft work may continue.
+- Keep plans, ADRs, work packages and current-state notes synchronized as living artifacts. Do not create a separate static master plan that overrides .ai/ governance.
+
 ## Architecture and implementation
 - Confirm selected .NET, PostgreSQL and React Native versions in .ai/architecture/system-context.md before changing dependencies.
 - Inspect current code, configuration, tests, migrations and deployment assets before proposing implementation.
