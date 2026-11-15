@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useI18n } from "@/components/locale-provider";
 import type { FormEvent } from "react";
 
 type Family = { id: string; familyCode: string; reviewStatus: string; proposedAtUtc: string; proposedBySubject: string } | null;
@@ -16,6 +17,7 @@ async function readPayload<T>(response: Response): Promise<T> {
 }
 
 export default function ProductGovernanceManager({ productId, canManage }: { productId: string; canManage: boolean }) {
+  const { t } = useI18n();
   const [data, setData] = useState<Governance | null>(null);
   const [familyCode, setFamilyCode] = useState("RegularMedicine");
   const [schemeCode, setSchemeCode] = useState("GTIN");
@@ -58,60 +60,60 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
     finally { setBusy(false); }
   }
 
-  if (!productId) return <section className="inventory-panel"><h3>Product regulatory profile</h3><p className="inventory-empty">Select a product to manage its provisional family, identifiers and evidence.</p></section>;
+  if (!productId) return <section className="inventory-panel"><h3>{t("Product regulatory profile")}</h3><p className="inventory-empty">{t("Select a product to manage its provisional family, identifiers and evidence.")}</p></section>;
 
   return <section className="inventory-panel">
-    <div className="inventory-panel-heading"><div><p className="eyebrow">REGULATORY PROFILE · REVIEW QUEUE</p><h3>Family, identifiers and evidence</h3></div><span className="inventory-state-tag">UNVERIFIED</span></div>
-    <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>All entries are proposals, not regulatory approvals</strong><p>Family assignment and evidence remain pending qualified review. GTIN, UDI-DI and EDA registration/notification references are kept distinct. EPTTS serials, UDI-PI, lots and expiry are not product-level identifiers.</p></div></div>
+    <div className="inventory-panel-heading"><div><p className="eyebrow">{t("REGULATORY PROFILE · REVIEW QUEUE")}</p><h3>{t("Family, identifiers and evidence")}</h3></div><span className="inventory-state-tag">{t("UNVERIFIED")}</span></div>
+    <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("All entries are proposals, not regulatory approvals")}</strong><p>Family assignment and evidence remain pending qualified review. GTIN, UDI-DI and EDA registration/notification references are kept distinct. EPTTS serials, UDI-PI, lots and expiry are not product-level identifiers.</p></div></div>
     {error && <p className="form-error" role="alert">{error}</p>}
     {notice && <p className="form-success" role="status">{notice}</p>}
     {data?.family ? <p className="catalogue-id-note">Provisional family: <strong>{data.family.familyCode}</strong> · {data.family.reviewStatus}</p> :
       canManage ? <form className="location-form catalogue-form" onSubmit={e => submit(e, "family", { familyCode, changeReason: changeReason || null }, "Provisional family assignment recorded for review.")}>
-        <div className="form-grid"><label>Provisional family<select value={familyCode} onChange={e => setFamilyCode(e.target.value)}><option value="RegularMedicine">Regular medicines</option><option value="Chemotherapy">Chemotherapy medicines (operational tag only)</option><option value="MedicalDevice">Medical devices</option><option value="MedicalSupply">Medical supplies</option><option value="Cosmetic">Cosmetics</option></select></label><label>Change reason<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label></div>
-        <button className="primary-button" type="submit" disabled={busy}>Submit family for review</button>
-      </form> : <p className="inventory-empty">No provisional family assignment.</p>}
+        <div className="form-grid"><label>{t("Provisional family")}<select value={familyCode} onChange={e => setFamilyCode(e.target.value)}><option value="RegularMedicine">{t("Regular medicines")}</option><option value="Chemotherapy">{t("Chemotherapy medicines (operational tag only)")}</option><option value="MedicalDevice">{t("Medical devices")}</option><option value="MedicalSupply">{t("Medical supplies")}</option><option value="Cosmetic">{t("Cosmetics")}</option></select></label><label>{t("Change reason")}<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label></div>
+        <button className="primary-button" type="submit" disabled={busy}>{t("Submit family for review")}</button>
+      </form> : <p className="inventory-empty">{t("No provisional family assignment.")}</p>}
 
     <div className="catalogue-layout catalogue-units-layout">
       <div className="inventory-panel">
-        <h4>External identifiers</h4>
+        <h4>{t("External identifiers")}</h4>
         {data?.identifiers.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.schemeCode}</strong>: <code>{x.value}</code> · {x.verificationStatus}{x.packagingLevel ? ` · ${x.packagingLevel}` : ""}</p>)}
-        {!data?.identifiers.length && <p className="inventory-empty">No identifier proposals recorded.</p>}
+        {!data?.identifiers.length && <p className="inventory-empty">{t("No identifier proposals recorded.")}</p>}
         {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "identifiers", { schemeCode, value: identifierValue, packagingLevel: packagingLevel || null, sourceUri: sourceUri || null, changeReason: changeReason || null }, "Identifier proposal saved as pending verification.")}>
           <div className="form-grid">
-            <label>Identifier system<select value={schemeCode} onChange={e => setSchemeCode(e.target.value)}><option value="GTIN">GTIN</option><option value="UDI-DI">UDI-DI</option><option value="EDA-Registration">EDA registration</option><option value="EDA-Cosmetics-Notification">EDA cosmetics notification</option></select></label>
-            <label>Identifier value<input required maxLength={160} value={identifierValue} onChange={e => setIdentifierValue(e.target.value)} /></label>
-            <label>Packaging level (unverified)<input maxLength={64} value={packagingLevel} onChange={e => setPackagingLevel(e.target.value)} /></label>
-            <label>Source URL (HTTPS)<input type="url" value={sourceUri} onChange={e => setSourceUri(e.target.value)} /></label>
+            <label>{t("Identifier system")}<select value={schemeCode} onChange={e => setSchemeCode(e.target.value)}><option value="GTIN">GTIN</option><option value="UDI-DI">UDI-DI</option><option value="EDA-Registration">EDA registration</option><option value="EDA-Cosmetics-Notification">EDA cosmetics notification</option></select></label>
+            <label>{t("Identifier value")}<input required maxLength={160} value={identifierValue} onChange={e => setIdentifierValue(e.target.value)} /></label>
+            <label>{t("Packaging level (unverified)")}<input maxLength={64} value={packagingLevel} onChange={e => setPackagingLevel(e.target.value)} /></label>
+            <label>{t("Source URL (HTTPS)")}<input type="url" value={sourceUri} onChange={e => setSourceUri(e.target.value)} /></label>
           </div>
-          <button className="primary-button" type="submit" disabled={busy}>Add identifier proposal</button>
+          <button className="primary-button" type="submit" disabled={busy}>{t("Add identifier proposal")}</button>
         </form>}
       </div>
       <div className="inventory-panel">
-        <h4>Regulatory evidence</h4>
+        <h4>{t("Regulatory evidence")}</h4>
         {data?.evidence.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.authorityCode} · {x.evidenceType}</strong>: {x.referenceNumber} · {x.verificationStatus}{x.expiresOn ? ` · expires ${x.expiresOn}` : ""}</p>)}
-        {!data?.evidence.length && <p className="inventory-empty">No evidence references recorded.</p>}
+        {!data?.evidence.length && <p className="inventory-empty">{t("No evidence references recorded.")}</p>}
         {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "evidence", { authorityCode, evidenceType, referenceNumber, documentUri: documentUri || null, regulatoryDocumentId: null, publishedOn: publishedOn || null, effectiveFrom: effectiveFrom || null, expiresOn: expiresOn || null, changeReason: changeReason || null }, "Regulatory evidence recorded as pending review.")}>
           <div className="form-grid">
-            <label>Authority<input required maxLength={48} value={authorityCode} onChange={e => setAuthorityCode(e.target.value)} /></label>
-            <label>Evidence type<input required maxLength={48} value={evidenceType} onChange={e => setEvidenceType(e.target.value)} /></label>
-            <label>Reference number<input required maxLength={160} value={referenceNumber} onChange={e => setReferenceNumber(e.target.value)} /></label>
-            <label>Document URL (HTTPS)<input type="url" value={documentUri} onChange={e => setDocumentUri(e.target.value)} /></label>
-            <label>Published on<input type="date" value={publishedOn} onChange={e => setPublishedOn(e.target.value)} /></label>
-            <label>Effective from<input type="date" value={effectiveFrom} onChange={e => setEffectiveFrom(e.target.value)} /></label>
-            <label>Expires on<input type="date" value={expiresOn} onChange={e => setExpiresOn(e.target.value)} /></label>
+            <label>{t("Authority")}<input required maxLength={48} value={authorityCode} onChange={e => setAuthorityCode(e.target.value)} /></label>
+            <label>{t("Evidence type")}<input required maxLength={48} value={evidenceType} onChange={e => setEvidenceType(e.target.value)} /></label>
+            <label>{t("Reference number")}<input required maxLength={160} value={referenceNumber} onChange={e => setReferenceNumber(e.target.value)} /></label>
+            <label>{t("Document URL (HTTPS)")}<input type="url" value={documentUri} onChange={e => setDocumentUri(e.target.value)} /></label>
+            <label>{t("Published on")}<input type="date" value={publishedOn} onChange={e => setPublishedOn(e.target.value)} /></label>
+            <label>{t("Effective from")}<input type="date" value={effectiveFrom} onChange={e => setEffectiveFrom(e.target.value)} /></label>
+            <label>{t("Expires on")}<input type="date" value={expiresOn} onChange={e => setExpiresOn(e.target.value)} /></label>
           </div>
-          <button className="primary-button" type="submit" disabled={busy}>Add evidence reference</button>
+          <button className="primary-button" type="submit" disabled={busy}>{t("Add evidence reference")}</button>
         </form>}
       </div>
     </div>
 
     <div className="inventory-panel">
-      <h4>Lifecycle review requests</h4>
+      <h4>{t("Lifecycle review requests")}</h4>
       {data?.lifecycleRequests.map(x => <p className="catalogue-id-note" key={x.id}><strong>{x.requestedAction}</strong> · {x.reviewStatus} · {x.reason}</p>)}
-      {!data?.lifecycleRequests.length && <p className="inventory-empty">No activation or retirement requests.</p>}
+      {!data?.lifecycleRequests.length && <p className="inventory-empty">{t("No activation or retirement requests.")}</p>}
       {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "lifecycle-requests", { requestedAction: lifecycleAction, reason, changeReason: changeReason || null }, "Lifecycle request submitted. Product status remains Draft pending review.")}>
-        <div className="form-grid"><label>Request<select value={lifecycleAction} onChange={e => setLifecycleAction(e.target.value)}><option value="Activate">Request activation</option><option value="Retire">Request retirement</option></select></label><label>Reason<input required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label></div>
-        <button className="primary-button" type="submit" disabled={busy}>Submit review request</button>
+        <div className="form-grid"><label>{t("Request")}<select value={lifecycleAction} onChange={e => setLifecycleAction(e.target.value)}><option value="Activate">{t("Request activation")}</option><option value="Retire">{t("Request retirement")}</option></select></label><label>{t("Reason")}<input required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label></div>
+        <button className="primary-button" type="submit" disabled={busy}>{t("Submit review request")}</button>
       </form>}
     </div>
     <p className="catalogue-footer-note">This interface does not verify identifiers, grant regulatory approval, activate/retire products, or create clinical, handling, stock or financial permissions. Review and evidence verification remain external human gates.</p>

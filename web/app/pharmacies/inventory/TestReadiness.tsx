@@ -86,21 +86,21 @@ export default function TestReadiness() {
   return <section className="inventory-workspace-panel">
     <div className="inventory-section-heading">
       <div>
-        <p className="eyebrow">QUALITY · TEST EXECUTION</p>
+        <p className="eyebrow">{t("QUALITY · TEST EXECUTION")}</p>
         <h2>{t("Test readiness" )}</h2>
-        <p>Version-controlled test cases are stored in PostgreSQL. Results are append-only and separate from professional approvals.</p>
+        <p>{t("Version-controlled test cases are stored in PostgreSQL. Results are append-only and separate from professional approvals.")}</p>
       </div>
       <button className="inventory-refresh" type="button" onClick={() => void load()} disabled={loading}>Refresh</button>
     </div>
     <div className="inventory-gate" role="note">
       <span className="inventory-gate-icon">!</span>
       <div>
-        <strong>A passed test is not a professional approval or release authorization.</strong>
-        <p>Blocked tests cannot be marked Passed or Failed. Results can be recorded only by an Administrator in Development; production approval decisions remain in the separate approval register.</p>
+        <strong>{t("A passed test is not a professional approval or release authorization.")}</strong>
+        <p>{t("Blocked tests cannot be marked Passed or Failed. Results can be recorded only by an Administrator in Development; production approval decisions remain in the separate approval register.")}</p>
       </div>
     </div>
     <div className="inventory-kpi-grid test-readiness-summary">
-      <article className="inventory-kpi"><span>{t("Test cases" )}</span><strong>{loading ? "…" : cases.length}</strong><small>Across platform and seven approval gates</small></article>
+      <article className="inventory-kpi"><span>{t("Test cases" )}</span><strong>{loading ? "…" : cases.length}</strong><small>{t("Across platform and seven approval gates")}</small></article>
       <article className="inventory-kpi"><span>{t("Latest passed" )}</span><strong>{passed}</strong><small>{t("Requires evidence reference" )}</small></article>
       <article className="inventory-kpi"><span>{t("Latest failed" )}</span><strong>{failed}</strong><small>{t("Needs corrective action" )}</small></article>
       <article className="inventory-kpi"><span>{t("Blocked" )}</span><strong>{blocked}</strong><small>{t("Professional, owner or implementation gate" )}</small></article>
@@ -114,39 +114,39 @@ export default function TestReadiness() {
         const latest = test.latestExecution;
         return <article className="inventory-panel test-readiness-card" key={test.testCode}>
           <div className="inventory-panel-heading">
-            <div><p className="eyebrow">{test.gateCode} · {test.testCode}</p><h3>{test.title}</h3></div>
-            <span className={"inventory-status-chip " + (latest?.status === "Passed" ? "approval-recorded" : latest?.status === "Failed" ? "approval-pending" : "approval-pending")}>{latest?.status ?? (test.executionBlocked ? "Blocked" : "Not run")}</span>
+            <div><p className="eyebrow">{test.gateCode} · {test.testCode}</p><h3>{t(test.title)}</h3></div>
+            <span className={"inventory-status-chip " + (latest?.status === "Passed" ? "approval-recorded" : latest?.status === "Failed" ? "approval-pending" : "approval-pending")}>{t(latest?.status ?? (test.executionBlocked ? "Blocked" : "Not run"))}</span>
           </div>
-          <p>{test.objective}</p>
-          <p><strong>{t("Expected result:" )}</strong> {test.expectedResult}</p>
-          <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {test.testMode}</p>
-          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{test.blockReason}</p></div></div>}
+          <p>{t(test.objective)}</p>
+          <p><strong>{t("Expected result:" )}</strong> {t(test.expectedResult)}</p>
+          <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {t(test.testMode)}</p>
+          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{t(test.blockReason)}</p></div></div>}
           {latest && <div className="catalogue-id-note">
-            <strong>{t("Latest execution:" )}</strong> {latest.status} · {latest.environment} · {new Date(latest.executedAtUtc).toLocaleString()}
-            <p>Executed by subject: <code>{latest.executedBySubject}</code></p>
-            {latest.evidenceReference && <p>Evidence: <code>{latest.evidenceReference}</code></p>}
+            <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {t(latest.environment)} · {new Date(latest.executedAtUtc).toLocaleString()}
+            <p>{t("Executed by subject:")} <code>{latest.executedBySubject}</code></p>
+            {latest.evidenceReference && <p>{t("Evidence:")} <code>{latest.evidenceReference}</code></p>}
             {latest.notes && <p>{latest.notes}</p>}
           </div>}
           {payload?.canRecordResults && <form className="test-readiness-form" onSubmit={event => { event.preventDefault(); void save(test); }}>
-            <label>Result
+            <label>{t("Result")}
               <select value={test.executionBlocked ? "Blocked" : draft.status} disabled={test.executionBlocked}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, status: event.target.value as Draft["status"] } }))}>
                 <option value="Passed">{t("Passed" )}</option><option value="Failed">{t("Failed" )}</option><option value="Blocked">{t("Blocked" )}</option>
               </select>
             </label>
-            <label>Evidence reference
-              <input maxLength={500} value={draft.evidenceReference} placeholder="CI run, test report or evidence ID"
+            <label>{t("Evidence reference")}
+              <input maxLength={500} value={draft.evidenceReference} placeholder={t("CI run, test report or evidence ID")}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, evidenceReference: event.target.value } }))} />
             </label>
-            <label>Notes
-              <textarea maxLength={2000} rows={2} value={draft.notes} placeholder="Required for failed or blocked tests"
+            <label>{t("Notes")}
+              <textarea maxLength={2000} rows={2} value={draft.notes} placeholder={t("Required for failed or blocked tests")}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, notes: event.target.value } }))} />
             </label>
-            <button className="inventory-refresh" type="submit" disabled={saving === test.id}>{saving === test.id ? "Recording…" : "Record test result"}</button>
+            <button className="inventory-refresh" type="submit" disabled={saving === test.id}>{saving === test.id ? t("Recording…") : t("Record test result")}</button>
           </form>}
         </article>;
       })}
     </div>}
-    {!payload?.canRecordResults && !loading && <p className="catalogue-footer-note">Result entry is available to an authenticated Administrator only in the Development environment. This view remains read-only otherwise.</p>}
+    {!payload?.canRecordResults && !loading && <p className="catalogue-footer-note">{t("Result entry is available to an authenticated Administrator only in the Development environment. This view remains read-only otherwise.")}</p>}
   </section>;
 }
