@@ -8,7 +8,6 @@ This is an evaluation roadmap, not an approval to pursue certification and not a
 - **Organization certification:** independent assessment of a defined management-system scope by a competent certification body.
 
 ## Candidate management-system standards
-
 | Candidate | Purpose from supplied source | Evaluation gate |
 |---|---|---|
 | ISO/IEC 27001:2022 | Information-security management system. | Define legal entity, sites, services, assets, risk method, ISMS scope and independent certification route. |
