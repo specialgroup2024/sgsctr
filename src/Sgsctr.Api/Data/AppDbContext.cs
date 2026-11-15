@@ -8,6 +8,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<OrganizationLocation> OrganizationLocations => Set<OrganizationLocation>();
     public DbSet<PharmacyReceiptDraft> PharmacyReceiptDrafts => Set<PharmacyReceiptDraft>();
     public DbSet<PharmacyReceiptDraftLine> PharmacyReceiptDraftLines => Set<PharmacyReceiptDraftLine>();
+    public DbSet<PharmacySupplier> PharmacySuppliers => Set<PharmacySupplier>();
+    public DbSet<PharmacySupplierEvidence> PharmacySupplierEvidence => Set<PharmacySupplierEvidence>();
+    public DbSet<PharmacySupplierReviewRequest> PharmacySupplierReviewRequests => Set<PharmacySupplierReviewRequest>();
     public DbSet<RegulatorySource> RegulatorySources => Set<RegulatorySource>();
     public DbSet<RegulatoryDocument> RegulatoryDocuments => Set<RegulatoryDocument>();
     public DbSet<RegulatoryAlert> RegulatoryAlerts => Set<RegulatoryAlert>();
@@ -61,6 +64,47 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         receiptLine.HasOne(x => x.ReceiptDraft).WithMany(x => x.Lines).HasForeignKey(x => x.ReceiptDraftId).OnDelete(DeleteBehavior.Restrict);
         receiptLine.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
         receiptLine.HasOne(x => x.Unit).WithMany().HasForeignKey(x => x.UnitId).OnDelete(DeleteBehavior.Restrict);
+
+        var supplier = modelBuilder.Entity<PharmacySupplier>();
+        supplier.ToTable("PharmacySuppliers", table =>
+            table.HasCheckConstraint("CK_PharmacySuppliers_DraftOnly", "\"Status\" = 'Draft'"));
+        supplier.HasKey(x => x.Id);
+        supplier.HasIndex(x => x.Code).IsUnique();
+        supplier.Property(x => x.Code).HasMaxLength(32).IsRequired();
+        supplier.Property(x => x.DisplayName).HasMaxLength(200).IsRequired();
+        supplier.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        supplier.Property(x => x.Version).IsConcurrencyToken();
+        supplier.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+        supplier.Property(x => x.UpdatedBySubject).HasMaxLength(256).IsRequired();
+        supplier.Property(x => x.ChangeReason).HasMaxLength(500).IsRequired();
+
+        var supplierEvidence = modelBuilder.Entity<PharmacySupplierEvidence>();
+        supplierEvidence.ToTable("PharmacySupplierEvidence", table =>
+            table.HasCheckConstraint("CK_PharmacySupplierEvidence_Unverified", "\"VerificationStatus\" = 'Unverified'"));
+        supplierEvidence.HasKey(x => x.Id);
+        supplierEvidence.HasIndex(x => x.SupplierId);
+        supplierEvidence.Property(x => x.EvidenceKind).HasMaxLength(80).IsRequired();
+        supplierEvidence.Property(x => x.Title).HasMaxLength(200).IsRequired();
+        supplierEvidence.Property(x => x.Issuer).HasMaxLength(200);
+        supplierEvidence.Property(x => x.ReferenceNumber).HasMaxLength(120);
+        supplierEvidence.Property(x => x.SourceReference).HasMaxLength(1000);
+        supplierEvidence.Property(x => x.VerificationStatus).HasMaxLength(16).IsRequired();
+        supplierEvidence.Property(x => x.AddedBySubject).HasMaxLength(256).IsRequired();
+        supplierEvidence.Property(x => x.ChangeReason).HasMaxLength(500).IsRequired();
+        supplierEvidence.HasOne(x => x.Supplier).WithMany(x => x.Evidence)
+            .HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+
+        var supplierReview = modelBuilder.Entity<PharmacySupplierReviewRequest>();
+        supplierReview.ToTable("PharmacySupplierReviewRequests", table =>
+            table.HasCheckConstraint("CK_PharmacySupplierReviewRequests_PendingOnly", "\"Status\" = 'Pending'"));
+        supplierReview.HasKey(x => x.Id);
+        supplierReview.HasIndex(x => new { x.SupplierId, x.RequestedAtUtc });
+        supplierReview.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        supplierReview.Property(x => x.RequestedBySubject).HasMaxLength(256).IsRequired();
+        supplierReview.Property(x => x.Reason).HasMaxLength(500).IsRequired();
+        supplierReview.Property(x => x.CorrelationId).HasMaxLength(128).IsRequired();
+        supplierReview.HasOne(x => x.Supplier).WithMany(x => x.ReviewRequests)
+            .HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
 
         var source = modelBuilder.Entity<RegulatorySource>();
         source.ToTable("RegulatorySources");
