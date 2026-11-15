@@ -98,7 +98,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         supplierReview.ToTable("PharmacySupplierReviewRequests", table =>
             table.HasCheckConstraint("CK_PharmacySupplierReviewRequests_PendingOnly", "\"Status\" = 'Pending'"));
         supplierReview.HasKey(x => x.Id);
-        supplierReview.HasIndex(x => new { x.SupplierId, x.RequestedAtUtc });
+        supplierReview.HasIndex(x => x.SupplierId).IsUnique().HasFilter("\"Status\" = 'Pending'");
         supplierReview.Property(x => x.Status).HasMaxLength(16).IsRequired();
         supplierReview.Property(x => x.RequestedBySubject).HasMaxLength(256).IsRequired();
         supplierReview.Property(x => x.Reason).HasMaxLength(500).IsRequired();
