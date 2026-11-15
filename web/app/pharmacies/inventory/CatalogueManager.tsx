@@ -82,7 +82,7 @@ export default function CatalogueManager() {
     fetch(`/api/pharmacy/catalogue/${encodeURIComponent(selectedId)}/conversions`, { cache: "no-store" })
       .then(response => payload<Conversion[]>(response))
       .then(rows => { if (active) setConversions(rows); })
-      .catch(e => { if (active) setError(e instanceof Error ? e.message : "Conversions could not be loaded."); });
+      .catch(e => { if (active) setError(e instanceof Error ? e.message : t("Conversions could not be loaded.")); });
     return () => { active = false; };
   }, [selectedId]);
 
@@ -126,8 +126,8 @@ export default function CatalogueManager() {
       await load();
       setSelectedId(saved.id);
       resetProduct();
-      setNotice(editing ? "Draft product updated." : "Draft product created.");
-    } catch (e) { setError(e instanceof Error ? e.message : "Product could not be saved."); }
+      setNotice(editing ? "Draft product updated." : t("Draft product created."));
+    } catch (e) { setError(e instanceof Error ? e.message : t("Product could not be saved.")); }
     finally { setBusy(false); }
   }
 
@@ -139,8 +139,8 @@ export default function CatalogueManager() {
         body: JSON.stringify({ code: unitCode, name: unitName, symbol: unitSymbol || null })
       }));
       setUnitCode(""); setUnitName(""); setUnitSymbol("");
-      await load(); setNotice("Unit of measure added.");
-    } catch (e) { setError(e instanceof Error ? e.message : "Unit could not be saved."); }
+      await load(); setNotice(t("Unit of measure added."));
+    } catch (e) { setError(e instanceof Error ? e.message : t("Unit could not be saved.")); }
     finally { setBusy(false); }
   }
 
@@ -159,18 +159,26 @@ export default function CatalogueManager() {
       const response = await fetch(`/api/pharmacy/catalogue/${encodeURIComponent(selectedId)}/conversions`, { cache: "no-store" });
       setConversions(await payload<Conversion[]>(response));
       setNotice("Draft conversion added. It is reference data only and is not used in stock calculations.");
-    } catch (e) { setError(e instanceof Error ? e.message : "Conversion could not be saved."); }
+    } catch (e) { setError(e instanceof Error ? e.message : t("Conversion could not be saved.")); }
     finally { setBusy(false); }
   }
 
   return <div className="catalogue-manager">
     <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Generic catalogue only · Q38 professional review remains pending")}</strong><p>{t("Records and conversions remain drafts. Family and identifier entries are provisional only; no verified classification, product activation, stock, dispensing or valuation is enabled.")}</p></div></div>
     {error && <p className="form-error" role="alert">{t(error)}</p>}
+
     {notice && <p className="form-success" role="status">{notice}</p>}
     <section className="catalogue-layout">
       <div className="inventory-panel">
         <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PERSISTENT REFERENCE DATA")}</p><h3>{t("Product records")}</h3></div><span className="inventory-count">{products.length} drafts</span></div>
         <div className="inventory-toolbar"><label htmlFor="catalogue-search">{t("Search")}</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder={t("Search product names…")} /></div>
+
+    {notice && <p className="form-success" role="status">{t(notice)}</p>}
+    <section className="catalogue-layout">
+      <div className="inventory-panel">
+        <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PERSISTENT REFERENCE DATA")}</p><h3>{t("Product records")}</h3></div><span className="inventory-count">{products.length} drafts</span></div>
+        <div className="inventory-toolbar"><label htmlFor="catalogue-search">{t("Search")}</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search product names…" /></div>
+
         {loading ? <p className="loading-state">{t("Loading catalogue from PostgreSQL…")}</p> :
           filteredProducts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Product name")}</th><th>{t("Status")}</th><th>{t("Action")}</th></tr></thead><tbody>
             {filteredProducts.map(product => <tr key={product.id} className={selectedId === product.id ? "catalogue-selected-row" : ""}>
@@ -189,9 +197,15 @@ export default function CatalogueManager() {
             <label className="wide-field">{t("Display name")}<input required maxLength={200} value={displayName} onChange={e => setDisplayName(e.target.value)} /></label>
             <label className="wide-field">{t("Change reason (optional; do not enter patient or health data)")}<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label>
           </div>
+
           <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>{t("Cancel")}</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? "Saving…" : editing ? "Save draft" : "Create draft"}</button></div></div>
         </form> : <p className="inventory-empty">{t("Catalogue changes require the Administrator role. Your account currently has read-only access.")}</p>}
         <p className="catalogue-id-note">{selectedId ? `Selected record ID: ${selectedId}` : "A product receives a stable system identifier when created."}</p>
+
+          <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>{t("Cancel")}</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? t("Saving…") : editing ? t("Save draft") : t("Create draft")}</button></div></div>
+        </form> : <p className="inventory-empty">{t("Catalogue changes require the Administrator role. Your account currently has read-only access.")}</p>}
+        <p className="catalogue-id-note">{selectedId ? `${t("Selected record ID:")} ${selectedId}` : "A product receives a stable system identifier when created."}</p>
+
       </div>
     </section>
 
@@ -215,7 +229,11 @@ export default function CatalogueManager() {
         <div className="inventory-panel-heading"><div><p className="eyebrow">{t("EXPLICIT CONVERSION")}</p><h3>{t("Product-unit conversions")}</h3></div><span className="inventory-count">{t("Draft only")}</span></div>
         {selectedId ? <>
           <p className="catalogue-ratio-note">{t("A conversion means: 1 source unit = numerator ÷ denominator target units. Values are stored as exact whole-number ratios; no rounding or stock calculation is performed.")}</p>
+
           {conversions.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("From")}</th><th>To</th><th>{t("Exact ratio")}</th></tr></thead><tbody>
+
+          {conversions.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("From")}</th><th>{t("To")}</th><th>{t("Exact ratio")}</th></tr></thead><tbody>
+
             {conversions.map(x => <tr key={x.id}><td>{x.fromUnitName}</td><td>{x.toUnitName}</td><td><code>{x.numerator}/{x.denominator}</code></td></tr>)}
           </tbody></table></div> : <p className="inventory-empty">{t("No conversions are recorded for this product.")}</p>}
           {canManage && units.length >= 2 && <form className="location-form catalogue-form" onSubmit={saveConversion}>

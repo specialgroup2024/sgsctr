@@ -29,7 +29,7 @@ export default function RegulatoryIntelligencePage() {
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error ?? "Could not load regulatory intelligence.");
       setData(payload); setError("");
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "Service unavailable."); }
+    } catch (cause) { setError(cause instanceof Error ? cause.message : t("Service unavailable.")); }
     finally { setLoading(false); }
   }, []);
 
@@ -43,7 +43,11 @@ export default function RegulatoryIntelligencePage() {
       });
       const payload = response.status === 204 ? null : await response.json().catch(() => null);
       if (!response.ok) throw new Error(payload?.error ?? (response.status === 403 ? "Administrator permission is required." : "Action failed."));
+
       setMessage(body.action === "scan" ? `${t("Scan completed: ")}${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(payload?.newDocuments ?? 0)}${t(" new documents from ")}${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(payload?.sourcesChecked ?? 0)}${t(" sources.")}` : t("Alert acknowledged."));
+
+      setMessage(body.action === "scan" ? `${t("Scan completed")}: ${payload?.newDocuments ?? 0} ${t("new documents from")} ${payload?.sourcesChecked ?? 0} ${t("sources.")}` : t("Alert acknowledged."));
+
       await load();
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Action failed."); }
     finally { setBusy(false); }
@@ -62,6 +66,7 @@ export default function RegulatoryIntelligencePage() {
       {data?.canTriggerScan && <button className="primary-button" disabled={busy} onClick={() => void act({ action: "scan" })}>{busy ? "Scanning…" : "Scan EDA now"}</button>}
     </section>
 
+
     {error && <section className="notice-panel" role="alert"><strong>{t("Monitoring issue")}</strong><p>{t(error)}</p></section>}
     {message && <section className="notice-panel"><strong>{t(message)}</strong></section>}
     <section className="bottom-grid">
@@ -70,13 +75,28 @@ export default function RegulatoryIntelligencePage() {
         <p className="muted">{data?.lastRun ? `${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(data.lastRun.discoveredCount)} ${t("candidate links")} · ${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-GB").format(data.lastRun.newDocumentCount)} ${t("new documents")}` : t("The first background scan runs when the API starts.")}</p>
       </article>
       <article className="info-card"><div className="info-card-heading"><span>!</span><strong>{t("Unread alerts" )}</strong></div><p className="muted">{data?.alerts.length ?? 0} {t("alerts awaiting acknowledgement.")}</p><span className="safe-label">{t("HUMAN REVIEW REQUIRED")}</span></article>
+
+    {error && <section className="notice-panel" role="alert"><strong>{t("Monitoring issue")}</strong><p>{error}</p></section>}
+    {message && <section className="notice-panel"><strong>{t(message)}</strong></section>}
+    <section className="bottom-grid">
+      <article className="info-card"><div className="info-card-heading"><span>◈</span><strong>{t("Latest scan" )}</strong></div>
+        <p className="muted">{data?.lastRun ? `${data.lastRun.status} · ${date(data.lastRun.completedAtUtc, locale)}` : "No completed scan recorded yet."}</p>
+        <p className="muted">{data?.lastRun ? `${data.lastRun.discoveredCount} candidate links · ${data.lastRun.newDocumentCount} new documents` : "The first background scan runs when the API starts."}</p>
+      </article>
+      <article className="info-card"><div className="info-card-heading"><span>!</span><strong>{t("Unread alerts" )}</strong></div><p className="muted">{data?.alerts.length ?? 0} alerts awaiting acknowledgement.</p><span className="safe-label">{t("HUMAN REVIEW REQUIRED")}</span></article>
+
     </section>
 
     <div className="section-heading"><div><p className="eyebrow">{t("SOURCE COVERAGE" )}</p><h2>{t("Configured EDA sources" )}</h2></div></div>
     <section className="sector-grid">
       {(data?.sources ?? []).map(source => <article className="sector-card" key={source.id}>
+
         <div className="sector-top"><span className="sector-symbol">◎</span><span className="sector-tag">SOURCE CLASS {source.sourceClass}</span></div>
         <h3>{source.name}</h3><p>{t("Last checked:")} {date(source.lastCheckedAtUtc, locale)}</p>
+
+        <div className="sector-top"><span className="sector-symbol">◎</span><span className="sector-tag">{t("SOURCE CLASS")} {source.sourceClass}</span></div>
+        <h3>{t(source.name)}</h3><p>{t("Last checked:")} {date(source.lastCheckedAtUtc, locale)}</p>
+
         <p>{source.lastError ? `${t("Last error:")} ${source.lastError}` : source.lastSuccessAtUtc ? `${t("Last successful check:")} ${date(source.lastSuccessAtUtc, locale)}` : t("Awaiting first successful check.")}</p>
         <a className="text-link" href={source.url} target="_blank" rel="noreferrer">{t("Open official source ↗")}</a>
       </article>)}

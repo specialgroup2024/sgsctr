@@ -29,7 +29,11 @@ type Draft = { status: "Passed" | "Failed" | "Blocked"; evidenceReference: strin
 const initialDraft: Draft = { status: "Passed", evidenceReference: "", notes: "" };
 
 export default function TestReadiness() {
+
   const { t, locale } = useI18n();
+
+  const { t, formatDate } = useI18n();
+
   const [payload, setPayload] = useState<Payload | null>(null);
   const [drafts, setDrafts] = useState<Record<string, Draft>>({});
   const [loading, setLoading] = useState(true);
@@ -44,10 +48,10 @@ export default function TestReadiness() {
       const response = await fetch("/api/pharmacy/test-readiness", { cache: "no-store" });
       if (response.status === 401) { window.location.assign("/login"); return; }
       const body = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(body?.error ?? "Test readiness could not be loaded.");
+      if (!response.ok) throw new Error(body?.error ?? t("Test readiness could not be loaded."));
       setPayload(body as Payload);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Test readiness could not be loaded.");
+      setError(e instanceof Error ? e.message : t("Test readiness could not be loaded."));
     } finally {
       setLoading(false);
     }
@@ -68,11 +72,11 @@ export default function TestReadiness() {
         })
       });
       const body = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(body?.detail ?? body?.error ?? "Test result could not be recorded.");
-      setMessage("Test execution recorded in PostgreSQL. Approval statuses were not changed.");
+      if (!response.ok) throw new Error(body?.detail ?? body?.error ?? t("Test result could not be recorded."));
+      setMessage(t("Test execution recorded in PostgreSQL. Approval statuses were not changed."));
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Test result could not be recorded.");
+      setError(e instanceof Error ? e.message : t("Test result could not be recorded."));
     } finally {
       setSaving("");
     }
@@ -106,7 +110,11 @@ export default function TestReadiness() {
       <article className="inventory-kpi"><span>{t("Blocked" )}</span><strong>{blocked}</strong><small>{t("Professional, owner or implementation gate" )}</small></article>
     </div>
     {error && <p className="form-error" role="alert">{t(error)}</p>}
+
     {message && <p className="catalogue-id-note" role="status">{message}</p>}
+
+    {message && <p className="catalogue-id-note" role="status">{t(message)}</p>}
+
     {loading && <p className="loading-state">{t("Loading test cases from PostgreSQL…" )}</p>}
     {!loading && !error && <div className="test-readiness-list">
       {cases.map(test => {
@@ -114,6 +122,7 @@ export default function TestReadiness() {
         const latest = test.latestExecution;
         return <article className="inventory-panel test-readiness-card" key={test.testCode}>
           <div className="inventory-panel-heading">
+
             <div><p className="eyebrow">{test.gateCode} · {test.testCode}</p><h3>{test.title}</h3></div>
             <span className={"inventory-status-chip " + (latest?.status === "Passed" ? "approval-recorded" : latest?.status === "Failed" ? "approval-pending" : "approval-pending")}>{t(latest?.status ?? (test.executionBlocked ? "Blocked" : "Not run"))}</span>
           </div>
@@ -123,12 +132,23 @@ export default function TestReadiness() {
           {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{test.blockReason}</p></div></div>}
           {latest && <div className="catalogue-id-note">
             <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {latest.environment} · {new Date(latest.executedAtUtc).toLocaleString(locale === "ar" ? "ar-EG" : "en-GB")}
+
+            <div><p className="eyebrow">{test.gateCode} · {test.testCode}</p><h3>{t(test.title)}</h3></div>
+            <span className={"inventory-status-chip " + (latest?.status === "Passed" ? "approval-recorded" : latest?.status === "Failed" ? "approval-pending" : "approval-pending")}>{t(latest?.status ?? (test.executionBlocked ? "Blocked" : "Not run"))}</span>
+          </div>
+          <p>{t(test.objective)}</p>
+          <p><strong>{t("Expected result:" )}</strong> {t(test.expectedResult)}</p>
+          <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {t(test.testMode)}</p>
+          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{t(test.blockReason)}</p></div></div>}
+          {latest && <div className="catalogue-id-note">
+            <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {t(latest.environment)} · {(latest.executedAtUtc ? formatDate(latest.executedAtUtc) : t("Not available"))}
+
             <p>{t("Executed by subject:")} <code>{latest.executedBySubject}</code></p>
             {latest.evidenceReference && <p>{t("Evidence:")} <code>{latest.evidenceReference}</code></p>}
             {latest.notes && <p>{latest.notes}</p>}
           </div>}
           {payload?.canRecordResults && <form className="test-readiness-form" onSubmit={event => { event.preventDefault(); void save(test); }}>
-            <label>Result
+            <label>{t("Result")}
               <select value={test.executionBlocked ? "Blocked" : draft.status} disabled={test.executionBlocked}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, status: event.target.value as Draft["status"] } }))}>
                 <option value="Passed">{t("Passed" )}</option><option value="Failed">{t("Failed" )}</option><option value="Blocked">{t("Blocked" )}</option>
@@ -142,7 +162,7 @@ export default function TestReadiness() {
               <textarea maxLength={2000} rows={2} value={draft.notes} placeholder={t("Required for failed or blocked tests")}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, notes: event.target.value } }))} />
             </label>
-            <button className="inventory-refresh" type="submit" disabled={saving === test.id}>{saving === test.id ? "Recording…" : "Record test result"}</button>
+            <button className="inventory-refresh" type="submit" disabled={saving === test.id}>{saving === test.id ? t("Recording…") : t("Record test result")}</button>
           </form>}
         </article>;
       })}

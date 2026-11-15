@@ -92,11 +92,15 @@ export default function ApprovalRegister() {
         <p>{item.scopeDescription}</p>
         <p className="catalogue-footer-note"><strong>{t("Evidence:")}</strong> <code>{item.evidenceReference}</code></p>
         {item.status !== "Pending" && <div className="catalogue-id-note">
+
           <strong>{t("Recorded decision:")}</strong> {t(statusLabel(item.status))}
+
+          <strong>Recorded decision:</strong> {t(statusLabel(item.status))}
+
           {item.decisionAtUtc ? " · " + new Date(item.decisionAtUtc).toLocaleString() : ""}
-          {item.decisionBySubject ? " · " + item.decisionBySubject : " · Approver identity not captured in the application"}
-          {item.decisionReference ? <p>Reference: {item.decisionReference}</p> : null}
-          {item.conditions ? <p>Conditions: {item.conditions}</p> : null}
+          {item.decisionBySubject ? " · " + item.decisionBySubject : " · " + t("Approver identity not captured in the application")}
+          {item.decisionReference ? <p>{t("Reference:")} {item.decisionReference}</p> : null}
+          {item.conditions ? <p>{t("Conditions:")} {t(item.conditions)}</p> : null}
           {item.decisionNotes ? <p>{item.decisionNotes}</p> : null}
         </div>}
       </article>)}

@@ -35,7 +35,11 @@ function GateNotice({ title, detail }: { title: string; detail: string }) {
 }
 
 export default function InventoryWorkspace() {
+
   const { t, locale } = useI18n();
+
+  const { t, formatDate } = useI18n();
+
   const [tab, setTab] = useState<Tab>("overview");
   const [locations, setLocations] = useState<Location[]>([]);
   const [system, setSystem] = useState<SystemStatus | null>(null);
@@ -102,7 +106,11 @@ export default function InventoryWorkspace() {
           </ul><Link className="inventory-text-link" href="/pharmacies/regulatory-intelligence">{t("Open Egypt regulatory intelligence ↗")}</Link>
         </section>
       </div>
+
       <GateNotice title={t("No live stock or valuation data is available yet.")} detail={t("Generic product identities, units and draft conversion references are persisted. Product-family classification, regulatory identifiers and activation remain gated; no inventory quantities, suppliers, receipts, transfers or costing records are stored or simulated.")} />
+
+      <GateNotice title={t("No live stock or valuation data is available yet.")} detail="Generic product identities, units and draft conversion references are persisted. Product-family classification, regulatory identifiers and activation remain gated; no inventory quantities, suppliers, receipts, transfers or costing records are stored or simulated." />
+
     </>}
     {tab === "products" && <CatalogueManager />}
     {tab === "approvals" && <ApprovalRegister />}
@@ -110,6 +118,7 @@ export default function InventoryWorkspace() {
     {tab === "receiving" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("INBOUND STOCK")}</p><h2>{t("Receiving & inspection" )}</h2><p>{t("Purchase-order matching, delivery checks and quality disposition." )}</p></div><button className="inventory-disabled-action" disabled>{t("New receipt" )}</button></div>
       <div className="inventory-flow-grid"><article><b>01</b><strong>{t("Delivery evidence")}</strong><small>{t("Supplier, documents, item, quantity and unit")}</small></article><article><b>02</b><strong>{t("Batch inspection")}</strong><small>{t("Lot, manufacture/expiry, packaging and transport evidence")}</small></article><article><b>03</b><strong>{t("Disposition")}</strong><small>{t("Accepted, rejected or quarantined quantities")}</small></article><article><b>04</b><strong>{t("Authorized release")}</strong><small>{t("Only approved release can make stock available")}</small></article></div>
       <div className="inventory-empty-state compact-empty"><h3>{t("No receipts recorded" )}</h3><p>{t("Receiving is not connected to a purchasing or inventory ledger API. No receipt can be created, accepted or released in this phase.")}</p></div>
+
       <GateNotice title={t("Receiving is blocked pending approved SOPs.")} detail={t("Pharmacy/quality must approve receipt roles, evidence by product class, partial acceptance, quarantine, rejected deliveries and authorized release. No stock-changing endpoint exists.")} />
     </section>}
     {tab === "transfers" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("LOCATION MOVEMENT")}</p><h2>{t("Stock transfers")}</h2><p>{t("Warehouse-to-branch and direct branch-to-branch movement." )}</p></div><button className="inventory-disabled-action" disabled>{t("New transfer" )}</button></div>
@@ -117,10 +126,20 @@ export default function InventoryWorkspace() {
       <div className="inventory-flow-grid"><article><b>01</b><strong>{t("Request & approve")}</strong><small>{t("Roles and limits await sign-off")}</small></article><article><b>02</b><strong>{t("Pick & dispatch")}</strong><small>{t("Lot-level custody and dispatch event")}</small></article><article><b>03</b><strong>{t("In transit")}</strong><small>{t("Partial receipt and discrepancies remain visible")}</small></article><article><b>04</b><strong>{t("Receive & reconcile")}</strong><small>{t("Authorized close; no silent loss")}</small></article></div>
       <div className="inventory-empty-state compact-empty"><h3>{t("No transfer ledger exists" )}</h3><p>{t("The owner-confirmed direct branch-to-branch route is represented in this UI, but transfer requests, dispatch, receipt and reconciliation are not enabled.")}</p></div>
       <GateNotice title={t("Transfer posting remains disabled.")} detail={t("Pharmacy operations and the owner must approve custody, lifecycle states, approver separation, emergency transfers, partial receipt and discrepancy resolution. Accountant approval is also required before transfer valuation.")} />
+
+      <GateNotice title={t("Receiving is blocked pending approved SOPs.")} detail="Pharmacy/quality must approve receipt roles, evidence by product class, partial acceptance, quarantine, rejected deliveries and authorized release. No stock-changing endpoint exists." />
+    </section>}
+    {tab === "transfers" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("LOCATION MOVEMENT")}</p><h2>{t("Stock transfers")}</h2><p>{t("Warehouse-to-branch and direct branch-to-branch movement." )}</p></div><button className="inventory-disabled-action" disabled>{t("New transfer" )}</button></div>
+      <div className="inventory-transfer-route"><div><span>{t("FROM")}</span><strong>{t("Source location")}</strong><small>{t("Approved location register")}</small></div><span className="inventory-route-arrow">→</span><div><span>TO</span><strong>{t("Destination location")}</strong><small>{t("Direct branch route supported by design")}</small></div></div>
+      <div className="inventory-flow-grid"><article><b>01</b><strong>{t("Request & approve")}</strong><small>{t("Roles and limits await sign-off")}</small></article><article><b>02</b><strong>{t("Pick & dispatch")}</strong><small>{t("Lot-level custody and dispatch event")}</small></article><article><b>03</b><strong>{t("In transit")}</strong><small>{t("Partial receipt and discrepancies remain visible")}</small></article><article><b>04</b><strong>{t("Receive & reconcile")}</strong><small>{t("Authorized close; no silent loss")}</small></article></div>
+      <div className="inventory-empty-state compact-empty"><h3>{t("No transfer ledger exists" )}</h3><p>{t("The owner-confirmed direct branch-to-branch route is represented in this UI, but transfer requests, dispatch, receipt and reconciliation are not enabled.")}</p></div>
+      <GateNotice title={t("Transfer posting remains disabled.")} detail="Pharmacy operations and the owner must approve custody, lifecycle states, approver separation, emergency transfers, partial receipt and discrepancy resolution. Accountant approval is also required before transfer valuation." />
+
     </section>}
     {tab === "batches" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("QUALITY & TRACEABILITY")}</p><h2>{t("Batches & expiry")}</h2><p>{t("Lot traceability, FEFO candidate visibility, quarantine and recall controls." )}</p></div><span className="inventory-status-chip">{t("Not connected")}</span></div>
       <div className="inventory-flow-grid"><article><b>{t("LOT")}</b><strong>{t("Batch identity")}</strong><small>{t("Lot, serial and GTIN applicability by product")}</small></article><article><b>{t("DATE")}</b><strong>{t("Expiry & retest")}</strong><small>{t("Product-specific expiry and retest evidence")}</small></article><article><b>{t("FEFO")}</b><strong>{t("Expiry rotation")}</strong><small>{t("Candidate selection after pharmacist approval")}</small></article><article><b>{t("HOLD")}</b><strong>{t("Quarantine & recall")}</strong><small>{t("Segregated status and authorized disposition")}</small></article></div>
       <div className="inventory-empty-state compact-empty"><h3>{t("No batch records or expiry alerts" )}</h3><p>{t("There is no batch/lot inventory data source yet. This page deliberately does not invent stock, expiry dates, temperature readings or recall status.")}</p></div>
+
       <GateNotice title={t("Quality rules require qualified review.")} detail={t("A licensed pharmacist/quality lead must approve product-specific lot, expiry, FEFO, temperature, returns, recall and disposition requirements. Site licensing applicability is still open (Q37).")} />
     </section>}
     {tab === "reports" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("MANAGEMENT VISIBILITY" )}</p><h2>{t("Inventory reports" )}</h2><p>{t("Location, product, movement, expiry, discrepancy and valuation reporting." )}</p></div><span className="inventory-status-chip">{t("Not connected")}</span></div>
@@ -128,5 +147,14 @@ export default function InventoryWorkspace() {
       <GateNotice title={t("Reports are not populated with sample numbers.")} detail={t("Inventory reports will be connected only to approved, persisted data and reconciled ledger queries. Valuation and financial reconciliation remain blocked until accountant-approved costing policy and examples are signed.")} />
     </section>}
     <footer className="inventory-footer"><span>{t("SGSCTR · Pharmacy inventory workspace")}</span><span>{t(pageTitle)} · {t("Draft catalogue / non-posting inventory")}</span><span>{t("Last service check:")} {lastChecked ? new Date(lastChecked).toLocaleTimeString(locale === "ar" ? "ar-EG" : "en-GB") : t("Not available")}</span></footer>
+
+      <GateNotice title={t("Quality rules require qualified review.")} detail="A licensed pharmacist/quality lead must approve product-specific lot, expiry, FEFO, temperature, returns, recall and disposition requirements. Site licensing applicability is still open (Q37)." />
+    </section>}
+    {tab === "reports" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("MANAGEMENT VISIBILITY" )}</p><h2>{t("Inventory reports" )}</h2><p>{t("Location, product, movement, expiry, discrepancy and valuation reporting." )}</p></div><span className="inventory-status-chip">{t("Not connected")}</span></div>
+      <div className="inventory-report-grid">{["Stock by location and product","Movement history","Near-expiry and expired stock","Quarantine and recall status","In-transit and transfer discrepancies","Inventory valuation and reconciliation"].map(label => <article key={label}><span>▥</span><strong>{label}</strong><small>{t("Report becomes available after the relevant approved data source exists.")}</small></article>)}</div>
+      <GateNotice title={t("Reports are not populated with sample numbers.")} detail="Inventory reports will be connected only to approved, persisted data and reconciled ledger queries. Valuation and financial reconciliation remain blocked until accountant-approved costing policy and examples are signed." />
+    </section>}
+    <footer className="inventory-footer"><span>{t("SGSCTR · Pharmacy inventory workspace")}</span><span>{t(pageTitle)} · {t("Draft catalogue / non-posting inventory")}</span><span>Last service check: {lastChecked ? new Date(lastChecked).toLocaleTimeString() : "Not available"}</span></footer>
+
   </div></AppShell>;
 }

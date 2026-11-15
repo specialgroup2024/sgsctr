@@ -5,7 +5,7 @@ concurrency:
   cancel-in-progress: true
 on:
   push:
-    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion]
+    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion, feat/complete-bilingual-rtl-coverage]
   pull_request:
     branches: [master]
 permissions:
@@ -72,6 +72,24 @@ jobs:
           AUTHENTICATION_ENABLED: "true"
           COOKIE_SECURE: "false"
         run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000
+      - name: Install Playwright Chromium for responsive RTL checks
+        run: |
+          cd web
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Verify English and Arabic layouts on desktop and mobile
+        env:
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
+          WEB_BASE_URL: http://127.0.0.1:3000
+        run: cd web && node scripts/rtl-visual-check.mjs
+      - name: Upload Arabic desktop/mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgsctr-arabic-rtl-screenshots
+          path: web/artifacts/rtl-visual/
+          if-no-files-found: ignore
       - name: Container diagnostics on failure
         if: failure()
         env:
