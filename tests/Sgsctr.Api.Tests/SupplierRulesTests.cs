@@ -95,4 +95,46 @@ public sealed class SupplierRulesTests
         Assert.False(SupplierRules.IsValidEvidence("Kind", "Title", new string('r', 501)));
     }
 
+    [Theory]
+    [InlineData("LegalLicenceVerification")]
+    [InlineData("DueDiligenceExecution")]
+    [InlineData("ReviewerAuthorityApplication")]
+    [InlineData("QualificationReview")]
+    [InlineData("PurchasingEligibilityEvaluation")]
+    [InlineData("ReceivingEligibilityEvaluation")]
+    public void SupplierAssuranceRules_AcceptsOnlyDefinedWorkflowTypes(string caseType) =>
+        Assert.True(SupplierAssuranceRules.IsKnownCaseType(caseType));
+
+    [Theory]
+    [InlineData("PurchasingEligibilityEvaluation")]
+    [InlineData("ReceivingEligibilityEvaluation")]
+    public void SupplierAssuranceRules_EligibilityRequestsAreBlockedByDefault(string caseType)
+    {
+        var state = SupplierAssuranceRules.InitialState(caseType);
+        Assert.Equal("Blocked", state.Status);
+        Assert.Equal("POLICY_AND_QUALIFICATION_NOT_APPROVED", state.BlockerCode);
+    }
+
+    [Theory]
+    [InlineData("LegalLicenceVerification")]
+    [InlineData("DueDiligenceExecution")]
+    [InlineData("ReviewerAuthorityApplication")]
+    [InlineData("QualificationReview")]
+    public void SupplierAssuranceRules_NonEligibilityRequestsRemainPending(string caseType)
+    {
+        var state = SupplierAssuranceRules.InitialState(caseType);
+        Assert.Equal("Pending", state.Status);
+        Assert.Null(state.BlockerCode);
+    }
+
+    [Fact]
+    public void SupplierAssuranceRules_RejectsUnknownTypesAndOversizedInputs()
+    {
+        Assert.False(SupplierAssuranceRules.IsValidRequest("ApproveSupplier", "reason", null));
+        Assert.False(SupplierAssuranceRules.IsValidRequest("QualificationReview", " ", null));
+        Assert.False(SupplierAssuranceRules.IsValidRequest("QualificationReview", new string('x', 501), null));
+        Assert.False(SupplierAssuranceRules.IsValidRequest("QualificationReview", "reason", new string('x', 201)));
+        Assert.True(SupplierAssuranceRules.IsValidRequest("QualificationReview", "reason", "site/activity scope pending definition"));
+    }
+
 }
