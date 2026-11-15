@@ -3,12 +3,11 @@
 Use standards as versioned, testable references. A reference is not evidence of implementation, compliance or certification. Recheck the issuing body's official publication before a design, procurement or release decision.
 
 ## ICT and security baseline
-
 | Reference | Source-derived baseline | Application and evidence |
 |---|---|---|
 | OWASP ASVS | 5.0.0 stable release stated in supplied source (2026-11-07). | Select applicable control IDs; record version, test, result and evidence location. |
 | OWASP Top 10 | 2025 awareness resource. | Use for threat awareness, not as a complete verification plan. |
-| OWASP MASVS | Mobile application security verification framework. | Apply only when the React Native/mobile client is developed; cover storage, authentication, network, platform and privacy. |
+| OWASP MASVS | Mobile application security verification framework. | Apply when the React Native/mobile client is developed; cover storage, authentication, network, platform and privacy. |
 | NIST SSDF | v1.1 final; v1.2 described in supplied source as draft. | Treat drafts as monitoring items, not adopted baselines. |
 | OWASP AISVS | v1.0 identified in supplied source. | Evaluate only if application AI capabilities are in scope; require human oversight and output validation. |
 
