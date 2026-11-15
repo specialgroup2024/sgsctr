@@ -42,4 +42,27 @@ public sealed class SupplierRulesTests
         Assert.False(SupplierRules.IsValidEvidence("Kind", "", "Reason"));
         Assert.False(SupplierRules.IsValidEvidence("Kind", "Title", " "));
     }
+    [Fact]
+    public void IsValidCode_AcceptsMaximumLengthAndRejectsOverflow()
+    {
+        Assert.True(SupplierRules.IsValidCode(new string('a', 32)));
+        Assert.False(SupplierRules.IsValidCode(new string('a', 33)));
+    }
+
+    [Fact]
+    public void IsValidDisplayName_AcceptsMaximumLengthAndRejectsOverflow()
+    {
+        Assert.True(SupplierRules.IsValidDisplayName(new string('x', 200)));
+        Assert.False(SupplierRules.IsValidDisplayName(new string('x', 201)));
+    }
+
+    [Fact]
+    public void IsValidEvidence_EnforcesAllFieldLimits()
+    {
+        Assert.True(SupplierRules.IsValidEvidence(new string('k', 80), new string('t', 200), new string('r', 500)));
+        Assert.False(SupplierRules.IsValidEvidence(new string('k', 81), "Title", "Reason"));
+        Assert.False(SupplierRules.IsValidEvidence("Kind", new string('t', 201), "Reason"));
+        Assert.False(SupplierRules.IsValidEvidence("Kind", "Title", new string('r', 501)));
+    }
+
 }
