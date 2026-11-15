@@ -514,6 +514,15 @@ export const messages:Record<string,string>={
   "SOURCE CLASS": "فئة المصدر",
   "Live service connections": "اتصالات الخدمات المباشرة",
   "Pharmacy inventory sections": "أقسام مخزون الصيدليات",
+  "Search product names…": "ابحث عن أسماء المنتجات…",
+  "Unique unit code": "رمز وحدة فريد",
+  "Unit name": "اسم الوحدة",
+  "EDA registration": "تسجيل هيئة الدواء المصرية",
+  "EDA cosmetics notification": "إخطار مستحضرات التجميل لدى هيئة الدواء المصرية",
+  "INVENTORY": "المخزون",
+  "EGYPT": "مصر",
+  "REGULATORY": "تنظيمي",
+  "OPERATIONS PLATFORM": "منصة العمليات",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}

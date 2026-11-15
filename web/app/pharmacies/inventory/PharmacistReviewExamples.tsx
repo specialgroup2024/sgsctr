@@ -43,7 +43,7 @@ export default function PharmacistReviewExamples() {
         <div><dt>{t("Pharmacy")}</dt><dd>Nile Care Pharmacy</dd></div>
         <div><dt>{t("Authorization")}</dt><dd>AUTH-DEMO-2026-018</dd></div>
         <div><dt>{t("Decision")}</dt><dd><strong>{t("REJECT")}</strong></dd></div>
-        <div><dt>{t("Decision date")}</dt><dd>15 November 2026</dd></div>
+        <div><dt>{t("Decision date")}</dt><dd>{formatDate("2026-11-15T00:00:00Z", { dateStyle: "long", timeZone: "UTC" })}</dd></div>
         <div><dt>{t("Reason")}</dt><dd>{t("Insufficient evidence of prescription verification controls")}</dd></div>
         <div><dt>{t("Conditions / required follow-up")}</dt><dd>{t("Correct identified workflow gaps and submit updated evidence")}</dd></div>
         <div><dt>{t("Supporting evidence references")}</dt><dd>REJ-EVD-DEMO-001, REJ-EVD-DEMO-002</dd></div>

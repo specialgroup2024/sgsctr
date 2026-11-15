@@ -80,7 +80,7 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
         {!data?.identifiers.length && <p className="inventory-empty">{t("No identifier proposals recorded.")}</p>}
         {canManage && <form className="location-form catalogue-form" onSubmit={e => submit(e, "identifiers", { schemeCode, value: identifierValue, packagingLevel: packagingLevel || null, sourceUri: sourceUri || null, changeReason: changeReason || null }, "Identifier proposal saved as pending verification.")}>
           <div className="form-grid">
-            <label>{t("Identifier system")}<select value={schemeCode} onChange={e => setSchemeCode(e.target.value)}><option value="GTIN">GTIN</option><option value="UDI-DI">UDI-DI</option><option value="EDA-Registration">EDA registration</option><option value="EDA-Cosmetics-Notification">EDA cosmetics notification</option></select></label>
+            <label>{t("Identifier system")}<select value={schemeCode} onChange={e => setSchemeCode(e.target.value)}><option value="GTIN">GTIN</option><option value="UDI-DI">UDI-DI</option><option value="EDA-Registration">{t("EDA registration")}</option><option value="EDA-Cosmetics-Notification">{t("EDA cosmetics notification")}</option></select></label>
             <label>{t("Identifier value")}<input required maxLength={160} value={identifierValue} onChange={e => setIdentifierValue(e.target.value)} /></label>
             <label>{t("Packaging level (unverified)")}<input maxLength={64} value={packagingLevel} onChange={e => setPackagingLevel(e.target.value)} /></label>
             <label>{t("Source URL (HTTPS)")}<input type="url" value={sourceUri} onChange={e => setSourceUri(e.target.value)} /></label>

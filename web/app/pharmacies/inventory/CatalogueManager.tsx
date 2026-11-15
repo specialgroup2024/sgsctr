@@ -170,7 +170,7 @@ export default function CatalogueManager() {
     <section className="catalogue-layout">
       <div className="inventory-panel">
         <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PERSISTENT REFERENCE DATA")}</p><h3>{t("Product records")}</h3></div><span className="inventory-count">{products.length} drafts</span></div>
-        <div className="inventory-toolbar"><label htmlFor="catalogue-search">{t("Search")}</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search product names…" /></div>
+        <div className="inventory-toolbar"><label htmlFor="catalogue-search">{t("Search")}</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder={t("Search product names…")} /></div>
         {loading ? <p className="loading-state">{t("Loading catalogue from PostgreSQL…")}</p> :
           filteredProducts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Product name")}</th><th>{t("Status")}</th><th>{t("Action")}</th></tr></thead><tbody>
             {filteredProducts.map(product => <tr key={product.id} className={selectedId === product.id ? "catalogue-selected-row" : ""}>
@@ -203,8 +203,8 @@ export default function CatalogueManager() {
         </tbody></table></div> : <p className="inventory-empty">{t("No units have been defined.")}</p>}
         {canManage && <form className="location-form catalogue-form" onSubmit={saveUnit}>
           <div className="form-grid">
-            <label>{t("Code")}<input required maxLength={24} value={unitCode} onChange={e => setUnitCode(e.target.value)} placeholder="Unique unit code" /></label>
-            <label>{t("Name")}<input required maxLength={100} value={unitName} onChange={e => setUnitName(e.target.value)} placeholder="Unit name" /></label>
+            <label>{t("Code")}<input required maxLength={24} value={unitCode} onChange={e => setUnitCode(e.target.value)} placeholder={t("Unique unit code")} /></label>
+            <label>{t("Name")}<input required maxLength={100} value={unitName} onChange={e => setUnitName(e.target.value)} placeholder={t("Unit name")} /></label>
             <label>{t("Symbol (optional)")}<input maxLength={24} value={unitSymbol} onChange={e => setUnitSymbol(e.target.value)} /></label>
           </div>
           <button type="submit" className="primary-button" disabled={busy}>{t("Add unit")}</button>
