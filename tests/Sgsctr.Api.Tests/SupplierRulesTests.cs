@@ -34,6 +34,30 @@ public sealed class SupplierRulesTests
         Assert.False(SupplierRules.IsValidDisplayName(new string('x', 201)));
     }
 
+    [Theory]
+    [InlineData("LegalName")]
+    [InlineData("RegistrationNumber")]
+    [InlineData("LicenceNumber")]
+    public void IsValidDeclaration_AcceptsSupportedOwnerDeclaredFields(string field) =>
+        Assert.True(SupplierRules.IsValidDeclaration(field, "Supplier-declared value", "Initial capture"));
+
+    [Fact]
+    public void IsValidDeclaration_RejectsUnknownOrOversizedValues()
+    {
+        Assert.False(SupplierRules.IsValidDeclaration("VerifiedStatus", "Approved", "Reason"));
+        Assert.False(SupplierRules.IsValidDeclaration("LegalName", new string('x', 501), "Reason"));
+        Assert.False(SupplierRules.IsValidDeclaration("LegalName", "Name", " "));
+    }
+
+    [Fact]
+    public void IsValidBusinessContact_RequiresBusinessChannelAndDepartment()
+    {
+        Assert.True(SupplierRules.IsValidBusinessContact("DepartmentEmail", "procurement@example.test", "Procurement", "Initial capture"));
+        Assert.False(SupplierRules.IsValidBusinessContact("PersonalMobile", "01000000000", "General", "Reason"));
+        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "name@example.test", "Individual", "Reason"));
+        Assert.False(SupplierRules.IsValidBusinessContact("DepartmentEmail", "mail@example.test", "General", " "));
+    }
+
     [Fact]
     public void IsValidEvidence_RequiresKindTitleAndReason()
     {
