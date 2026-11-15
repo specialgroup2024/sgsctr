@@ -1,6 +1,6 @@
 # INV-B technical acceptance work package
 
-- Status: **blocked — technical acceptance not established**.
+- Status: **blocked — technical acceptance not established**; PR #63 is merged, but the required checks did not execute.
 - Date: 2026-11-15.
 - Base: master after PR #62 merge commit `74970b4ffdb968c95388c4d0fe4e9aab6102c543`.
 - Work branch: `fix/invb-technical-acceptance`.
@@ -38,7 +38,7 @@ See [INV-B technical acceptance deliberation](../roles/invb-technical-acceptance
 
 ## CI execution blocker
 
-PR #63 was opened to execute the acceptance matrix. GitHub Actions created both required jobs, but both immediately failed with `runner_id: 0`, empty step lists and no downloadable logs. A rerun produced the same result. No build, test, migration, API, database, BFF or browser command is evidenced as having started. The failure is an infrastructure/runner blocker, not evidence that the code passed or that a code assertion failed. The Markdown files changed in this work package are each below 200 lines, but the repository-wide line-limit script was not executed.
+PR #63 was merged by the repository owner. Its GitHub Actions jobs failed before runner assignment (`runner_id: 0`), with empty step lists and no downloadable logs; the rerun produced the same result. No build, test, migration, API, database, BFF or browser command is evidenced as having started. The failure is an infrastructure/runner blocker, not evidence that the code passed or that a code assertion failed. PR #64 separately fixed the duplicate `Evidence type` and `Expires on` translation keys and was also merged by the owner (master merge commit `f92b9bb4d18ddf76a3f9d63570e61dec0e2f479c`). The duplicate-key source scan passed, but TypeScript/Docker build and browser checks remain unverified. The Markdown files changed in this work package are each below 200 lines, but the repository-wide line-limit script was not executed.
 
 ## Release boundary
 
