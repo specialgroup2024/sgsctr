@@ -105,6 +105,10 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         {
             table.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ChannelType",
                 "\"ChannelType\" IN ('DepartmentEmail','BusinessPhone','BusinessWebsite')");
+            table.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_Department",
+                "\"DepartmentLabel\" IN ('Procurement','Sales','Accounts','Regulatory','Quality','General')");
+            table.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ConfirmedBusinessUse",
+                "\"BusinessUseConfirmed\" = TRUE");
         });
         supplierContact.HasKey(x => x.Id);
         supplierContact.HasIndex(x => x.SupplierId);
