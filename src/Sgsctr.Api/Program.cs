@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Sgsctr.Api.Data;
 using Sgsctr.Api.RegulatoryIntelligence;
 using Sgsctr.Api.PharmacyCatalogue;
+using Sgsctr.Api.PharmacyInventory;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -152,6 +153,7 @@ app.MapGet("/api/v1/system/info", () => Results.Ok(new
 app.MapRegulatoryIntelligenceEndpoints();
 app.MapPharmacyCatalogueEndpoints();
 app.MapPharmacyProductGovernanceEndpoints();
+app.MapPharmacyReceiptDraftEndpoints();
 app.MapGovernanceApprovalEndpoints();
 app.MapGovernanceTestReadinessEndpoints();
 
