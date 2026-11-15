@@ -1,6 +1,3 @@
-import type { Metadata } from "next";
-import "./globals.css";
-export const metadata: Metadata = { title: "SGSCTR | Special Group Operations", description: "Special Group Pharmacies and Specialized Contracting operations platform." };
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
-}
+import type{Metadata}from"next";import{cookies}from"next/headers";import{LocaleProvider}from"@/components/locale-provider";import type{Locale}from"@/lib/i18n/messages";import"./globals.css";
+export const metadata:Metadata={title:"SGSCTR | Special Group Operations",description:"Special Group Pharmacies and Specialized Contracting operations platform."};
+export default async function RootLayout({children}:Readonly<{children:React.ReactNode}>){const c=await cookies();const locale:Locale=c.get("sgsctr-locale")?.value==="ar"?"ar":"en";return <html lang={locale} dir={locale==="ar"?"rtl":"ltr"}><body><LocaleProvider initialLocale={locale}>{children}</LocaleProvider></body></html>;}

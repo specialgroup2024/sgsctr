@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useI18n } from "@/components/locale-provider";
 
 type Execution = {
   status: "Passed" | "Failed" | "Blocked";
@@ -28,6 +29,7 @@ type Draft = { status: "Passed" | "Failed" | "Blocked"; evidenceReference: strin
 const initialDraft: Draft = { status: "Passed", evidenceReference: "", notes: "" };
 
 export default function TestReadiness() {
+  const { t } = useI18n();
   const [payload, setPayload] = useState<Payload | null>(null);
   const [drafts, setDrafts] = useState<Record<string, Draft>>({});
   const [loading, setLoading] = useState(true);
@@ -85,7 +87,7 @@ export default function TestReadiness() {
     <div className="inventory-section-heading">
       <div>
         <p className="eyebrow">QUALITY · TEST EXECUTION</p>
-        <h2>Test readiness</h2>
+        <h2>{t("Test readiness" )}</h2>
         <p>Version-controlled test cases are stored in PostgreSQL. Results are append-only and separate from professional approvals.</p>
       </div>
       <button className="inventory-refresh" type="button" onClick={() => void load()} disabled={loading}>Refresh</button>
@@ -98,14 +100,14 @@ export default function TestReadiness() {
       </div>
     </div>
     <div className="inventory-kpi-grid test-readiness-summary">
-      <article className="inventory-kpi"><span>Test cases</span><strong>{loading ? "…" : cases.length}</strong><small>Across platform and seven approval gates</small></article>
-      <article className="inventory-kpi"><span>Latest passed</span><strong>{passed}</strong><small>Requires evidence reference</small></article>
-      <article className="inventory-kpi"><span>Latest failed</span><strong>{failed}</strong><small>Needs corrective action</small></article>
-      <article className="inventory-kpi"><span>Blocked</span><strong>{blocked}</strong><small>Professional, owner or implementation gate</small></article>
+      <article className="inventory-kpi"><span>{t("Test cases" )}</span><strong>{loading ? "…" : cases.length}</strong><small>Across platform and seven approval gates</small></article>
+      <article className="inventory-kpi"><span>{t("Latest passed" )}</span><strong>{passed}</strong><small>{t("Requires evidence reference" )}</small></article>
+      <article className="inventory-kpi"><span>{t("Latest failed" )}</span><strong>{failed}</strong><small>{t("Needs corrective action" )}</small></article>
+      <article className="inventory-kpi"><span>{t("Blocked" )}</span><strong>{blocked}</strong><small>{t("Professional, owner or implementation gate" )}</small></article>
     </div>
     {error && <p className="form-error" role="alert">{error}</p>}
     {message && <p className="catalogue-id-note" role="status">{message}</p>}
-    {loading && <p className="loading-state">Loading test cases from PostgreSQL…</p>}
+    {loading && <p className="loading-state">{t("Loading test cases from PostgreSQL…" )}</p>}
     {!loading && !error && <div className="test-readiness-list">
       {cases.map(test => {
         const draft = drafts[test.id] ?? initialDraft;
@@ -116,11 +118,11 @@ export default function TestReadiness() {
             <span className={"inventory-status-chip " + (latest?.status === "Passed" ? "approval-recorded" : latest?.status === "Failed" ? "approval-pending" : "approval-pending")}>{latest?.status ?? (test.executionBlocked ? "Blocked" : "Not run")}</span>
           </div>
           <p>{test.objective}</p>
-          <p><strong>Expected result:</strong> {test.expectedResult}</p>
-          <p className="catalogue-footer-note"><strong>Test type:</strong> {test.testMode}</p>
-          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>Execution blocked</strong><p>{test.blockReason}</p></div></div>}
+          <p><strong>{t("Expected result:" )}</strong> {test.expectedResult}</p>
+          <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {test.testMode}</p>
+          {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{test.blockReason}</p></div></div>}
           {latest && <div className="catalogue-id-note">
-            <strong>Latest execution:</strong> {latest.status} · {latest.environment} · {new Date(latest.executedAtUtc).toLocaleString()}
+            <strong>{t("Latest execution:" )}</strong> {latest.status} · {latest.environment} · {new Date(latest.executedAtUtc).toLocaleString()}
             <p>Executed by subject: <code>{latest.executedBySubject}</code></p>
             {latest.evidenceReference && <p>Evidence: <code>{latest.evidenceReference}</code></p>}
             {latest.notes && <p>{latest.notes}</p>}
@@ -129,7 +131,7 @@ export default function TestReadiness() {
             <label>Result
               <select value={test.executionBlocked ? "Blocked" : draft.status} disabled={test.executionBlocked}
                 onChange={event => setDrafts(current => ({ ...current, [test.id]: { ...draft, status: event.target.value as Draft["status"] } }))}>
-                <option value="Passed">Passed</option><option value="Failed">Failed</option><option value="Blocked">Blocked</option>
+                <option value="Passed">{t("Passed" )}</option><option value="Failed">{t("Failed" )}</option><option value="Blocked">{t("Blocked" )}</option>
               </select>
             </label>
             <label>Evidence reference

@@ -65,3 +65,10 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - PR #47 merged the additive forward migration that restores any synthetic `DemoApproved` INV-PRO-001 row to Pending, removes that status from the snapshot/database constraint, and makes Compose wait for API/PostgreSQL readiness before starting web. Its CI run 43702502896 completed successfully. The test-readiness workspace branch adds 19 PostgreSQL-backed test definitions and Development-only, Administrator-only append-only test execution records; it does not change approval states. Q38 qualified review remains required before family-specific mandatory fields, verification, product activation or operational use. Supplier/procurement, receipt/stock/transfer, costing, claims and GL workflows require their own recorded owner and qualified approvals. Detailed identity, conversion, permissions, audit retention/export, import provenance and duplicate-resolution decisions remain open. Supplier master remains deferred.
 - Stock movements and costing remain later gated work.
 - Authentication verification and Data Protection volume verification remain on hold per owner instruction.
+
+
+## Bilingual application foundation
+- Feature branch feat/platform-bilingual-arabic-rtl adds a shared English/Arabic locale provider, persistent locale cookie, root language/direction attributes, language switcher, initial shared-shell/dashboard translations and RTL layout rules.
+- English remains the initial default; Arabic is selectable and formatting helpers use ar-EG. API/database values and identifiers remain language-neutral.
+- This is an initial increment, not proof that all nested inventory/regulatory screens, validation/errors, exports, accessibility strings or mobile UI are fully translated. Route-complete acceptance remains open until automated and visual verification.
+- Authentication and Data Protection verification holds remain unchanged. Arabic legal/regulatory terminology requires qualified review.

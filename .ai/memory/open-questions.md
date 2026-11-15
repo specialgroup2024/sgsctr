@@ -76,3 +76,9 @@ Provisional planning model: one legal entity LE-01 with two sectors, separate op
 - Q53: Approve direct branch-to-branch and warehouse-to-branch transfer lifecycle, custody, dispatch/receipt, in-transit stock, lot-level controls, EPTTS applicability and exception handling. Owner: pharmacy operations + qualified pharmacist + regulatory + accountant. Status: OPEN; owner confirmed route capability only.
 - Q54: Approve dispensing, returns, pricing, provider reimbursement, patient copay/exemption, employee discount, claims, remittance and patient balance rules using signed agreements and owner-approved examples. Owner: pharmacy operations + payer-contract owner + accountant + legal. Status: OPEN; no patient or claims workflow is implemented.
 - Q55: Approve moving weighted-average valuation, purchase-return basis, transfer valuation, cost layers, tax/VAT, chart of accounts, sector/location dimensions, posting periods and GL integration. Owner: accountant + tax adviser + business owner. Status: OPEN; no valuation or financial posting is implemented.
+
+
+## Bilingual application
+- Q-BI-01: Confirm whether Arabic or English should be the initial default for new user profiles; current technical default is English, with a user-selectable persistent locale. Owner: business owner. Status: open.
+- Q-BI-02: Approve authoritative Arabic terminology for legal, regulatory, pharmacy, quality, accounting and contracting terms. Owner: business owner and qualified domain reviewers. Status: open.
+- Q-BI-03: Confirm Arabic report/export formats, Arabic-Indic versus Western digits, currency presentation and document templates. Owner: business owner/accountant. Status: open.

@@ -1,0 +1,7 @@
+"use client";
+import{createContext,useContext,useEffect,useMemo,useState,type ReactNode}from"react";
+import{direction,translate,type Locale}from"@/lib/i18n/messages";
+type LocaleContextValue={locale:Locale;direction:"ltr"|"rtl";setLocale:(locale:Locale)=>void;t:(value:string)=>string;formatDate:(value:string|Date,options?:Intl.DateTimeFormatOptions)=>string;formatNumber:(value:number,options?:Intl.NumberFormatOptions)=>string};
+const LocaleContext=createContext<LocaleContextValue|null>(null);
+export function LocaleProvider({initialLocale,children}:{initialLocale:Locale;children:ReactNode}){const[locale,setLocaleState]=useState<Locale>(initialLocale);const dir=direction(locale);const setLocale=(next:Locale)=>{setLocaleState(next);document.cookie="sgsctr-locale="+next+"; Path=/; Max-Age=31536000; SameSite=Lax";document.documentElement.lang=next;document.documentElement.dir=direction(next);};useEffect(()=>{document.documentElement.lang=locale;document.documentElement.dir=dir;},[locale,dir]);const value=useMemo<LocaleContextValue>(()=>({locale,direction:dir,setLocale,t:v=>translate(locale,v),formatDate:(v,o)=>new Intl.DateTimeFormat(locale==="ar"?"ar-EG":"en-GB",o??{dateStyle:"medium",timeStyle:"short"}).format(new Date(v)),formatNumber:(v,o)=>new Intl.NumberFormat(locale==="ar"?"ar-EG":"en-GB",o).format(v)}),[locale,dir]);return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;}
+export function useI18n(){const value=useContext(LocaleContext);if(!value)throw new Error("useI18n must be used inside LocaleProvider");return value;}

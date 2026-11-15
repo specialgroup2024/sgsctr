@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AppShell } from "@/components/app-shell";
+import { useI18n } from "@/components/locale-provider";
 
 type DocumentItem = {
   id: string; title: string; sourceUrl: string; contentType: string; language: string;
@@ -15,6 +16,7 @@ type Overview = { documents: DocumentItem[]; alerts: AlertItem[]; sources: Sourc
 function date(value: string | null) { return value ? new Date(value).toLocaleString() : "Not available"; }
 
 export default function RegulatoryIntelligencePage() {
+  const { t } = useI18n();
   const [data, setData] = useState<Overview | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -49,28 +51,28 @@ export default function RegulatoryIntelligencePage() {
 
   return <AppShell><div className="content">
     <section className="welcome-row">
-      <div><p className="eyebrow">PHARMACIES · REGULATORY INTELLIGENCE</p><h1>Egypt market & <span>regulatory updates</span></h1>
-      <p className="welcome-copy">Automatic monitoring of published EDA notices, guidance, safety alerts and regulatory documents.</p></div>
+      <div><p className="eyebrow">PHARMACIES · REGULATORY INTELLIGENCE</p><h1>Egypt market & <span>{t("regulatory updates" )}</span></h1>
+      <p className="welcome-copy">{t("Automatic monitoring of published EDA notices, guidance, safety alerts and regulatory documents." )}</p></div>
       <div className="date-chip"><span className="date-dot" />{data?.monitoringEnabled ? "SOURCE CHECKS ACTIVE" : data?.monitoringStatus?.toUpperCase() ?? "MONITOR STATUS UNAVAILABLE"}</div>
     </section>
 
     <section className="status-banner">
       <div className="status-banner-icon">◷</div>
-      <div className="status-banner-copy"><strong>Automatic EDA source checks</strong><span>Background worker checks configured EDA pages every 15 minutes and scans each source on its configured six-hour interval. New linked HTML/PDF material is retained with a SHA-256 fingerprint and creates an in-app review alert.</span></div>
+      <div className="status-banner-copy"><strong>{t("Automatic EDA source checks" )}</strong><span>Background worker checks configured EDA pages every 15 minutes and scans each source on its configured six-hour interval. New linked HTML/PDF material is retained with a SHA-256 fingerprint and creates an in-app review alert.</span></div>
       {data?.canTriggerScan && <button className="primary-button" disabled={busy} onClick={() => void act({ action: "scan" })}>{busy ? "Scanning…" : "Scan EDA now"}</button>}
     </section>
 
     {error && <section className="notice-panel" role="alert"><strong>Monitoring issue</strong><p>{error}</p></section>}
     {message && <section className="notice-panel"><strong>{message}</strong></section>}
     <section className="bottom-grid">
-      <article className="info-card"><div className="info-card-heading"><span>◈</span><strong>Latest scan</strong></div>
+      <article className="info-card"><div className="info-card-heading"><span>◈</span><strong>{t("Latest scan" )}</strong></div>
         <p className="muted">{data?.lastRun ? `${data.lastRun.status} · ${date(data.lastRun.completedAtUtc)}` : "No completed scan recorded yet."}</p>
         <p className="muted">{data?.lastRun ? `${data.lastRun.discoveredCount} candidate links · ${data.lastRun.newDocumentCount} new documents` : "The first background scan runs when the API starts."}</p>
       </article>
-      <article className="info-card"><div className="info-card-heading"><span>!</span><strong>Unread alerts</strong></div><p className="muted">{data?.alerts.length ?? 0} alerts awaiting acknowledgement.</p><span className="safe-label">HUMAN REVIEW REQUIRED</span></article>
+      <article className="info-card"><div className="info-card-heading"><span>!</span><strong>{t("Unread alerts" )}</strong></div><p className="muted">{data?.alerts.length ?? 0} alerts awaiting acknowledgement.</p><span className="safe-label">HUMAN REVIEW REQUIRED</span></article>
     </section>
 
-    <div className="section-heading"><div><p className="eyebrow">SOURCE COVERAGE</p><h2>Configured EDA sources</h2></div></div>
+    <div className="section-heading"><div><p className="eyebrow">{t("SOURCE COVERAGE" )}</p><h2>{t("Configured EDA sources" )}</h2></div></div>
     <section className="sector-grid">
       {(data?.sources ?? []).map(source => <article className="sector-card" key={source.id}>
         <div className="sector-top"><span className="sector-symbol">◎</span><span className="sector-tag">SOURCE CLASS {source.sourceClass}</span></div>
@@ -80,15 +82,15 @@ export default function RegulatoryIntelligencePage() {
       </article>)}
     </section>
 
-    <div className="section-heading"><div><p className="eyebrow">REVIEW QUEUE</p><h2>New regulatory alerts</h2></div></div>
+    <div className="section-heading"><div><p className="eyebrow">{t("REVIEW QUEUE" )}</p><h2>{t("New regulatory alerts" )}</h2></div></div>
     {loading ? <p className="muted">Loading regulatory records…</p> : data?.alerts.length ? <section className="notice-panel">
       {data.alerts.map(alert => <div key={alert.id} style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", padding: "12px 0", borderBottom: "1px solid var(--border, #ddd)" }}>
         <div><strong>{alert.documentTitle}</strong><p className="muted">{alert.alertType} · {date(alert.createdAtUtc)}</p></div>
-        {data?.canAcknowledgeAlerts ? <button className="subtle-button" disabled={busy} onClick={() => void act({ action: "acknowledge", alertId: alert.id })}>Acknowledge</button> : <span className="muted">Administrator review access required</span>}
+        {data?.canAcknowledgeAlerts ? <button className="subtle-button" disabled={busy} onClick={() => void act({ action: "acknowledge", alertId: alert.id })}>{t("Acknowledge" )}</button> : <span className="muted">Administrator review access required</span>}
       </div>)}
-    </section> : <p className="muted">No unread alerts currently recorded.</p>}
+    </section> : <p className="muted">{t("No unread alerts currently recorded." )}</p>}
 
-    <div className="section-heading"><div><p className="eyebrow">INGESTED EVIDENCE</p><h2>Recent documents</h2></div></div>
+    <div className="section-heading"><div><p className="eyebrow">{t("INGESTED EVIDENCE" )}</p><h2>{t("Recent documents" )}</h2></div></div>
     <section className="notice-panel">
       {(data?.documents ?? []).length ? data!.documents.map(doc => <article key={doc.id} style={{ padding: "14px 0", borderBottom: "1px solid var(--border, #ddd)" }}>
         <strong>{doc.title}</strong><p className="muted">{doc.topic} · Class {doc.sourceClass} · {doc.language.toUpperCase()} · {doc.reviewStatus} · {doc.severity}</p>
@@ -96,6 +98,6 @@ export default function RegulatoryIntelligencePage() {
         <a className="text-link" href={`/api/pharmacy-intelligence/documents/${doc.id}/content`}>Download ingested copy ↓</a> · <a className="text-link" href={doc.sourceUrl} target="_blank" rel="noreferrer">Open source publication ↗</a>
       </article>) : <p className="muted">No documents ingested yet. Check source connectivity and scan history.</p>}
     </section>
-    <section className="notice-panel"><strong>Important: ingestion is not approval.</strong><p>Every imported item starts unverified and pending review. This feature does not determine legal applicability, make clinical decisions, or change medicine prices, dispensing, stock, reimbursement or accounting. EDA page structure and access may change; failed sources remain visible for follow-up.</p></section>
+    <section className="notice-panel"><strong>{t("Important: ingestion is not approval." )}</strong><p>Every imported item starts unverified and pending review. This feature does not determine legal applicability, make clinical decisions, or change medicine prices, dispensing, stock, reimbursement or accounting. EDA page structure and access may change; failed sources remain visible for follow-up.</p></section>
   </div></AppShell>;
 }
