@@ -12,6 +12,20 @@ public static class SupplierRules
     public static bool IsValidDisplayName(string? value) =>
         !string.IsNullOrWhiteSpace(value) && value.Trim().Length <= 200;
 
+    public static bool IsValidDeclaration(string? claimType, string? value, string? reason) =>
+        claimType is "LegalName" or "TradingName" or "LegalForm" or "Jurisdiction" or
+            "RegistrationAuthority" or "RegistrationNumber" or "TaxReference" or "RegisteredAddress" or
+            "LicenceCategory" or "LicenceHolder" or "LicenceNumber" or "LicenceIssuingAuthority" or
+            "LicenceScope" or "LicenceIssueDate" or "LicenceExpiryDate" &&
+        !string.IsNullOrWhiteSpace(value) && value.Trim().Length <= 500 &&
+        !string.IsNullOrWhiteSpace(reason) && reason.Trim().Length <= 500;
+
+    public static bool IsValidBusinessContact(string? channelType, string? value, string? department, string? reason) =>
+        channelType is "DepartmentEmail" or "BusinessPhone" or "BusinessWebsite" &&
+        !string.IsNullOrWhiteSpace(value) && value.Trim().Length <= 320 &&
+        department is "Procurement" or "Sales" or "Accounts" or "Regulatory" or "Quality" or "General" &&
+        !string.IsNullOrWhiteSpace(reason) && reason.Trim().Length <= 500;
+
     public static bool IsValidEvidence(string? kind, string? title, string? reason) =>
         !string.IsNullOrWhiteSpace(kind) && kind.Trim().Length <= 80 &&
         !string.IsNullOrWhiteSpace(title) && title.Trim().Length <= 200 &&
