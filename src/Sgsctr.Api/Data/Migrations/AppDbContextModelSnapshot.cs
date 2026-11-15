@@ -495,5 +495,30 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.ToTable("PharmacySupplierReviewRequests", t => t.HasCheckConstraint("CK_PharmacySupplierReviewRequests_PendingOnly", "\"Status\" = 'Pending'"));
         });
 
+        modelBuilder.Entity<PharmacySupplierAssuranceCase>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.SupplierId).HasColumnType("uuid");
+            entity.Property(x => x.CaseType).IsRequired().HasMaxLength(40).HasColumnType("character varying(40)");
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.RequestedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.RequestedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.Reason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.ScopeReference).HasMaxLength(200).HasColumnType("character varying(200)");
+            entity.Property(x => x.EvidenceId).HasColumnType("uuid");
+            entity.Property(x => x.BlockerCode).HasMaxLength(80).HasColumnType("character varying(80)");
+            entity.Property(x => x.CorrelationId).IsRequired().HasMaxLength(128).HasColumnType("character varying(128)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => new { x.SupplierId, x.RequestedAtUtc });
+            entity.HasIndex(x => x.EvidenceId);
+            entity.HasOne(x => x.Supplier).WithMany().HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(x => x.Evidence).WithMany().HasForeignKey(x => x.EvidenceId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacySupplierAssuranceCases", t =>
+            {
+                t.HasCheckConstraint("CK_PharmacySupplierAssuranceCases_CaseType", "\"CaseType\" IN ('LegalLicenceVerification','DueDiligenceExecution','ReviewerAuthorityApplication','QualificationReview','PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation')");
+                t.HasCheckConstraint("CK_PharmacySupplierAssuranceCases_GatedState", "((\"CaseType\" IN ('PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation') AND \"Status\" = 'Blocked' AND \"BlockerCode\" IS NOT NULL) OR (\"CaseType\" NOT IN ('PurchasingEligibilityEvaluation','ReceivingEligibilityEvaluation') AND \"Status\" = 'Pending' AND \"BlockerCode\" IS NULL))");
+            });
+        });
+
     }
 }
