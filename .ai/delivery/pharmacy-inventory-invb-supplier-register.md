@@ -92,3 +92,11 @@ The merged INV-B slice is being hardened under [INV-B technical acceptance](phar
 ## Open approvals
 
 Q51 remains open for supplier scope, legal identity evidence, licensing, due diligence, contacts, duplicate resolution, qualification criteria and reviewer authority. INV-OWN-002 remains pending. INV-SEC-001 and INV-REL-001 remain pending. See the central approval register and `.ai/memory/open-questions.md`.
+
+## INV-B expansion request — 2026-11-15
+
+The owner requested expansion to legal identity/licence verification, qualification and approval decisions, due diligence, supplier contacts, purchasing/receiving eligibility and qualified reviewer procedures. This request is recorded in [the supplier onboarding decision package](pharmacy-inventory-invb-expansion-decision-package.md) and [dynamic deliberation](../roles/invb-supplier-onboarding-expansion-deliberation.md).
+
+The request does not itself approve legal/licence criteria, due-diligence scope, privacy/retention rules, reviewer qualifications, separation of duties or purchasing/receiving policy. The safe next technical slice is non-operative intake of owner-declared identity/licence claims as Unverified and due-diligence cases as Pending, only after the owner confirms the data-field and contact-data boundary. Named contact-person data remains blocked pending privacy review. Verification, qualification decisions, reviewer authority and downstream eligibility remain disabled until Q51 / INV-OWN-002 and the relevant professional/security approvals are recorded.
+
+PR #63 and PR #64 are now merged to master by the owner. PR #63's required CI jobs did not execute because no GitHub runner was assigned; PR #64 removes the duplicate translation keys but has no verified Docker/typecheck result. INV-B technical acceptance therefore remains blocked/unverified.
