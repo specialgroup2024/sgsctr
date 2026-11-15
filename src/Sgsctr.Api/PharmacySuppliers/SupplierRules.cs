@@ -33,7 +33,7 @@ public static class SupplierRules
         return channelType switch
         {
             "DepartmentEmail" => System.Net.Mail.MailAddress.TryCreate(normalized, out var email) &&
-                string.Equals(email.Address, normalized, StringComparison.OrdinalIgnoreCase),
+                email is not null && string.Equals(email.Address, normalized, StringComparison.OrdinalIgnoreCase),
             "BusinessPhone" => normalized.Count(char.IsAsciiDigit) >= 7 &&
                 normalized.All(ch => char.IsAsciiDigit(ch) || ch is '+' or '-' or '(' or ')' or ' ' or '.'),
             "BusinessWebsite" => Uri.TryCreate(normalized, UriKind.Absolute, out var uri) &&
