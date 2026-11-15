@@ -187,7 +187,7 @@ export const messages:Record<string,string>={
   "Open organization workspace": "فتح مساحة عمل المؤسسة",
   "No inventory movements, patient records, financial calculations or accounting postings are enabled in this phase.": "لا تتوفر في هذه المرحلة حركات مخزون أو سجلات مرضى أو حسابات مالية أو قيود محاسبية.",
   "FOUNDATION + INV-01 DRAFT": "الأساس + مسودة INV-01",
-  "Draft catalogue / non-posting inventory": "دليل مسودات / مخزون دون ترحيل"
+  "Draft catalogue / non-posting inventory": "دليل مسودات / مخزون دون ترحيل",
   "Generic catalogue only · Q38 professional review remains pending": "دليل عام فقط · لا تزال المراجعة المهنية للسؤال Q38 قيد الانتظار",
   "Records and conversions remain drafts. Family and identifier entries are provisional only; no verified classification, product activation, stock, dispensing or valuation is enabled.": "تظل السجلات والتحويلات مسودات. وتصنيفات العائلات والمعرّفات مقترحات أولية فقط؛ ولا يتاح تصنيف متحقق أو تفعيل منتجات أو مخزون أو صرف أو تقييم.",
   "PERSISTENT REFERENCE DATA": "بيانات مرجعية محفوظة",
