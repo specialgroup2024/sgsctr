@@ -165,8 +165,8 @@ export default function CatalogueManager() {
 
   return <div className="catalogue-manager">
     <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Generic catalogue only · Q38 professional review remains pending")}</strong><p>{t("Records and conversions remain drafts. Family and identifier entries are provisional only; no verified classification, product activation, stock, dispensing or valuation is enabled.")}</p></div></div>
-    {error && <p className="form-error" role="alert">{error}</p>}
-    {notice && <p className="form-success" role="status">{notice}</p>}
+    {error && <p className="form-error" role="alert">{t(error)}</p>}
+    {notice && <p className="form-success" role="status">{t(notice)}</p>}
     <section className="catalogue-layout">
       <div className="inventory-panel">
         <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PERSISTENT REFERENCE DATA")}</p><h3>{t("Product records")}</h3></div><span className="inventory-count">{products.length} drafts</span></div>
@@ -189,9 +189,9 @@ export default function CatalogueManager() {
             <label className="wide-field">{t("Display name")}<input required maxLength={200} value={displayName} onChange={e => setDisplayName(e.target.value)} /></label>
             <label className="wide-field">{t("Change reason (optional; do not enter patient or health data)")}<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label>
           </div>
-          <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>{t("Cancel")}</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? "Saving…" : editing ? "Save draft" : "Create draft"}</button></div></div>
+          <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>{t("Cancel")}</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? t("Saving…") : editing ? t("Save draft") : t("Create draft")}</button></div></div>
         </form> : <p className="inventory-empty">{t("Catalogue changes require the Administrator role. Your account currently has read-only access.")}</p>}
-        <p className="catalogue-id-note">{selectedId ? `Selected record ID: ${selectedId}` : "A product receives a stable system identifier when created."}</p>
+        <p className="catalogue-id-note">{selectedId ? `${t("Selected record ID:")} ${selectedId}` : "A product receives a stable system identifier when created."}</p>
       </div>
     </section>
 

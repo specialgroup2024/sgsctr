@@ -29,7 +29,7 @@ type Draft = { status: "Passed" | "Failed" | "Blocked"; evidenceReference: strin
 const initialDraft: Draft = { status: "Passed", evidenceReference: "", notes: "" };
 
 export default function TestReadiness() {
-  const { t } = useI18n();
+  const { t, formatDate } = useI18n();
   const [payload, setPayload] = useState<Payload | null>(null);
   const [drafts, setDrafts] = useState<Record<string, Draft>>({});
   const [loading, setLoading] = useState(true);
@@ -105,8 +105,8 @@ export default function TestReadiness() {
       <article className="inventory-kpi"><span>{t("Latest failed" )}</span><strong>{failed}</strong><small>{t("Needs corrective action" )}</small></article>
       <article className="inventory-kpi"><span>{t("Blocked" )}</span><strong>{blocked}</strong><small>{t("Professional, owner or implementation gate" )}</small></article>
     </div>
-    {error && <p className="form-error" role="alert">{error}</p>}
-    {message && <p className="catalogue-id-note" role="status">{message}</p>}
+    {error && <p className="form-error" role="alert">{t(error)}</p>}
+    {message && <p className="catalogue-id-note" role="status">{t(message)}</p>}
     {loading && <p className="loading-state">{t("Loading test cases from PostgreSQL…" )}</p>}
     {!loading && !error && <div className="test-readiness-list">
       {cases.map(test => {
@@ -122,7 +122,7 @@ export default function TestReadiness() {
           <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {t(test.testMode)}</p>
           {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{t(test.blockReason)}</p></div></div>}
           {latest && <div className="catalogue-id-note">
-            <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {t(latest.environment)} · {new Date(latest.executedAtUtc).toLocaleString()}
+            <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {t(latest.environment)} · {formatDate(latest.executedAtUtc)}
             <p>{t("Executed by subject:")} <code>{latest.executedBySubject}</code></p>
             {latest.evidenceReference && <p>{t("Evidence:")} <code>{latest.evidenceReference}</code></p>}
             {latest.notes && <p>{latest.notes}</p>}

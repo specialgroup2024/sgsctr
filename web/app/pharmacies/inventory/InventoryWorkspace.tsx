@@ -34,7 +34,7 @@ function GateNotice({ title, detail }: { title: string; detail: string }) {
 }
 
 export default function InventoryWorkspace() {
-  const { t } = useI18n();
+  const { t, formatDate } = useI18n();
   const [tab, setTab] = useState<Tab>("overview");
   const [locations, setLocations] = useState<Location[]>([]);
   const [system, setSystem] = useState<SystemStatus | null>(null);

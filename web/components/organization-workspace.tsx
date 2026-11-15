@@ -34,11 +34,11 @@ export default function OrganizationWorkspace() {
         fetch("/api/auth/session", { cache: "no-store" })
       ]);
       if (orgResponse.status === 401 || sessionResponse.status === 401) { window.location.assign("/login"); return; }
-      if (!orgResponse.ok) throw new Error("Could not load organization records.");
+      if (!orgResponse.ok) throw new Error(t("Could not load organization records."));
       const org = await orgResponse.json() as Workspace;
       const session = await sessionResponse.json() as { user?: { subject?: string } };
       setData(org); setSubject(session.user?.subject ?? "");
-    } catch (e) { setError(e instanceof Error ? e.message : "Unexpected error loading organization."); }
+    } catch (e) { setError(e instanceof Error ? e.message : t("Unexpected error loading organization.")); }
     finally { setLoading(false); }
   }, []);
 
@@ -64,28 +64,28 @@ export default function OrganizationWorkspace() {
       if (!response.ok) {
         const validationMessage = Object.values(payload?.errors ?? {}).flat().join(" ");
         const message = (payload?.error ?? validationMessage) || (response.status === 403
-          ? "Your account cannot manage organization locations."
+          ? t("Your account cannot manage organization locations.")
           : `Save failed (HTTP ${response.status}).`);
         throw new Error(message);
       }
-      cancelEdit(); setNotice("Location record saved."); await load();
-    } catch (e) { setError(e instanceof Error ? e.message : "Could not save location."); }
+      cancelEdit(); setNotice(t("Location record saved.")); await load();
+    } catch (e) { setError(e instanceof Error ? e.message : t("Could not save location.")); }
     finally { setSaving(false); }
   }
 
   async function deactivate(location: Location) {
-    if (!window.confirm(`Deactivate ${location.name}? The record will be retained, not deleted.`)) return;
+    if (!window.confirm(`${t("Deactivate")} ${location.name}? ${t("The record will be retained, not deleted.")}`)) return;
     setError(""); setNotice("");
     const response = await fetch(`/api/organization/locations/${location.id}`, { method: "DELETE" });
     if (!response.ok) { setError(`Could not deactivate location (HTTP ${response.status}).`); return; }
-    setNotice("Location deactivated. Its record remains in the register."); await load();
+    setNotice(t("Location deactivated. Its record remains in the register.")); await load();
   }
 
   return <AppShell><div className="content">
     <section className="welcome-row"><div><p className="eyebrow">{t("ORGANIZATION DIRECTORY" )}</p><h1>{t("Organization")} <span>{t("workspace")}</span></h1><p className="welcome-copy">{t("Manage reference records for the sectors and their operating locations." )}</p></div><span className="read-only-pill">{t("LEGAL IDENTITY UNVERIFIED" )}</span></section>
-    <section className="notice-panel"><strong>{t("Legal identity remains unverified." )}</strong><p>The workspace stores owner-provided operating names only. It does not create or certify a legal entity, company registration, licensing, ownership or tax identity. Changes to legal identity are deliberately excluded.</p></section>
-    {error && <p className="form-error" role="alert">{error}</p>}
-    {notice && <p className="form-success" role="status">{notice}</p>}
+    <section className="notice-panel"><strong>{t("Legal identity remains unverified." )}</strong><p>{t("The workspace stores owner-provided operating names only. It does not create or certify a legal entity, company registration, licensing, ownership or tax identity. Changes to legal identity are deliberately excluded.")}</p></section>
+    {error && <p className="form-error" role="alert">{t(error)}</p>}
+    {notice && <p className="form-success" role="status">{t(notice)}</p>}
     <div className="section-heading"><div><p className="eyebrow">{t("ORGANIZATION STRUCTURE" )}</p><h2>{t("Business sectors" )}</h2></div></div>
     <section className="sector-grid">{(data?.sectors ?? []).map(sector => <article className="sector-card" key={sector.code}><div className="sector-top"><span className="sector-tag">{sector.code}</span><span className="record-status">{t("Owner provided")}</span></div><h3>{t(sector.name)}</h3><p>{t("Separate operating domain. Business permissions and financial authority are not granted by this register.")}</p></article>)}</section>
     <div className="section-heading"><div><p className="eyebrow">{t("LOCATION REGISTER" )}</p><h2>{t("Warehouses, branches and sites" )}</h2></div>{data?.canManage && <button className="primary-button" onClick={beginCreate}>{t("+ Add location")}</button>}</div>

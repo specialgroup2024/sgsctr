@@ -44,7 +44,7 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
       const response = await fetch(`/api/pharmacy/catalogue/${encodeURIComponent(productId)}/governance`, { cache: "no-store" });
       if (response.status === 401) { window.location.assign("/login"); return; }
       setData(await readPayload<Governance>(response));
-    } catch (e) { setError(e instanceof Error ? e.message : "Product governance records could not be loaded."); }
+    } catch (e) { setError(e instanceof Error ? e.message : t("Product governance records could not be loaded.")); }
   }, [productId]);
 
   useEffect(() => { void load(); }, [load]);
@@ -56,7 +56,7 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
         method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body)
       }));
       await load(); setNotice(success);
-    } catch (e) { setError(e instanceof Error ? e.message : "The record could not be saved."); }
+    } catch (e) { setError(e instanceof Error ? e.message : t("The record could not be saved.")); }
     finally { setBusy(false); }
   }
 
@@ -65,8 +65,8 @@ export default function ProductGovernanceManager({ productId, canManage }: { pro
   return <section className="inventory-panel">
     <div className="inventory-panel-heading"><div><p className="eyebrow">{t("REGULATORY PROFILE · REVIEW QUEUE")}</p><h3>{t("Family, identifiers and evidence")}</h3></div><span className="inventory-state-tag">{t("UNVERIFIED")}</span></div>
     <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("All entries are proposals, not regulatory approvals")}</strong><p>{t("Family assignment and evidence remain pending qualified review. GTIN, UDI-DI and EDA registration/notification references are kept distinct. EPTTS serials, UDI-PI, lots and expiry are not product-level identifiers.")}</p></div></div>
-    {error && <p className="form-error" role="alert">{error}</p>}
-    {notice && <p className="form-success" role="status">{notice}</p>}
+    {error && <p className="form-error" role="alert">{t(error)}</p>}
+    {notice && <p className="form-success" role="status">{t(notice)}</p>}
     {data?.family ? <p className="catalogue-id-note">{t("Provisional family:")} <strong>{data.family.familyCode}</strong> · {data.family.reviewStatus}</p> :
       canManage ? <form className="location-form catalogue-form" onSubmit={e => submit(e, "family", { familyCode, changeReason: changeReason || null }, t("Provisional family assignment recorded for review."))}>
         <div className="form-grid"><label>{t("Provisional family")}<select value={familyCode} onChange={e => setFamilyCode(e.target.value)}><option value="RegularMedicine">{t("Regular medicines")}</option><option value="Chemotherapy">{t("Chemotherapy medicines (operational tag only)")}</option><option value="MedicalDevice">{t("Medical devices")}</option><option value="MedicalSupply">{t("Medical supplies")}</option><option value="Cosmetic">{t("Cosmetics")}</option></select></label><label>{t("Change reason")}<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label></div>
