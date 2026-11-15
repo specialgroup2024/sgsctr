@@ -14,11 +14,11 @@
 
 ## Correction
 
-- Add migration `20261115120000_RemovePharmacistApprovalDemo`: only a row with `ApprovalCode=INV-PRO-001` and `Status=DemoApproved` is restored to Pending; synthetic decision metadata is cleared; the database constraint no longer permits DemoApproved.
-- Update the EF snapshot to match the application model. Historical migrations remain intact.
-- Install curl in the API runtime image and add a Compose healthcheck against `/health/ready`, which verifies AppDbContext and AuthDbContext PostgreSQL connectivity.
-- Make web wait for API `service_healthy`, not merely `service_started`.
-- Report API liveness separately from database readiness, including HTTP status codes. Smoke tests require API and readiness HTTP 200 and database connected.
+- PR #47 merged migration `20261115120000_RemovePharmacistApprovalDemo`: only a row with `ApprovalCode=INV-PRO-001` and `Status=DemoApproved` is restored to Pending; synthetic decision metadata is cleared; the database constraint no longer permits DemoApproved.
+- PR #47 updated the EF snapshot to match the application model. Historical migrations remain intact.
+- PR #47 installed curl in the API runtime image and added a Compose healthcheck against `/health/ready`, which verifies AppDbContext and AuthDbContext PostgreSQL connectivity.
+- PR #47 makes web wait for API `service_healthy`, not merely `service_started`.
+- PR #47 reports API liveness separately from database readiness, including HTTP status codes. Smoke tests require API and readiness HTTP 200 and database connected.
 
 ## Inventory boundary preserved
 
