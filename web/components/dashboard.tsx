@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
-type SystemStatus = { api: string; database: string; checkedAt: string };
+type SystemStatus = { api: string; database: string; apiHttpStatus?: number | null; readinessHttpStatus?: number | null; checkedAt: string };
 const locations = [
   { code: "WH-01", name: "Mokattam", type: "Main warehouse", detail: "Central stock location" },
   { code: "PH-02", name: "Student Hospital", type: "Pharmacy branch", detail: "Branch inventory workspace" },
@@ -24,7 +24,7 @@ export default function Dashboard() {
   }, []);
   return <AppShell><div className="content">
     <section className="welcome-row"><div><p className="eyebrow">SPECIAL GROUP · BUSINESS OPERATIONS</p><h1>Welcome back. <span>Your workspace is ready.</span></h1><p className="welcome-copy">A connected starting point for Pharmacies and Specialized Contracting.</p></div><div className="date-chip"><span className="date-dot" />AUTHENTICATED WORKSPACE</div></section>
-    <section className="status-banner"><div className="status-banner-icon">⌁</div><div className="status-banner-copy"><strong>Platform foundation</strong><span>PostgreSQL is a required API dependency. The API is the only application path to PostgreSQL; readiness verifies both application and Identity data contexts.</span></div><div className="connection-list"><div><Dot ok={status?.api === "online"} /><span>API</span><strong>{status?.api ?? "Checking"}</strong></div><div><Dot ok={status?.database === "connected"} /><span>Database</span><strong>{status?.database === "not_verified" ? "Not verified (API offline)" : status?.database ?? "Checking"}</strong></div></div></section>
+    <section className="status-banner"><div className="status-banner-icon">⌁</div><div className="status-banner-copy"><strong>Platform foundation</strong><span>PostgreSQL is a required API dependency. The API is the only application path to PostgreSQL; readiness verifies both application and Identity data contexts.</span></div><div className="connection-list"><div><Dot ok={status?.api === "online"} /><span>API</span><strong>{status?.api === "degraded" ? `Responding (HTTP ${status.apiHttpStatus ?? "error"})` : status?.api ?? "Checking"}</strong>{status?.api === "unreachable" && <small>Web service cannot reach the configured API endpoint.</small>}</div><div><Dot ok={status?.database === "connected"} /><span>Database</span><strong>{status?.database === "not_verified" ? "Not verified (API offline)" : status?.database === "unreachable" ? "Unreachable" : status?.database ?? "Checking"}</strong>{status?.readinessHttpStatus && status.readinessHttpStatus !== 200 && <small>Readiness HTTP {status.readinessHttpStatus}</small>}</div></div></section>
     <div className="section-heading"><div><p className="eyebrow">YOUR ORGANIZATION</p><h2>Business sectors</h2></div><Link className="text-link" href="/organization">Manage organization ↗</Link></div>
     <section className="sector-grid">
       <article className="sector-card pharmacy-card"><div className="sector-top"><span className="sector-symbol">✚</span><span className="sector-tag">SECTOR 01</span></div><h3>Pharmacies</h3><p>Organization reference data and future pharmacy operations in one workspace.</p><div className="sector-meta"><span>4 initial locations</span><Link className="text-link" href="/pharmacies">Open workspace ↗</Link></div></article>
