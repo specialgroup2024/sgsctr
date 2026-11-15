@@ -60,6 +60,12 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - Owner-provided VM log on 2026-11-11: five sources, 100 discovered links, 12 new documents, zero failures.
 - This single scan does not prove exhaustive coverage, continuous availability, regulatory correctness or completed human review. No OCR, legal interpretation, outbound email/SMS/push or automatic pharmacy-rule updates are implemented.
 
+## Uploaded AI operating guidance reconciliation — 2026-11-15
+- Owner supplied ai-chat.zip with four source Markdown files (001–004); the complete source-to-repository mapping is recorded in governance/source-reconciliation-ai-chat.md.
+- Root AGENT.md and AGENTS.md were strengthened; the previously placeholder project-facts.md was populated; empty dynamic specialist profile and skill documents were filled; standards-register.md and certification-roadmap.md were structured.
+- The reusable skill set now covers .NET API, PostgreSQL data, future React Native, pharmacy inventory, claims/contracts, accounting controls and secure release. Skills are task guidance, not proof that the corresponding application feature exists.
+- This documentation reconciliation does not approve business rules, certification procurement, legal interpretations, pharmacy workflows or production behavior. No application code or schema was changed.
+
 ## Governance and next milestone
 - AGENT.md, AGENTS.md and .ai define dynamic five-role operation and human/professional approval boundaries.
 - PR #47 merged the additive forward migration that restores any synthetic `DemoApproved` INV-PRO-001 row to Pending, removes that status from the snapshot/database constraint, and makes Compose wait for API/PostgreSQL readiness before starting web. Its CI run 43702502896 completed successfully. The test-readiness workspace branch adds 19 PostgreSQL-backed test definitions and Development-only, Administrator-only append-only test execution records; it does not change approval states. Q38 qualified review remains required before family-specific mandatory fields, verification, product activation or operational use. Supplier/procurement, receipt/stock/transfer, costing, claims and GL workflows require their own recorded owner and qualified approvals. Detailed identity, conversion, permissions, audit retention/export, import provenance and duplicate-resolution decisions remain open. Supplier master remains deferred.
