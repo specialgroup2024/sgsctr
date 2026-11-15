@@ -81,3 +81,12 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - PR #52 was merged to master; PR #53 subsequently merged the initial five-file JSX restoration. The owner's next VM build still failed at `npm run typecheck`, exposing duplicate declarations/content in four additional frontend files. PR #54 (`fix/web-typescript-duplicate-declarations`) contains a targeted correction for those diagnostics and remains open/unmerged as of 2026-11-15. Its TypeScript/Docker build and Playwright checks are not yet verified; no successful VM build or deployment is claimed.
 - This is responsive web localization, not React Native client localization. Print/export coverage and qualified human acceptance of Arabic domain terminology remain open. Arabic legal/regulatory/pharmacy/quality/accounting wording is provisional presentation text pending qualified review.
 - Authentication and Data Protection verification holds remain unchanged.
+
+
+## INV-B supplier onboarding intake extension — 2026-11-15
+
+- PR #65 (supplier onboarding decision gates) is merged by the repository owner; merge commit is recorded in GitHub. Its decision package kept legal/professional policy gates open.
+- Owner approved the limited draft intake scope in chat on 2026-11-15; recorded as conditional approval INV-OWN-003. This approval covers supplier-declared identity/licence metadata as OwnerProvided / Unverified, department-level business channels only, and Pending due-diligence intake cases.
+- Feature branch feat/invb-supplier-draft-onboarding-intake adds three EF Core entities/tables, an additive migration and snapshot updates; API write endpoints and same-origin Next.js BFF routes; Supplier Register forms and Arabic translations; audit events; and input-rule tests.
+- This branch is not merged. No build, unit test, migration, PostgreSQL integration, authorization or browser command has been evidenced as executed. Technical acceptance is pending.
+- No legal/licence verification, qualification decision, reviewer-role grant, named-person contact data, purchasing/receiving eligibility, PO/stock/financial posting or production migration is implemented or authorized. Q51 / INV-OWN-002, INV-SEC-001 and INV-REL-001 remain open.
