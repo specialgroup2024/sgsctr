@@ -476,9 +476,6 @@ export const messages:Record<string,string>={
   "Location record saved.": "تم حفظ سجل الموقع.",
   "Could not save location.": "تعذر حفظ الموقع.",
   "Location deactivated. Its record remains in the register.": "تم تعطيل الموقع. ويظل سجله محفوظاً في السجل.",
-  "Draft conversion added. It is reference data only and is not used in stock calculations.": "تمت إضافة التحويل كمسودة. وهو بيانات مرجعية فقط ولا يُستخدم في حسابات المخزون.",
-  "Catalogue data could not be loaded.": "تعذر تحميل بيانات الدليل.",
-  "Audit history could not be loaded.": "تعذر تحميل سجل التدقيق.",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}

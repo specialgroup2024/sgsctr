@@ -23,16 +23,14 @@ const tabs: Array<{ id: Tab; label: string }> = [
 const locationLabels: Record<string, string> = { MainWarehouse: "Main warehouse", Branch: "Hospital branch", Office: "Office", ProjectSite: "Project site" };
 
 function Connection({ label, value }: { label: string; value: string }) {
-  const { t } = useI18n();
   const ok = value === "online" || value === "connected";
   const pending = value === "not_verified";
   const state = ok ? "is-ok" : pending ? "is-pending" : "is-down";
   const text = ok ? (label === "API" ? "Online" : "Connected") : pending ? "Not verified" : "Unavailable";
-  return <span className={"inventory-connection " + state}><i />{t(label)}: {t(text)}</span>;
+  return <span className={"inventory-connection " + state}><i />{label}: {text}</span>;
 }
 function GateNotice({ title, detail }: { title: string; detail: string }) {
-  const { t } = useI18n();
-  return <div className="inventory-gate" role="note"><span className="inventory-gate-icon">!</span><div><strong>{t(title)}</strong><p>{t(detail)}</p></div></div>;
+  return <div className="inventory-gate" role="note"><span className="inventory-gate-icon">!</span><div><strong>{title}</strong><p>{detail}</p></div></div>;
 }
 
 export default function InventoryWorkspace() {

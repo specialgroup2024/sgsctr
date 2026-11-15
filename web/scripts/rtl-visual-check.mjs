@@ -53,6 +53,17 @@ try {
         throw new Error(`Horizontal overflow on ${route} at ${viewport.name}: ${JSON.stringify(layout)}`);
       }
       await page.screenshot({ path: join(output, `arabic-${viewport.name}-${slug}.png`), fullPage: true });
+
+      if (route === "/pharmacies/inventory") {
+        for (let tabIndex = 1; tabIndex < 8; tabIndex++) {
+          await page.locator(".inventory-tabs button").nth(tabIndex).click();
+          await page.waitForTimeout(150);
+          const tabLayout = await page.evaluate(() => ({ width: window.innerWidth, documentWidth: document.documentElement.scrollWidth, direction: getComputedStyle(document.body).direction, lang: document.documentElement.lang, dir: document.documentElement.dir }));
+          if (tabLayout.dir !== "rtl" || tabLayout.direction !== "rtl" || tabLayout.lang !== "ar") throw new Error(`Arabic inventory tab direction failed at index ${tabIndex} on ${viewport.name}: ${JSON.stringify(tabLayout)}`);
+          if (tabLayout.documentWidth > tabLayout.width + 2) throw new Error(`Horizontal overflow on inventory tab ${tabIndex} at ${viewport.name}: ${JSON.stringify(tabLayout)}`);
+          await page.screenshot({ path: join(output, `arabic-${viewport.name}-inventory-tab-${tabIndex}.png`), fullPage: true });
+        }
+      }
     }
 
     await page.locator(".language-switcher button[lang='en']").click();

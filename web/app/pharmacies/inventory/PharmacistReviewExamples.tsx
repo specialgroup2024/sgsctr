@@ -22,7 +22,7 @@ export default function PharmacistReviewExamples() {
     <article className="inventory-demo-card">
       <h4>{t("Example A — conditional-approval scenario")}</h4>
       <dl>
-        <div><dt>{t("Decision date")}</dt><dd>{t("15 November 2026")}</dd></div>
+        <div><dt>{t("Decision date")}</dt><dd>{t("{t("15 November 2026")}")}</dd></div>
         <div><dt>{t("Review ID")}</dt><dd>REV-DEMO-2026-015</dd></div>
         <div><dt>{t("Workflow version")}</dt><dd>WF-V1.4</dd></div>
         <div><dt>{t("Conditions")}</dt><dd>{t("Staff must complete medication safety refresher training.")}</dd></div>
@@ -41,7 +41,7 @@ export default function PharmacistReviewExamples() {
         <div><dt>{t("Pharmacy")}</dt><dd>Nile Care Pharmacy</dd></div>
         <div><dt>{t("Authorization")}</dt><dd>AUTH-DEMO-2026-018</dd></div>
         <div><dt>{t("Decision")}</dt><dd><strong>{t("REJECT")}</strong></dd></div>
-        <div><dt>{t("Decision date")}</dt><dd>15 November 2026</dd></div>
+        <div><dt>{t("Decision date")}</dt><dd>{t("15 November 2026")}</dd></div>
         <div><dt>{t("Reason")}</dt><dd>{t("Insufficient evidence of prescription verification controls")}</dd></div>
         <div><dt>{t("Conditions / required follow-up")}</dt><dd>{t("Correct identified workflow gaps and submit updated evidence")}</dd></div>
         <div><dt>{t("Supporting evidence references")}</dt><dd>REJ-EVD-DEMO-001, REJ-EVD-DEMO-002</dd></div>
