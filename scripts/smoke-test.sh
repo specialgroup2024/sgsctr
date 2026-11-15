@@ -105,6 +105,16 @@ if [[ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" && -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" && "
     rm -f "$COOKIE_JAR"
     exit 1
   fi
+  if ! printf '%s' "$INVENTORY_PAGE" | grep -q "Illustrative pharmacist review examples — demo only"; then
+    echo "ERROR: Separate pharmacist demo examples were not rendered in the Approvals UI." >&2
+    rm -f "$COOKIE_JAR"
+    exit 1
+  fi
+  if ! printf '%s' "$INVENTORY_PAGE" | grep -q "These owner-supplied examples are kept separate from the real approval register"; then
+    echo "ERROR: Pharmacist demo examples are missing their separation warning." >&2
+    rm -f "$COOKIE_JAR"
+    exit 1
+  fi
   LOGOUT_STATUS="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" -c "$COOKIE_JAR" -X POST -H "Origin: ${ORIGIN}" "${WEB_URL}/api/auth/logout")"
   if [[ "$LOGOUT_STATUS" != "303" ]]; then echo "ERROR: BFF sign-out did not complete (HTTP ${LOGOUT_STATUS})." >&2; rm -f "$COOKIE_JAR"; exit 1; fi
   AFTER_LOGOUT_STATUS="$(curl --connect-timeout 3 --max-time 5 --silent --output /dev/null --write-out '%{http_code}' -b "$COOKIE_JAR" "${WEB_URL}/api/auth/session")"

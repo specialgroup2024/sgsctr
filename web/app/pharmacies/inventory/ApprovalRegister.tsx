@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import PharmacistReviewExamples from "./PharmacistReviewExamples";
 
 type Approval = {
   id: string;
@@ -98,6 +99,7 @@ export default function ApprovalRegister() {
         </div>}
       </article>)}
     </div>
+    <PharmacistReviewExamples />
     <div className="inventory-panel">
       <h3>How an approval will be recorded</h3>
       <p>The authorized reviewer must be authenticated, hold the designated role, and provide a decision, date, evidence reference and any conditions. The application must retain the decision history. This first increment is deliberately read-only; it cannot mark a pending item as approved.</p>
