@@ -86,7 +86,7 @@ export default function TestReadiness() {
   return <section className="inventory-workspace-panel">
     <div className="inventory-section-heading">
       <div>
-        <p className="eyebrow">QUALITY · TEST EXECUTION</p>
+        <p className="eyebrow">{t("QUALITY · TEST EXECUTION")}</p>
         <h2>{t("Test readiness" )}</h2>
         <p>Version-controlled test cases are stored in PostgreSQL. Results are append-only and separate from professional approvals.</p>
       </div>
@@ -95,17 +95,17 @@ export default function TestReadiness() {
     <div className="inventory-gate" role="note">
       <span className="inventory-gate-icon">!</span>
       <div>
-        <strong>A passed test is not a professional approval or release authorization.</strong>
-        <p>Blocked tests cannot be marked Passed or Failed. Results can be recorded only by an Administrator in Development; production approval decisions remain in the separate approval register.</p>
+        <strong>{t("A passed test is not a professional approval or release authorization.")}</strong>
+        <p>{t("Blocked tests cannot be marked Passed or Failed. Results can be recorded only by an Administrator in Development; production approval decisions remain in the separate approval register.")}</p>
       </div>
     </div>
     <div className="inventory-kpi-grid test-readiness-summary">
-      <article className="inventory-kpi"><span>{t("Test cases" )}</span><strong>{loading ? "…" : cases.length}</strong><small>Across platform and seven approval gates</small></article>
+      <article className="inventory-kpi"><span>{t("Test cases" )}</span><strong>{loading ? "…" : cases.length}</strong><small>{t("Across platform and seven approval gates")}</small></article>
       <article className="inventory-kpi"><span>{t("Latest passed" )}</span><strong>{passed}</strong><small>{t("Requires evidence reference" )}</small></article>
       <article className="inventory-kpi"><span>{t("Latest failed" )}</span><strong>{failed}</strong><small>{t("Needs corrective action" )}</small></article>
       <article className="inventory-kpi"><span>{t("Blocked" )}</span><strong>{blocked}</strong><small>{t("Professional, owner or implementation gate" )}</small></article>
     </div>
-    {error && <p className="form-error" role="alert">{error}</p>}
+    {error && <p className="form-error" role="alert">{t(error)}</p>}
     {message && <p className="catalogue-id-note" role="status">{message}</p>}
     {loading && <p className="loading-state">{t("Loading test cases from PostgreSQL…" )}</p>}
     {!loading && !error && <div className="test-readiness-list">
@@ -119,12 +119,12 @@ export default function TestReadiness() {
           </div>
           <p>{test.objective}</p>
           <p><strong>{t("Expected result:" )}</strong> {test.expectedResult}</p>
-          <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {test.testMode}</p>
+          <p className="catalogue-footer-note"><strong>{t("Test type:" )}</strong> {t(test.testMode)}</p>
           {test.executionBlocked && <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div><strong>{t("Execution blocked" )}</strong><p>{test.blockReason}</p></div></div>}
           {latest && <div className="catalogue-id-note">
-            <strong>{t("Latest execution:" )}</strong> {latest.status} · {latest.environment} · {new Date(latest.executedAtUtc).toLocaleString()}
-            <p>Executed by subject: <code>{latest.executedBySubject}</code></p>
-            {latest.evidenceReference && <p>Evidence: <code>{latest.evidenceReference}</code></p>}
+            <strong>{t("Latest execution:" )}</strong> {t(latest.status)} · {latest.environment} · {new Date(latest.executedAtUtc).toLocaleString()}
+            <p>{t("Executed by subject:")} <code>{latest.executedBySubject}</code></p>
+            {latest.evidenceReference && <p>{t("Evidence:")} <code>{latest.evidenceReference}</code></p>}
             {latest.notes && <p>{latest.notes}</p>}
           </div>}
           {payload?.canRecordResults && <form className="test-readiness-form" onSubmit={event => { event.preventDefault(); void save(test); }}>
@@ -147,6 +147,6 @@ export default function TestReadiness() {
         </article>;
       })}
     </div>}
-    {!payload?.canRecordResults && !loading && <p className="catalogue-footer-note">Result entry is available to an authenticated Administrator only in the Development environment. This view remains read-only otherwise.</p>}
+    {!payload?.canRecordResults && !loading && <p className="catalogue-footer-note">{t("Result entry is available to an authenticated Administrator only in the Development environment. This view remains read-only otherwise.")}</p>}
   </section>;
 }
