@@ -698,6 +698,8 @@ export const messages:Record<string,string>={
   "No supplier review requests are pending.": "لا توجد طلبات مراجعة موردين معلقة.",
   "Supplier identity is a draft. Evidence is unverified. Review requests do not approve or qualify a supplier.": "هوية المورد مسودة. والأدلة غير موثقة. ولا تعني طلبات المراجعة اعتماد المورد أو تأهيله.",
 
+  "Title": "العنوان",
+  "Verification": "التحقق",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}
