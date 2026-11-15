@@ -401,6 +401,64 @@ public sealed class AppDbContextModelSnapshot : ModelSnapshot
             entity.ToTable("PharmacySuppliers", t => t.HasCheckConstraint("CK_PharmacySuppliers_DraftOnly", "\"Status\" = 'Draft'"));
         });
 
+        modelBuilder.Entity<PharmacySupplierDeclaration>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.SupplierId).HasColumnType("uuid");
+            entity.Property(x => x.ClaimType).IsRequired().HasMaxLength(48).HasColumnType("character varying(48)");
+            entity.Property(x => x.DeclaredValue).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.Provenance).IsRequired().HasMaxLength(24).HasColumnType("character varying(24)");
+            entity.Property(x => x.ReviewStatus).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.AddedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.AddedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.ChangeReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => new { x.SupplierId, x.ClaimType });
+            entity.HasOne(x => x.Supplier).WithMany(x => x.Declarations).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacySupplierDeclarations", t =>
+            {
+                t.HasCheckConstraint("CK_PharmacySupplierDeclarations_OwnerProvidedUnverified", "\"Provenance\" = 'OwnerProvided' AND \"ReviewStatus\" = 'Unverified'");
+                t.HasCheckConstraint("CK_PharmacySupplierDeclarations_ClaimType", "\"ClaimType\" IN ('LegalName','TradingName','LegalForm','Jurisdiction','RegistrationAuthority','RegistrationNumber','TaxReference','RegisteredAddress','LicenceCategory','LicenceHolder','LicenceNumber','LicenceIssuingAuthority','LicenceScope','LicenceIssueDate','LicenceExpiryDate')");
+            });
+        });
+
+        modelBuilder.Entity<PharmacySupplierBusinessContact>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.SupplierId).HasColumnType("uuid");
+            entity.Property(x => x.ChannelType).IsRequired().HasMaxLength(32).HasColumnType("character varying(32)");
+            entity.Property(x => x.ChannelValue).IsRequired().HasMaxLength(320).HasColumnType("character varying(320)");
+            entity.Property(x => x.DepartmentLabel).IsRequired().HasMaxLength(80).HasColumnType("character varying(80)");
+            entity.Property(x => x.BusinessUseConfirmed).IsRequired().HasColumnType("boolean");
+            entity.Property(x => x.AddedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.AddedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.ChangeReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.SupplierId);
+            entity.HasOne(x => x.Supplier).WithMany(x => x.BusinessContacts).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacySupplierBusinessContacts", t =>
+            {
+                t.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ChannelType", "\"ChannelType\" IN ('DepartmentEmail','BusinessPhone','BusinessWebsite')");
+                t.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_Department", "\"DepartmentLabel\" IN ('Procurement','Sales','Accounts','Regulatory','Quality','General')");
+                t.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ConfirmedBusinessUse", "\"BusinessUseConfirmed\" = TRUE");
+            });
+        });
+
+        modelBuilder.Entity<PharmacySupplierDueDiligenceCase>(entity =>
+        {
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");
+            entity.Property(x => x.SupplierId).HasColumnType("uuid");
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(16).HasColumnType("character varying(16)");
+            entity.Property(x => x.RequestedBySubject).IsRequired().HasMaxLength(256).HasColumnType("character varying(256)");
+            entity.Property(x => x.RequestedAtUtc).HasColumnType("timestamp with time zone");
+            entity.Property(x => x.RequestReason).IsRequired().HasMaxLength(500).HasColumnType("character varying(500)");
+            entity.Property(x => x.CorrelationId).IsRequired().HasMaxLength(128).HasColumnType("character varying(128)");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.SupplierId).IsUnique().HasFilter("\"Status\" = 'Pending'");
+            entity.HasOne(x => x.Supplier).WithMany(x => x.DueDiligenceCases).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+            entity.ToTable("PharmacySupplierDueDiligenceCases", t => t.HasCheckConstraint("CK_PharmacySupplierDueDiligenceCases_PendingOnly", "\"Status\" = 'Pending'"));
+        });
+
         modelBuilder.Entity<PharmacySupplierEvidence>(entity =>
         {
             entity.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnType("uuid");

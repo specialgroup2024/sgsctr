@@ -10,6 +10,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<PharmacyReceiptDraftLine> PharmacyReceiptDraftLines => Set<PharmacyReceiptDraftLine>();
     public DbSet<PharmacySupplier> PharmacySuppliers => Set<PharmacySupplier>();
     public DbSet<PharmacySupplierEvidence> PharmacySupplierEvidence => Set<PharmacySupplierEvidence>();
+    public DbSet<PharmacySupplierDeclaration> PharmacySupplierDeclarations => Set<PharmacySupplierDeclaration>();
+    public DbSet<PharmacySupplierBusinessContact> PharmacySupplierBusinessContacts => Set<PharmacySupplierBusinessContact>();
+    public DbSet<PharmacySupplierDueDiligenceCase> PharmacySupplierDueDiligenceCases => Set<PharmacySupplierDueDiligenceCase>();
     public DbSet<PharmacySupplierReviewRequest> PharmacySupplierReviewRequests => Set<PharmacySupplierReviewRequest>();
     public DbSet<RegulatorySource> RegulatorySources => Set<RegulatorySource>();
     public DbSet<RegulatoryDocument> RegulatoryDocuments => Set<RegulatoryDocument>();
@@ -77,6 +80,58 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         supplier.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
         supplier.Property(x => x.UpdatedBySubject).HasMaxLength(256).IsRequired();
         supplier.Property(x => x.ChangeReason).HasMaxLength(500).IsRequired();
+
+        var supplierDeclaration = modelBuilder.Entity<PharmacySupplierDeclaration>();
+        supplierDeclaration.ToTable("PharmacySupplierDeclarations", table =>
+        {
+            table.HasCheckConstraint("CK_PharmacySupplierDeclarations_OwnerProvidedUnverified",
+                "\"Provenance\" = 'OwnerProvided' AND \"ReviewStatus\" = 'Unverified'");
+            table.HasCheckConstraint("CK_PharmacySupplierDeclarations_ClaimType",
+                "\"ClaimType\" IN ('LegalName','TradingName','LegalForm','Jurisdiction','RegistrationAuthority','RegistrationNumber','TaxReference','RegisteredAddress','LicenceCategory','LicenceHolder','LicenceNumber','LicenceIssuingAuthority','LicenceScope','LicenceIssueDate','LicenceExpiryDate')");
+        });
+        supplierDeclaration.HasKey(x => x.Id);
+        supplierDeclaration.HasIndex(x => new { x.SupplierId, x.ClaimType });
+        supplierDeclaration.Property(x => x.ClaimType).HasMaxLength(48).IsRequired();
+        supplierDeclaration.Property(x => x.DeclaredValue).HasMaxLength(500).IsRequired();
+        supplierDeclaration.Property(x => x.Provenance).HasMaxLength(24).IsRequired();
+        supplierDeclaration.Property(x => x.ReviewStatus).HasMaxLength(16).IsRequired();
+        supplierDeclaration.Property(x => x.AddedBySubject).HasMaxLength(256).IsRequired();
+        supplierDeclaration.Property(x => x.ChangeReason).HasMaxLength(500).IsRequired();
+        supplierDeclaration.HasOne(x => x.Supplier).WithMany(x => x.Declarations)
+            .HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+
+        var supplierContact = modelBuilder.Entity<PharmacySupplierBusinessContact>();
+        supplierContact.ToTable("PharmacySupplierBusinessContacts", table =>
+        {
+            table.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ChannelType",
+                "\"ChannelType\" IN ('DepartmentEmail','BusinessPhone','BusinessWebsite')");
+            table.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_Department",
+                "\"DepartmentLabel\" IN ('Procurement','Sales','Accounts','Regulatory','Quality','General')");
+            table.HasCheckConstraint("CK_PharmacySupplierBusinessContacts_ConfirmedBusinessUse",
+                "\"BusinessUseConfirmed\" = TRUE");
+        });
+        supplierContact.HasKey(x => x.Id);
+        supplierContact.HasIndex(x => x.SupplierId);
+        supplierContact.Property(x => x.ChannelType).HasMaxLength(32).IsRequired();
+        supplierContact.Property(x => x.ChannelValue).HasMaxLength(320).IsRequired();
+        supplierContact.Property(x => x.DepartmentLabel).HasMaxLength(80).IsRequired();
+        supplierContact.Property(x => x.BusinessUseConfirmed).IsRequired();
+        supplierContact.Property(x => x.AddedBySubject).HasMaxLength(256).IsRequired();
+        supplierContact.Property(x => x.ChangeReason).HasMaxLength(500).IsRequired();
+        supplierContact.HasOne(x => x.Supplier).WithMany(x => x.BusinessContacts)
+            .HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+
+        var dueDiligence = modelBuilder.Entity<PharmacySupplierDueDiligenceCase>();
+        dueDiligence.ToTable("PharmacySupplierDueDiligenceCases", table =>
+            table.HasCheckConstraint("CK_PharmacySupplierDueDiligenceCases_PendingOnly", "\"Status\" = 'Pending'"));
+        dueDiligence.HasKey(x => x.Id);
+        dueDiligence.HasIndex(x => x.SupplierId).IsUnique().HasFilter("\"Status\" = 'Pending'");
+        dueDiligence.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        dueDiligence.Property(x => x.RequestedBySubject).HasMaxLength(256).IsRequired();
+        dueDiligence.Property(x => x.RequestReason).HasMaxLength(500).IsRequired();
+        dueDiligence.Property(x => x.CorrelationId).HasMaxLength(128).IsRequired();
+        dueDiligence.HasOne(x => x.Supplier).WithMany(x => x.DueDiligenceCases)
+            .HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
 
         var supplierEvidence = modelBuilder.Entity<PharmacySupplierEvidence>();
         supplierEvidence.ToTable("PharmacySupplierEvidence", table =>

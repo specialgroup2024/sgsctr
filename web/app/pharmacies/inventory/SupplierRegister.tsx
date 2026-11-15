@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "@/components/locale-provider";
+import SupplierOnboardingIntake from "./SupplierOnboardingIntake";
 import type { FormEvent } from "react";
 
 type Supplier = {
@@ -17,6 +18,9 @@ type Evidence = {
 type SupplierDetail = {
   id: string; code: string; displayName: string; status: string; version: number;
   createdAtUtc: string; updatedAtUtc: string; changeReason: string; evidence: Evidence[];
+  declarations: Array<{ id: string; claimType: string; declaredValue: string; provenance: string; reviewStatus: string; addedAtUtc: string; changeReason: string }>;
+  businessContacts: Array<{ id: string; channelType: string; channelValue: string; departmentLabel: string; addedAtUtc: string; changeReason: string }>;
+  dueDiligenceCases: Array<{ id: string; status: string; requestedAtUtc: string; requestReason: string }>;
   reviewRequests: Array<{ id: string; status: string; requestedAtUtc: string; reason: string }>;
 };
 type ReviewItem = { id: string; supplierId: string; supplierCode: string; supplierName: string; requestedAtUtc: string; reason: string };
@@ -177,6 +181,20 @@ export default function SupplierRegister() {
         </div>
         <button className="primary-button" type="submit" disabled={busy}>{t("Save unverified evidence")}</button>
       </form>}
+      {selected.declarations.length > 0 && <>
+        <div className="inventory-panel-heading" style={{ marginTop: 18 }}><div><p className="eyebrow">{t("OWNER-PROVIDED CLAIMS")}</p><h3>{t("Declared identity and licence details")}</h3></div></div>
+        <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Field")}</th><th>{t("Declared value")}</th><th>{t("Review status")}</th></tr></thead><tbody>
+          {selected.declarations.map(item => <tr key={item.id}><td>{t(item.claimType)}</td><td>{item.declaredValue}</td><td>{t("UNVERIFIED")}</td></tr>)}
+        </tbody></table></div>
+      </>}
+      {selected.businessContacts.length > 0 && <>
+        <div className="inventory-panel-heading" style={{ marginTop: 18 }}><div><p className="eyebrow">{t("BUSINESS CHANNELS")}</p><h3>{t("Department contact channels")}</h3></div></div>
+        <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Department")}</th><th>{t("Channel type")}</th><th>{t("Business channel value")}</th></tr></thead><tbody>
+          {selected.businessContacts.map(item => <tr key={item.id}><td>{t(item.departmentLabel)}</td><td>{t(item.channelType)}</td><td>{item.channelValue}</td></tr>)}
+        </tbody></table></div>
+      </>}
+      {selected.dueDiligenceCases.length > 0 && <p className="catalogue-footer-note">{t("Due-diligence intake")}: {selected.dueDiligenceCases.map(item => t(item.status)).join(", ")}. {t("No checks or qualification decision have been performed.")}</p>}
+      <SupplierOnboardingIntake supplierId={selected.id} canManage={canManage} onSaved={() => openSupplier(selected.id)} />
       <form className="location-form catalogue-form" onSubmit={requestReview}>
         <div className="form-heading"><strong>{t("Request supplier review")}</strong><span className="inventory-state-tag">{t("PENDING")}</span></div>
         <div className="form-grid"><label className="wide-field">{t("Review reason")}<input required maxLength={500} value={reviewReason} onChange={e => setReviewReason(e.target.value)} /></label></div>

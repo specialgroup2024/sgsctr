@@ -1,7 +1,7 @@
 # INV-B expansion — supplier onboarding decision package
 
 - Date: 2026-11-15.
-- Status: owner requested expanded supplier capability; business and professional rules remain pending.
+- Status: owner approved the limited non-operative intake slice on 2026-11-15 (INV-OWN-003); legal/professional rules and operational decisions remain pending.
 - Related approvals: INV-OWN-001 (staged development authorization, approved); INV-OWN-002 (supplier operating policy, pending); Q51 (supplier master policy, open); INV-SEC-001 (security/privacy acceptance, pending).
 - Current implementation: Draft supplier, Unverified evidence references and Pending review requests only.
 
@@ -18,7 +18,7 @@ This request authorizes further design and implementation planning. It does not 
 
 ## Safe technical boundary
 
-The following can be designed as non-operative intake, subject to the owner's confirmation of the data scope:
+The owner approved the following non-operative intake scope on 2026-11-15; see INV-OWN-003 in the approval register:
 - capture supplier-declared legal identity claims, explicitly labelled OwnerProvided / Unverified;
 - capture licence metadata and evidence references, explicitly Unverified;
 - preserve evidence provenance, dates, source references and audit history;
@@ -71,6 +71,14 @@ The state names, decision transitions and review intervals above are design prop
 - PostgreSQL migration/integration tests, API authorization tests, BFF/UI tests in English and Arabic, and a documented migration/recovery rehearsal.
 - Owner and qualified professional sign-offs recorded in the central approval register.
 
+## Approved implementation slice — 2026-11-15
+
+- Supplier-declared identity/licence metadata is captured as OwnerProvided / Unverified claims.
+- Due-diligence intake cases are created as Pending only; no checklist, risk score, check execution or decision is provided.
+- Business contact channels are limited to department-labelled business email, business phone/switchboard and business website; no person-name field is provided.
+- Every write records actor, UTC time, change reason and an audit event in the same database save.
+- The implementation must remain disconnected from purchasing, receiving eligibility, stock and finance.
+
 ## Current determination
 
-Proceed with the existing Draft/Unverified supplier register and this decision package. The next data-capture increment requires confirmation of its non-operative scope and privacy boundary. Actual verification, qualification decisions, reviewer authorization and purchasing/receiving eligibility remain blocked by Q51 / INV-OWN-002 and applicable professional/security gates.
+Proceed with this limited implementation under INV-OWN-003. Actual legal/licence verification, qualification decisions, reviewer authorization and purchasing/receiving eligibility remain blocked by Q51 / INV-OWN-002 and applicable professional/security gates. The free-text business phone/email value still depends on user honesty and requires privacy/security review; no automated personal-data detection is claimed.
