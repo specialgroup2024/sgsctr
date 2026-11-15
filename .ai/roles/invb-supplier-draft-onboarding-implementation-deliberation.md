@@ -24,9 +24,9 @@
 
 **SME analysis:** capture provenance, actor, time and change reason. Keep legal/licence values as supplier declarations only. Do not invent legal criteria, evidence validity checks, risk tiers, checklists, reviewer credentials, decision states or re-review intervals. Use department mailbox, business phone/switchboard and company website channels only.
 
-**Architect revision:** constrain declarations to an explicit list of identity/licence metadata keys, OwnerProvided provenance and Unverified review status. Constrain contacts to department-labelled business channel types. Constrain due-diligence cases to Pending. Keep API writes Administrator-only under the existing policy, audit each write in the same database save, and do not connect suppliers to PO/receipt eligibility.
+**Architect revision:** constrain declarations to an explicit list of identity/licence metadata keys, OwnerProvided provenance and Unverified review status. Constrain contacts to department-labelled business channel types. Constrain due-diligence cases to Pending. Keep API writes Administrator-only under the existing policy, restrict declaration/contact/due-diligence detail reads to Administrators, audit each write in the same database save, and do not connect suppliers to PO/receipt eligibility. Require an explicit shared-business-channel attestation and validate email, phone and website formats.
 
-**Retesting / residual risks:** source inspection confirms the intended endpoint and database constraints are present. Automated build, migration, PostgreSQL, authorization, BFF and browser checks have not yet run. A free-text business phone can still be entered incorrectly as a personal number; the UI explicitly prohibits personal details, but privacy/security review is still required. No professional review or legal verification is simulated.
+**Retesting / residual risks:** source inspection confirms the intended endpoint and database constraints are present. Automated build, migration, PostgreSQL, authorization, BFF and browser checks have not yet run. A business contact value can still be misrepresented despite the required attestation and format checks; privacy/security review is still required. No professional review or legal verification is simulated.
 
 ## Maestro determination
 
