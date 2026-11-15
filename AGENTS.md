@@ -29,9 +29,11 @@
 - Follow module ownership; shared code must not absorb business-specific rules.
 - Use server-side authorization for every protected operation.
 - Use database constraints and transactions for approved financial and stock invariants.
-- Use fixed-precision monetary values with explicit currency; follow approved precision and rounding rules.
+- Use fixed-precision monetary values with explicit currency; never use floating-point arithmetic for money. Follow approved precision, rounding and calculation rules.
+- Make timestamp and time-zone behavior explicit; do not rely on implicit server-local time.
 - Make migrations reversible where feasible; document irreversible steps.
 - Make retryable integrations idempotent.
+- Never merge a pull request without explicit user authorization.
 - Keep secrets, patient information and production data out of Git, logs and test fixtures.
 - Add or update tests for behavior changes and database migrations.
 - Update relevant requirements, decisions, memory and runbooks.

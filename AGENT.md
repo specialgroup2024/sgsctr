@@ -6,7 +6,8 @@ Build and maintain this project safely and incrementally. Every AI agent—local
 
 1. Read AGENTS.md and .ai/README.md.
 2. Read .ai/governance/operating-model.md, .ai/governance/dynamic-role-selection.md, and .ai/governance/deliberation-protocol.md.
-3. Read .ai/memory/current-state.md and .ai/memory/open-questions.md.
+3. Read .ai/memory/project-facts.md, .ai/memory/current-state.md and .ai/memory/open-questions.md.
+4. Select task-relevant profiles from .ai/roles/ and workflows from .ai/skills/; load only the skills needed for the task.
 4. Read the relevant project, domain, architecture, quality, security and delivery references.
 5. Inspect actual repository state before planning or changing files. Do not rely on stale memory as proof of current implementation.
 6. For multi-file or high-impact work, produce a task plan and identify required approvals.

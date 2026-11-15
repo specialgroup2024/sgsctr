@@ -6,12 +6,14 @@ This folder is the evolving, evidence-based project knowledge base for every AI 
 1. Read root AGENT.md and AGENTS.md.
 2. Read governance/operating-model.md, governance/dynamic-role-selection.md, governance/deliberation-protocol.md and governance/approval-and-execution.md.
 3. Read governance/approval-register.md before implementation, workflow changes or release decisions.
-4. Read memory/current-state.md and memory/open-questions.md.
+4. Read memory/project-facts.md, memory/current-state.md and memory/open-questions.md.
 5. Read product/vision.md, product/scope.md and relevant domain documents.
 6. For pharmacy tasks, read governance/egypt-pharmacy-market-monitoring.md, governance/egypt-pharmacy-source-register.md, governance/egypt-requirements-register.md, governance/evidence-register.md, roles/pharmacy-domain.md and skills/egypt-compliance-review/SKILL.md.
 7. Read relevant architecture, decisions, quality, security and delivery documents.
 8. Read governance/cross-platform-agent-compatibility.md when configuring or operating a new agent host; use roles/role-selection.md as the per-task role-selection record template.
-9. Load only the skills relevant to the task.
+9. Load only task-relevant SKILL.md files from .ai/skills/. Each skill should have YAML metadata, a focused workflow, guardrails and links to detailed references; folder placement alone does not guarantee host auto-discovery.
+10. Read governance/standards-register.md and governance/certification-roadmap.md when security, privacy, AI, audit, procurement or certification scope is affected.
+11. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
 10. Inspect repository reality; memory is a navigation aid, not a substitute for source-code inspection.
 
 ## Egypt pharmacy intelligence — mandatory
@@ -41,6 +43,14 @@ The five role responsibilities are stable, while their ICT and business professi
 - Do not store credentials, patient records, personal information or raw production records.
 - Update memory only when new information is confirmed; do not convert assumptions into facts by repetition.
 - Put enduring technical decisions in ADRs; keep unresolved decisions in memory/open-questions.md.
+
+## Standards and certification
+- governance/standards-register.md maps versioned standards to testable controls; verify official source status before use.
+- governance/certification-roadmap.md is an evaluation aid, not a certification claim.
+- Egyptian legal and pharmacy requirements remain separate and require qualified review.
+
+## Source reconciliation
+- See governance/source-reconciliation-ai-chat.md for the 2026-11-15 mapping of the four owner-supplied ai-chat documents to existing SGSCTR context and the decisions deliberately not imported.
 
 ## Documentation size and approval
 Every Markdown file must remain below 200 lines. Aim for 180 lines or fewer. Split long content into linked focused documents. CI enforces the limit through scripts/check_markdown_line_limit.py.
