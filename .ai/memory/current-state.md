@@ -132,7 +132,7 @@ The owner confirms the three branches may transfer medicines and supplies direct
 
 - Branch `docs/ai-context-index-integrity`; review PR #80 is open and not merged.
 - Adds a deterministic tracked-Markdown manifest/index generator, repository-relative Markdown link checker, CI steps and canonical-document ownership guidance.
-- The branch manifest reconciles against GitHub's tree: 131 source Markdown files (excluding generated `.ai/index.md`), six empty placeholders, with matching Git blob SHA/byte-size metadata. The generated index is 186 lines.
+- The branch manifest reconciles against GitHub's tree: 131 source Markdown files (excluding generated `.ai/index.md`), six empty placeholders, with matching Git blob SHA/byte-size metadata. The generated index is 171 lines.
 - Generator freshness and local-link behavior passed an isolated temporary Git fixture. This is not a full-repository run.
 - GitHub Actions attempts for this PR repeatedly completed as failures with no job steps/logs available (step list null; log download 404). Full-repository link validation and CI acceptance remain unverified.
 - No application code, schema, migration, business rule, approval status or production setting changed. No document was deleted or reclassified as a new approval source.
