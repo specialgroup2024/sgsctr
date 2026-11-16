@@ -82,3 +82,11 @@ Existing owner authorizations retain only their recorded scope and conditions. C
 8. Only then change this record to **Technically accepted**. Business/professional approvals remain separate and cannot be changed by this technical acceptance.
 
 No release or business/professional approval is implied by this record.
+## Follow-up PR #81 workflow observation
+
+- PR #81 adds the regression tests and invokes them before the three existing documentation checks.
+- GitHub created documentation workflow run `43859532336` and .NET foundation workflow run `43859532271` for head `33d27fe7d9dca59723f77795ebe65ef62a3a7676`.
+- Both completed as failures within approximately two seconds. Raw job records show `runner_id: 0`, empty `runner_name`, and empty `steps: []`; no test command is shown as executed. The PR head's combined commit status remains pending with zero status contexts.
+- This is consistent with the merge-commit behavior on PR #80 and points to a GitHub Actions runner/execution problem, not a demonstrated assertion failure in the new tests.
+- The current agent environment cannot clone the private repository because outbound GitHub DNS/network access is unavailable. The test suite therefore remains unexecuted here.
+- PR #81 is open and unmerged. Technical acceptance remains blocked; do not merge as accepted solely because the source is present.
