@@ -28,6 +28,8 @@ Technology baseline is in [system context](architecture/system-context.md). Impl
 For pharmacy tasks, task profiles load Egyptian requirements, source/evidence registers and compliance skill. Distinguish binding instruments, regulator guidance, drafts, official announcements and market signals. Verify primary sources and applicability. Qualified legal/regulatory, pharmacy, quality, accounting and owner decisions remain separate gates. Never auto-change dispensing, stock, prices, reimbursement or accounting from detected updates.
 
 ## Memory discipline
+See [state update protocol](memory/state-update-protocol.md) and the append-only [change log](memory/change-log.md). Current-state is a concise snapshot; detailed incidents and acceptance evidence belong in canonical delivery records.
+
 Memory is curated, not transcript. Mutable statements require status/provenance or linked evidence and owner/review date where applicable. Record dated evidence-linked changes; reconcile current summary from canonical records. Do not create contradictory one-off notes or overwrite approval history. Never store secrets, patient records or raw production data.
 
 ## Documentation integrity

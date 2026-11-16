@@ -102,7 +102,9 @@
       "governance/ai-context-index-and-integrity.md",
       "governance/source-reconciliation-ai-chat.md",
       "memory/readme.md",
-      "memory/lessons.md"
+      "memory/lessons.md",
+      "memory/state-update-protocol.md",
+      "memory/change-log.md"
     ]
   },
   "rules": {
