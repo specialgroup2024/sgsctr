@@ -14,7 +14,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 FENCE = re.compile(r"^\s{0,3}(`{3,}|~{3,})")
-INLINE = re.compile(r"!?(?:\[[^\]]*\])\(\s*(<[^>]*>|[^\s)]+)(?:\s+[\"'][^\"']*[\"'])?\s*\)")
+INLINE = re.compile(r"""!?(?:\[[^\]]*\])\(\s*(<[^>]*>|[^\s)]+)(?:\s+["'][^"']*["'])?\s*\)""")
 DEFINITION = re.compile(r"^\s{0,3}\[[^\]]+\]:\s*(<[^>]*>|\S+)", re.MULTILINE)
 HEADING = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
 HTML_ID = re.compile(r"\bid=[\"']([^\"']+)[\"']")
