@@ -49,7 +49,7 @@ These tests are added to CI but are **not yet reported as passed**. The validati
 | TAI-02 | Manifest paths, blob hashes and sizes match the current Git tree | Verified at merged commit; must be rerun after follow-up documentation changes |
 | TAI-03 | Generated index is fresh and below 200 lines | Merged-commit index measured at 171 lines; current branch CI pending |
 | TAI-04 | Link checker passes across every tracked Markdown file | Pending full-repository execution |
-| TAI-05 | Regression tests pass | Added; execution pending |
+| TAI-05 | Regression tests pass | Equivalent isolated fixture: 3/3 passed; exact checked-in test file and CI execution pending |
 | TAI-06 | Documentation CI completes successfully with inspectable logs | Blocked; current GitHub Actions jobs have no runner/steps/logs |
 | TAI-07 | Application build, database migration and runtime checks remain unaffected | No application code/schema/migration changed; no new runtime claim |
 | TAI-08 | Approval register and business/professional decisions are unchanged | Verified unchanged; see approval boundary below |
