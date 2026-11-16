@@ -40,6 +40,8 @@ These are simulated analytical perspectives, not independent agents or human pro
 ## Verification status
 
 - Source files were fetched from `master` before editing; edits are applied on the isolated branch.
-- Required follow-up: inspect the branch diff, count the three edited files, run the repository Markdown line-limit checker and verify referenced bootstrap paths.
-- No tests/builds were run because no application code changed.
+- Branch re-fetch verification: `AGENT.md` 52 lines, `AGENTS.md` 65 lines and `.ai/README.md` 63 lines; all are below the repository's 200-line maximum.
+- The eight canonical startup references (operating model, dynamic role selection, deliberation protocol, approval/execution, approval register, project facts, current state and open questions) were fetched successfully from the branch.
+- The full-repository Markdown checker was not run because this GitHub-only execution environment does not provide a repository checkout. CI must provide that check; no pass is claimed.
+- No application tests/builds were run because no application code changed.
 - Human owner approval remains required before merging this pull request. No merge is performed by this task.
