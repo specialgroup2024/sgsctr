@@ -139,3 +139,11 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - The new regression tests cover deterministic generation, manifest SHA/size agreement, freshness detection, valid local links/anchors/assets, duplicate heading anchors, fenced-code exclusion and fail-closed missing-link cases. An equivalent isolated temporary Git fixture was executed locally: 3/3 tests passed. The exact checked-in test file and full repository checks remain unexecuted.
 - Technical acceptance is **BLOCKED** pending a functioning GitHub Actions runner or an owner-run local checkout that executes all required commands and records results. This environment cannot clone the private repository because outbound GitHub DNS/network access is unavailable.
 - No business, pharmacy, regulatory, legal, quality, accounting, security/privacy or production-release approval status was changed. The central approval register remains authoritative; pending gates remain pending.
+
+## AI context governance correction — 2026-11-16
+
+- PR #81 is merged to master at ef831fc7878ffa5229ad18310fb41a790e1cf893. Technical acceptance remains BLOCKED: CI jobs had no assigned runner/visible steps; the exact checked-in regression suite and full-tree docs checks were not executed from a clean checkout. The equivalent isolated fixture result (3/3) is not full-repository acceptance.
+- Six previously empty project documents are now populated: architecture/api-conventions.md, architecture/data-model.md, architecture/deployment.md, delivery/release-and-rollback.md, product/acceptance-criteria.md and product/users-and-permissions.md. These are guidance/proposals, not business approvals or production configuration.
+- AGENT.md owns universal mission, safety and approval boundaries; AGENTS.md owns repository execution mechanics. Context loading is delegated to .ai/agent-context.json and .ai/README.md.
+- The machine-readable context plan defines a mandatory baseline and task profiles. It is a loading aid, not a source of truth or approval register.
+- No business, pharmacy, legal/regulatory, accounting, quality, security/privacy or production-release approval status was changed.

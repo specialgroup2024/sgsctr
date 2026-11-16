@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "purpose": "Minimum context loading plan. Task profiles are additive and never override AGENT.md, AGENTS.md or the approval register.",
+  "authority": {
+    "universal_rules": "../AGENT.md",
+    "repository_execution": "../AGENTS.md",
+    "project_guide": "README.md",
+    "approvals": "governance/approval-register.md",
+    "current_state": "memory/current-state.md"
+  },
+  "mandatory_baseline": [
+    "../AGENT.md",
+    "../AGENTS.md",
+    "README.md",
+    "governance/operating-model.md",
+    "governance/approval-and-execution.md",
+    "governance/approval-register.md",
+    "memory/project-facts.md",
+    "memory/current-state.md",
+    "memory/open-questions.md",
+    "product/scope.md",
+    "architecture/system-context.md"
+  ],
+  "task_profiles": {
+    "api_backend": [
+      "architecture/api-conventions.md",
+      "architecture/data-model.md",
+      "product/users-and-permissions.md",
+      "security/identity-access-baseline.md",
+      "security/audit-logging-baseline.md",
+      "skills/dotnet-api/SKILL.md",
+      "skills/postgres-data/SKILL.md",
+      "delivery/testing-strategy.md"
+    ],
+    "database_migration": [
+      "architecture/data-model.md",
+      "domain/accounting-rules.md",
+      "skills/postgres-data/SKILL.md",
+      "delivery/appdbcontext-model-parity.md",
+      "delivery/release-and-rollback.md"
+    ],
+    "web_ui": [
+      "product/vision.md",
+      "product/users-and-permissions.md",
+      "architecture/api-conventions.md",
+      "governance/cross-platform-agent-compatibility.md",
+      "delivery/testing-strategy.md"
+    ],
+    "pharmacy": [
+      "domain/business-boundaries.md",
+      "domain/pharmacy-workflows.md",
+      "domain/accounting-rules.md",
+      "governance/egypt-requirements-register.md",
+      "governance/egypt-pharmacy-source-register.md",
+      "governance/evidence-register.md",
+      "roles/pharmacy-domain.md",
+      "skills/pharmacy-inventory/SKILL.md",
+      "skills/egypt-compliance-review/SKILL.md",
+      "product/acceptance-criteria.md"
+    ],
+    "pharmacy_transfers": [
+      "architecture/pharmacy-stock-transfer-technical-design.md",
+      "architecture/pharmacy-transfer-domain-model.md",
+      "architecture/pharmacy-transfer-api-contract.md",
+      "architecture/pharmacy-transfer-persistence-design.md",
+      "domain/pharmacy-stock-transfer-workflow.md",
+      "quality/pharmacy-stock-transfer-acceptance.md",
+      "domain/accounting-rules.md"
+    ],
+    "contracting": [
+      "domain/contracting-workflows.md",
+      "domain/accounting-rules.md",
+      "product/acceptance-criteria.md",
+      "roles/accounting.md"
+    ],
+    "identity_security": [
+      "product/users-and-permissions.md",
+      "architecture/ADR-0002-identity-and-access.md",
+      "security/identity-access-baseline.md",
+      "security/audit-logging-baseline.md",
+      "governance/approval-register.md",
+      "skills/secure-release/SKILL.md"
+    ],
+    "regulatory_intelligence": [
+      "architecture/eda-regulatory-ingestion.md",
+      "delivery/eda-regulatory-ingestion-runbook.md",
+      "governance/egypt-pharmacy-market-monitoring.md",
+      "governance/egypt-pharmacy-source-register.md",
+      "governance/evidence-register.md",
+      "skills/egypt-compliance-review/SKILL.md"
+    ],
+    "deployment_release": [
+      "architecture/deployment.md",
+      "delivery/local-development.md",
+      "delivery/release-and-rollback.md",
+      "delivery/definition-of-done.md",
+      "security/identity-access-baseline.md"
+    ],
+    "ai_governance_docs": [
+      "governance/dynamic-role-selection.md",
+      "governance/deliberation-protocol.md",
+      "governance/ai-context-index-and-integrity.md",
+      "governance/source-reconciliation-ai-chat.md",
+      "memory/readme.md",
+      "memory/lessons.md"
+    ]
+  },
+  "rules": {
+    "load_more_only_when": "A selected profile or inspected dependency requires it; follow links and record why high-impact references were loaded.",
+    "do_not_load": "All delivery logs, all roles, all skills and all historical scans for every task.",
+    "memory_update": "Only after evidence changes; append dated evidence-linked corrections, retain history and reconcile current-state from canonical records.",
+    "approvals": "Never infer business, professional or release approval from merge, CI result, agent role or technical acceptance."
+  }
+}
