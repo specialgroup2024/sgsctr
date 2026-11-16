@@ -51,6 +51,10 @@
 - Never merge a pull request without explicit user authorization.
 
 ## Documentation governance
+- Use the generated `.ai/index.md` and `.ai/CONTEXT_MANIFEST.json` for navigation and tracked-Markdown integrity; never treat them as approval or policy sources.
+- Regenerate with `python scripts/ai_context_index.py`; verify with `python scripts/ai_context_index.py --check`.
+- CI checks generated-index freshness and repository-relative Markdown links. External URLs are not fetched by the link check.
+- Preserve existing canonical documents and history; do not create parallel task logs or duplicate policy documents.
 - Every Markdown file must contain fewer than 200 lines; aim for 180 or fewer.
 - Enforce with scripts/check_markdown_line_limit.py and the CI workflow.
 - Do not embed executable Python source in Markdown instructions.
