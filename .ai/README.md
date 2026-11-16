@@ -18,6 +18,7 @@ Generated [index](index.md) is navigation; [manifest](CONTEXT_MANIFEST.json) rec
 - [Dynamic roles](governance/dynamic-role-selection.md): five stable responsibilities with task-selected specializations.
 - [Role/skill routing](governance/role-skill-routing.json): machine-readable task signals, specialist references and additive profiles.
 - [ADR conventions](governance/adr-conventions.md): repository-wide numbering and lifecycle rules.
+- [Repository policy gaps](governance/repository-policy-decisions.md): owner-gated licence/security scaffolding and conservative cleanup decisions.
 - [Deliberation](governance/deliberation-protocol.md): substantive decision review.
 - [Approval and execution](governance/approval-and-execution.md): work authorization vs approval.
 
