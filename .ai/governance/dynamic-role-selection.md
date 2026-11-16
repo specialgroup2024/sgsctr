@@ -2,42 +2,48 @@
 
 ## Invariant responsibilities
 
-The five roles are always the same in responsibility. Their professional identities are not fixed. Select profiles after understanding the actual task; one person/model may simulate multiple perspectives only when the limitation is disclosed.
+The five responsibilities remain stable; professional identities and specializations are selected for each task. One model/person may simulate multiple perspectives only when that limitation is disclosed.
 
 | Role | Stable responsibility | Dynamic profile selection |
 |---|---|---|
-| Architect | Propose foundational architecture, approach and solution. | Select the architect appropriate to the dominant ICT field and system boundary. |
-| Devil's Advocate | Challenge assumptions, weaknesses, vulnerabilities, feasibility, risks and loopholes. | Select an independent critical reviewer, red-team or assurance profile suited to the risk. |
-| Clueless Client | Represent the non-technical user/business stakeholder; challenge complexity, cost, usability and practical value. | Select the relevant end-user, operator, buyer or business-owner perspective without technical jargon. |
-| Subject Matter Expert | Analyze first principles, theory, practice, alternatives and long-term consequences. | Select a deep domain/technical SME profile appropriate to the problem. Never fabricate a real person's identity, credentials or experience. |
-| Maestro | Intervene after substantive debate and make the final technical determination/recommendation. | Select a senior ICT executive/technology authority whose remit matches the problem. |
+| Architect | Propose architecture, boundaries and solution. | Match the dominant affected ICT field and system boundary. |
+| Devil's Advocate | Challenge assumptions, vulnerabilities, feasibility and unintended effects. | Select an independent critical-review perspective appropriate to risk. |
+| Clueless Client | Represent affected non-technical users/operators. | Select the actual user, operator, buyer or business-owner perspective. |
+| Subject Matter Expert | Analyze first principles, practice and long-term consequences. | Select the narrowest relevant technical/domain SME. |
+| Maestro | Make final technical determination after debate. | Select a senior technical authority matching the task. Never grant human approval. |
 
-## Selection method
+## Selection procedure
 
-For each task:
+1. Read the mandatory baseline in `agent-context.json` and the approval register.
+2. Identify outcome, affected components, users, data, integrations and risk.
+3. Select all materially relevant task profiles; profiles are additive, not mutually exclusive.
+4. Use `role-skill-routing.json` to map affected boundaries to specializations, skill references and candidate task profiles.
+5. Assign a credible profile to each stable role and state why it is relevant, what evidence it needs and its limits.
+6. Load only the selected profiles and references justified by source inspection. Record the selection in `roles/role-selection.md` for substantive work.
+7. Re-select when scope, affected boundary, risk or evidence changes.
+8. If no specialization matches, identify the gap and propose a profile before high-impact work.
 
-1. Identify the outcome, affected components, users, data and external dependencies.
-2. Classify relevant fields: software engineering, enterprise architecture, database, cybersecurity, AI, cloud, DevOps, UX, QA, pharmacy operations, inventory, accounting/ERP, contracting, Egyptian regulatory affairs, pharmacovigilance, pharmaceutical supply chain/market analysis or legal/tax review. This list is illustrative, not a fixed taxonomy.
-3. Identify primary and secondary specializations; avoid adding irrelevant experts.
-4. Assign a credible professional profile to each role and state why it is relevant.
-5. Identify missing expertise and limits of available tools/models.
-6. Re-select roles when the task or evidence changes materially.
+## Specialization catalogue
 
-## Example mappings (illustrative)
+The catalogue is intentionally open-ended. Relevant fields may include software engineering, enterprise architecture, database engineering, cybersecurity, AI/ML, cloud, networking, DevOps/SRE, QA, UX/accessibility, data engineering, digital forensics, IT governance, pharmacy operations, regulatory affairs, pharmacovigilance, supply chain, accounting/ERP, contracting, legal and tax review. Add specializations when evidence warrants them; do not force every task into a fixed list.
 
-- API implementation: software architect; backend/security challenger; API consumer; API/platform SME; CTO/engineering executive.
-- Pharmacy stock transfer: enterprise/application architect; inventory-control challenger; branch/warehouse operator; pharmacy supply-chain SME; technology executive, with pharmacist/accountant approvals separately required.
-- Egypt regulatory update: product/compliance architect; regulatory-risk challenger; pharmacy operator; Egyptian regulatory-affairs/pharmacist/legal SME; technology executive, with qualified professional and owner approval separately required.
-- Pharmacy market monitoring: data/integration architect; privacy/source-rights challenger; pharmacy procurement/operations user; pharmaceutical market-intelligence and pharmacovigilance SME; technology executive, with business ownership and source licensing approvals separately required.
-- EDA ingestion implementation: .NET integration architect; SSRF/document-storage/security challenger; pharmacy regulatory affairs user; Egyptian EDA publication and document-ingestion SME; technology executive, with pharmacist/regulatory reviewer and owner approval for any operational interpretation. Add PostgreSQL, web/BFF, DevOps, QA and accessibility profiles only where the task touches those boundaries.
-- Database security: database/security architect; penetration tester; data owner/operator; database security SME; security executive.
-- AI agent design: AI systems architect; AI safety/security challenger; business user; agentic systems SME; AI/technology executive.
-- Contracting cost controls: enterprise/ERP architect; controls challenger; project/commercial user; project-controls/accounting systems SME; technology executive, with accountant/contracting-owner decisions separately required.
+## Role-to-skill routing
 
-## Selection quality rules
+The machine-readable routing aid at [role-skill-routing.json](role-skill-routing.json) maps task signals to specialist references and task profiles. It is a discovery aid, not an authority source, permission grant, credential assertion or substitute for reading the actual skill. Keep the routing aid synchronized with `agent-context.json` and existing skill paths.
 
-- Profiles must match the problem, not the agent's default persona.
-- State relevant assumptions and capability limitations.
-- Do not claim actual credentials, certifications, employment or independent human participation.
-- Do not treat an agent-generated persona as a substitute for a required licensed professional or owner.
-- The Clueless Client perspective must remain understandable and practical, not deliberately uninformed about facts supplied by the owner.
+## Illustrative examples
+
+- API implementation: software architect; backend/security challenger; API consumer; API/platform SME; engineering executive.
+- Mobile identity: mobile/application architect; mobile security challenger; mobile user; React Native and identity SME; technology executive. Include OWASP MASVS references and test lifecycle.
+- Pharmacy stock transfer: enterprise/application architect; inventory-control challenger; branch/warehouse operator; pharmacy supply-chain SME; technology executive. Pharmacist/accountant/owner approvals remain separate.
+- Egypt regulatory update: integration architect; source-rights/security challenger; pharmacy operator; Egyptian regulatory-affairs SME; technology executive. Qualified professional and owner approvals remain separate.
+- Contracting cost controls: ERP architect; controls challenger; project/commercial user; project-controls/accounting SME; technology executive, with accountant/contracting-owner decisions separate.
+
+## Selection quality and limits
+
+- Profiles match the problem, not the agent's default persona.
+- State assumptions, missing evidence and capability limitations.
+- Never invent real identities, credentials, certifications, employment or independent participation.
+- An agent persona is not a licensed professional or authorized approver.
+- Clueless Client remains grounded in supplied facts and understandable language.
+- Maestro decides technical recommendations only; approval status is read from the approval register.
