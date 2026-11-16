@@ -6,7 +6,7 @@ The generated context catalogue makes the repository's existing governance and p
 
 ## Generated artefacts
 
-- `.ai/CONTEXT_MANIFEST.json` records every Git-tracked Markdown document, its repository category, Git blob SHA, byte size, line count and whether it is empty.
+- `.ai/CONTEXT_MANIFEST.json` records every Git-tracked Markdown document, its repository category, Git blob SHA, byte size and whether it is empty.
 - `.ai/index.md` groups those documents by their existing directory structure and flags empty placeholders.
 - Both files are generated from the Git working tree by `scripts/ai_context_index.py`. Do not edit either generated file manually.
 - Run `python scripts/ai_context_index.py` after adding, removing, renaming or editing Markdown; run `python scripts/ai_context_index.py --check` to verify reproducibility.
