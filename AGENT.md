@@ -4,6 +4,7 @@ Build and maintain this project safely and incrementally. Every AI agent—local
 
 ## Required startup sequence
 1. Read root `AGENTS.md` and `.ai/README.md`.
+1a. Use generated `.ai/index.md` to navigate and `.ai/CONTEXT_MANIFEST.json` to inspect tracked Markdown integrity; regenerate/check them with `scripts/ai_context_index.py`.
 2. Read `.ai/governance/operating-model.md`, `dynamic-role-selection.md`, `deliberation-protocol.md` and `approval-and-execution.md`.
 3. Read `.ai/governance/approval-register.md` before implementation, workflow changes or release decisions.
 4. Read `.ai/memory/project-facts.md`, `current-state.md` and `open-questions.md`.

@@ -1,0 +1,926 @@
+{
+  "schema_version": 1,
+  "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
+  "generation": "python scripts/ai_context_index.py",
+  "tracked_markdown_count": 131,
+  "empty_markdown_count": 6,
+  "entries": [
+    {
+      "path": ".ai/README.md",
+      "category": "ai-entry",
+      "git_blob_sha": "31969952fe8e780aeaffbe81ff1bf221378c7ab2",
+      "size_bytes": 6635,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/ADR-0002-identity-and-access.md",
+      "category": "architecture",
+      "git_blob_sha": "12929777a314232eae58ad074644ba30d984015e",
+      "size_bytes": 5178,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/ADR-0004-generic-pharmacy-catalogue.md",
+      "category": "architecture",
+      "git_blob_sha": "b8b551d71e93e32f438cc5b2408f2a316b4806d6",
+      "size_bytes": 6094,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/ADR-0005-provisional-product-governance.md",
+      "category": "architecture",
+      "git_blob_sha": "03d001da8173b20f2d5ab7640888e26d30bd71dc",
+      "size_bytes": 5751,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/api-conventions.md",
+      "category": "architecture",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size_bytes": 0,
+      "content_state": "empty"
+    },
+    {
+      "path": ".ai/architecture/data-model.md",
+      "category": "architecture",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size_bytes": 0,
+      "content_state": "empty"
+    },
+    {
+      "path": ".ai/architecture/deployment.md",
+      "category": "architecture",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size_bytes": 0,
+      "content_state": "empty"
+    },
+    {
+      "path": ".ai/architecture/eda-regulatory-ingestion.md",
+      "category": "architecture",
+      "git_blob_sha": "100bb3642294b788d7b838316debe956c0294353",
+      "size_bytes": 4729,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/pharmacy-stock-transfer-technical-design.md",
+      "category": "architecture",
+      "git_blob_sha": "a39443d58d87f0fc08845383a55e2b0dfa1e0f90",
+      "size_bytes": 10055,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/pharmacy-transfer-api-contract.md",
+      "category": "architecture",
+      "git_blob_sha": "53c749ba9be00c7e1c8f6c73dbc079e1bbf8f6da",
+      "size_bytes": 6102,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/pharmacy-transfer-domain-model.md",
+      "category": "architecture",
+      "git_blob_sha": "9c7d278f10014260e084bacdb933c20373fb166a",
+      "size_bytes": 6222,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/pharmacy-transfer-implementation-plan.md",
+      "category": "architecture",
+      "git_blob_sha": "1c67aa7066bed6829d4f9a0e46780097d8d309ba",
+      "size_bytes": 6020,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/pharmacy-transfer-persistence-design.md",
+      "category": "architecture",
+      "git_blob_sha": "4edb1a70bdd933f3375d23c0c0a75a5efe617793",
+      "size_bytes": 6724,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/architecture/system-context.md",
+      "category": "architecture",
+      "git_blob_sha": "8969d1b0f2e2bec60ba942520f55842ae0a5bf58",
+      "size_bytes": 6277,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/decisions/ADR-0001-business-boundaries.md",
+      "category": "decisions",
+      "git_blob_sha": "817cab59a3df103eda3b0294086f5b5ec47ad14a",
+      "size_bytes": 5319,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/appdbcontext-model-parity.md",
+      "category": "delivery",
+      "git_blob_sha": "bb140fda419aaccd50280d4c0af723cbda422f59",
+      "size_bytes": 4219,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/bilingual-platform-foundation.md",
+      "category": "delivery",
+      "git_blob_sha": "e229a2fba9e503fac01225d1f423de0be1b34ebb",
+      "size_bytes": 3907,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/definition-of-done.md",
+      "category": "delivery",
+      "git_blob_sha": "03ccab3ee54a7f22e1381875dbcafe7af6db39f2",
+      "size_bytes": 1483,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/docker-api-startup-recovery.md",
+      "category": "delivery",
+      "git_blob_sha": "9cc62ad8db3c57cabd704dfe619f46ab422a96ca",
+      "size_bytes": 11445,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/eda-regulatory-ingestion-runbook.md",
+      "category": "delivery",
+      "git_blob_sha": "a2f5ce3bfad3a5e72d56c53373466a7c743977c0",
+      "size_bytes": 3735,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/governance-test-readiness-workspace.md",
+      "category": "delivery",
+      "git_blob_sha": "4d0cc1dd34d95601c710fad848d27d786c3628fb",
+      "size_bytes": 4200,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/invb-supplier-operational-expansion-design.md",
+      "category": "delivery",
+      "git_blob_sha": "ff7f00c448b907fe06c948110a7da2d1172a6571",
+      "size_bytes": 17148,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/local-development.md",
+      "category": "delivery",
+      "git_blob_sha": "5d826661996f87d7226956b14476cf7ca2ba35f7",
+      "size_bytes": 2484,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-costing-worked-examples.md",
+      "category": "delivery",
+      "git_blob_sha": "0f8f8038b019b38b09259c5b11cc1e9849e610fd",
+      "size_bytes": 5739,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-discovery.md",
+      "category": "delivery",
+      "git_blob_sha": "49465fe878fef77452262ea42ba753c73436291a",
+      "size_bytes": 7579,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-inv00-deliberation.md",
+      "category": "delivery",
+      "git_blob_sha": "bd1fbc91b8f7e6d626b4eb8581f861a7da1cc801",
+      "size_bytes": 6387,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-inv00-requirements.md",
+      "category": "delivery",
+      "git_blob_sha": "608b021d6d2c5a895252dfef24ec63771c70cc07",
+      "size_bytes": 7872,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-inv01-approval-pack.md",
+      "category": "delivery",
+      "git_blob_sha": "b800b4b8901fd916b32b0213b1d91efd5aaa3548",
+      "size_bytes": 18757,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-inv01-data-dictionary-draft.md",
+      "category": "delivery",
+      "git_blob_sha": "a3698b32f3f5fd63d3eba0b9dde3ccc75385d081",
+      "size_bytes": 10907,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-inv01-q38-evidence-assessment.md",
+      "category": "delivery",
+      "git_blob_sha": "8f8c0c84fae5b90e5cc55c7cd8b072df2230f340",
+      "size_bytes": 15045,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-inv01-q38-review-worksheet.md",
+      "category": "delivery",
+      "git_blob_sha": "5ed98586e7619139503a38d2b187b5d471778fab",
+      "size_bytes": 4574,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-invb-expansion-decision-package.md",
+      "category": "delivery",
+      "git_blob_sha": "460c83925f73b16cbccbd7ba8945ae2db6123219",
+      "size_bytes": 7827,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-invb-supplier-register.md",
+      "category": "delivery",
+      "git_blob_sha": "7f05e85e1e38ac6d66475200ab2b1977757f0222",
+      "size_bytes": 13717,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-invb-technical-acceptance.md",
+      "category": "delivery",
+      "git_blob_sha": "f4a5ea41c2172e4cadba398e0ae3c917e99625e6",
+      "size_bytes": 5258,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-owner-authorization-and-execution.md",
+      "category": "delivery",
+      "git_blob_sha": "cfaf1180662846d8b5a37a98c80fd8c1b677f0ef",
+      "size_bytes": 5547,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-pharmacist-review-examples.md",
+      "category": "delivery",
+      "git_blob_sha": "048bd095deca76b89621281516926eef284cf03f",
+      "size_bytes": 3919,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-inventory-ui-inv00.md",
+      "category": "delivery",
+      "git_blob_sha": "912ec795e2660b7fe1a615312c11384f991378c8",
+      "size_bytes": 4528,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/pharmacy-warehouse-inva-technical-discovery.md",
+      "category": "delivery",
+      "git_blob_sha": "c9d4a77eb2165951e5130ab41bd151560b51721f",
+      "size_bytes": 8375,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/phase-0-discovery-plan.md",
+      "category": "delivery",
+      "git_blob_sha": "6192b844242d14ad75a4d4de38704fae7d9c3ff3",
+      "size_bytes": 2854,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/phase-0-example-test-cases.md",
+      "category": "delivery",
+      "git_blob_sha": "3837c3346d95c1a083ca3394eb9be119b509d2a7",
+      "size_bytes": 3456,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/phase-1-technical-controls-plan.md",
+      "category": "delivery",
+      "git_blob_sha": "b9a6d9098484bd38e9a2df3220fc20b2a3b5b063",
+      "size_bytes": 4216,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/phase-2-application-shell-plan.md",
+      "category": "delivery",
+      "git_blob_sha": "ac8e423c0a1e82f3295d9075a8b39abaaf284ce8",
+      "size_bytes": 2873,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/platform-health-and-approval-state-correction.md",
+      "category": "delivery",
+      "git_blob_sha": "ffc4417d5b06b0485b721a75c1d22fef50059615",
+      "size_bytes": 3151,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/release-and-rollback.md",
+      "category": "delivery",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size_bytes": 0,
+      "content_state": "empty"
+    },
+    {
+      "path": ".ai/delivery/roadmap.md",
+      "category": "delivery",
+      "git_blob_sha": "d06505d98631a569ca16bd71df99d16f11447cbc",
+      "size_bytes": 1575,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/test-approval-simulation-design.md",
+      "category": "delivery",
+      "git_blob_sha": "cb7df2736d5ef8e8e9e0754c9b5d8091449d4c9e",
+      "size_bytes": 8378,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/testing-strategy.md",
+      "category": "delivery",
+      "git_blob_sha": "c21540c5655aeb07e838575f96e02847dbfa55ae",
+      "size_bytes": 1446,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/accounting-rules.md",
+      "category": "domain",
+      "git_blob_sha": "cc95bb5f82655a138682cc503ee9916049d3fcb4",
+      "size_bytes": 4662,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/business-boundaries.md",
+      "category": "domain",
+      "git_blob_sha": "b789480dd08b3e7fe7835e2ecdcf60af23a16a13",
+      "size_bytes": 3672,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/claims-and-contracts.md",
+      "category": "domain",
+      "git_blob_sha": "4e9a6c27585fbe486fdcb566e0b2f5072a6512b4",
+      "size_bytes": 1003,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/contracting-workflows.md",
+      "category": "domain",
+      "git_blob_sha": "a46376770fe02c19dc16872bc5c7f7384cf6d49d",
+      "size_bytes": 2423,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/legal-entity-register.md",
+      "category": "domain",
+      "git_blob_sha": "401bb4880181ea73b6bca84f40c581dece91eeb7",
+      "size_bytes": 3394,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/pharmacy-stock-transfer-workflow.md",
+      "category": "domain",
+      "git_blob_sha": "1b5ed478fb3ad7f41ac0fff5a2cc3f74d8e52bdb",
+      "size_bytes": 7199,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/pharmacy-workflows.md",
+      "category": "domain",
+      "git_blob_sha": "8636385021dd57ffa55486dfc4abd3577bad9661",
+      "size_bytes": 3509,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/ai-context-index-and-integrity.md",
+      "category": "governance",
+      "git_blob_sha": "f1454c5e52982651261712fad7e1160bda3cef3d",
+      "size_bytes": 4071,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/approval-and-execution.md",
+      "category": "governance",
+      "git_blob_sha": "2520c7a84d690cb75326c8b5f2242099ee1793f1",
+      "size_bytes": 4550,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/approval-register.md",
+      "category": "governance",
+      "git_blob_sha": "ca810b1e61a0a4b2461b1a1aea8f8fd267911611",
+      "size_bytes": 12428,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/certification-roadmap.md",
+      "category": "governance",
+      "git_blob_sha": "3eefa0e90a13302b441d7a3fecedcf254ec54f69",
+      "size_bytes": 2977,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/cross-platform-agent-compatibility.md",
+      "category": "governance",
+      "git_blob_sha": "dc223e540174789057872b9c69aa86cbf969fe38",
+      "size_bytes": 2204,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/deliberation-protocol.md",
+      "category": "governance",
+      "git_blob_sha": "a8acbf1bcf235475bf1af718f812018d9aa119c9",
+      "size_bytes": 5942,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/dynamic-role-selection.md",
+      "category": "governance",
+      "git_blob_sha": "9ad22b7abc361fe1a6cac5f9d0f2252f284f614b",
+      "size_bytes": 4534,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/egypt-pharmacy-catalogue-scan-2026-11-14.md",
+      "category": "governance",
+      "git_blob_sha": "917a0ce887f6bc38dfa544c918a1d188bc32307b",
+      "size_bytes": 5411,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/egypt-pharmacy-current-scan-2026-11-11.md",
+      "category": "governance",
+      "git_blob_sha": "4e681f4e9da2080dc393f8386f7daccf04b7552a",
+      "size_bytes": 10897,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/egypt-pharmacy-inventory-scan-2026-11-14.md",
+      "category": "governance",
+      "git_blob_sha": "16924f8f64301f65dae24283feae19409c3cfd7a",
+      "size_bytes": 8263,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/egypt-pharmacy-inventory-scan-2026-11-15.md",
+      "category": "governance",
+      "git_blob_sha": "407746772a9a3ee3402f6e485c9b797f76a5ccaa",
+      "size_bytes": 4727,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/egypt-pharmacy-market-monitoring.md",
+      "category": "governance",
+      "git_blob_sha": "9576b64a2891c285e1330bc0e6c87696fe6fb52c",
+      "size_bytes": 9106,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/egypt-pharmacy-source-register.md",
+      "category": "governance",
+      "git_blob_sha": "983dfc3bd06e4c80736cb7c3d91b1e36f9333459",
+      "size_bytes": 8382,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/egypt-requirements-register.md",
+      "category": "governance",
+      "git_blob_sha": "0165b28e050a7ac3fb3185c2e49458ea61c86071",
+      "size_bytes": 6731,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/evidence-register.md",
+      "category": "governance",
+      "git_blob_sha": "1a22ebaa25800c3e1cb4dc6f63463ac1ab475e7a",
+      "size_bytes": 10177,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/operating-model.md",
+      "category": "governance",
+      "git_blob_sha": "9b3150a1d267efe444e9e7305e2ffa4ed0c92a28",
+      "size_bytes": 2778,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/source-reconciliation-ai-chat.md",
+      "category": "governance",
+      "git_blob_sha": "e49355590b0a896ee2da3374b4da6e6e1dac9fd1",
+      "size_bytes": 5046,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/governance/standards-register.md",
+      "category": "governance",
+      "git_blob_sha": "4b2ed4d3d75fcfde1e7fcd3f2eadd4ef3b965cdd",
+      "size_bytes": 3136,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/memory/current-state.md",
+      "category": "memory",
+      "git_blob_sha": "0d796dceb1bedae574ef9e75cc467e282d6b42f8",
+      "size_bytes": 25036,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/memory/docker-api-startup-incident-2026-11-16.md",
+      "category": "memory",
+      "git_blob_sha": "3b7fe84fb95e7561bc9de55b02cbe341a0b70691",
+      "size_bytes": 2909,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/memory/lessons.md",
+      "category": "memory",
+      "git_blob_sha": "00b899442671673771bd2e80330c138284a2c49b",
+      "size_bytes": 62,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/memory/open-questions.md",
+      "category": "memory",
+      "git_blob_sha": "0e07c0b616843773bbd2d0a091a60e18bb92783b",
+      "size_bytes": 23059,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/memory/project-facts.md",
+      "category": "memory",
+      "git_blob_sha": "76f57273bcee4829d15bf685a9b44357ec648064",
+      "size_bytes": 2868,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/memory/readme.md",
+      "category": "memory",
+      "git_blob_sha": "8c1ba67a80724444adf866c0f272f2c8a83f94e1",
+      "size_bytes": 341,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/product/acceptance-criteria.md",
+      "category": "product",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size_bytes": 0,
+      "content_state": "empty"
+    },
+    {
+      "path": ".ai/product/pharmacy-market-intelligence-requirements.md",
+      "category": "product",
+      "git_blob_sha": "5cb0344b977916f81abc7a7a0148f4f5066805e5",
+      "size_bytes": 6780,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/product/scope.md",
+      "category": "product",
+      "git_blob_sha": "528deab644c235aca9c402a96fa71f0116b1c8de",
+      "size_bytes": 4318,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/product/users-and-permissions.md",
+      "category": "product",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size_bytes": 0,
+      "content_state": "empty"
+    },
+    {
+      "path": ".ai/product/vision.md",
+      "category": "product",
+      "git_blob_sha": "0856fda038bd45723b7d33aee6eca5b8c17ae21b",
+      "size_bytes": 1187,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/quality/pharmacy-stock-transfer-acceptance.md",
+      "category": "quality",
+      "git_blob_sha": "172fc73af4deec86af7b40d813e3e3197c9d6338",
+      "size_bytes": 5981,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/accounting.md",
+      "category": "roles",
+      "git_blob_sha": "814dd8fffb988a3507369bb7f00c1467025c594f",
+      "size_bytes": 1473,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/ai-governance-instruction-consolidation-review.md",
+      "category": "roles",
+      "git_blob_sha": "d74782cb44d9ac73716d6b4cb947b863512b54d5",
+      "size_bytes": 4593,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/architecture.md",
+      "category": "roles",
+      "git_blob_sha": "75feed97d4a0f3ba6ed18eddec43e9c9a2b56a50",
+      "size_bytes": 1360,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/docker-api-startup-crash-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "550748c8d7337ff74c5cac7bf7114ca10d9f482c",
+      "size_bytes": 3388,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/invb-supplier-assurance-workflows-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "8839790f45be0190bb8652dea09d47e48e7074e2",
+      "size_bytes": 8153,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/invb-supplier-draft-onboarding-implementation-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "f1137a27a81873d0d4ce2d93585c07f50e4a3d26",
+      "size_bytes": 4164,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/invb-supplier-onboarding-expansion-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "967a7e8097867e8645eaea1403a518968a0300b3",
+      "size_bytes": 5491,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/invb-supplier-operational-expansion-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "1cad786c880e39786ec23f8c8cd3364e09f006c3",
+      "size_bytes": 8686,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/invb-supplier-state-reconciliation-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "853648a2c892d595199dc0b92eba9e42770a1fd2",
+      "size_bytes": 3992,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/invb-technical-acceptance-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "50204117dc8cbcdc3eef50921cfda38629884156",
+      "size_bytes": 3842,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/operations.md",
+      "category": "roles",
+      "git_blob_sha": "a516adefc5da2219d7f75b94f801362cf935980a",
+      "size_bytes": 1356,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/pharmacy-domain.md",
+      "category": "roles",
+      "git_blob_sha": "fac56a2db375a2d5e4cc1992e1516cc049fef78c",
+      "size_bytes": 2332,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/quality-testing.md",
+      "category": "roles",
+      "git_blob_sha": "5949ecc11378459e82a9481b45cffcdda43a31cd",
+      "size_bytes": 1378,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/role-selection.md",
+      "category": "roles",
+      "git_blob_sha": "40143302ea5b9933ffebf780864fe53cd6871770",
+      "size_bytes": 2294,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/security-privacy.md",
+      "category": "roles",
+      "git_blob_sha": "c4d5211d2a84a18acb33c7f7738151ae7d78a86d",
+      "size_bytes": 1413,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/test-approval-simulation-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "9af9e8d5ab20ec37aefa219334b3a49e20e997e6",
+      "size_bytes": 6528,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/security/audit-logging-baseline.md",
+      "category": "security",
+      "git_blob_sha": "b264b7b4c1b5f3d564fd8626ca29c9bb97327555",
+      "size_bytes": 3726,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/security/identity-access-baseline.md",
+      "category": "security",
+      "git_blob_sha": "99aa0db28bb8ebd2c6f65ff7a194821f2391dc09",
+      "size_bytes": 3690,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/accounting-controls/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "04a2b3539c1d6563b4d272e3b068baf9425c7891",
+      "size_bytes": 1515,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/claims-and-contracts/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "b79a403da4905aee958345a6881d86a557d0d13f",
+      "size_bytes": 1447,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/dotnet-api/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "e0448dcca6d4abcf52230b38f32326742c907212",
+      "size_bytes": 1384,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/egypt-compliance-review/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "8be284fb4e777693deb3a2f84a268640a9314005",
+      "size_bytes": 3387,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/pharmacy-inventory/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "93678a9b22c019007e0ac1eb52aa0312e96c9d62",
+      "size_bytes": 1775,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/postgres-data/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "94ace3a54a7d0f409ba133135966f56dc758a2ff",
+      "size_bytes": 1368,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/react-native-mobile/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "f759c56b5c515bbb0adaad2fde3c971d3e3f957e",
+      "size_bytes": 1514,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/skills/secure-release/SKILL.md",
+      "category": "skills",
+      "git_blob_sha": "45ed2361454bf69b3d3009c89a51bba9c18b207c",
+      "size_bytes": 1447,
+      "content_state": "populated"
+    },
+    {
+      "path": "AGENT.md",
+      "category": "repository-entry",
+      "git_blob_sha": "664b24430a63d8d6f1db367933bb47a4d0dfd02b",
+      "size_bytes": 5907,
+      "content_state": "populated"
+    },
+    {
+      "path": "AGENTS.md",
+      "category": "repository-entry",
+      "git_blob_sha": "9d1f58c62cf89008c9d9c1999adb0711260dd846",
+      "size_bytes": 6881,
+      "content_state": "populated"
+    },
+    {
+      "path": "Before writing code.md",
+      "category": "repository-entry",
+      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
+      "size_bytes": 629,
+      "content_state": "populated"
+    },
+    {
+      "path": "Before writing code_2.md",
+      "category": "repository-entry",
+      "git_blob_sha": "95dff8b0206e663771b05f310cc8522467ddcc54",
+      "size_bytes": 813,
+      "content_state": "populated"
+    },
+    {
+      "path": "README.md",
+      "category": "repository-entry",
+      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
+      "size_bytes": 8419,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-2-part-01.md",
+      "category": "docs",
+      "git_blob_sha": "04293fdda1324722b519977c9755d15d773cd6fe",
+      "size_bytes": 5665,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-2-part-02.md",
+      "category": "docs",
+      "git_blob_sha": "625454f8d3c5258f0569c1a6dbe9d8a1b7d72a64",
+      "size_bytes": 3762,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-2-part-03.md",
+      "category": "docs",
+      "git_blob_sha": "551f78b83fb55a20196df39dd3563cffcb4c281a",
+      "size_bytes": 5091,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-2-part-04.md",
+      "category": "docs",
+      "git_blob_sha": "2261fb876b0536190eaf215a92d597a9c8257037",
+      "size_bytes": 3035,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-2-part-05.md",
+      "category": "docs",
+      "git_blob_sha": "e9076de58b48619ed07b10b73d09e095676fde1a",
+      "size_bytes": 3696,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-2-part-06.md",
+      "category": "docs",
+      "git_blob_sha": "5d4671def8e26adb7fe9d993f0e5627eb73a1582",
+      "size_bytes": 4293,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-2-part-07.md",
+      "category": "docs",
+      "git_blob_sha": "ffaff74f7a4f14d81fee515b9ea8195f109021a0",
+      "size_bytes": 4071,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-part-01.md",
+      "category": "docs",
+      "git_blob_sha": "d5f0beb8f116dc0ae1c89903eefcd60a3b6dac28",
+      "size_bytes": 5879,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-part-02.md",
+      "category": "docs",
+      "git_blob_sha": "f2d960d363d283575a01db009fa33b4e3e508843",
+      "size_bytes": 4402,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-part-03.md",
+      "category": "docs",
+      "git_blob_sha": "9486dcc97f9bcaf8caeb71cdefc3f8b15ff7da48",
+      "size_bytes": 4940,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/before-writing-code-part-04.md",
+      "category": "docs",
+      "git_blob_sha": "ab9b599b9ca474a1089b6d32d4028b6ac5dc9c49",
+      "size_bytes": 4992,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/security/phase-3-authenticated-workspace.md",
+      "category": "docs",
+      "git_blob_sha": "2259200e7ffbc8162034205a77e7ae0ebad52179",
+      "size_bytes": 4458,
+      "content_state": "populated"
+    },
+    {
+      "path": "mam/ai-chat/001-gpt_luna.md",
+      "category": "mam",
+      "git_blob_sha": "b79a19618fd921d184f9ffe95a63d31355d2ad35",
+      "size_bytes": 10229,
+      "content_state": "populated"
+    },
+    {
+      "path": "mam/ai-chat/002-gpt_luna.md",
+      "category": "mam",
+      "git_blob_sha": "1802a8ed010307b3b6057079524a48630327746e",
+      "size_bytes": 8680,
+      "content_state": "populated"
+    },
+    {
+      "path": "mam/ai-chat/003-gpt_luna-standards-and-certification.md",
+      "category": "mam",
+      "git_blob_sha": "b5bb2d59b7c7899dbc2a4ebd8746b8e892f95b18",
+      "size_bytes": 3271,
+      "content_state": "populated"
+    },
+    {
+      "path": "mam/ai-chat/004-gpt_luna-agent-operations.md",
+      "category": "mam",
+      "git_blob_sha": "062d8165ef155404c4fec11bdf6451a00fc68ff6",
+      "size_bytes": 880,
+      "content_state": "populated"
+    }
+  ]
+}

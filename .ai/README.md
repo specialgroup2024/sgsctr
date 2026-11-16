@@ -1,6 +1,6 @@
 # AI project guide
 
-This folder is the evolving, evidence-based project knowledge base for every AI agent working on this repository, whether local or online.
+This folder is the evolving, evidence-based project knowledge base for every AI agent working on this repository, whether local or online. For generated navigation and integrity metadata, start with [index.md](index.md) and [CONTEXT_MANIFEST.json](CONTEXT_MANIFEST.json); their generation and authority limits are defined in [governance/ai-context-index-and-integrity.md](governance/ai-context-index-and-integrity.md).
 
 ## Required load order
 1. Read root `AGENT.md` and `AGENTS.md`.
