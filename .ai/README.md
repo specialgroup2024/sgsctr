@@ -10,6 +10,7 @@ Generated [index](index.md) is navigation; [manifest](CONTEXT_MANIFEST.json) rec
 ## Authority
 - Root [AGENT.md](../AGENT.md): universal mission, safety and human approval boundaries.
 - Root [AGENTS.md](../AGENTS.md): repository execution mechanics.
+- [Security rules](governance/security-rules.json): mandatory AI handling of secrets, sensitive data, logs, artifacts and untrusted external input.
 - [Approval register](governance/approval-register.md): authoritative recorded approvals.
 - [Project facts](memory/project-facts.md): stable curated facts and provenance.
 - [Current state](memory/current-state.md): dated repository/runtime reconciliation; verify against source.
