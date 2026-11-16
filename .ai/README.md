@@ -80,3 +80,9 @@ Agents may analyze, challenge, propose, implement and test within approved scope
 
 ## Documentation size and approval
 Every Markdown file must remain below 200 lines; aim for 180 or fewer. CI enforces scripts/check_markdown_line_limit.py. Split detailed guidance into focused linked documents.
+
+
+## Docker API startup recovery
+- [Docker API startup-crash recovery](delivery/docker-api-startup-recovery.md) — evidence-led diagnosis and safe recovery for API exit 139, native runtime faults, EF migration failures, Compose health dependencies and credential exposure. This is a runbook, not proof the owner's VM was repaired.
+
+- [Docker API startup incident — 2026-11-16](memory/docker-api-startup-incident-2026-11-16.md) — owner-provided runtime evidence, repository evidence, unknown root cause and security follow-up.
