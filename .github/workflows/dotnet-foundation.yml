@@ -5,9 +5,10 @@ concurrency:
   cancel-in-progress: true
 on:
   push:
-    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, feat/eda-regulatory-ingestion, feat/complete-bilingual-rtl-coverage]
+    branches: [master, feature/native-identity-authentication, fix/identity-runtime-model-parity-v2, fix/appdbcontext-model-parity-probe-ci, feat/eda-regulatory-ingestion, feat/complete-bilingual-rtl-coverage]
   pull_request:
     branches: [master]
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
