@@ -113,8 +113,8 @@
     {
       "path": ".ai/delivery/ai-context-index-technical-acceptance.md",
       "category": "delivery",
-      "git_blob_sha": "3d2f7f7de3fafe15afa75f8b4c7daa2d0ea4686b",
-      "size_bytes": 5762,
+      "git_blob_sha": "b213d5ed52f09ceb7b8ac88590b2f5691f79cfbf",
+      "size_bytes": 6807,
       "content_state": "populated"
     },
     {
@@ -519,8 +519,8 @@
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "cdc2e466aac6dd93a7e26b32cf55c2832f04f3aa",
-      "size_bytes": 25956,
+      "git_blob_sha": "c0f8a6534ce1424b6d9a21d03e30c07c31819f67",
+      "size_bytes": 26054,
       "content_state": "populated"
     },
     {
