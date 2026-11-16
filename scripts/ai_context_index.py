@@ -82,12 +82,13 @@ def build() -> tuple[str, str]:
         "- Rebuild/check: `python scripts/ai_context_index.py` / `python scripts/ai_context_index.py --check`",
         "",
     ]
-    for name in sorted(groups):
-        lines.extend([f"## {name}", ""])
+    for position, name in enumerate(sorted(groups)):
+        if position:
+            lines.append("")
+        lines.append(f"## {name}")
         for entry in groups[name]:
             state = " — **EMPTY PLACEHOLDER**" if entry["content_state"] == "empty" else ""
             lines.append(f"- [`{entry['path']}`](../{entry['path']}){state}")
-        lines.append("")
     return manifest_text, "\n".join(lines).rstrip() + "\n"
 
 
