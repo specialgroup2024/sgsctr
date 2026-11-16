@@ -145,8 +145,8 @@
 
 - [`AGENT.md`](../AGENT.md)
 - [`AGENTS.md`](../AGENTS.md)
-- [`Before writing code_2.md`](../Before writing code_2.md)
 - [`Before writing code.md`](../Before writing code.md)
+- [`Before writing code_2.md`](../Before writing code_2.md)
 - [`README.md`](../README.md)
 
 ## roles
