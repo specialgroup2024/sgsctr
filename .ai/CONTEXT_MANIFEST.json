@@ -2,16 +2,9 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 132,
-  "empty_markdown_count": 6,
+  "tracked_markdown_count": 134,
+  "empty_markdown_count": 0,
   "entries": [
-    {
-      "path": ".ai/README.md",
-      "category": "ai-entry",
-      "git_blob_sha": "31969952fe8e780aeaffbe81ff1bf221378c7ab2",
-      "size_bytes": 6635,
-      "content_state": "populated"
-    },
     {
       "path": ".ai/architecture/ADR-0002-identity-and-access.md",
       "category": "architecture",
@@ -36,23 +29,23 @@
     {
       "path": ".ai/architecture/api-conventions.md",
       "category": "architecture",
-      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "size_bytes": 0,
-      "content_state": "empty"
+      "git_blob_sha": "d58230ce9a5dceff4aaf1f5d97b9e4faa116266c",
+      "size_bytes": 2589,
+      "content_state": "populated"
     },
     {
       "path": ".ai/architecture/data-model.md",
       "category": "architecture",
-      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "size_bytes": 0,
-      "content_state": "empty"
+      "git_blob_sha": "836c6ca82510d39f5e7fa1541e6aecb61ef60eeb",
+      "size_bytes": 3106,
+      "content_state": "populated"
     },
     {
       "path": ".ai/architecture/deployment.md",
       "category": "architecture",
-      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "size_bytes": 0,
-      "content_state": "empty"
+      "git_blob_sha": "51a97aa9d85e4ff7b0992603d52d3ce95621a1d6",
+      "size_bytes": 2664,
+      "content_state": "populated"
     },
     {
       "path": ".ai/architecture/eda-regulatory-ingestion.md",
@@ -316,9 +309,9 @@
     {
       "path": ".ai/delivery/release-and-rollback.md",
       "category": "delivery",
-      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "size_bytes": 0,
-      "content_state": "empty"
+      "git_blob_sha": "71e6ebca232123a82df26ec111c102540a735fa3",
+      "size_bytes": 2764,
+      "content_state": "populated"
     },
     {
       "path": ".ai/delivery/roadmap.md",
@@ -517,10 +510,17 @@
       "content_state": "populated"
     },
     {
+      "path": ".ai/memory/change-log.md",
+      "category": "memory",
+      "git_blob_sha": "28b55c05079efe8ab6498ec2cbbe46974747cb99",
+      "size_bytes": 1521,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "a2953d641d3a3db6c14dbc7a222b8606d4c89048",
-      "size_bytes": 26162,
+      "git_blob_sha": "9e4f0521a97222048c5a6e99a2bda6487b436d57",
+      "size_bytes": 26356,
       "content_state": "populated"
     },
     {
@@ -559,11 +559,18 @@
       "content_state": "populated"
     },
     {
+      "path": ".ai/memory/state-update-protocol.md",
+      "category": "memory",
+      "git_blob_sha": "de823e72da1354bcf0d206cb3d7653047beed688",
+      "size_bytes": 2431,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/product/acceptance-criteria.md",
       "category": "product",
-      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "size_bytes": 0,
-      "content_state": "empty"
+      "git_blob_sha": "7da57ab64d3c113c76c704f8d879975c92ec38a3",
+      "size_bytes": 2884,
+      "content_state": "populated"
     },
     {
       "path": ".ai/product/pharmacy-market-intelligence-requirements.md",
@@ -582,9 +589,9 @@
     {
       "path": ".ai/product/users-and-permissions.md",
       "category": "product",
-      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "size_bytes": 0,
-      "content_state": "empty"
+      "git_blob_sha": "b5aee491238d049bca1c4e72a15feb027689892b",
+      "size_bytes": 3835,
+      "content_state": "populated"
     },
     {
       "path": ".ai/product/vision.md",
@@ -598,6 +605,13 @@
       "category": "quality",
       "git_blob_sha": "172fc73af4deec86af7b40d813e3e3197c9d6338",
       "size_bytes": 5981,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/README.md",
+      "category": "ai-entry",
+      "git_blob_sha": "9612f20a6d2315ebcdc5d70cd095f79d3e17feba",
+      "size_bytes": 3678,
       "content_state": "populated"
     },
     {
@@ -785,22 +799,15 @@
     {
       "path": "AGENT.md",
       "category": "repository-entry",
-      "git_blob_sha": "664b24430a63d8d6f1db367933bb47a4d0dfd02b",
-      "size_bytes": 5907,
+      "git_blob_sha": "5055e4835e747f195b08072126885498bedbcfda",
+      "size_bytes": 3525,
       "content_state": "populated"
     },
     {
       "path": "AGENTS.md",
       "category": "repository-entry",
-      "git_blob_sha": "9d1f58c62cf89008c9d9c1999adb0711260dd846",
-      "size_bytes": 6881,
-      "content_state": "populated"
-    },
-    {
-      "path": "Before writing code.md",
-      "category": "repository-entry",
-      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
-      "size_bytes": 629,
+      "git_blob_sha": "480b39440173ea9c52d4c064f87c819a4a9f2246",
+      "size_bytes": 2507,
       "content_state": "populated"
     },
     {
@@ -811,10 +818,10 @@
       "content_state": "populated"
     },
     {
-      "path": "README.md",
+      "path": "Before writing code.md",
       "category": "repository-entry",
-      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
-      "size_bytes": 8419,
+      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
+      "size_bytes": 629,
       "content_state": "populated"
     },
     {
@@ -927,6 +934,13 @@
       "category": "mam",
       "git_blob_sha": "062d8165ef155404c4fec11bdf6451a00fc68ff6",
       "size_bytes": 880,
+      "content_state": "populated"
+    },
+    {
+      "path": "README.md",
+      "category": "repository-entry",
+      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
+      "size_bytes": 8419,
       "content_state": "populated"
     }
   ]
