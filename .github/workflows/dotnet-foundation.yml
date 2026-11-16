@@ -32,6 +32,36 @@ jobs:
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.4
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+      - name: Capture AppDbContext model/snapshot difference
+        continue-on-error: true
+        run: |
+          snapshot="src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs"
+          cp "$snapshot" /tmp/AppDbContextModelSnapshot.before.cs
+          set +e
+          dotnet ef migrations add AppDbContextModelParityProbe --context AppDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build --output-dir Data/ModelParityProbe > /tmp/appdb-model-parity-probe.log 2>&1
+          probe_status=$?
+          set -e
+          echo "EF probe exit code: $probe_status"
+          cat /tmp/appdb-model-parity-probe.log
+          git diff -- "$snapshot" > /tmp/appdb-model-snapshot.diff
+          if [ -f src/Sgsctr.Api/Data/ModelParityProbe/*_AppDbContextModelParityProbe.cs ]; then
+            cat src/Sgsctr.Api/Data/ModelParityProbe/*_AppDbContextModelParityProbe.cs
+          else
+            echo "No probe migration file was generated."
+          fi
+          cp /tmp/AppDbContextModelSnapshot.before.cs "$snapshot"
+      - name: Upload AppDbContext model/snapshot diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appdbcontext-model-parity-diagnostic
+          path: |
+            /tmp/appdb-model-parity-probe.log
+            /tmp/appdb-model-snapshot.diff
+            src/Sgsctr.Api/Data/ModelParityProbe/*.cs
+          if-no-files-found: warn
+      - name: Validate EF Core migration snapshots
+        run: |
           dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
           dotnet ef migrations has-pending-model-changes --context AppDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
       - name: Start API, PostgreSQL and Next.js
