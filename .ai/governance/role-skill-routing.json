@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "purpose": "Machine-readable routing aid for selecting specialist references. It is advisory context selection, not a credential registry, approval or permission grant.",
+  "selection_rules": {
+    "always_load": ["../AGENT.md", "../AGENTS.md", "README.md", "governance/approval-register.md"],
+    "select_by_affected_boundary": true,
+    "profiles_are_additive": true,
+    "select_only_relevant_specialists": true,
+    "reselect_when_scope_or_risk_changes": true,
+    "unknown_specialization": "Stop high-impact work, record the gap and propose a profile/reference; do not invent expertise."
+  },
+  "stable_roles": {
+    "architect": {
+      "responsibility": "Propose system boundaries, architecture and implementation approach.",
+      "profile_selection": "Choose the architect specialization matching the dominant affected system boundary.",
+      "reference_candidates": ["skills/dotnet-api/SKILL.md", "skills/postgres-data/SKILL.md", "skills/react-native-mobile/SKILL.md"]
+    },
+    "devils_advocate": {
+      "responsibility": "Challenge assumptions, failure modes, security, feasibility and unintended consequences.",
+      "profile_selection": "Choose assurance, red-team, security, QA or domain challenger based on task risk.",
+      "reference_candidates": ["skills/secure-release/SKILL.md", "governance/deliberation-protocol.md"]
+    },
+    "clueless_client": {
+      "responsibility": "Represent the affected user/operator and test practical value and usability.",
+      "profile_selection": "Choose the actual operator, customer, branch, finance or administrator perspective affected by the task.",
+      "reference_candidates": ["product/vision.md", "product/users-and-permissions.md"]
+    },
+    "subject_matter_expert": {
+      "responsibility": "Analyze first principles, domain practice, alternatives and long-term consequences.",
+      "profile_selection": "Choose the narrow technical or business-domain SME; add qualified professional references when applicable.",
+      "reference_candidates": ["skills/egypt-compliance-review/SKILL.md", "skills/pharmacy-inventory/SKILL.md", "skills/react-native-mobile/SKILL.md"]
+    },
+    "maestro": {
+      "responsibility": "Make the final technical determination after deliberation.",
+      "profile_selection": "Choose a senior technical authority matching the dominant ICT field.",
+      "reference_candidates": ["governance/dynamic-role-selection.md", "governance/approval-and-execution.md"]
+    }
+  },
+  "specializations": {
+    "dotnet_api": {"when": ["ASP.NET Core", "C#", "API", "BFF integration"], "references": ["skills/dotnet-api/SKILL.md", "architecture/api-conventions.md"], "profiles": ["api_backend", "identity_security"]},
+    "postgres_data": {"when": ["PostgreSQL", "EF Core", "schema", "migration", "query", "persistence"], "references": ["skills/postgres-data/SKILL.md", "architecture/data-model.md"], "profiles": ["database_migration", "api_backend"]},
+    "web_frontend": {"when": ["Next.js", "React", "TypeScript", "browser UI", "i18n", "RTL"], "references": ["../web/package.json", "delivery/testing-strategy.md"], "profiles": ["web_ui"]},
+    "react_native_mobile": {"when": ["native mobile app", "Android", "iOS", "React Native", "mobile token storage"], "references": ["skills/react-native-mobile/SKILL.md", "architecture/ADR-0002-identity-and-access.md"], "profiles": ["mobile_client", "identity_security"]},
+    "cybersecurity": {"when": ["authentication", "authorization", "secrets", "threat model", "privacy", "security incident"], "references": ["security/identity-access-baseline.md", "security/audit-logging-baseline.md", "skills/secure-release/SKILL.md"], "profiles": ["identity_security", "deployment_release"]},
+    "devops_sre": {"when": ["Docker", "CI", "deployment", "observability", "backup", "recovery"], "references": ["architecture/deployment.md", "delivery/release-and-rollback.md"], "profiles": ["deployment_release"]},
+    "qa_test": {"when": ["test strategy", "acceptance", "regression", "quality gate", "test automation"], "references": ["delivery/testing-strategy.md", "delivery/definition-of-done.md"], "profiles": ["api_backend", "web_ui", "deployment_release"]},
+    "pharmacy_operations": {"when": ["pharmacy", "medicine", "medical supply", "dispensing", "inventory"], "references": ["skills/pharmacy-inventory/SKILL.md", "roles/pharmacy-domain.md"], "profiles": ["pharmacy", "pharmacy_transfers"]},
+    "egypt_regulatory": {"when": ["EDA", "Egyptian regulatory", "licensing", "regulatory interpretation"], "references": ["skills/egypt-compliance-review/SKILL.md", "governance/egypt-requirements-register.md", "governance/evidence-register.md"], "profiles": ["regulatory_intelligence", "pharmacy"]},
+    "accounting_erp": {"when": ["costing", "ledger", "claims", "tax", "financial posting"], "references": ["domain/accounting-rules.md", "roles/accounting.md"], "profiles": ["pharmacy", "contracting", "pharmacy_transfers"]},
+    "contracting_domain": {"when": ["contracts", "projects", "variations", "progress billing"], "references": ["domain/contracting-workflows.md", "roles/accounting.md"], "profiles": ["contracting"]},
+    "ai_agent_governance": {"when": ["agent orchestration", "context loading", "AI roles", "agent safety"], "references": ["governance/dynamic-role-selection.md", "governance/deliberation-protocol.md", "governance/cross-platform-agent-compatibility.md"], "profiles": ["ai_governance_docs"]}
+  },
+  "approval_boundary": "Role and skill routing does not establish real credentials, independent human review, delegated authority, business approval, professional approval, security acceptance or release authorization."
+}
