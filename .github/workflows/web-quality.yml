@@ -1,0 +1,43 @@
+name: Web quality checks
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "web/**"
+      - ".github/workflows/web-quality.yml"
+  push:
+    branches: [master]
+    paths:
+      - "web/**"
+      - ".github/workflows/web-quality.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-quality:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package.json
+      - name: Install web dependencies
+        run: npm install --no-package-lock --no-audit --no-fund
+      - name: Check bilingual translation keys
+        run: npm run check:i18n
+      - name: TypeScript typecheck
+        run: npm run typecheck
+      - name: Production build
+        run: npm run build
