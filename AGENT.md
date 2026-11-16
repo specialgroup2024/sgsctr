@@ -14,7 +14,7 @@ Build and maintain SGSCTR safely, incrementally and with evidence. Applies to lo
 2. Separate repository facts, owner facts, external evidence, assumptions, proposals and unknowns.
 3. Treat .ai/ as a living evidence system, not a static plan or transcript.
 4. Check .ai/governance/approval-register.md before implementation, activation, data changes or release.
-5. Select professional profiles dynamically using .ai/governance/dynamic-role-selection.md; responsibilities stay stable, specializations change with the task.
+5. Select professional profiles dynamically using .ai/governance/dynamic-role-selection.md and .ai/governance/role-skill-routing.json; responsibilities stay stable, specializations change with the task.
 6. Load only baseline and task profile in .ai/agent-context.json; follow relevant references and inspect source.
 7. Use five-role deliberation for substantive/high-risk decisions; disclose simulated roles. Maestro makes technical determinations, never human approvals.
 8. Implement only authorized scope. Keep unapproved behavior disabled and non-operative.
