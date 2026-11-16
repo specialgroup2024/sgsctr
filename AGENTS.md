@@ -21,55 +21,30 @@
 - Keep ADRs, work packages, current-state notes and open questions synchronized. Do not create a static master plan that overrides .ai/.
 
 ## Architecture and implementation
-
-- Confirm .NET, PostgreSQL and React Native versions in architecture/system-context.md before dependency changes.
+- Confirm .NET, PostgreSQL and React Native versions in `.ai/architecture/system-context.md` before dependency changes.
 - Inspect code, configuration, tests, migrations and deployment assets before proposing implementation.
 - Respect module ownership; shared code must not absorb business-specific rules.
 - Enforce server-side authorization for every protected operation.
-- Protect financial and inventory invariants with database transactions and constraints.
+- Protect approved financial and inventory invariants with database transactions and constraints.
 - Store money as fixed-precision decimals with explicit currency; never use floating-point arithmetic for money. Precision, rounding and calculation order require approved rules.
 - Make timestamp/time-zone behavior explicit; do not rely on implicit server-local time.
 - Make migrations reversible where feasible; document irreversible steps and recovery.
 - Make retryable integrations idempotent.
-- Keep secrets, health data and production records out of Git, logs and test fixtures.
-- Add/update tests for behavior and migrations; update relevant requirements, decisions, memory and runbooks.
+- Keep secrets, patient/employee health information and production records out of Git, logs and test fixtures.
+- Add or update tests for behavior and migrations; update relevant requirements, decisions, memory and runbooks.
 - Run applicable builds, tests, linters and security checks; report exact commands and results.
 
-## Egypt pharmacy controls
-- Follow the mandatory monitoring policy and source register before pharmacy discovery, design, implementation, testing or release.
-- Distinguish binding instruments, regulator guidance, drafts, official announcements and market signals; verify current text, amendments, applicability and effective dates.
-- Link material updates to evidence, requirements, affected modules, tests and proposed actions.
-- Legal, pharmacy, licensing, quality, tax/accounting and business-policy decisions require qualified human review and owner approval as applicable.
+## Egypt pharmacy intelligence and regulatory controls
+- Follow the mandatory monitoring policy and source register under `.ai/governance/` before pharmacy discovery, design, implementation, testing or release.
+- Check current Egyptian primary sources and broaden discovery to relevant professional, industry, supplier, payer, procurement and reputable media sources; record source class and retrieval time.
+- Distinguish binding instruments, regulator guidance, drafts, official announcements and unverified market signals. Verify current text, amendments, applicability and effective dates.
+- Link material updates to the Egyptian requirements register, evidence register, affected modules, tests and proposed actions.
+- Legal interpretation, pharmacy practice, licensing, clinical/quality disposition, tax/accounting and business-policy decisions require qualified human review and owner approval as applicable.
 - Never claim exhaustive coverage, real-time monitoring or legal compliance without evidence. Never autonomously change prices, dispensing, stock, reimbursement or accounting.
-- The EDA ingestion MVP is owner-approved and merged to master (PR #22); observed scan evidence and limitations are recorded in memory/current-state.md.
-
-- Confirm selected .NET, PostgreSQL and React Native versions in .ai/architecture/system-context.md before changing dependencies.
-- Inspect current code, configuration, tests, migrations and deployment assets before proposing implementation.
-- Follow module ownership; shared code must not absorb business-specific rules.
-- Use server-side authorization for every protected operation.
-- Use database constraints and transactions for approved financial and stock invariants.
-- Use fixed-precision monetary values with explicit currency; never use floating-point arithmetic for money. Follow approved precision, rounding and calculation rules.
-- Make timestamp and time-zone behavior explicit; do not rely on implicit server-local time.
-- Make migrations reversible where feasible; document irreversible steps.
-- Make retryable integrations idempotent.
-- Never merge a pull request without explicit user authorization.
-- Keep secrets, patient information and production data out of Git, logs and test fixtures.
-- Add or update tests for behavior changes and database migrations.
-- Update relevant requirements, decisions, memory and runbooks.
-- Run applicable builds, tests, linters and security checks before reporting completion.
-
-## Egypt pharmacy market and regulatory controls
-- Follow the mandatory monitoring policy and source register under .ai/governance before any pharmacy-related discovery, design, implementation, testing or release.
-- Check current Egyptian primary sources and broaden discovery to professional, industry, supplier, payer, procurement and reputable media sources; record source class and retrieval time.
-- Distinguish binding instruments, regulator guidance, drafts, official announcements and unverified market signals. Verify current text, amendments, applicability and effective date.
-- Link each material update to the Egyptian requirements register, evidence register, affected modules, tests and proposed actions.
-- Legal interpretation, pharmacy practice, licensing, clinical/quality disposition, tax/accounting and business-policy decisions require qualified human review and owner approval.
-- Never claim complete market coverage, real-time monitoring or legal compliance without evidence. Do not make autonomous changes to product prices, dispensing, stock, reimbursement or financial rules.
-- The EDA ingestion MVP is owner-approved and merged to master (PR #22); the duplicate-index migration correction is merged (PR #24). Runtime evidence supplied by the owner confirms a scan of five sources and 100 links, with 12 new documents and zero failures on 2026-11-11. This does not establish exhaustive coverage or end-to-end reviewer workflow. Check .ai/architecture/eda-regulatory-ingestion.md and .ai/delivery/eda-regulatory-ingestion-runbook.md. Broader Egyptian source coverage, email/SMS/push, paid feeds and retention policy remain gated.
-
+- The EDA ingestion MVP is owner-approved and merged (PR #22); its duplicate-index migration correction is merged (PR #24). Owner-provided runtime evidence records one scan of five sources, 100 links, 12 new documents and zero failures on 2026-11-11. This does not establish exhaustive coverage, continuous reliability or completed human review. See `.ai/architecture/eda-regulatory-ingestion.md`, `.ai/delivery/eda-regulatory-ingestion-runbook.md` and `.ai/memory/current-state.md`. Broader sources, paid feeds, outbound notifications and retention policy remain gated.
 
 ## Approval and change controls
-- governance/approval-register.md is authoritative. Approval applies only to its recorded scope and conditions.
+- `.ai/governance/approval-register.md` is authoritative. Approval applies only to its recorded scope and conditions.
 - A recommendation, draft ADR, passing CI or merged PR is not automatically an approval.
 - Legal entity, licensing, regulatory interpretation, accounting, tax, pharmacy procedures, financial calculations, stock valuation, sensitive production-data access and irreversible operations require designated approval.
 - Do not create production schema changes, stock movements, financial postings or external side effects without required authorization.
