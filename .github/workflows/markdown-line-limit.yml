@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      - name: Validate machine-readable AI governance and referenced paths
+        run: python scripts/check_ai_governance.py
       - name: Test AI context integrity tooling in an isolated Git fixture
         run: python scripts/test_ai_context_integrity.py
       - name: Check Markdown files are below 200 lines

@@ -25,6 +25,8 @@ This file is intentionally limited to repository mechanics. Universal behavior/a
 - Add tests for changed behavior, failure paths, authorization and persistence.
 - Run applicable build, tests, format/lint, EF parity, migration, documentation and security checks.
 - Record exact command, environment, result and evidence. Runner not started = Blocked/Not Run.
+- Validate machine-readable agent context, specialist routing, security policy and every referenced path:
+  python scripts/check_ai_governance.py
 - Regenerate/check context metadata after Markdown changes:
   python scripts/ai_context_index.py
   python scripts/ai_context_index.py --check
