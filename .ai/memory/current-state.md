@@ -130,9 +130,12 @@ The owner confirms the three branches may transfer medicines and supplies direct
 
 ## AI context index and documentation integrity — 2026-11-16
 
-- Branch `docs/ai-context-index-integrity`; review PR #80 is open and not merged.
-- Adds a deterministic tracked-Markdown manifest/index generator, repository-relative Markdown link checker, CI steps and canonical-document ownership guidance.
-- The branch manifest reconciles against GitHub's tree: 131 source Markdown files (excluding generated `.ai/index.md`), six empty placeholders, with matching Git blob SHA/byte-size metadata. The generated index is 171 lines.
-- Generator freshness and local-link behavior passed an isolated temporary Git fixture. This is not a full-repository run.
-- GitHub Actions attempts for this PR repeatedly completed as failures with no job steps/logs available (step list null; log download 404). Full-repository link validation and CI acceptance remain unverified.
-- No application code, schema, migration, business rule, approval status or production setting changed. No document was deleted or reclassified as a new approval source.
+- PR #80 was merged to master at merge commit `dac7ded6eafc4974b1c6ab40dc666f9072ae6d0d`.
+- The merged implementation adds the manifest/index generator, repository-relative link checker, CI integration and canonical-document ownership guidance.
+- At the merged commit, the manifest reconciled against GitHub's tree: 131 source Markdown files (excluding generated `.ai/index.md`), six empty placeholders, matching Git blob SHA/byte-size metadata and deterministic path order. The index was 171 lines.
+- A prior isolated temporary Git fixture exercised generator freshness and basic link-check behavior. It was not a full-repository run.
+- PR #80 merge-commit Actions jobs failed before any visible step: raw jobs had `runner_id: 0`, no runner name and empty `steps: []`; log downloads returned 404. Rerunning the documentation job produced the same result.
+- PR #81 adds `scripts/test_ai_context_integrity.py`, integrates it into documentation CI, and records the acceptance criteria. Its documentation run `43859532336` and .NET foundation run `43859532271` also failed before visible steps with `runner_id: 0`, empty runner name and empty steps. The commit status remains pending with zero status contexts.
+- The new regression tests cover deterministic generation, manifest SHA/size agreement, freshness detection, valid local links/anchors/assets, duplicate heading anchors, fenced-code exclusion and fail-closed missing-link cases. An equivalent isolated temporary Git fixture was executed locally: 3/3 tests passed. The exact checked-in test file and full repository checks remain unexecuted.
+- Technical acceptance is **BLOCKED** pending a functioning GitHub Actions runner or an owner-run local checkout that executes all required commands and records results. This environment cannot clone the private repository because outbound GitHub DNS/network access is unavailable.
+- No business, pharmacy, regulatory, legal, quality, accounting, security/privacy or production-release approval status was changed. The central approval register remains authoritative; pending gates remain pending.
