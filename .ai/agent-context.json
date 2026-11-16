@@ -6,7 +6,8 @@
     "repository_execution": "../AGENTS.md",
     "project_guide": "README.md",
     "approvals": "governance/approval-register.md",
-    "current_state": "memory/current-state.md"
+    "current_state": "memory/current-state.md",
+    "role_skill_routing": "governance/role-skill-routing.json"
   },
   "mandatory_baseline": [
     "../AGENT.md",
@@ -44,6 +45,15 @@
       "product/users-and-permissions.md",
       "architecture/api-conventions.md",
       "governance/cross-platform-agent-compatibility.md",
+      "delivery/testing-strategy.md"
+    ],
+    "mobile_client": [
+      "architecture/system-context.md",
+      "architecture/ADR-0002-identity-and-access.md",
+      "product/users-and-permissions.md",
+      "security/identity-access-baseline.md",
+      "governance/cross-platform-agent-compatibility.md",
+      "skills/react-native-mobile/SKILL.md",
       "delivery/testing-strategy.md"
     ],
     "pharmacy": [
@@ -98,6 +108,8 @@
     ],
     "ai_governance_docs": [
       "governance/dynamic-role-selection.md",
+      "governance/role-skill-routing.json",
+      "governance/adr-conventions.md",
       "governance/deliberation-protocol.md",
       "governance/ai-context-index-and-integrity.md",
       "governance/source-reconciliation-ai-chat.md",
@@ -106,6 +118,16 @@
       "memory/state-update-protocol.md",
       "memory/change-log.md"
     ]
+  },
+  "selection": {
+    "method": "Use the mandatory baseline, classify affected components and risk, select every materially relevant task profile, then load only linked dependencies justified by inspected source.",
+    "multiple_profiles": "Profiles are additive. Select more than one when a task crosses boundaries; do not force a single profile.",
+    "reselection_trigger": [
+      "A newly discovered affected component or data boundary",
+      "A material change in risk, external dependency or user group",
+      "A task that expands from design into implementation, migration or release"
+    ],
+    "no_match": "If no profile matches, use mandatory_baseline, identify the missing specialization, and propose a new profile before high-impact implementation."
   },
   "rules": {
     "load_more_only_when": "A selected profile or inspected dependency requires it; follow links and record why high-impact references were loaded.",
