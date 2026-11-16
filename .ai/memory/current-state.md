@@ -130,11 +130,12 @@ The owner confirms the three branches may transfer medicines and supplies direct
 
 ## AI context index and documentation integrity — 2026-11-16
 
-- PR #80 was merged to master at merge commit `dac7ded6eafc4974b1c6ab40dc666f9072ae6d0d`. This supersedes the earlier branch/PR-open note.
-- The merged implementation adds `.ai/CONTEXT_MANIFEST.json`, generated `.ai/index.md`, `scripts/ai_context_index.py`, `scripts/check_markdown_links.py`, CI integration and canonical-document ownership guidance.
+- PR #80 was merged to master at merge commit `dac7ded6eafc4974b1c6ab40dc666f9072ae6d0d`.
+- The merged implementation adds the manifest/index generator, repository-relative link checker, CI integration and canonical-document ownership guidance.
 - At the merged commit, the manifest reconciled against GitHub's tree: 131 source Markdown files (excluding generated `.ai/index.md`), six empty placeholders, matching Git blob SHA/byte-size metadata and deterministic path order. The index was 171 lines.
-- A prior isolated temporary Git fixture exercised generator freshness and basic link-check behavior. This was not a full-repository run.
-- GitHub Actions runs on the merge commit reported failures. Raw job records show empty `steps`, `runner_id: 0`, no runner name and no logs; log downloads returned 404. A documentation-job rerun had the same result. No check pass or command-level failure can be inferred from these records.
-- Follow-up branch `docs/ai-context-technical-acceptance` adds `scripts/test_ai_context_integrity.py`, integrates it into documentation CI and adds `.ai/delivery/ai-context-index-technical-acceptance.md`. Regression coverage includes deterministic generation, manifest SHA/size agreement, freshness detection, valid local links/anchors/assets and fail-closed missing-link cases.
-- Technical acceptance is **BLOCKED** until the follow-up CI runs with inspectable logs and all required checks pass. The current environment cannot clone the private repository (GitHub DNS/network access unavailable), so a local full-tree run is not claimed.
+- A prior isolated temporary Git fixture exercised generator freshness and basic link-check behavior. It was not a full-repository run.
+- PR #80 merge-commit Actions jobs failed before any visible step: raw jobs had `runner_id: 0`, no runner name and empty `steps: []`; log downloads returned 404. Rerunning the documentation job produced the same result.
+- PR #81 adds `scripts/test_ai_context_integrity.py`, integrates it into documentation CI, and records the acceptance criteria. Its documentation run `43859532336` and .NET foundation run `43859532271` also failed before visible steps with `runner_id: 0`, empty runner name and empty steps. The commit status remains pending with zero status contexts.
+- The new regression tests cover deterministic generation, manifest SHA/size agreement, freshness detection, valid local links/anchors/assets, duplicate heading anchors, fenced-code exclusion and fail-closed missing-link cases. They have not yet executed in CI or this environment.
+- Technical acceptance is **BLOCKED** pending a functioning GitHub Actions runner or an owner-run local checkout that executes all required commands and records results. This environment cannot clone the private repository because outbound GitHub DNS/network access is unavailable.
 - No business, pharmacy, regulatory, legal, quality, accounting, security/privacy or production-release approval status was changed. The central approval register remains authoritative; pending gates remain pending.
