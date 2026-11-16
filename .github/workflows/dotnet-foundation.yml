@@ -145,3 +145,72 @@ jobs:
           AUTHENTICATION_ENABLED: "true"
           COOKIE_SECURE: "false"
         run: docker compose down
+
+
+  appdbcontext-model-parity-diagnostic:
+    name: Diagnose AppDbContext runtime model vs migration snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.403
+      - name: Restore and build API
+        run: |
+          dotnet restore src/Sgsctr.Api/Sgsctr.Api.csproj
+          dotnet build src/Sgsctr.Api/Sgsctr.Api.csproj --configuration Release --no-restore
+      - name: Scaffold diagnostic migration and preserve exact model diff
+        shell: bash
+        run: |
+          set -uo pipefail
+          snapshot="src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs"
+          backup="/tmp/AppDbContextModelSnapshot.before.cs"
+          report="/tmp/appdbcontext-model-parity-report.txt"
+          cp "$snapshot" "$backup"
+          restore_snapshot() { cp "$backup" "$snapshot"; }
+          trap restore_snapshot EXIT
+
+          dotnet tool install --global dotnet-ef --version 10.0.4
+          export PATH="$PATH:$HOME/.dotnet/tools"
+
+          set +e
+          dotnet ef migrations add AppDbContextModelParityProbe \
+            --context AppDbContext \
+            --project src/Sgsctr.Api \
+            --startup-project src/Sgsctr.Api \
+            --configuration Release \
+            --no-build \
+            --output-dir Data/ModelParityProbe \
+            > /tmp/appdbcontext-model-parity-scaffold.log 2>&1
+          probe_status=$?
+          set -e
+
+          {
+            echo "EF scaffold exit code: $probe_status"
+            echo
+            cat /tmp/appdbcontext-model-parity-scaffold.log
+            echo
+            echo "=== Snapshot delta (committed snapshot -> generated runtime snapshot) ==="
+            git diff --no-index -- "$backup" "$snapshot" || true
+            echo
+            echo "=== Generated migration files ==="
+            find src/Sgsctr.Api/Data/ModelParityProbe -maxdepth 1 -type f -name '*.cs' -print 2>/dev/null || true
+            while IFS= read -r file; do
+              echo
+              echo "=== $file ==="
+              cat "$file"
+            done < <(find src/Sgsctr.Api/Data/ModelParityProbe -maxdepth 1 -type f -name '*.cs' -print 2>/dev/null | sort)
+          } > "$report"
+
+          cat "$report"
+          exit 0
+      - name: Upload exact AppDbContext parity evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appdbcontext-model-parity-evidence
+          path: |
+            /tmp/appdbcontext-model-parity-report.txt
+            /tmp/appdbcontext-model-parity-scaffold.log
+          if-no-files-found: warn
