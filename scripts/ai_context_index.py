@@ -7,7 +7,6 @@ integrity metadata only; it does not establish authority, approval or status.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import subprocess
 import sys
@@ -55,7 +54,6 @@ def build() -> tuple[str, str]:
             "category": category(path),
             "git_blob_sha": blob_sha(path),
             "size_bytes": len(raw),
-            "line_count": len(raw.decode("utf-8").splitlines()),
             "content_state": "empty" if not raw.strip() else "populated",
         })
 
