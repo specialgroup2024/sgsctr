@@ -45,7 +45,7 @@ def strip_fences(text: str) -> str:
 def anchors(text: str) -> set[str]:
     result = {x for x in HTML_ID.findall(text)}
     for heading in HEADING.findall(text):
-        slug = re.sub(r"[^w\- ]", "", heading.lower())
+        slug = re.sub(r"[^\\w\\- ]", "", heading.lower())
         result.add(re.sub(r"\s+", "-", slug.strip()))
     return result
 
