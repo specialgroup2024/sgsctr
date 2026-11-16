@@ -90,3 +90,10 @@ No release or business/professional approval is implied by this record.
 - This is consistent with the merge-commit behavior on PR #80 and points to a GitHub Actions runner/execution problem, not a demonstrated assertion failure in the new tests.
 - The current agent environment cannot clone the private repository because outbound GitHub DNS/network access is unavailable. The test suite therefore remains unexecuted here.
 - PR #81 is open and unmerged. Technical acceptance remains blocked; do not merge as accepted solely because the source is present.
+
+## Local isolated regression execution — 2026-11-16
+
+- Because this environment cannot clone the private repository, the checked-in generator, link-checker and test logic were reproduced in a temporary Git fixture and executed locally.
+- Result: **3 tests passed** — deterministic generation/manifest SHA-size/freshness behavior; valid Markdown anchors, duplicate anchors, tracked assets and fenced-code exclusion; and rejection of missing paths/anchors.
+- This is isolated fixture evidence only. It does not substitute for running the exact checked-in test file against a clean checkout, nor does it establish that every current repository Markdown link passes.
+- The exact checked-in workflow still has no execution evidence: PR #81's push and pull-request documentation jobs both ended with empty steps and no assigned runner. Full-repository acceptance remains blocked.
