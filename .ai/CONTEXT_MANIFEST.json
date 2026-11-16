@@ -6,6 +6,13 @@
   "empty_markdown_count": 6,
   "entries": [
     {
+      "path": ".ai/README.md",
+      "category": "ai-entry",
+      "git_blob_sha": "31969952fe8e780aeaffbe81ff1bf221378c7ab2",
+      "size_bytes": 6635,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/architecture/ADR-0002-identity-and-access.md",
       "category": "architecture",
       "git_blob_sha": "12929777a314232eae58ad074644ba30d984015e",
@@ -587,13 +594,6 @@
       "content_state": "populated"
     },
     {
-      "path": ".ai/README.md",
-      "category": "ai-entry",
-      "git_blob_sha": "31969952fe8e780aeaffbe81ff1bf221378c7ab2",
-      "size_bytes": 6635,
-      "content_state": "populated"
-    },
-    {
       "path": ".ai/roles/accounting.md",
       "category": "roles",
       "git_blob_sha": "814dd8fffb988a3507369bb7f00c1467025c594f",
@@ -790,6 +790,13 @@
       "content_state": "populated"
     },
     {
+      "path": "Before writing code.md",
+      "category": "repository-entry",
+      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
+      "size_bytes": 629,
+      "content_state": "populated"
+    },
+    {
       "path": "Before writing code_2.md",
       "category": "repository-entry",
       "git_blob_sha": "95dff8b0206e663771b05f310cc8522467ddcc54",
@@ -797,10 +804,10 @@
       "content_state": "populated"
     },
     {
-      "path": "Before writing code.md",
+      "path": "README.md",
       "category": "repository-entry",
-      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
-      "size_bytes": 629,
+      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
+      "size_bytes": 8419,
       "content_state": "populated"
     },
     {
@@ -913,13 +920,6 @@
       "category": "mam",
       "git_blob_sha": "062d8165ef155404c4fec11bdf6451a00fc68ff6",
       "size_bytes": 880,
-      "content_state": "populated"
-    },
-    {
-      "path": "README.md",
-      "category": "repository-entry",
-      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
-      "size_bytes": 8419,
       "content_state": "populated"
     }
   ]
