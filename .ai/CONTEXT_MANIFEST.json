@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 132,
+  "tracked_markdown_count": 133,
   "empty_markdown_count": 6,
   "entries": [
     {
@@ -115,6 +115,13 @@
       "category": "delivery",
       "git_blob_sha": "3df8405cfddea7f0b8e894d3711713a1b76aef07",
       "size_bytes": 7686,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/ai-context-technical-acceptance.md",
+      "category": "delivery",
+      "git_blob_sha": "4be89af4ac86fd215d356b9f3e0a3d5a7c6aadeb",
+      "size_bytes": 7754,
       "content_state": "populated"
     },
     {
