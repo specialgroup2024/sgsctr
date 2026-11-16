@@ -67,7 +67,38 @@ Run from the repository root. These commands do not remove or reset named volume
 
 4. If logs indicate a native crash but do not identify it, collect a core dump or run a controlled diagnostic image with suitable native tracing/debugging tools. Do not add debugging packages to the production runtime stage merely for convenience. Preserve the exact image digest and logs.
 
-5. Only if logs show EF migration failure, inspect the migration history and actual index/table definitions read-only before proposing a forward-only repair. Never drop an index/table or edit migration history blindly. Back up the database before any approved schema repair.
+5. If logs show an EF migration/model-parity failure, inspect migration history and PostgreSQL schema read-only before proposing a forward-only repair. Never drop an index/table or edit migration history blindly. Back up the database before any approved schema repair.
+
+   The migration-history query below is ordinary SQL and preserves PostgreSQL's case-sensitive EF column names:
+   ```bash
+   docker compose exec db sh -lc '
+     psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" \\
+       -c "SELECT \\"MigrationId\\", \\"ProductVersion\\"
+           FROM public.\\"__EFMigrationsHistory\\"
+           ORDER BY \\"MigrationId\\";"
+   '
+   ```
+
+   To inspect the history table's columns, use `information_schema` SQL:
+   ```bash
+   docker compose exec db sh -lc '
+     psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" \\
+       -c "SELECT column_name, data_type
+           FROM information_schema.columns
+           WHERE table_schema = '''public'''
+             AND table_name = '''__EFMigrationsHistory'''
+           ORDER BY ordinal_position;"
+   '
+   ```
+   Do not pass psql's interactive `\\d` meta-command through nested `sh -lc '...'` quoting as though it were SQL; quoting can strip the backslash and PostgreSQL then reports a syntax error near `d`. The information_schema query above avoids that ambiguity.
+
+   To inspect actual indexes without changing the database:
+   ```sql
+   SELECT schemaname, tablename, indexname, indexdef
+   FROM pg_indexes
+   WHERE schemaname = 'public'
+   ORDER BY tablename, indexname;
+   ```
 
 ## Evidence-based correction decision table
 
