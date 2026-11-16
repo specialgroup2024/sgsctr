@@ -44,9 +44,13 @@ def strip_fences(text: str) -> str:
 
 def anchors(text: str) -> set[str]:
     result = {x for x in HTML_ID.findall(text)}
+    counts: dict[str, int] = {}
     for heading in HEADING.findall(text):
         slug = re.sub(r"[^\w\- ]", "", heading.lower())
-        result.add(re.sub(r"\s+", "-", slug.strip()))
+        slug = re.sub(r"\s+", "-", slug.strip())
+        occurrence = counts.get(slug, 0)
+        result.add(slug if occurrence == 0 else f"{slug}-{occurrence}")
+        counts[slug] = occurrence + 1
     return result
 
 
@@ -64,7 +68,7 @@ def main() -> int:
         destinations += [m.group(1).strip("<>") for m in DEFINITION.finditer(text)]
         for destination in destinations:
             if not destination or destination.startswith("#"):
-                if destination.startswith("#") and destination[1:] not in anchor_cache[source]:
+                if destination.startswith("#") and unquote(destination[1:]) not in anchor_cache[source]:
                     errors.append(f"{source.relative_to(ROOT)}: missing anchor #{destination[1:]}")
                 checked += 1
                 continue
@@ -84,7 +88,7 @@ def main() -> int:
                 errors.append(f"{source.relative_to(ROOT)}: unresolved local target {destination}")
                 checked += 1
                 continue
-            if parts.fragment and target in anchor_cache and parts.fragment not in anchor_cache[target]:
+            if parts.fragment and target in anchor_cache and unquote(parts.fragment) not in anchor_cache[target]:
                 errors.append(f"{source.relative_to(ROOT)}: missing anchor {destination}")
             checked += 1
 
