@@ -180,3 +180,8 @@ Do not use docker compose down --volumes on an environment containing data you n
 - The dashboard contains no fabricated stock or financial figures.
 - Readiness verifies database connectivity, not business correctness or production readiness.
 - Business workflow and accounting approvals remain required before stock-changing features.
+
+
+## Docker API startup troubleshooting
+
+If the API container restarts or Docker reports it unhealthy, follow the evidence-led [Docker API startup-crash recovery runbook](.ai/delivery/docker-api-startup-recovery.md). Use the Compose service name `api` for logs (`docker compose logs api`). Do not remove named volumes, reset PostgreSQL, or bypass the API readiness dependency as a workaround.
