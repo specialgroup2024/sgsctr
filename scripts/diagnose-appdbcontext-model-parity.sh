@@ -8,7 +8,7 @@ cd "$repo_root"
 
 project="src/Sgsctr.Api/Sgsctr.Api.csproj"
 snapshot="src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs"
-probe_dir="src/Sgsctr.Api/Data/ModelParityProbe"
+probe_dir="src/Sgsctr.Api/Data/ModelParityProbe_$"
 report_dir="${TMPDIR:-/tmp}/sgsctr-appdbcontext-parity-$(date +%Y%m%d-%H%M%S)"
 tool_version="10.0.4"
 
@@ -17,6 +17,10 @@ if [[ ! -f "$snapshot" ]]; then
   exit 2
 fi
 mkdir -p "$report_dir"
+if [[ -e "$probe_dir" ]]; then
+  echo "ERROR: Temporary probe path already exists: $probe_dir" >&2
+  exit 2
+fi
 snapshot_backup="$report_dir/AppDbContextModelSnapshot.cs"
 cp "$snapshot" "$snapshot_backup"
 
