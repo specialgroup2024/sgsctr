@@ -9,11 +9,9 @@
 - Rebuild/check: `python scripts/ai_context_index.py` / `python scripts/ai_context_index.py --check`
 
 ## ai-entry
-
 - [`.ai/README.md`](../.ai/README.md)
 
 ## architecture
-
 - [`.ai/architecture/ADR-0002-identity-and-access.md`](../.ai/architecture/ADR-0002-identity-and-access.md)
 - [`.ai/architecture/ADR-0004-generic-pharmacy-catalogue.md`](../.ai/architecture/ADR-0004-generic-pharmacy-catalogue.md)
 - [`.ai/architecture/ADR-0005-provisional-product-governance.md`](../.ai/architecture/ADR-0005-provisional-product-governance.md)
@@ -29,11 +27,9 @@
 - [`.ai/architecture/system-context.md`](../.ai/architecture/system-context.md)
 
 ## decisions
-
 - [`.ai/decisions/ADR-0001-business-boundaries.md`](../.ai/decisions/ADR-0001-business-boundaries.md)
 
 ## delivery
-
 - [`.ai/delivery/appdbcontext-model-parity.md`](../.ai/delivery/appdbcontext-model-parity.md)
 - [`.ai/delivery/bilingual-platform-foundation.md`](../.ai/delivery/bilingual-platform-foundation.md)
 - [`.ai/delivery/definition-of-done.md`](../.ai/delivery/definition-of-done.md)
@@ -68,7 +64,6 @@
 - [`.ai/delivery/testing-strategy.md`](../.ai/delivery/testing-strategy.md)
 
 ## docs
-
 - [`docs/archive/before-writing-code-2-part-01.md`](../docs/archive/before-writing-code-2-part-01.md)
 - [`docs/archive/before-writing-code-2-part-02.md`](../docs/archive/before-writing-code-2-part-02.md)
 - [`docs/archive/before-writing-code-2-part-03.md`](../docs/archive/before-writing-code-2-part-03.md)
@@ -83,7 +78,6 @@
 - [`docs/security/phase-3-authenticated-workspace.md`](../docs/security/phase-3-authenticated-workspace.md)
 
 ## domain
-
 - [`.ai/domain/accounting-rules.md`](../.ai/domain/accounting-rules.md)
 - [`.ai/domain/business-boundaries.md`](../.ai/domain/business-boundaries.md)
 - [`.ai/domain/claims-and-contracts.md`](../.ai/domain/claims-and-contracts.md)
@@ -93,7 +87,6 @@
 - [`.ai/domain/pharmacy-workflows.md`](../.ai/domain/pharmacy-workflows.md)
 
 ## governance
-
 - [`.ai/governance/ai-context-index-and-integrity.md`](../.ai/governance/ai-context-index-and-integrity.md)
 - [`.ai/governance/approval-and-execution.md`](../.ai/governance/approval-and-execution.md)
 - [`.ai/governance/approval-register.md`](../.ai/governance/approval-register.md)
@@ -114,14 +107,12 @@
 - [`.ai/governance/standards-register.md`](../.ai/governance/standards-register.md)
 
 ## mam
-
 - [`mam/ai-chat/001-gpt_luna.md`](../mam/ai-chat/001-gpt_luna.md)
 - [`mam/ai-chat/002-gpt_luna.md`](../mam/ai-chat/002-gpt_luna.md)
 - [`mam/ai-chat/003-gpt_luna-standards-and-certification.md`](../mam/ai-chat/003-gpt_luna-standards-and-certification.md)
 - [`mam/ai-chat/004-gpt_luna-agent-operations.md`](../mam/ai-chat/004-gpt_luna-agent-operations.md)
 
 ## memory
-
 - [`.ai/memory/current-state.md`](../.ai/memory/current-state.md)
 - [`.ai/memory/docker-api-startup-incident-2026-11-16.md`](../.ai/memory/docker-api-startup-incident-2026-11-16.md)
 - [`.ai/memory/lessons.md`](../.ai/memory/lessons.md)
@@ -130,7 +121,6 @@
 - [`.ai/memory/readme.md`](../.ai/memory/readme.md)
 
 ## product
-
 - [`.ai/product/acceptance-criteria.md`](../.ai/product/acceptance-criteria.md) — **EMPTY PLACEHOLDER**
 - [`.ai/product/pharmacy-market-intelligence-requirements.md`](../.ai/product/pharmacy-market-intelligence-requirements.md)
 - [`.ai/product/scope.md`](../.ai/product/scope.md)
@@ -138,11 +128,9 @@
 - [`.ai/product/vision.md`](../.ai/product/vision.md)
 
 ## quality
-
 - [`.ai/quality/pharmacy-stock-transfer-acceptance.md`](../.ai/quality/pharmacy-stock-transfer-acceptance.md)
 
 ## repository-entry
-
 - [`AGENT.md`](../AGENT.md)
 - [`AGENTS.md`](../AGENTS.md)
 - [`Before writing code.md`](../Before writing code.md)
@@ -150,7 +138,6 @@
 - [`README.md`](../README.md)
 
 ## roles
-
 - [`.ai/roles/accounting.md`](../.ai/roles/accounting.md)
 - [`.ai/roles/ai-governance-instruction-consolidation-review.md`](../.ai/roles/ai-governance-instruction-consolidation-review.md)
 - [`.ai/roles/architecture.md`](../.ai/roles/architecture.md)
@@ -169,12 +156,10 @@
 - [`.ai/roles/test-approval-simulation-deliberation.md`](../.ai/roles/test-approval-simulation-deliberation.md)
 
 ## security
-
 - [`.ai/security/audit-logging-baseline.md`](../.ai/security/audit-logging-baseline.md)
 - [`.ai/security/identity-access-baseline.md`](../.ai/security/identity-access-baseline.md)
 
 ## skills
-
 - [`.ai/skills/accounting-controls/SKILL.md`](../.ai/skills/accounting-controls/SKILL.md)
 - [`.ai/skills/claims-and-contracts/SKILL.md`](../.ai/skills/claims-and-contracts/SKILL.md)
 - [`.ai/skills/dotnet-api/SKILL.md`](../.ai/skills/dotnet-api/SKILL.md)
