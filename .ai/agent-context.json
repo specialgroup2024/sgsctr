@@ -7,7 +7,8 @@
     "project_guide": "README.md",
     "approvals": "governance/approval-register.md",
     "current_state": "memory/current-state.md",
-    "role_skill_routing": "governance/role-skill-routing.json"
+    "role_skill_routing": "governance/role-skill-routing.json",
+    "security_rules": "governance/security-rules.json"
   },
   "mandatory_baseline": [
     "../AGENT.md",
@@ -16,6 +17,7 @@
     "governance/operating-model.md",
     "governance/approval-and-execution.md",
     "governance/approval-register.md",
+    "governance/security-rules.json",
     "memory/project-facts.md",
     "memory/current-state.md",
     "memory/open-questions.md",
