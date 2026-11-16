@@ -130,9 +130,11 @@ The owner confirms the three branches may transfer medicines and supplies direct
 
 ## AI context index and documentation integrity — 2026-11-16
 
-- Branch `docs/ai-context-index-integrity`; review PR #80 is open and not merged.
-- Adds a deterministic tracked-Markdown manifest/index generator, repository-relative Markdown link checker, CI steps and canonical-document ownership guidance.
-- The branch manifest reconciles against GitHub's tree: 131 source Markdown files (excluding generated `.ai/index.md`), six empty placeholders, with matching Git blob SHA/byte-size metadata. The generated index is 171 lines.
-- Generator freshness and local-link behavior passed an isolated temporary Git fixture. This is not a full-repository run.
-- GitHub Actions attempts for this PR repeatedly completed as failures with no job steps/logs available (step list null; log download 404). Full-repository link validation and CI acceptance remain unverified.
-- No application code, schema, migration, business rule, approval status or production setting changed. No document was deleted or reclassified as a new approval source.
+- PR #80 was merged to master at merge commit `dac7ded6eafc4974b1c6ab40dc666f9072ae6d0d`. This supersedes the earlier branch/PR-open note.
+- The merged implementation adds `.ai/CONTEXT_MANIFEST.json`, generated `.ai/index.md`, `scripts/ai_context_index.py`, `scripts/check_markdown_links.py`, CI integration and canonical-document ownership guidance.
+- At the merged commit, the manifest reconciled against GitHub's tree: 131 source Markdown files (excluding generated `.ai/index.md`), six empty placeholders, matching Git blob SHA/byte-size metadata and deterministic path order. The index was 171 lines.
+- A prior isolated temporary Git fixture exercised generator freshness and basic link-check behavior. This was not a full-repository run.
+- GitHub Actions runs on the merge commit reported failures. Raw job records show empty `steps`, `runner_id: 0`, no runner name and no logs; log downloads returned 404. A documentation-job rerun had the same result. No check pass or command-level failure can be inferred from these records.
+- Follow-up branch `docs/ai-context-technical-acceptance` adds `scripts/test_ai_context_integrity.py`, integrates it into documentation CI and adds `.ai/delivery/ai-context-index-technical-acceptance.md`. Regression coverage includes deterministic generation, manifest SHA/size agreement, freshness detection, valid local links/anchors/assets and fail-closed missing-link cases.
+- Technical acceptance is **BLOCKED** until the follow-up CI runs with inspectable logs and all required checks pass. The current environment cannot clone the private repository (GitHub DNS/network access unavailable), so a local full-tree run is not claimed.
+- No business, pharmacy, regulatory, legal, quality, accounting, security/privacy or production-release approval status was changed. The central approval register remains authoritative; pending gates remain pending.
