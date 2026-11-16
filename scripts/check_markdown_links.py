@@ -20,8 +20,8 @@ HEADING = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
 HTML_ID = re.compile(r"\bid=[\"']([^\"']+)[\"']")
 
 
-def tracked_markdown() -> list[Path]:
-    result = subprocess.run(["git", "ls-files", "-z", "--", "*.md"],
+def tracked_files() -> list[Path]:
+    result = subprocess.run(["git", "ls-files", "-z"],
                             cwd=ROOT, check=True, capture_output=True)
     return sorted(ROOT / item.decode("utf-8") for item in result.stdout.split(b"\0") if item)
 
@@ -51,8 +51,9 @@ def anchors(text: str) -> set[str]:
 
 
 def main() -> int:
-    files = tracked_markdown()
-    known = {p.resolve() for p in files}
+    all_files = tracked_files()
+    known = {p.resolve() for p in all_files}
+    files = [p for p in all_files if p.suffix.lower() == ".md"]
     errors, checked, external = [], 0, 0
     content_cache = {p: p.read_text(encoding="utf-8") for p in files}
     anchor_cache = {p: anchors(strip_fences(t)) for p, t in content_cache.items()}
@@ -83,7 +84,7 @@ def main() -> int:
                 errors.append(f"{source.relative_to(ROOT)}: unresolved local target {destination}")
                 checked += 1
                 continue
-            if parts.fragment and parts.fragment not in anchor_cache[target]:
+            if parts.fragment and target in anchor_cache and parts.fragment not in anchor_cache[target]:
                 errors.append(f"{source.relative_to(ROOT)}: missing anchor {destination}")
             checked += 1
 
