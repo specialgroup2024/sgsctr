@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 132,
+  "tracked_markdown_count": 134,
   "empty_markdown_count": 0,
   "entries": [
     {
@@ -510,10 +510,17 @@
       "content_state": "populated"
     },
     {
+      "path": ".ai/memory/change-log.md",
+      "category": "memory",
+      "git_blob_sha": "28b55c05079efe8ab6498ec2cbbe46974747cb99",
+      "size_bytes": 1521,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "4d5b6c36804a89c6a12fe9727c213a956e315407",
-      "size_bytes": 27361,
+      "git_blob_sha": "9e4f0521a97222048c5a6e99a2bda6487b436d57",
+      "size_bytes": 26356,
       "content_state": "populated"
     },
     {
@@ -549,6 +556,13 @@
       "category": "memory",
       "git_blob_sha": "8c1ba67a80724444adf866c0f272f2c8a83f94e1",
       "size_bytes": 341,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/memory/state-update-protocol.md",
+      "category": "memory",
+      "git_blob_sha": "de823e72da1354bcf0d206cb3d7653047beed688",
+      "size_bytes": 2431,
       "content_state": "populated"
     },
     {
@@ -596,8 +610,8 @@
     {
       "path": ".ai/README.md",
       "category": "ai-entry",
-      "git_blob_sha": "6d018f85e000d272aafed45015379d999d39a317",
-      "size_bytes": 3442,
+      "git_blob_sha": "9612f20a6d2315ebcdc5d70cd095f79d3e17feba",
+      "size_bytes": 3678,
       "content_state": "populated"
     },
     {
