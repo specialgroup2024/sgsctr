@@ -1,0 +1,9 @@
+# Require the repository owner to review changes to canonical agent governance.
+# Enforcement depends on branch protection / rulesets requiring CODEOWNERS review.
+/AGENT.md @specialgroup2024
+/AGENTS.md @specialgroup2024
+/.ai/README.md @specialgroup2024
+/.ai/agent-context.json @specialgroup2024
+/.ai/governance/** @specialgroup2024
+/.github/CODEOWNERS @specialgroup2024
+/.github/copilot-instructions.md @specialgroup2024
