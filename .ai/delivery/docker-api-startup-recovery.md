@@ -79,15 +79,14 @@ Run from the repository root. These commands do not remove or reset named volume
    '
    \`\`\`
 
-   To inspect the history table's columns, use \`information_schema\` SQL:
+   To inspect columns in the current (public) schema, including the EF history table, use \`information_schema\` SQL:
    \`\`\`bash
    docker compose exec db sh -lc '
      psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
        -c "SELECT column_name, data_type
            FROM information_schema.columns
-           WHERE table_schema = 'public'
-             AND table_name = '__EFMigrationsHistory'
-           ORDER BY ordinal_position;"
+           WHERE table_schema = current_schema()
+           ORDER BY table_name, ordinal_position;"
    '
    \`\`\`
    Do not pass psql's interactive \`\d\` meta-command through nested \`sh -lc '...'\` quoting as though it were SQL; quoting can strip the backslash and PostgreSQL then reports a syntax error near \`d\`. The information_schema query above avoids that ambiguity.
