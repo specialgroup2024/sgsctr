@@ -2,14 +2,14 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 136,
+  "tracked_markdown_count": 137,
   "empty_markdown_count": 0,
   "entries": [
     {
       "path": ".ai/README.md",
       "category": "ai-entry",
-      "git_blob_sha": "2f92d4d0be2d7caf7877ead7457e57bedce9b20a",
-      "size_bytes": 3913,
+      "git_blob_sha": "158c71ba0d5bde0970a476039e74a1c24147fc11",
+      "size_bytes": 4061,
       "content_state": "populated"
     },
     {
@@ -510,6 +510,13 @@
       "content_state": "populated"
     },
     {
+      "path": ".ai/governance/repository-policy-decisions.md",
+      "category": "governance",
+      "git_blob_sha": "3144c24e0b12f1a4498856444802af9c8ce7dfc5",
+      "size_bytes": 2592,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/governance/source-reconciliation-ai-chat.md",
       "category": "governance",
       "git_blob_sha": "e49355590b0a896ee2da3374b4da6e6e1dac9fd1",
@@ -554,8 +561,8 @@
     {
       "path": ".ai/memory/open-questions.md",
       "category": "memory",
-      "git_blob_sha": "0e07c0b616843773bbd2d0a091a60e18bb92783b",
-      "size_bytes": 23059,
+      "git_blob_sha": "f8d07645a2fd52b3a62ef4ae5c954e777e3b11f0",
+      "size_bytes": 23482,
       "content_state": "populated"
     },
     {
