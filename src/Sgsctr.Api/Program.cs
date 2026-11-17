@@ -155,6 +155,7 @@ app.MapRegulatoryIntelligenceEndpoints();
 app.MapPharmacyCatalogueEndpoints();
 app.MapPharmacyProductGovernanceEndpoints();
 app.MapPharmacyReceiptDraftEndpoints();
+app.MapPharmacyStockMovementEndpoints();
 app.MapPharmacySupplierEndpoints();
 app.MapPharmacySupplierAssuranceEndpoints();
 app.MapGovernanceApprovalEndpoints();

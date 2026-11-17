@@ -30,6 +30,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<GovernanceApproval> GovernanceApprovals => Set<GovernanceApproval>();
     public DbSet<GovernanceTestCase> GovernanceTestCases => Set<GovernanceTestCase>();
     public DbSet<GovernanceTestExecution> GovernanceTestExecutions => Set<GovernanceTestExecution>();
+    public DbSet<StockMovement> StockMovements => Set<StockMovement>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -388,6 +389,34 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         audit.Property(x => x.Outcome).HasMaxLength(24).IsRequired();
         audit.Property(x => x.Reason).HasMaxLength(500);
         audit.Property(x => x.CorrelationId).HasMaxLength(128).IsRequired();
+
+        var movement = modelBuilder.Entity<StockMovement>();
+        movement.ToTable("StockMovements", table =>
+        {
+            table.HasCheckConstraint("CK_StockMovements_QuantityNonZero", "\"Quantity\" <> 0");
+            table.HasCheckConstraint(
+                "CK_StockMovements_Status", "\"Status\" IN ('Draft','Posted','Reversed')");
+            table.HasCheckConstraint(
+                "CK_StockMovements_MovementType",
+                "\"MovementType\" IN ('Receipt','Issue','Adjustment','Count','TransferIn','TransferOut','Return')");
+        });
+        movement.HasKey(x => x.Id);
+        movement.HasIndex(x => new { x.LocationId, x.ProductId, x.UnitId, x.LotNumber, x.ExpiryDate, x.Status });
+        movement.HasIndex(x => x.CreatedAtUtc);
+        movement.HasIndex(x => x.ReversalOfId);
+        movement.Property(x => x.MovementType).HasMaxLength(16).IsRequired();
+        movement.Property(x => x.LotNumber).HasMaxLength(64);
+        movement.Property(x => x.Reference).HasMaxLength(200);
+        movement.Property(x => x.Reason).HasMaxLength(500).IsRequired();
+        movement.Property(x => x.Status).HasMaxLength(16).IsRequired();
+        movement.Property(x => x.CreatedBySubject).HasMaxLength(256).IsRequired();
+        movement.HasOne(x => x.Location).WithMany().HasForeignKey(x => x.LocationId).OnDelete(DeleteBehavior.Restrict);
+        movement.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+        movement.HasOne(x => x.Unit).WithMany().HasForeignKey(x => x.UnitId).OnDelete(DeleteBehavior.Restrict);
+        movement.HasOne(x => x.ReversalOf)
+            .WithMany(x => x.Reversals)
+            .HasForeignKey(x => x.ReversalOfId)
+            .OnDelete(DeleteBehavior.Restrict);
 
     }
 }
