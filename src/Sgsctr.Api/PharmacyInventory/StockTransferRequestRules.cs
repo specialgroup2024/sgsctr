@@ -24,6 +24,8 @@ public static class StockTransferRequestRules
 
     public static bool CanSubmit(string status) => status == "Draft";
 
+    public static bool CanSendForApproval(string status) => status == "Submitted";
+
     public static bool CanApprove(string status) => status == "PendingApproval";
 
     public static bool CanReject(string status) => status == "PendingApproval";
