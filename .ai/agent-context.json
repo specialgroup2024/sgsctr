@@ -162,6 +162,13 @@
       "product/users-and-permissions.md",
       "governance/cross-platform-agent-compatibility.md",
       "delivery/testing-strategy.md"
+    ],
+    "agent_host_compatibility": [
+      "governance/cross-platform-agent-compatibility.md",
+      "governance/agent-execution-and-context.md",
+      "governance/agent-safety-and-tool-boundaries.md",
+      "evals/README.md",
+      "evals/agentic-capabilities.md"
     ]
   },
   "selection": {
