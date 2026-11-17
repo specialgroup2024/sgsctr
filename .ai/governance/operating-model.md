@@ -35,3 +35,6 @@ The project owner retains business authority. Qualified professionals retain dec
 ## Continuous adaptation
 
 Re-select specializations whenever the task changes materially. Reopen earlier decisions when new evidence, requirements, risks or failures invalidate their basis. Preserve decision history; never silently rewrite approved decisions.
+## Execution detail and behavioral evidence
+
+Follow [agent execution and context](agent-execution-and-context.md) for session start, progressive context tiers, bounded delegation, stop conditions, memory lifecycle and handoff. Apply [agent safety and tool boundaries](agent-safety-and-tool-boundaries.md) alongside the machine-readable security rules. Govern reusable methods through [skill governance](skill-governance.md). Documentation and static validators do not prove runtime behavior; use the [behavioral evaluation suite](../evals/README.md) and report unrun cases honestly.
