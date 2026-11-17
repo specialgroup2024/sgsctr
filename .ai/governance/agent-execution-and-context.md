@@ -60,3 +60,18 @@ Require explicit approval before destructive data/file operations, force pushes 
 ## Completion report
 
 Report task and risk tier; branch and base commit; files changed; requirement/gap addressed; exact commands and outcomes; checks not run or blocked; review independence/limitations; security and architecture impact; decisions and approvals still required; residual risks; and next step. Do not claim runtime agent capabilities merely because they are documented.
+
+## Autonomy and capability transparency
+
+Autonomy is bounded by the approval register, root rules, user authorization and host permissions. Use these practical levels; the highest applicable restriction always wins:
+
+| Level | Permitted agent work | Boundary |
+|---|---|---|
+| L0 — Analyse | Read permitted repository content, inspect evidence, run read-only checks, prepare options | No writes or external side effects |
+| L1 — Documentation and tests | Make scoped documentation, test and template changes on a branch | Do not alter human-owned policy or approval records to grant authority |
+| L2 — Authorized implementation | Implement a specifically authorized work package on a branch; run non-destructive checks | No scope expansion, production activation, destructive action or unapproved dependency/integration |
+| L3 — High-impact preparation | Prepare designs, patches, migrations, release/rollback plans and evidence for review | Do not apply, merge, deploy or activate reserved changes without explicit authorization and all applicable approvals |
+
+A user request can authorize a task but does not waive separate professional, business, security or release gates. No level grants production access by default.
+
+Documented capability is not proven runtime capability. For agentic workflows, skill discovery, short-/long-term memory, retrieval/vector search, GraphRAG, function calling/custom APIs and AIOps/observability: first inspect what the actual host already supports; test with the behavioral suite; reuse native, least-privilege tools; measure a concrete gap before proposing new infrastructure. Do not add vector stores, graph retrieval, custom tools, telemetry services or external integrations merely because a source project discusses them. Any new service, dependency, data flow, paid service or permission change requires the applicable human approval. Report unsupported, unavailable and untested capabilities explicitly.
