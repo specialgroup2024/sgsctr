@@ -31,6 +31,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<GovernanceTestCase> GovernanceTestCases => Set<GovernanceTestCase>();
     public DbSet<GovernanceTestExecution> GovernanceTestExecutions => Set<GovernanceTestExecution>();
     public DbSet<StockMovement> StockMovements => Set<StockMovement>();
+    public DbSet<StockTransferRequest> StockTransferRequests => Set<StockTransferRequest>();
+    public DbSet<StockTransferRequestLine> StockTransferRequestLines => Set<StockTransferRequestLine>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -416,6 +418,52 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         movement.HasOne(x => x.ReversalOf)
             .WithMany(x => x.Reversals)
             .HasForeignKey(x => x.ReversalOfId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        var transferRequest = modelBuilder.Entity<StockTransferRequest>();
+        transferRequest.ToTable("StockTransferRequests", table =>
+        {
+            table.HasCheckConstraint(
+                "CK_StockTransferRequests_Status",
+                "\"Status\" IN ('Draft','Submitted','PendingApproval','Approved','Rejected','Cancelled')");
+        });
+        transferRequest.HasKey(x => x.Id);
+        transferRequest.HasIndex(x => new { x.SourceLocationId, x.DestinationLocationId, x.Status });
+        transferRequest.HasIndex(x => x.RequestedAtUtc);
+        transferRequest.Property(x => x.Reason).HasMaxLength(500);
+        transferRequest.Property(x => x.RequestedBySubject).HasMaxLength(256).IsRequired();
+        transferRequest.Property(x => x.ApprovedBySubject).HasMaxLength(256);
+        transferRequest.Property(x => x.UpdatedBySubject).HasMaxLength(256).IsRequired();
+        transferRequest.HasOne(x => x.SourceLocation)
+            .WithMany()
+            .HasForeignKey(x => x.SourceLocationId)
+            .OnDelete(DeleteBehavior.Restrict);
+        transferRequest.HasOne(x => x.DestinationLocation)
+            .WithMany()
+            .HasForeignKey(x => x.DestinationLocationId)
+            .OnDelete(DeleteBehavior.Restrict);
+        transferRequest.HasMany(x => x.Lines)
+            .WithOne(x => x.StockTransferRequest)
+            .HasForeignKey(x => x.StockTransferRequestId)
+            .OnDelete(DeleteBehavior.Cascade);
+        transferRequest.HasMany(x => x.Movements)
+            .WithOne()
+            .HasForeignKey("StockTransferRequestId")
+            .OnDelete(DeleteBehavior.Restrict);
+
+        var transferLine = modelBuilder.Entity<StockTransferRequestLine>();
+        transferLine.ToTable("StockTransferRequestLines");
+        transferLine.HasKey(x => x.Id);
+        transferLine.HasIndex(x => new { x.StockTransferRequestId, x.ProductId, x.UnitId });
+        transferLine.Property(x => x.LotNumber).HasMaxLength(64);
+        transferLine.HasCheckConstraint("CK_StockTransferRequestLines_QuantityPositive", "\"Quantity\" > 0");
+        transferLine.HasOne(x => x.Product)
+            .WithMany()
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+        transferLine.HasOne(x => x.Unit)
+            .WithMany()
+            .HasForeignKey(x => x.UnitId)
             .OnDelete(DeleteBehavior.Restrict);
 
     }

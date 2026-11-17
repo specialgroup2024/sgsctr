@@ -19,6 +19,7 @@ public sealed class StockMovement
     public string Reason { get; set; } = string.Empty;
     public string Status { get; set; } = "Draft";
     public Guid? ReversalOfId { get; set; }
+    public Guid? StockTransferRequestId { get; set; }
     public string CreatedBySubject { get; set; } = string.Empty;
     public DateTimeOffset CreatedAtUtc { get; set; }
 
