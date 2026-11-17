@@ -39,6 +39,10 @@ If the repository is already cloned:
   `WEB_BIND_ADDRESS=0.0.0.0` to publish it on all VM interfaces.
 - Set `WEB_HOST_PORT` if host port 3000 is already occupied; update
   `WEB_BASE_URL` to the corresponding port.
+- If you want to browse the bare address `http://<VM-LAN-IP>` with no `:port`,
+  first confirm host TCP port 80 is unused, then set `WEB_HOST_PORT=80` and
+  `WEB_BASE_URL=http://<VM-LAN-IP>` (no trailing slash). Allow TCP 80 only from
+  the trusted LAN subnet. This is optional; the default remains port 3000.
 
 The web container listens on 0.0.0.0:3000 internally. Compose publishes only
 the web UI to the host/LAN. API (8080), PostgreSQL (5433) and pgAdmin (5051)
