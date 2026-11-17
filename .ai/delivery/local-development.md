@@ -62,6 +62,53 @@ From a second computer, verify TCP reachability and load the configured LAN URL.
 
 ## Network troubleshooting
 
+### NuGet restore fails with NU1301
+
+The API image restores packages during the Docker build. A failure to reach
+`https://api.nuget.org/v3/index.json` is a build-network/DNS/proxy problem until
+evidence shows otherwise; it is not evidence of a PostgreSQL or application defect.
+
+First test the VM host network:
+
+    getent hosts api.nuget.org
+    curl -fsSI --connect-timeout 10 https://api.nuget.org/v3/index.json
+
+If either command fails, repair the VM's DNS, outbound HTTPS access or required
+corporate/network proxy before rebuilding. Do not change package versions or
+disable TLS validation to work around a connectivity failure.
+
+If the VM must use an HTTP(S) proxy, export the proxy in the shell that runs
+Compose. Use the actual proxy URL supplied by the network administrator; do not
+commit it to `.env`, source control or logs:
+
+    export HTTPS_PROXY=http://proxy.example:3128
+    export HTTP_PROXY=http://proxy.example:3128
+    export NO_PROXY=localhost,127.0.0.1,.local
+    docker compose build --no-cache --progress plain api
+
+Compose forwards optional upper- and lower-case proxy variables to the API
+image build only. They are Docker's predefined proxy build arguments and are
+not declared in the Dockerfile or persisted as runtime container environment.
+If the host has no proxy, leave these variables unset.
+
+If host connectivity works but restore still fails in BuildKit, compare DNS and
+egress from a disposable SDK container:
+
+    docker run --rm --entrypoint sh mcr.microsoft.com/dotnet/sdk:10.0 -lc 'getent hosts api.nuget.org'
+
+If container DNS fails while host DNS works, investigate Docker daemon/BuildKit
+DNS, firewall and outbound networking. Do not switch to host networking or
+weaken TLS as a default workaround. After correcting the network path, retry:
+
+    docker compose build --no-cache --progress plain api
+    docker compose up -d
+
+The API Docker build also uses NuGet enhanced network retries to tolerate
+transient feed failures. Retries cannot repair blocked DNS, blocked outbound
+HTTPS or a missing proxy.
+
+### VM/LAN connectivity
+
 On the VM:
 
     ip -br address
