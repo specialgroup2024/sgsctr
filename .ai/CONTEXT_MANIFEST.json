@@ -2,14 +2,14 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 137,
+  "tracked_markdown_count": 138,
   "empty_markdown_count": 0,
   "entries": [
     {
       "path": ".ai/README.md",
       "category": "ai-entry",
-      "git_blob_sha": "158c71ba0d5bde0970a476039e74a1c24147fc11",
-      "size_bytes": 4061,
+      "git_blob_sha": "d83d08339f8fccdf9a221589855e5304d6cbc1fd",
+      "size_bytes": 4209,
       "content_state": "populated"
     },
     {
@@ -811,17 +811,24 @@
       "content_state": "populated"
     },
     {
+      "path": ".github/copilot-instructions.md",
+      "category": ".github",
+      "git_blob_sha": "2ad193497cc42cce976584500a4bdd7694dbd0eb",
+      "size_bytes": 959,
+      "content_state": "populated"
+    },
+    {
       "path": "AGENT.md",
       "category": "repository-entry",
-      "git_blob_sha": "6765242dbe484c8b42e616c78f5bfcb8ad4d167c",
-      "size_bytes": 3568,
+      "git_blob_sha": "09accab65cb64c5c53565b0fe1409e534f3a1e94",
+      "size_bytes": 3934,
       "content_state": "populated"
     },
     {
       "path": "AGENTS.md",
       "category": "repository-entry",
-      "git_blob_sha": "480b39440173ea9c52d4c064f87c819a4a9f2246",
-      "size_bytes": 2507,
+      "git_blob_sha": "1f2299baa113ad5738ec3fb9793b45ee08060af0",
+      "size_bytes": 2653,
       "content_state": "populated"
     },
     {
