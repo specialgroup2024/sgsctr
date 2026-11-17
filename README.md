@@ -33,9 +33,11 @@ Then run:
 
     docker compose up --build -d
 
-Open the web application at http://localhost:3000.
+Open the web application on the VM at http://localhost:3000. For another computer on the same LAN, open http://<VM-LAN-IP>:3000 (for this VM, http://192.168.88.72:3000). The Compose web port is published on the VM network interfaces by default; only the web UI is exposed. API (8080), PostgreSQL (5433) and pgAdmin (5051) remain loopback-only.
 
-Sign in at http://localhost:3000 with the bootstrap administrator account configured in .env. No external identity service or public registration is used.
+For LAN use, set WEB_BASE_URL in the VM's ignored .env to the exact browser origin, including port (for example http://192.168.88.72:3000). The Next.js BFF validates this origin for sign-in, sign-out and write requests. Set WEB_BIND_ADDRESS=127.0.0.1 to disable LAN access, or WEB_HOST_PORT to change the host port. If you specifically need the bare address without :3000, confirm host port 80 is free, set WEB_HOST_PORT=80 and WEB_BASE_URL=http://<VM-LAN-IP>, then restrict TCP 80 at the VM/hypervisor firewall to the trusted LAN subnet. Do not disable the firewall or expose this development stack to the public internet.
+
+Sign in at the configured web URL with the bootstrap administrator account configured in .env. No external identity service or public registration is used.
 
 Open pgAdmin at http://localhost:5051 and sign in with the email and password
 configured in `.env`. To connect to PostgreSQL from pgAdmin, register a server
