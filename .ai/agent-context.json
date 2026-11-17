@@ -8,7 +8,12 @@
     "approvals": "governance/approval-register.md",
     "current_state": "memory/current-state.md",
     "role_skill_routing": "governance/role-skill-routing.json",
-    "security_rules": "governance/security-rules.json"
+    "security_rules": "governance/security-rules.json",
+    "agent_execution": "governance/agent-execution-and-context.md",
+    "agent_safety_detail": "governance/agent-safety-and-tool-boundaries.md",
+    "skill_governance": "governance/skill-governance.md",
+    "source_reconciliation_sg_wap": "governance/source-reconciliation-sg-wap.md",
+    "behavioral_evaluations": "evals/README.md"
   },
   "mandatory_baseline": [
     "../AGENT.md",
@@ -22,7 +27,9 @@
     "memory/current-state.md",
     "memory/open-questions.md",
     "product/scope.md",
-    "architecture/system-context.md"
+    "architecture/system-context.md",
+    "governance/agent-execution-and-context.md",
+    "governance/agent-safety-and-tool-boundaries.md"
   ],
   "task_profiles": {
     "api_backend": [
@@ -118,7 +125,11 @@
       "memory/readme.md",
       "memory/lessons.md",
       "memory/state-update-protocol.md",
-      "memory/change-log.md"
+      "memory/change-log.md",
+      "governance/skill-governance.md",
+      "governance/source-reconciliation-sg-wap.md",
+      "evals/README.md",
+      "evals/agentic-capabilities.md"
     ],
     "business_analysis": [
       "product/vision.md",
@@ -165,6 +176,8 @@
     "load_more_only_when": "A selected profile or inspected dependency requires it; follow links and record why high-impact references were loaded.",
     "do_not_load": "All delivery logs, all roles, all skills and all historical scans for every task.",
     "memory_update": "Only after evidence changes; append dated evidence-linked corrections, retain history and reconcile current-state from canonical records.",
-    "approvals": "Never infer business, professional or release approval from merge, CI result, agent role or technical acceptance."
+    "approvals": "Never infer business, professional or release approval from merge, CI result, agent role or technical acceptance.",
+    "behavioral_evaluation": "After material changes to agent instructions, routing, skills, safety or permissions, run applicable cases in evals/; static validation is not runtime proof.",
+    "execution_protocol": "Follow governance/agent-execution-and-context.md for session, context tiers, bounded delegation, stop conditions, memory lifecycle and evidence-based handoff."
   }
 }
