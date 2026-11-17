@@ -1,5 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
+# NuGet's enhanced retry policy helps with transient feed/network failures.
+# Docker's predefined proxy build args are intentionally not declared here:
+# BuildKit keeps them out of image history unless explicitly referenced.
+ENV NUGET_ENHANCED_MAX_NETWORK_TRY_COUNT=10 \
+    NUGET_ENHANCED_NETWORK_RETRY_DELAY_MILLISECONDS=1500
 COPY global.json ./
 COPY Directory.Packages.props ./
 COPY src/Sgsctr.Api/Sgsctr.Api.csproj src/Sgsctr.Api/
