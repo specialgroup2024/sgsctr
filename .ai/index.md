@@ -91,8 +91,8 @@
 - [`.ai/domain/pharmacy-workflows.md`](../.ai/domain/pharmacy-workflows.md)
 
 ## evals
-- [`.ai/evals/agentic-capabilities.md`](../.ai/evals/agentic-capabilities.md)
 - [`.ai/evals/README.md`](../.ai/evals/README.md)
+- [`.ai/evals/agentic-capabilities.md`](../.ai/evals/agentic-capabilities.md)
 
 ## governance
 - [`.ai/governance/adr-conventions.md`](../.ai/governance/adr-conventions.md)
@@ -149,8 +149,8 @@
 ## repository-entry
 - [`AGENT.md`](../AGENT.md)
 - [`AGENTS.md`](../AGENTS.md)
-- [`Before writing code_2.md`](../Before writing code_2.md)
 - [`Before writing code.md`](../Before writing code.md)
+- [`Before writing code_2.md`](../Before writing code_2.md)
 - [`CLAUDE.md`](../CLAUDE.md)
 - [`README.md`](../README.md)
 
