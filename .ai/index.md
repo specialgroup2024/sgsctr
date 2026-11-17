@@ -8,6 +8,9 @@
 - Integrity metadata: [CONTEXT_MANIFEST.json](CONTEXT_MANIFEST.json)
 - Rebuild/check: `python scripts/ai_context_index.py` / `python scripts/ai_context_index.py --check`
 
+## .github
+- [`.github/copilot-instructions.md`](../.github/copilot-instructions.md)
+
 ## ai-entry
 - [`.ai/README.md`](../.ai/README.md)
 
@@ -63,9 +66,6 @@
 - [`.ai/delivery/roadmap.md`](../.ai/delivery/roadmap.md)
 - [`.ai/delivery/test-approval-simulation-design.md`](../.ai/delivery/test-approval-simulation-design.md)
 - [`.ai/delivery/testing-strategy.md`](../.ai/delivery/testing-strategy.md)
-
-## .github
-- [`.github/copilot-instructions.md`](../.github/copilot-instructions.md)
 
 ## docs
 - [`docs/archive/before-writing-code-2-part-01.md`](../docs/archive/before-writing-code-2-part-01.md)
