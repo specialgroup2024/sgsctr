@@ -99,8 +99,8 @@
     {
       "path": ".ai/architecture/system-context.md",
       "category": "architecture",
-      "git_blob_sha": "8969d1b0f2e2bec60ba942520f55842ae0a5bf58",
-      "size_bytes": 6277,
+      "git_blob_sha": "dc984c0c10254d49e5143125efbdb936aec53a0f",
+      "size_bytes": 6375,
       "content_state": "populated"
     },
     {
@@ -582,15 +582,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "4d51c5482e8528f7f5dbd2242ce9f214fe258739",
-      "size_bytes": 2766,
+      "git_blob_sha": "c5a93238e5e19c3e928e426b11daed31ccc0e3e4",
+      "size_bytes": 3346,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "968c4b9362e326ad1d5ae803eb53fb20aee8b72d",
-      "size_bytes": 28220,
+      "git_blob_sha": "998fedc94e2c605f962c5811e72bd7c3ea8e985a",
+      "size_bytes": 28455,
       "content_state": "populated"
     },
     {
