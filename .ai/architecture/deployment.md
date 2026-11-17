@@ -11,9 +11,10 @@ Status: development guidance based on repository configuration. Production topol
 
 ## Local development
 - Use Compose for repeatable API/database/web startup.
-- Keep PostgreSQL internal; bind host development ports to loopback only.
-- Use named volumes for database and data-protection keys where configured.
-- Keep pgAdmin disabled or loopback-only. Never expose it publicly.
+- Keep PostgreSQL internal; its host development port remains loopback-only.
+- Publish only the Next.js web UI on the VM LAN interface when LAN testing is required; default host port is 3000 and can be restricted with WEB_BIND_ADDRESS=127.0.0.1.
+- Keep API, PostgreSQL and pgAdmin host ports loopback-only. Never expose pgAdmin or the database publicly.
+- LAN testing requires WEB_BASE_URL to match the exact browser origin and a host/hypervisor firewall rule limited to the trusted subnet. This development HTTP topology is not a production ingress pattern.
 - Use synthetic data. Production/patient data requires explicit authorization and safeguards.
 - Keep secrets in untracked env files or secret manager; commit placeholder examples only.
 
