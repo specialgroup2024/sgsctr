@@ -2,12 +2,17 @@
 
 Append-only record of material repository/governance state changes. Detailed evidence remains in the linked canonical records.
 
+## 2026-11-17 — SDK pin fact reconciliation
+- Repository evidence: owner commit `e685aa3` ("fix", 2026-11-16) changed global.json from SDK 10.0.403 to 10.0.115.
+- Correction: current-state.md and architecture/system-context.md previously stated the pin as 10.0.403; both now record 10.0.115 with the commit reference. global.json remains authoritative.
+- No approval, release or dependency-policy decision is implied; the pin change was made by the owner.
+
 ## 2026-11-17 — INV-04-02 draft-only stock transfer requests (branch feat/inv04-stock-transfer-requests)
-- Repository event: commit `5c184f2` on branch `feat/inv04-stock-transfer-requests`, based on master merge commit `1965a609fb18023e4c958623b8adbfbf54f272af` which contains the owner's direct `phase02`/`phase INV03 execute`/`INV-04-01` commits.
-- Implementation: additive migration `20261117140845_PharmacyStockTransferRequests` with regenerated snapshot; Draft-only transfer request endpoints (create/list/detail/submit/send-for-approval/approve/reject/cancel); `CanSendForApproval` state-machine rule; separation of duties on approve/reject; 41 new rule tests. Approval creates Draft StockMovement rows only; no posting or balance effect.
-- Technical validation: verified locally — build 0 errors, tests 153/153, `has-pending-model-changes` clean. Migration not applied to any database; PostgreSQL integration, BFF/UI coverage, CI and runtime evidence remain outstanding.
+- Repository event: commits `5c184f2` and `3497632` on branch `feat/inv04-stock-transfer-requests`, based on master merge commit `1965a609fb18023e4c958623b8adbfbf54f272af` which contains the owner's direct `phase02`/`phase INV03 execute`/`INV-04-01` commits.
+- Implementation: additive migration `20261117140845_PharmacyStockTransferRequests` with regenerated snapshot; Draft-only transfer request endpoints (create/list/detail/submit/send-for-approval/approve/reject/cancel); `CanSendForApproval` and `AreLocationsDistinct` state-machine rules; separation of duties on approve/reject; 43 new rule tests. Approval creates Draft StockMovement rows only; no posting or balance effect.
+- Technical validation: verified locally — build 0 errors, tests 155/155, `has-pending-model-changes` clean. Migration not applied to any database; PostgreSQL integration, BFF/UI coverage, CI and runtime evidence remain outstanding.
 - Approval status: unchanged. Q12/Q13, Q53, security review and release gates remain open; the merge of the owner's phase commits and this branch do not approve costing, posting or production use.
-- Canonical document updated: [current state](current-state.md).
+- Canonical documents updated: [current state](current-state.md); deliberation record .ai/roles/inv04-stock-transfer-requests-deliberation.md.
 
 ## 2026-11-16 — AI context integrity acceptance (PR #81)
 - Repository event: PR #81 merged to master at ef831fc7878ffa5229ad18310fb41a790e1cf893.

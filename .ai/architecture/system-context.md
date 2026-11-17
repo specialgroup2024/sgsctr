@@ -11,7 +11,7 @@ Pharmacy topology: Mokattam main warehouse, Student Hospital branch, Qasr El-Ain
 ## Repository-verified technology baseline
 
 - ASP.NET Core API targets .NET 10 (`net10.0`).
-- Repository SDK pin: .NET SDK `10.0.403`.
+- Repository SDK pin: .NET SDK `10.0.115` (lowered from `10.0.403` by owner commit `e685aa3` on 2026-11-16; `global.json` is authoritative).
 - EF Core provider: Npgsql Entity Framework Core PostgreSQL `10.0.3`; the API currently registers `AppDbContext`.
 - PostgreSQL Compose image: `postgres:18-alpine`.
 - Web foundation: Next.js `15.5.7`, React `19.1.1`, TypeScript `5.9.3`.

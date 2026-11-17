@@ -22,6 +22,9 @@ public static class StockTransferRequestRules
     public static bool IsValidLotNumber(string? lotNumber) =>
         string.IsNullOrWhiteSpace(lotNumber) || lotNumber.Trim().Length <= 64;
 
+    public static bool AreLocationsDistinct(Guid sourceLocationId, Guid destinationLocationId) =>
+        sourceLocationId != destinationLocationId;
+
     public static bool CanSubmit(string status) => status == "Draft";
 
     public static bool CanSendForApproval(string status) => status == "Submitted";

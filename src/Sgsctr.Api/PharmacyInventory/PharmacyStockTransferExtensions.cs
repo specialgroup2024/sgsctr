@@ -73,7 +73,7 @@ public static class PharmacyStockTransferExtensions
         api.MapPost("/", async (
             TransferInput input, ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
         {
-            if (input.SourceLocationId == input.DestinationLocationId)
+            if (!StockTransferRequestRules.AreLocationsDistinct(input.SourceLocationId, input.DestinationLocationId))
                 return Results.ValidationProblem(new Dictionary<string, string[]>
                 {
                     ["destinationLocationId"] = ["Destination location must differ from the source location."]

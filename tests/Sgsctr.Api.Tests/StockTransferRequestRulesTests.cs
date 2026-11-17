@@ -100,6 +100,21 @@ public sealed class StockTransferRequestRulesTests
     }
 
     [Fact]
+    public void AreLocationsDistinct_AcceptsDifferentLocations()
+    {
+        Assert.True(StockTransferRequestRules.AreLocationsDistinct(
+            Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Guid.Parse("00000000-0000-0000-0000-000000000002")));
+    }
+
+    [Fact]
+    public void AreLocationsDistinct_RejectsSameLocation()
+    {
+        var sameLocation = Guid.Parse("00000000-0000-0000-0000-000000000001");
+        Assert.False(StockTransferRequestRules.AreLocationsDistinct(sameLocation, sameLocation));
+    }
+
+    [Fact]
     public void CanSubmit_ReturnsTrueForDraft()
     {
         Assert.True(StockTransferRequestRules.CanSubmit("Draft"));
