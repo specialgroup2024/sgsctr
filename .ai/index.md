@@ -68,6 +68,8 @@
 - [`.ai/delivery/testing-strategy.md`](../.ai/delivery/testing-strategy.md)
 
 ## docs
+- [`docs/archive/Before writing code.md`](../docs/archive/Before writing code.md)
+- [`docs/archive/Before writing code_2.md`](../docs/archive/Before writing code_2.md)
 - [`docs/archive/before-writing-code-2-part-01.md`](../docs/archive/before-writing-code-2-part-01.md)
 - [`docs/archive/before-writing-code-2-part-02.md`](../docs/archive/before-writing-code-2-part-02.md)
 - [`docs/archive/before-writing-code-2-part-03.md`](../docs/archive/before-writing-code-2-part-03.md)
@@ -149,8 +151,6 @@
 ## repository-entry
 - [`AGENT.md`](../AGENT.md)
 - [`AGENTS.md`](../AGENTS.md)
-- [`Before writing code.md`](../Before writing code.md)
-- [`Before writing code_2.md`](../Before writing code_2.md)
 - [`CLAUDE.md`](../CLAUDE.md)
 - [`README.md`](../README.md)
 

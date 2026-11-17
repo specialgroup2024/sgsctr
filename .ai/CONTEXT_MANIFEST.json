@@ -50,8 +50,8 @@
     {
       "path": ".ai/architecture/deployment.md",
       "category": "architecture",
-      "git_blob_sha": "51a97aa9d85e4ff7b0992603d52d3ce95621a1d6",
-      "size_bytes": 2664,
+      "git_blob_sha": "9543f2bff974281f3580d4b00a622f86d479ae61",
+      "size_bytes": 3005,
       "content_state": "populated"
     },
     {
@@ -169,8 +169,8 @@
     {
       "path": ".ai/delivery/local-development.md",
       "category": "delivery",
-      "git_blob_sha": "5d826661996f87d7226956b14476cf7ca2ba35f7",
-      "size_bytes": 2484,
+      "git_blob_sha": "dbbb54b35c82cf2a8955e523a92f6e770896ea16",
+      "size_bytes": 4699,
       "content_state": "populated"
     },
     {
@@ -874,20 +874,6 @@
       "content_state": "populated"
     },
     {
-      "path": "Before writing code.md",
-      "category": "repository-entry",
-      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
-      "size_bytes": 629,
-      "content_state": "populated"
-    },
-    {
-      "path": "Before writing code_2.md",
-      "category": "repository-entry",
-      "git_blob_sha": "95dff8b0206e663771b05f310cc8522467ddcc54",
-      "size_bytes": 813,
-      "content_state": "populated"
-    },
-    {
       "path": "CLAUDE.md",
       "category": "repository-entry",
       "git_blob_sha": "0e8298811116b57b013c9abe9c7ff22e10bf8a62",
@@ -897,8 +883,22 @@
     {
       "path": "README.md",
       "category": "repository-entry",
-      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
-      "size_bytes": 8419,
+      "git_blob_sha": "fd44962a9ef720efe0b688cea0401098d07cd331",
+      "size_bytes": 9338,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/Before writing code.md",
+      "category": "docs",
+      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
+      "size_bytes": 629,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/Before writing code_2.md",
+      "category": "docs",
+      "git_blob_sha": "95dff8b0206e663771b05f310cc8522467ddcc54",
+      "size_bytes": 813,
       "content_state": "populated"
     },
     {
