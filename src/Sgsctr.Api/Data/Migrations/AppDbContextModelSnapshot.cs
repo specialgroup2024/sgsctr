@@ -1349,6 +1349,9 @@ namespace Sgsctr.Api.Data.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("character varying(16)");
 
+                    b.Property<Guid?>("StockTransferRequestId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("UnitId")
                         .HasColumnType("uuid");
 
@@ -1359,6 +1362,8 @@ namespace Sgsctr.Api.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.HasIndex("ReversalOfId");
+
+                    b.HasIndex("StockTransferRequestId");
 
                     b.HasIndex("UnitId");
 
@@ -1371,6 +1376,102 @@ namespace Sgsctr.Api.Data.Migrations
                             t.HasCheckConstraint("CK_StockMovements_QuantityNonZero", "\"Quantity\" <> 0");
 
                             t.HasCheckConstraint("CK_StockMovements_Status", "\"Status\" IN ('Draft','Posted','Reversed')");
+                        });
+                });
+
+            modelBuilder.Entity("Sgsctr.Api.Data.StockTransferRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("ApprovedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ApprovedBySubject")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<Guid>("DestinationLocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTimeOffset>("RequestedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RequestedBySubject")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<Guid>("SourceLocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBySubject")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationLocationId");
+
+                    b.HasIndex("RequestedAtUtc");
+
+                    b.HasIndex("SourceLocationId", "DestinationLocationId", "Status");
+
+                    b.ToTable("StockTransferRequests", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_StockTransferRequests_Status", "\"Status\" IN ('Draft','Submitted','PendingApproval','Approved','Rejected','Cancelled')");
+                        });
+                });
+
+            modelBuilder.Entity("Sgsctr.Api.Data.StockTransferRequestLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly?>("ExpiryDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("LotNumber")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("StockTransferRequestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UnitId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UnitId");
+
+                    b.HasIndex("StockTransferRequestId", "ProductId", "UnitId");
+
+                    b.ToTable("StockTransferRequestLines", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_StockTransferRequestLines_QuantityPositive", "\"Quantity\" > 0");
                         });
                 });
 
@@ -1663,6 +1764,11 @@ namespace Sgsctr.Api.Data.Migrations
                         .HasForeignKey("ReversalOfId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Sgsctr.Api.Data.StockTransferRequest", null)
+                        .WithMany("Movements")
+                        .HasForeignKey("StockTransferRequestId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Sgsctr.Api.Data.UnitOfMeasure", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
@@ -1674,6 +1780,52 @@ namespace Sgsctr.Api.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ReversalOf");
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("Sgsctr.Api.Data.StockTransferRequest", b =>
+                {
+                    b.HasOne("Sgsctr.Api.Data.OrganizationLocation", "DestinationLocation")
+                        .WithMany()
+                        .HasForeignKey("DestinationLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Sgsctr.Api.Data.OrganizationLocation", "SourceLocation")
+                        .WithMany()
+                        .HasForeignKey("SourceLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DestinationLocation");
+
+                    b.Navigation("SourceLocation");
+                });
+
+            modelBuilder.Entity("Sgsctr.Api.Data.StockTransferRequestLine", b =>
+                {
+                    b.HasOne("Sgsctr.Api.Data.CatalogueProduct", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Sgsctr.Api.Data.StockTransferRequest", "StockTransferRequest")
+                        .WithMany("Lines")
+                        .HasForeignKey("StockTransferRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sgsctr.Api.Data.UnitOfMeasure", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("StockTransferRequest");
 
                     b.Navigation("Unit");
                 });
@@ -1716,6 +1868,13 @@ namespace Sgsctr.Api.Data.Migrations
             modelBuilder.Entity("Sgsctr.Api.Data.StockMovement", b =>
                 {
                     b.Navigation("Reversals");
+                });
+
+            modelBuilder.Entity("Sgsctr.Api.Data.StockTransferRequest", b =>
+                {
+                    b.Navigation("Lines");
+
+                    b.Navigation("Movements");
                 });
 #pragma warning restore 612, 618
         }

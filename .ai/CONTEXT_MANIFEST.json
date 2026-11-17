@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 144,
+  "tracked_markdown_count": 145,
   "empty_markdown_count": 0,
   "entries": [
     {
@@ -426,6 +426,13 @@
       "content_state": "populated"
     },
     {
+      "path": ".ai/governance/ai-agent-source-authority.md",
+      "category": "governance",
+      "git_blob_sha": "c682b035784252200e98bfb05700a9892a3c4f2c",
+      "size_bytes": 7018,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/governance/ai-context-index-and-integrity.md",
       "category": "governance",
       "git_blob_sha": "f1454c5e52982651261712fad7e1160bda3cef3d",
@@ -575,15 +582,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "28b55c05079efe8ab6498ec2cbbe46974747cb99",
-      "size_bytes": 1521,
+      "git_blob_sha": "4d51c5482e8528f7f5dbd2242ce9f214fe258739",
+      "size_bytes": 2766,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "9e4f0521a97222048c5a6e99a2bda6487b436d57",
-      "size_bytes": 26356,
+      "git_blob_sha": "968c4b9362e326ad1d5ae803eb53fb20aee8b72d",
+      "size_bytes": 28220,
       "content_state": "populated"
     },
     {
