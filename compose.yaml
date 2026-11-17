@@ -21,6 +21,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # Optional host proxy settings are passed only to the image build.
+      # Empty/unset host variables do not add proxy configuration.
+      args:
+        HTTP_PROXY:
+        HTTPS_PROXY:
+        NO_PROXY:
+        http_proxy:
+        https_proxy:
+        no_proxy:
     container_name: sgsctr-api
     restart: unless-stopped
     environment:
