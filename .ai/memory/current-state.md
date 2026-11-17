@@ -128,6 +128,13 @@ The owner confirms the three branches may transfer medicines and supplies direct
 - Deliberation: .ai/roles/invb-supplier-assurance-workflows-deliberation.md.
 - Review record: draft PR #72 is open at https://github.com/specialgroup2024/sgsctr/pull/72. GitHub reports no workflow runs or commit status checks for its current head. The PR is intentionally not merged.
 
+## INV-04 stock transfer request continuation — 2026-11-17
+
+- The owner directly pushed phased implementation commits to master: `44a4ad8 phase02` (AppDbContext model parity probe), `304529c phase INV03 execute` (StockMovement ledger entity, migration, endpoints, rules and tests) and `78b39f7 INV-04-01` (StockTransferRequest/StockTransferRequestLine entities, model configuration and pure rules). GitHub merged these to master through merge commit `1965a609fb18023e4c958623b8adbfbf54f272af` together with governance bootstrap documentation.
+- Branch `feat/inv04-stock-transfer-requests` (commit `5c184f2`) completes the next slice, INV-04-02: additive migration `20261117140845_PharmacyStockTransferRequests` (two new tables, nullable `StockMovements.StockTransferRequestId` FK, restrict deletes; snapshot regenerated, 159 additive snapshot lines), Draft-only transfer endpoints under `/api/v1/pharmacy/inventory/stock-transfers` (create, list, detail, submit, send-for-approval, approve, reject, cancel), the `CanSendForApproval` rule completing the Submitted → PendingApproval transition, separation of duties on approve/reject, and 41 new rule tests.
+- Approval creates Draft `TransferOut`/`TransferIn` StockMovement rows only; no posting, dispatch, receipt or balance effect. Q12/Q13 costing and receiving-procedure gates, Q53 transfer-lifecycle policy approval and the security review remain open. The migration was scaffolded and inspected; it was not applied to any database.
+- Verified locally at commit `5c184f2`: `dotnet build Sgsctr.slnx --configuration Release` 0 errors (one pre-existing CS0618 warning), `dotnet test Sgsctr.slnx --configuration Release` 153/153 passed, and `dotnet ef migrations has-pending-model-changes` reported no pending model changes. PostgreSQL integration, BFF/UI coverage, CI and runtime migration remain unverified.
+
 ## AI context index and documentation integrity — 2026-11-16
 
 - PR #80 was merged to master at merge commit `dac7ded6eafc4974b1c6ab40dc666f9072ae6d0d`.
