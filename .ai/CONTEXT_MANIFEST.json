@@ -442,8 +442,8 @@
     {
       "path": ".ai/governance/dynamic-role-selection.md",
       "category": "governance",
-      "git_blob_sha": "238f6c53259aa1d66ad9fdae801bca5a843d71b9",
-      "size_bytes": 4340,
+      "git_blob_sha": "5fc17f594201670a386b1336ce09250986641677",
+      "size_bytes": 10374,
       "content_state": "populated"
     },
     {
@@ -722,8 +722,8 @@
     {
       "path": ".ai/roles/role-selection.md",
       "category": "roles",
-      "git_blob_sha": "40143302ea5b9933ffebf780864fe53cd6871770",
-      "size_bytes": 2294,
+      "git_blob_sha": "14de931a069fe1edea14f31889f183f9f34f431a",
+      "size_bytes": 2793,
       "content_state": "populated"
     },
     {

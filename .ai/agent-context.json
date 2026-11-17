@@ -119,6 +119,36 @@
       "memory/lessons.md",
       "memory/state-update-protocol.md",
       "memory/change-log.md"
+    ],
+    "business_analysis": [
+      "product/vision.md",
+      "product/scope.md",
+      "product/acceptance-criteria.md",
+      "domain/business-boundaries.md",
+      "governance/operating-model.md"
+    ],
+    "quality_assurance": [
+      "delivery/testing-strategy.md",
+      "delivery/definition-of-done.md",
+      "roles/quality-testing.md"
+    ],
+    "systems_networking": [
+      "architecture/deployment.md",
+      "delivery/local-development.md",
+      "skills/secure-release/SKILL.md",
+      "roles/operations.md"
+    ],
+    "integration": [
+      "architecture/api-conventions.md",
+      "architecture/eda-regulatory-ingestion.md",
+      "delivery/testing-strategy.md",
+      "security/audit-logging-baseline.md"
+    ],
+    "ux_accessibility": [
+      "product/vision.md",
+      "product/users-and-permissions.md",
+      "governance/cross-platform-agent-compatibility.md",
+      "delivery/testing-strategy.md"
     ]
   },
   "selection": {
