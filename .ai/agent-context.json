@@ -11,6 +11,7 @@
     "security_rules": "governance/security-rules.json",
     "agent_execution": "governance/agent-execution-and-context.md",
     "agent_safety_detail": "governance/agent-safety-and-tool-boundaries.md",
+    "source_authority": "governance/ai-agent-source-authority.md",
     "skill_governance": "governance/skill-governance.md",
     "source_reconciliation_sg_wap": "governance/source-reconciliation-sg-wap.md",
     "behavioral_evaluations": "evals/README.md"
@@ -29,7 +30,8 @@
     "product/scope.md",
     "architecture/system-context.md",
     "governance/agent-execution-and-context.md",
-    "governance/agent-safety-and-tool-boundaries.md"
+    "governance/agent-safety-and-tool-boundaries.md",
+    "governance/ai-agent-source-authority.md"
   ],
   "task_profiles": {
     "api_backend": [

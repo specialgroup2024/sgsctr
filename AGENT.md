@@ -9,6 +9,7 @@ Build and maintain SGSCTR safely, incrementally and with evidence. Applies to lo
 - .ai/governance/security-rules.json defines mandatory agent handling of secrets, sensitive data, logs and external inputs.
 - .ai/governance/agent-execution-and-context.md defines session, progressive context, delegation, stop and handoff mechanics.
 - .ai/governance/agent-safety-and-tool-boundaries.md expands untrusted-input, least-privilege and incident controls.
+- .ai/governance/ai-agent-source-authority.md defines the only authorized documentation sources (AGENT.md, AGENTS.md, .ai/) and prohibits all other docs/md files.
 - If rules conflict, apply the stricter safety/approval rule, stop the affected action and record the conflict.
 - Host-specific files may bootstrap to these sources but must not fork policy.
 
