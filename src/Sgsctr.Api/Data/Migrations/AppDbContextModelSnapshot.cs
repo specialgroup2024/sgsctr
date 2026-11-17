@@ -1432,6 +1432,8 @@ namespace Sgsctr.Api.Data.Migrations
 
                     b.ToTable("StockTransferRequests", null, t =>
                         {
+                            t.HasCheckConstraint("CK_StockTransferRequests_DifferentLocations", "\"SourceLocationId\" <> \"DestinationLocationId\"");
+
                             t.HasCheckConstraint("CK_StockTransferRequests_Status", "\"Status\" IN ('Draft','Submitted','PendingApproval','Approved','Rejected','Cancelled')");
                         });
                 });
