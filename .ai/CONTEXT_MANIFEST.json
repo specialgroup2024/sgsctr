@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 145,
+  "tracked_markdown_count": 146,
   "empty_markdown_count": 0,
   "entries": [
     {
@@ -582,15 +582,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "c5a93238e5e19c3e928e426b11daed31ccc0e3e4",
-      "size_bytes": 3346,
+      "git_blob_sha": "a68b7485d4f6c2b6dd12580fbde507681c28112d",
+      "size_bytes": 5009,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "998fedc94e2c605f962c5811e72bd7c3ea8e985a",
-      "size_bytes": 28455,
+      "git_blob_sha": "3dece26a5456a35bedf9f9085d31538573d4f910",
+      "size_bytes": 29737,
       "content_state": "populated"
     },
     {
@@ -703,6 +703,13 @@
       "category": "roles",
       "git_blob_sha": "550748c8d7337ff74c5cac7bf7114ca10d9f482c",
       "size_bytes": 3388,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/inv04-stock-transfer-requests-deliberation.md",
+      "category": "roles",
+      "git_blob_sha": "0714e9f48e063453aeb3e2c2a893ebc5dcf44c2a",
+      "size_bytes": 4715,
       "content_state": "populated"
     },
     {
