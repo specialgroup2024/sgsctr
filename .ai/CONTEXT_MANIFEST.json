@@ -6,6 +6,13 @@
   "empty_markdown_count": 0,
   "entries": [
     {
+      "path": ".ai/README.md",
+      "category": "ai-entry",
+      "git_blob_sha": "ce6bb7fb4c9c562971066f3953a5a279ab11b70b",
+      "size_bytes": 4877,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/architecture/ADR-0002-identity-and-access.md",
       "category": "architecture",
       "git_blob_sha": "12929777a314232eae58ad074644ba30d984015e",
@@ -384,17 +391,17 @@
       "content_state": "populated"
     },
     {
-      "path": ".ai/evals/agentic-capabilities.md",
-      "category": "evals",
-      "git_blob_sha": "94d04e1bcd6ebb1d4254aafe7d7e12ee9f6aaccd",
-      "size_bytes": 3335,
-      "content_state": "populated"
-    },
-    {
       "path": ".ai/evals/README.md",
       "category": "evals",
       "git_blob_sha": "f707aedc1ed9dbce12431c92e00dcb857f22273a",
       "size_bytes": 1724,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/evals/agentic-capabilities.md",
+      "category": "evals",
+      "git_blob_sha": "94d04e1bcd6ebb1d4254aafe7d7e12ee9f6aaccd",
+      "size_bytes": 3335,
       "content_state": "populated"
     },
     {
@@ -407,8 +414,8 @@
     {
       "path": ".ai/governance/agent-execution-and-context.md",
       "category": "governance",
-      "git_blob_sha": "9921c2e754c00c4a3ad7d810d0380edce03f05e5",
-      "size_bytes": 6274,
+      "git_blob_sha": "87aeb61e883d07b9f30c75cae2760c6b5bb55044",
+      "size_bytes": 8232,
       "content_state": "populated"
     },
     {
@@ -664,13 +671,6 @@
       "content_state": "populated"
     },
     {
-      "path": ".ai/README.md",
-      "category": "ai-entry",
-      "git_blob_sha": "ce6bb7fb4c9c562971066f3953a5a279ab11b70b",
-      "size_bytes": 4877,
-      "content_state": "populated"
-    },
-    {
       "path": ".ai/roles/accounting.md",
       "category": "roles",
       "git_blob_sha": "814dd8fffb988a3507369bb7f00c1467025c594f",
@@ -874,13 +874,6 @@
       "content_state": "populated"
     },
     {
-      "path": "Before writing code_2.md",
-      "category": "repository-entry",
-      "git_blob_sha": "95dff8b0206e663771b05f310cc8522467ddcc54",
-      "size_bytes": 813,
-      "content_state": "populated"
-    },
-    {
       "path": "Before writing code.md",
       "category": "repository-entry",
       "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
@@ -888,10 +881,24 @@
       "content_state": "populated"
     },
     {
+      "path": "Before writing code_2.md",
+      "category": "repository-entry",
+      "git_blob_sha": "95dff8b0206e663771b05f310cc8522467ddcc54",
+      "size_bytes": 813,
+      "content_state": "populated"
+    },
+    {
       "path": "CLAUDE.md",
       "category": "repository-entry",
       "git_blob_sha": "0e8298811116b57b013c9abe9c7ff22e10bf8a62",
       "size_bytes": 1081,
+      "content_state": "populated"
+    },
+    {
+      "path": "README.md",
+      "category": "repository-entry",
+      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
+      "size_bytes": 8419,
       "content_state": "populated"
     },
     {
@@ -1004,13 +1011,6 @@
       "category": "mam",
       "git_blob_sha": "062d8165ef155404c4fec11bdf6451a00fc68ff6",
       "size_bytes": 880,
-      "content_state": "populated"
-    },
-    {
-      "path": "README.md",
-      "category": "repository-entry",
-      "git_blob_sha": "0d8324344c60445af3510a16b29969d9dd6ca1b4",
-      "size_bytes": 8419,
       "content_state": "populated"
     }
   ]
