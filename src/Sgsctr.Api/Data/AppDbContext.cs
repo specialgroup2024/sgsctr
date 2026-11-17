@@ -426,6 +426,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
             table.HasCheckConstraint(
                 "CK_StockTransferRequests_Status",
                 "\"Status\" IN ('Draft','Submitted','PendingApproval','Approved','Rejected','Cancelled')");
+            table.HasCheckConstraint(
+                "CK_StockTransferRequests_DifferentLocations",
+                "\"SourceLocationId\" <> \"DestinationLocationId\"");
         });
         transferRequest.HasKey(x => x.Id);
         transferRequest.HasIndex(x => new { x.SourceLocationId, x.DestinationLocationId, x.Status });

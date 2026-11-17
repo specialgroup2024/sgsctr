@@ -2,6 +2,14 @@
 
 Append-only record of material repository/governance state changes. Detailed evidence remains in the linked canonical records.
 
+## 2026-11-17 — INV-03/INV-04 PostgreSQL integration evidence and test harness
+- Repository event: commits on branch `feat/inv04-stock-transfer-requests` adding forward migration `PharmacyStockTransferLocationCheck` (`CK_StockTransferRequests_DifferentLocations`) and a Testcontainers.PostgreSql 4.17.0 integration suite (disposable postgres:18-alpine; the owner's configured database is never touched by tests).
+- Runtime evidence: the owner's local Compose stack was rebuilt from the branch; API startup auto-applied all migrations to `sgsctr_dev` (17 rows in `__EFMigrationsHistory`, including the INV-03 ledger and INV-04 transfer migrations). Read-only psql inspection confirmed the three inventory tables and constraints; `/health/ready` returned HTTP 200 with both contexts connected. Local Development observation only — not production migration, not release evidence.
+- Test evidence: 164/164 passed (`dotnet test Sgsctr.slnx --configuration Release`), including 9 new integration tests covering migration apply, constraint presence, constraint rejections, restrict and cascade deletes. Build 0 errors; `has-pending-model-changes` clean.
+- Dependency note: Testcontainers.PostgreSql 4.17.0 was added after the owner's "implement missing" instruction following the audit that flagged the harness authorization requirement. It is a test-only dependency.
+- Approval status: unchanged. Q12/Q13, Q33, Q53, security review and release gates remain open; no posting, valuation or production use was enabled.
+- Canonical documents updated: [current state](current-state.md); deliberation addendum in .ai/roles/inv04-stock-transfer-requests-deliberation.md.
+
 ## 2026-11-17 — SDK pin fact reconciliation
 - Repository evidence: owner commit `e685aa3` ("fix", 2026-11-16) changed global.json from SDK 10.0.403 to 10.0.115.
 - Correction: current-state.md and architecture/system-context.md previously stated the pin as 10.0.403; both now record 10.0.115 with the commit reference. global.json remains authoritative.
