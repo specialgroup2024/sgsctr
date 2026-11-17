@@ -16,6 +16,11 @@ Generated [index](index.md) is navigation; [manifest](CONTEXT_MANIFEST.json) rec
 - [Current state](memory/current-state.md): dated repository/runtime reconciliation; verify against source.
 - [Open questions](memory/open-questions.md): unresolved decisions and owners.
 - [Operating model](governance/operating-model.md): evidence classes and work cycle.
+- [Agent execution and context](governance/agent-execution-and-context.md): session protocol, progressive context, delegation, stop conditions and evidence-based handoff.
+- [Agent safety detail](governance/agent-safety-and-tool-boundaries.md): untrusted input, least privilege, safe tool use and incident response.
+- [Skill governance](governance/skill-governance.md): reusable-method selection, structure and maintenance.
+- [Behavioral evaluations](evals/README.md): tests of actual agent behavior, not documentation presence alone.
+- [SG_WAP reconciliation](governance/source-reconciliation-sg-wap.md): evidence-backed compatibility matrix and explicit non-imports.
 - [Dynamic roles](governance/dynamic-role-selection.md): five stable responsibilities with task-selected specializations.
 - [Role/skill routing](governance/role-skill-routing.json): machine-readable task signals, specialist references and additive profiles.
 - [ADR conventions](governance/adr-conventions.md): repository-wide numbering and lifecycle rules.
