@@ -400,6 +400,30 @@
       "profiles": [
         "contracting"
       ]
+    },
+    "agent_host_compatibility": {
+      "when": [
+        "OpenCode",
+        "Continue",
+        "IDE coding agent",
+        "CLI coding agent",
+        "agent host compatibility",
+        "instruction bootstrap",
+        "AGENTS.md loading",
+        "project rules loading",
+        "behavioral evaluation"
+      ],
+      "references": [
+        "governance/cross-platform-agent-compatibility.md",
+        "governance/agent-execution-and-context.md",
+        "governance/agent-safety-and-tool-boundaries.md",
+        "evals/README.md",
+        "evals/agentic-capabilities.md"
+      ],
+      "profiles": [
+        "agent_host_compatibility",
+        "quality_assurance"
+      ]
     }
   },
   "approval_boundary": "Role and skill routing does not establish real credentials, independent human review, delegated authority, business approval, professional approval, security acceptance or release authorization."
