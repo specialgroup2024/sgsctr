@@ -159,3 +159,20 @@ html[dir="rtl"] .register-table th,html[dir="rtl"] .register-table td{text-align
 html[dir="rtl"] code,html[dir="rtl"] pre,html[dir="rtl"] input[type="email"],html[dir="rtl"] input[type="url"],html[dir="rtl"] input[type="tel"],html[dir="rtl"] input[type="number"],html[dir="rtl"] .technical-value{direction:ltr;text-align:left;unicode-bidi:plaintext}
 html[dir="rtl"] .catalogue-id-note,html[dir="rtl"] .inventory-demo-card dd{overflow-wrap:anywhere}
 @media(max-width:650px){html[dir="rtl"] .catalogue-layout,html[dir="rtl"] .pharmacy-entry-grid,html[dir="rtl"] .inventory-demo-card dl{grid-template-columns:minmax(0,1fr)}html[dir="rtl"] .register-table-wrap{max-width:100%;overflow-x:auto}html[dir="rtl"] .topbar{flex-wrap:wrap}html[dir="rtl"] .language-switcher{margin-inline-start:auto}}
+
+
+.receiving-draft-workspace{display:grid;gap:16px}
+.receiving-draft-form{display:grid;gap:16px;padding:16px;border:1px solid var(--line);border-radius:9px;background:#fcfdfc}
+.receiving-draft-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.receiving-draft-form label{display:grid;gap:6px;min-width:0;color:#65756b;font-size:10px;font-weight:700}
+.receiving-draft-form input,.receiving-draft-form select{width:100%;min-width:0;border:1px solid #dfe7e1;border-radius:6px;padding:9px 10px;background:#fff;color:#26352c;font:inherit;font-size:11px}
+.receiving-draft-form input:focus,.receiving-draft-form select:focus{outline:2px solid #9bc8ad;outline-offset:1px}
+.receiving-lines-heading,.receiving-draft-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.receiving-lines-heading h3,.receiving-draft-list-heading h3{margin:0;font-size:12px}
+.receiving-draft-line{display:grid;grid-template-columns:1.3fr 1fr .7fr 1.2fr 34px;gap:10px;align-items:end;padding:12px;border:1px solid #e7ede8;border-radius:8px;background:#fff}
+.receiving-remove-line{height:34px;border:1px solid #eadfdd;border-radius:6px;background:#fff7f6;color:#a34d45;font-size:18px;cursor:pointer}
+.receiving-remove-line:disabled{opacity:.35;cursor:not-allowed}
+.receiving-draft-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.receiving-draft-actions small{max-width:620px;color:#819087;font-size:9px;line-height:1.6}
+@media(max-width:850px){.receiving-draft-line{grid-template-columns:repeat(2,minmax(0,1fr))}.receiving-remove-line{justify-self:start;width:38px}}
+@media(max-width:560px){.receiving-draft-fields,.receiving-draft-line{grid-template-columns:1fr}.receiving-draft-actions{align-items:stretch;flex-direction:column}.receiving-draft-actions .primary-button{width:100%}}
