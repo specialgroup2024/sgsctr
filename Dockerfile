@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
-# Optional offline seed stage: scripts/nuget-offline.sh unpacks a pre-seeded
-# NuGet package cache into ./nuget-seed/ (created on any networked machine,
-# then copied to this VM). When the directory is absent, compose builds fall
-# back to a plain live restore.
+# Optional offline seed stage. The tracked nuget-seed/.gitkeep keeps the
+# directory in clean Git checkouts; a real offline seed replaces/adds a
+# non-empty manifest.txt and package cache files. Without that manifest,
+# restore falls back to the configured NuGet feed.
 FROM scratch AS seed
 COPY nuget-seed/ /
 
@@ -18,24 +18,26 @@ COPY Directory.Packages.props ./
 COPY nuget.config ./
 COPY scripts/nuget-offline.sh scripts/nuget-offline.sh
 COPY src/Sgsctr.Api/Sgsctr.Api.csproj src/Sgsctr.Api/
-# Offline-first strategy: this VM's Docker containers cannot resolve/route
-# external hostnames (getent/curl hang ~40s, apt fails too), but image
-# downloads via the daemon work. So the build consumes a pre-seeded NuGet
-# package cache (scripts/nuget-offline.sh on any networked machine) and only
-# falls back to live restore when the seed is absent.
+# Offline-first strategy: this VM's Docker containers may not resolve/route
+# external hostnames, while image downloads via the daemon still work. Consume
+# a pre-seeded NuGet package cache when supplied; otherwise use live restore.
 ARG NUGET_PACKAGES=/root/.nuget/packages
 ENV NUGET_PACKAGES=$NUGET_PACKAGES
 # BuildKit cache mount persists downloaded packages across builds, so once a
-# restore succeeds (from the seed or from the network) even a fully offline
-# rebuild works without touching api.nuget.org again.
+# restore succeeds (from the seed or from the network) later rebuilds can reuse
+# packages without contacting api.nuget.org again.
 RUN --mount=type=bind,from=seed,target=/seed,ro=true \
     --mount=type=cache,target=/root/.nuget/packages \
     set -eu; \
-    if [ -f /seed/manifest.txt ]; then \
-      cp -a /seed/. "$NUGET_PACKAGES"/; \
+    if [ -s /seed/manifest.txt ]; then \
+      for entry in /seed/*; do \
+        [ -e "$entry" ] || continue; \
+        case "$entry" in */.gitkeep|*/manifest.txt) continue ;; esac; \
+        cp -a "$entry" "$NUGET_PACKAGES"/; \
+      done; \
       echo "Restored NuGet packages from offline seed ($(wc -l < /seed/manifest.txt) nupkgs)."; \
     else \
-      echo "No ./nuget-seed/ found; falling back to live restore."; \
+      echo "No populated ./nuget-seed/ found; falling back to live restore."; \
       echo "If this fails with NU1301, run scripts/nuget-offline.sh on a networked machine,"; \
       echo "copy nuget-seed.tar.gz here and unpack it at the repo root before building."; \
     fi; \
