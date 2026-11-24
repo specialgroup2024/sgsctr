@@ -115,10 +115,7 @@ returns nothing inside a test container while image pulls still work — no
 retry/proxy setting fixes the build. Use the offline seed instead: on any
 networked machine run `./scripts/nuget-offline.sh`, copy the resulting
 `nuget-seed.tar.gz` to the repo root on the VM, unpack it (`tar -xzf
-nuget-seed.tar.gz`) and rebuild. The Dockerfile mounts `./nuget-seed/` into the
-restore step; when present it populates the package cache and `dotnet restore`
-completes with zero outbound traffic. Without the seed the build falls back to
-a live restore and prints these instructions on failure. As an alternative,
+nuget-seed.tar.gz`) and rebuild. A clean Git checkout includes `nuget-seed/.gitkeep` solely so Docker's mandatory `COPY nuget-seed/ /` source exists. This placeholder is not a package seed: the Dockerfile enables offline restore only when `nuget-seed/manifest.txt` is non-empty. After unpacking a generated `nuget-seed.tar.gz`, that manifest and the cached package files populate the build cache and restore completes without outbound traffic. If the manifest is absent or empty, the build falls back to live restore and prints these instructions on failure. As an alternative,
 repair daemon DNS first (`"dns": ["1.1.1.1", "8.8.8.8"]` in
 `/etc/docker/daemon.json`, then `sudo systemctl restart docker`).
 
