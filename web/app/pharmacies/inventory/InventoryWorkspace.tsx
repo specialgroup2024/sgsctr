@@ -85,8 +85,8 @@ export default function InventoryWorkspace() {
       <section className="inventory-kpi-grid">
         <article className="inventory-kpi"><span>{t("Active pharmacy locations" )}</span><strong>{loadingLocations ? "…" : locations.length}</strong><small>{t("From PostgreSQL-backed organization register")}</small></article>
         <article className="inventory-kpi"><span>{t("Catalogue records loaded" )}</span><strong>{productCount === null ? "Unavailable" : productCount}</strong><small>{t("Up to 100 generic identities · all remain Draft")}</small></article>
-        <article className="inventory-kpi"><span>{t("Stock on hand" )}</span><strong>{t("Not available" )}</strong><small>{t("No inventory ledger or balances exist")}</small></article>
-        <article className="inventory-kpi"><span>{t("Stock movements" )}</span><strong>{t("Not enabled" )}</strong><small>{t("No receiving, transfer or adjustment posting")}</small></article>
+        <article className="inventory-kpi"><span>{t("Stock on hand" )}</span><strong>{t("Not available" )}</strong><small>{t("No posted stock balance projection exists")}</small></article>
+        <article className="inventory-kpi"><span>{t("Stock movements" )}</span><strong>{t("Draft only" )}</strong><small>{t("No movement is posted to stock balances")}</small></article>
       </section>
       <div className="inventory-main-grid">
         <section className="inventory-panel"><div className="inventory-panel-heading"><div><p className="eyebrow">{t("SITE REGISTER" )}</p><h3>{t("Pharmacy locations" )}</h3></div><span className="inventory-count">{loadingLocations ? "Loading" : locations.length + " active"}</span></div>
@@ -97,13 +97,13 @@ export default function InventoryWorkspace() {
         <section className="inventory-panel"><div className="inventory-panel-heading"><div><p className="eyebrow">{t("INVENTORY CONTROL" )}</p><h3>{t("What is available now?" )}</h3></div></div>
           <ul className="inventory-check-list">
             <li><span className="check-pending">○</span><div><strong>{t("Generic product catalogue" )}</strong><small>{t("Implemented as draft-only reference data · Q38 family rules remain gated")}</small></div></li>
-            <li><span className="check-pending">○</span><div><strong>{t("Receiving and quality release" )}</strong><small>{t("Not implemented · SOP and role approvals required")}</small></div></li>
+            <li><span className="check-pending">○</span><div><strong>{t("Receiving draft intake" )}</strong><small>{t("Draft receipt intake only; quality release and stock posting remain gated.")}</small></div></li>
             <li><span className="check-pending">○</span><div><strong>{t("Batch, expiry and FEFO" )}</strong><small>{t("Not implemented · pharmacist/quality approval required")}</small></div></li>
-            <li><span className="check-pending">○</span><div><strong>{t("Transfers and stock ledger" )}</strong><small>{t("Not implemented · workflow and custody approvals required")}</small></div></li>
+            <li><span className="check-pending">○</span><div><strong>{t("Transfers and stock ledger" )}</strong><small>{t("Draft requests only; dispatch, receipt and stock effects remain gated.")}</small></div></li>
           </ul><Link className="inventory-text-link" href="/pharmacies/regulatory-intelligence">{t("Open Egypt regulatory intelligence ↗")}</Link>
         </section>
       </div>
-      <GateNotice title={t("No live stock or valuation data is available yet.")} detail="Generic product identities, units and draft conversion references are persisted. Product-family classification, regulatory identifiers and activation remain gated; no inventory quantities, suppliers, receipts, transfers or costing records are stored or simulated." />
+      <GateNotice title={t("No live stock or valuation data is available yet.")} detail="Generic product identities, units and draft conversion references are persisted. Draft supplier declarations, receipt drafts, transfer requests and stock-movement drafts may be recorded as non-operative evidence only. No stock balance, physical custody change, supplier qualification, product activation, dispensing, valuation or financial posting is created." />
     </>}
     {tab === "products" && <CatalogueManager />}
     {tab === "suppliers" && <SupplierRegister />}
