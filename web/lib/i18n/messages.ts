@@ -169,7 +169,7 @@ export const messages:Record<string,string>={
   "No receipt drafts yet": "لا توجد مسودات استلام حتى الآن",
   "Saved draft evidence will appear here. No stock balance or movement is created.": "ستظهر هنا مسودات الأدلة المحفوظة. لا يتم إنشاء رصيد أو حركة مخزون.",
   "Receiving draft intake": "إدخال مسودات الاستلام",
-  "Draft receipt intake only; quality release and stock posting remain gated.": "إدخال مسودات الاستلام فقط؛ يظل الإفراج عن الجودة وترحيل المخزون خاضعين للموافقات."
+  "Draft receipt intake only; quality release and stock posting remain gated.": "إدخال مسودات الاستلام فقط؛ يظل الإفراج عن الجودة وترحيل المخزون خاضعين للموافقات.",
   "No receipts recorded": "لا توجد إيصالات استلام مسجلة",
   "Warehouse-to-branch and direct branch-to-branch movement.": "النقل من المخزن إلى الفروع والنقل المباشر بين الفروع.",
   "New transfer": "تحويل جديد",
