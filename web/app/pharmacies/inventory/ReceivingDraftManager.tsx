@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useI18n } from "@/components/locale-provider";
 
 type Location = { id: string; code: string; name: string; sectorCode: string; isActive: boolean };
@@ -13,7 +13,7 @@ type DraftLineInput = { productId: string; unitId: string; quantity: string; sup
 const emptyLine = (): DraftLineInput => ({ productId: "", unitId: "", quantity: "1", supplierItemReference: "" });
 
 export default function ReceivingDraftManager() {
-  const { t } = useI18n();
+  const { t, formatDate } = useI18n();
   const [locations, setLocations] = useState<Location[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [units, setUnits] = useState<Unit[]>([]);
@@ -75,7 +75,7 @@ export default function ReceivingDraftManager() {
     setLines(current => current.map((line, i) => i === index ? { ...line, ...patch } : line));
   }
 
-  async function createDraft(event: React.FormEvent<HTMLFormElement>) {
+  async function createDraft(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
     setNotice("");
@@ -147,6 +147,6 @@ export default function ReceivingDraftManager() {
       {!loading && (!locations.length || !products.length || !units.length) && <p className="inventory-empty">{t("Add an active pharmacy location, a Draft catalogue product and a unit before creating a receipt draft.")}</p>}
     </form>
     <div className="receiving-draft-list-heading"><h3>{t("Recent receipt drafts")}</h3><button type="button" className="subtle-button" onClick={() => void load()} disabled={loading}>{t("Refresh")}</button></div>
-    {loading ? <p className="loading-state">{t("Loading receipt drafts…")}</p> : receipts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Created")}</th><th>{t("Location")}</th><th>{t("Supplier reference")}</th><th>{t("Lines")}</th><th>{t("Status")}</th></tr></thead><tbody>{receipts.map(receipt => <tr key={receipt.id}><td>{new Date(receipt.createdAtUtc).toLocaleString()}</td><td>{receipt.locationName}</td><td>{receipt.supplierReference}</td><td>{receipt.lines.length}</td><td><span className="inventory-status-chip">{t(receipt.status)}</span></td></tr>)}</tbody></table></div> : <div className="inventory-empty-state compact-empty"><h3>{t("No receipt drafts yet")}</h3><p>{t("Saved draft evidence will appear here. No stock balance or movement is created.")}</p></div>}
+    {loading ? <p className="loading-state">{t("Loading receipt drafts…")}</p> : receipts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Created")}</th><th>{t("Location")}</th><th>{t("Supplier reference")}</th><th>{t("Lines")}</th><th>{t("Status")}</th></tr></thead><tbody>{receipts.map(receipt => <tr key={receipt.id}><td>{formatDate(receipt.createdAtUtc)}</td><td>{receipt.locationName}</td><td>{receipt.supplierReference}</td><td>{receipt.lines.length}</td><td><span className="inventory-status-chip">{t(receipt.status)}</span></td></tr>)}</tbody></table></div> : <div className="inventory-empty-state compact-empty"><h3>{t("No receipt drafts yet")}</h3><p>{t("Saved draft evidence will appear here. No stock balance or movement is created.")}</p></div>}
   </section>;
 }
