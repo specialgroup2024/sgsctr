@@ -323,7 +323,7 @@
     {
       "path": ".ai/delivery/roadmap.md",
       "category": "delivery",
-      "git_blob_sha": "d241950f6c3247acb652de58721c1334c267cd0c",
+      "git_blob_sha": "64845d5d42f1439a996f156f4de3aa57126e59d0",
       "size_bytes": 6783,
       "content_state": "populated"
     },
@@ -449,7 +449,7 @@
     {
       "path": ".ai/governance/approval-register.md",
       "category": "governance",
-      "git_blob_sha": "dae2d905da636e7a7bcd29be70d8c61d6e6551d0",
+      "git_blob_sha": "09f767fe4c56bc3d8888ec046ed679b498281b40",
       "size_bytes": 13851,
       "content_state": "populated"
     },
