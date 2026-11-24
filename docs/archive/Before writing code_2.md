@@ -4,10 +4,10 @@ This file is retained as a navigation index so existing references remain valid.
 
 ## Preserved source parts
 
-- [Part 1](docs/archive/before-writing-code-2-part-01.md)
-- [Part 2](docs/archive/before-writing-code-2-part-02.md)
-- [Part 3](docs/archive/before-writing-code-2-part-03.md)
-- [Part 4](docs/archive/before-writing-code-2-part-04.md)
-- [Part 5](docs/archive/before-writing-code-2-part-05.md)
-- [Part 6](docs/archive/before-writing-code-2-part-06.md)
-- [Part 7](docs/archive/before-writing-code-2-part-07.md)
+- [Part 1](before-writing-code-2-part-01.md)
+- [Part 2](before-writing-code-2-part-02.md)
+- [Part 3](before-writing-code-2-part-03.md)
+- [Part 4](before-writing-code-2-part-04.md)
+- [Part 5](before-writing-code-2-part-05.md)
+- [Part 6](before-writing-code-2-part-06.md)
+- [Part 7](before-writing-code-2-part-07.md)

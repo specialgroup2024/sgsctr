@@ -904,15 +904,15 @@
     {
       "path": "docs/archive/Before writing code.md",
       "category": "docs",
-      "git_blob_sha": "11897d57610a115930f8fd46a2424f26362f5852",
-      "size_bytes": 629,
+      "git_blob_sha": "d90a35cc8ee995748d5ad3986df799bbafeb90f6",
+      "size_bytes": 577,
       "content_state": "populated"
     },
     {
       "path": "docs/archive/Before writing code_2.md",
       "category": "docs",
-      "git_blob_sha": "95dff8b0206e663771b05f310cc8522467ddcc54",
-      "size_bytes": 813,
+      "git_blob_sha": "19f3ab19f484b2045827420c4cdd9550bab9d70b",
+      "size_bytes": 722,
       "content_state": "populated"
     },
     {

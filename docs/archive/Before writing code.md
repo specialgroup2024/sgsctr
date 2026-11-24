@@ -4,7 +4,7 @@ This file is retained as a navigation index so existing references remain valid.
 
 ## Preserved source parts
 
-- [Part 1](docs/archive/before-writing-code-part-01.md)
-- [Part 2](docs/archive/before-writing-code-part-02.md)
-- [Part 3](docs/archive/before-writing-code-part-03.md)
-- [Part 4](docs/archive/before-writing-code-part-04.md)
+- [Part 1](before-writing-code-part-01.md)
+- [Part 2](before-writing-code-part-02.md)
+- [Part 3](before-writing-code-part-03.md)
+- [Part 4](before-writing-code-part-04.md)
