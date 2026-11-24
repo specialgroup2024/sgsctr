@@ -20,3 +20,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Offline NuGet seed (created by scripts/nuget-offline.sh, not committed)
+nuget-seed/
+nuget-seed.tar.gz

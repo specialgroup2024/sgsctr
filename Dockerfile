@@ -1,4 +1,11 @@
 # syntax=docker/dockerfile:1
+# Optional offline seed stage: scripts/nuget-offline.sh unpacks a pre-seeded
+# NuGet package cache into ./nuget-seed/ (created on any networked machine,
+# then copied to this VM). When the directory is absent, compose builds fall
+# back to a plain live restore.
+FROM scratch AS seed
+COPY nuget-seed/ /
+
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 # NuGet's enhanced retry policy helps with transient feed/network failures, but
@@ -9,38 +16,38 @@ ENV NUGET_ENHANCED_MAX_NETWORK_TRY_COUNT=4 \
 COPY global.json ./
 COPY Directory.Packages.props ./
 COPY nuget.config ./
+COPY scripts/nuget-offline.sh scripts/nuget-offline.sh
 COPY src/Sgsctr.Api/Sgsctr.Api.csproj src/Sgsctr.Api/
-# Hostile DNS workaround: if the container resolver returns IPv6 (AAAA) records
-# that cannot actually connect, NuGet reports NU1301 "Resource temporarily
-# unavailable" while plain curl still works. Force dual-stack feeds to IPv4.
-RUN printf 'Acquire::ForceIPv4 "true";\n' > /etc/apt/apt.conf.d/90forceipv4
-# Pre-flight check: fail in seconds with a clear message instead of letting
-# dotnet retry against a dead network for minutes.
-RUN --mount=type=cache,target=/root/.nuget/packages \
-    set -eux; \
-    if ! getent ahostsv4 api.nuget.org >/dev/null 2>&1; then \
-      echo "ERROR: DNS inside the build container cannot resolve api.nuget.org." >&2; \
-      echo "Fix Docker DNS: add \"dns\": [\"1.1.1.1\", \"8.8.8.8\"] to /etc/docker/daemon.json," >&2; \
-      echo "then run: sudo systemctl restart docker" >&2; \
-      exit 1; \
-    fi; \
-    if ! curl -fsS --ipv4 --connect-timeout 10 --max-time 30 -o /dev/null https://api.nuget.org/v3/index.json; then \
-      echo "ERROR: build container cannot reach https://api.nuget.org over IPv4." >&2; \
-      echo "Check host connectivity/proxy first: curl -fsSI https://api.nuget.org/v3/index.json" >&2; \
-      echo "If the host needs a proxy, export HTTPS_PROXY and rerun: sudo -E docker compose up --build -d" >&2; \
-      exit 1; \
-    fi
+# Offline-first strategy: this VM's Docker containers cannot resolve/route
+# external hostnames (getent/curl hang ~40s, apt fails too), but image
+# downloads via the daemon work. So the build consumes a pre-seeded NuGet
+# package cache (scripts/nuget-offline.sh on any networked machine) and only
+# falls back to live restore when the seed is absent.
+ARG NUGET_PACKAGES=/root/.nuget/packages
+ENV NUGET_PACKAGES=$NUGET_PACKAGES
 # BuildKit cache mount persists downloaded packages across builds, so once a
-# restore succeeds even a later offline rebuild works, and transient registry
-# outages do not force re-downloading every package on each "compose up --build".
-RUN --mount=type=cache,target=/root/.nuget/packages \
+# restore succeeds (from the seed or from the network) even a fully offline
+# rebuild works without touching api.nuget.org again.
+RUN --mount=type=bind,from=seed,target=/seed,ro=true \
+    --mount=type=cache,target=/root/.nuget/packages \
+    set -eu; \
+    if [ -f /seed/manifest.txt ]; then \
+      cp -a /seed/. "$NUGET_PACKAGES"/; \
+      echo "Restored NuGet packages from offline seed ($(wc -l < /seed/manifest.txt) nupkgs)."; \
+    else \
+      echo "No ./nuget-seed/ found; falling back to live restore."; \
+      echo "If this fails with NU1301, run scripts/nuget-offline.sh on a networked machine,"; \
+      echo "copy nuget-seed.tar.gz here and unpack it at the repo root before building."; \
+    fi; \
     dotnet restore src/Sgsctr.Api/Sgsctr.Api.csproj
 COPY src/Sgsctr.Api/ src/Sgsctr.Api/
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet publish src/Sgsctr.Api/Sgsctr.Api.csproj --configuration Release --output /app/publish --no-restore /p:UseAppHost=false
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+# No apt here: the aspnet 10 image already ships curl (used by the compose
+# healthcheck), and deb.debian.org is unreachable from containers on this
+# network (same DNS issue as NuGet) — installing it would only stall builds.
 ENV ASPNETCORE_HTTP_PORTS=8080
 RUN mkdir -p /var/lib/sgsctr/data-protection-keys && chown -R $APP_UID:$APP_UID /var/lib/sgsctr
 COPY --from=build /app/publish .

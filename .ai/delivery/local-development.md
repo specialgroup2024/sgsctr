@@ -107,10 +107,20 @@ The API Docker build also uses NuGet enhanced network retries (bounded so a
 dead feed fails fast instead of stalling the build for many minutes) and a
 BuildKit cache mount for `/root/.nuget/packages`, so packages downloaded by one
 successful restore are reused by later rebuilds even if the feed is briefly
-unreachable afterwards. A pre-flight step resolves `api.nuget.org` over IPv4 and
-fetches the service index with a 30-second cap, so an unreachable feed aborts in
-seconds with a printed fix hint instead of burning minutes inside `dotnet`.
-Retries cannot repair blocked DNS, blocked outbound HTTPS or a missing proxy.
+unreachable afterwards. Retries cannot repair blocked DNS, blocked outbound
+HTTPS or a missing proxy.
+
+When container DNS itself is broken — `getent hosts api.nuget.org` hangs or
+returns nothing inside a test container while image pulls still work — no
+retry/proxy setting fixes the build. Use the offline seed instead: on any
+networked machine run `./scripts/nuget-offline.sh`, copy the resulting
+`nuget-seed.tar.gz` to the repo root on the VM, unpack it (`tar -xzf
+nuget-seed.tar.gz`) and rebuild. The Dockerfile mounts `./nuget-seed/` into the
+restore step; when present it populates the package cache and `dotnet restore`
+completes with zero outbound traffic. Without the seed the build falls back to
+a live restore and prints these instructions on failure. As an alternative,
+repair daemon DNS first (`"dns": ["1.1.1.1", "8.8.8.8"]` in
+`/etc/docker/daemon.json`, then `sudo systemctl restart docker`).
 
 When host checks pass but the container still reports NU1301 "Resource
 temporarily unavailable", the usual culprits are broken container DNS or
