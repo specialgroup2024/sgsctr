@@ -30,8 +30,11 @@ RUN --mount=type=bind,from=seed,target=/seed,ro=true \
     --mount=type=cache,target=/root/.nuget/packages \
     set -eu; \
     if [ -s /seed/manifest.txt ]; then \
-      find /seed -mindepth 1 -maxdepth 1 ! -name .gitkeep ! -name manifest.txt \
-        -exec cp -a {} "$NUGET_PACKAGES"/ \\; ; \
+      for entry in /seed/*; do \
+        [ -e "$entry" ] || continue; \
+        case "$entry" in */.gitkeep|*/manifest.txt) continue ;; esac; \
+        cp -a "$entry" "$NUGET_PACKAGES"/; \
+      done; \
       echo "Restored NuGet packages from offline seed ($(wc -l < /seed/manifest.txt) nupkgs)."; \
     else \
       echo "No populated ./nuget-seed/ found; falling back to live restore."; \
