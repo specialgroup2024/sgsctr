@@ -41,6 +41,9 @@ try {
       if (root.lang !== locale || root.dir !== expectedDir) throw new Error(`Inventory root metadata mismatch for ${locale}: ${JSON.stringify(root)}`);
       if (root.documentWidth > root.width || root.bodyWidth > root.width) throw new Error(`Horizontal overflow at ${viewport.name} for ${locale}: ${JSON.stringify(root)}`);
       if (!root.sidebar || !root.main) throw new Error("Expected authenticated application shell was not rendered.");
+      await page.getByRole("button", { name: locale === "ar" ? "الاستلام" : "Receiving" }).click();
+      await page.getByRole("heading", { name: locale === "ar" ? "الاستلام والفحص" : "Receiving & inspection" }).waitFor();
+      await page.getByText(locale === "ar" ? "الإفراج عن الجودة لا يزال معطلاً." : "Quality release remains disabled.").waitFor();
       await page.getByRole("button", { name: locale === "ar" ? "الموردون" : "Suppliers" }).click();
       await page.getByRole("heading", { name: locale === "ar" ? "سجلات الموردين" : "Supplier records" }).waitFor();
       await page.getByText(locale === "ar" ? "دليل الموردين · مسودات وغير موثقة فقط" : "Supplier directory · draft and unverified only").waitFor();
