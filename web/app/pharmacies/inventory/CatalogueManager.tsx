@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "@/components/locale-provider";
 import type { FormEvent } from "react";
 import ProductGovernanceManager from "./ProductGovernanceManager";
@@ -47,12 +47,12 @@ export default function CatalogueManager() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (productQuery = "") => {
     setLoading(true);
     setError("");
     try {
       const [p, u, permissions] = await Promise.all([
-        fetch("/api/pharmacy/catalogue", { cache: "no-store" }),
+        fetch(productQuery.trim() ? `/api/pharmacy/catalogue?q=${encodeURIComponent(productQuery.trim())}` : "/api/pharmacy/catalogue", { cache: "no-store" }),
         fetch("/api/pharmacy/catalogue/units", { cache: "no-store" }),
         fetch("/api/pharmacy/catalogue/permissions", { cache: "no-store" })
       ]);
@@ -96,11 +96,6 @@ export default function CatalogueManager() {
     return () => { active = false; };
   }, [canManage]);
 
-  const filteredProducts = useMemo(() => {
-    const q = search.trim().toLocaleLowerCase();
-    return q ? products.filter(x => x.displayName.toLocaleLowerCase().includes(q)) : products;
-  }, [products, search]);
-
   function resetProduct() {
     setEditing(null); setDisplayName(""); setChangeReason("");
   }
@@ -123,6 +118,7 @@ export default function CatalogueManager() {
         })
       });
       const saved = await payload<Product>(response);
+      setSearch("");
       await load();
       setSelectedId(saved.id);
       resetProduct();
@@ -170,15 +166,15 @@ export default function CatalogueManager() {
     <section className="catalogue-layout">
       <div className="inventory-panel">
         <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PERSISTENT REFERENCE DATA")}</p><h3>{t("Product records")}</h3></div><span className="inventory-count">{products.length} drafts</span></div>
-        <div className="inventory-toolbar"><label htmlFor="catalogue-search">{t("Search")}</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search product names…" /></div>
+        <form className="inventory-toolbar" role="search" onSubmit={event => { event.preventDefault(); void load(search); }}><label htmlFor="catalogue-search">{t("Search")}</label><input id="catalogue-search" value={search} onChange={e => setSearch(e.target.value)} placeholder={t("Search product names…")} /><button type="submit" className="subtle-button" disabled={loading}>{t("Search")}</button></form>
         {loading ? <p className="loading-state">{t("Loading catalogue from PostgreSQL…")}</p> :
-          filteredProducts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Product name")}</th><th>{t("Status")}</th><th>{t("Action")}</th></tr></thead><tbody>
-            {filteredProducts.map(product => <tr key={product.id} className={selectedId === product.id ? "catalogue-selected-row" : ""}>
+          products.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Product name")}</th><th>{t("Status")}</th><th>{t("Action")}</th></tr></thead><tbody>
+            {products.map(product => <tr key={product.id} className={selectedId === product.id ? "catalogue-selected-row" : ""}>
               <td><strong>{product.displayName}</strong></td>
               <td><span className="inventory-state-tag">{t("DRAFT")}</span></td>
               <td><div className="table-actions"><button type="button" className="table-action" onClick={() => setSelectedId(product.id)}>{t("View")}</button>{canManage && <button type="button" className="table-action" onClick={() => editProduct(product)}>{t("Edit")}</button>}</div></td>
             </tr>)}
-          </tbody></table></div> : <p className="inventory-empty">{t("No catalogue records yet. Add a generic draft record to begin.")}</p>}
+          </tbody></table></div> : <p className="inventory-empty">{search.trim() ? t("No matching catalogue records.") : t("No catalogue records yet. Add a generic draft record to begin.")}</p>}
         <button type="button" className="subtle-button catalogue-new-button" onClick={resetProduct} disabled={!canManage}>{t("+ New draft product")}</button>
       </div>
 
