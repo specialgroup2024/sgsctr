@@ -8,6 +8,7 @@ import CatalogueManager from "./CatalogueManager";
 import ApprovalRegister from "./ApprovalRegister";
 import TestReadiness from "./TestReadiness";
 import SupplierRegister from "./SupplierRegister";
+import ReceivingDraftManager from "./ReceivingDraftManager";
 
 type Location = { id: string; code: string; name: string; sectorCode: string; locationType: string; isActive: boolean; recordStatus: string };
 type Organization = { locations: Location[] };
@@ -108,11 +109,7 @@ export default function InventoryWorkspace() {
     {tab === "suppliers" && <SupplierRegister />}
     {tab === "approvals" && <ApprovalRegister />}
     {tab === "readiness" && <TestReadiness />}
-    {tab === "receiving" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("INBOUND STOCK")}</p><h2>{t("Receiving & inspection" )}</h2><p>{t("Purchase-order matching, delivery checks and quality disposition." )}</p></div><button className="inventory-disabled-action" disabled>{t("New receipt" )}</button></div>
-      <div className="inventory-flow-grid"><article><b>01</b><strong>{t("Delivery evidence")}</strong><small>{t("Supplier, documents, item, quantity and unit")}</small></article><article><b>02</b><strong>{t("Batch inspection")}</strong><small>{t("Lot, manufacture/expiry, packaging and transport evidence")}</small></article><article><b>03</b><strong>{t("Disposition")}</strong><small>{t("Accepted, rejected or quarantined quantities")}</small></article><article><b>04</b><strong>{t("Authorized release")}</strong><small>{t("Only approved release can make stock available")}</small></article></div>
-      <div className="inventory-empty-state compact-empty"><h3>{t("No receipts recorded" )}</h3><p>{t("Receiving is not connected to a purchasing or inventory ledger API. No receipt can be created, accepted or released in this phase.")}</p></div>
-      <GateNotice title={t("Receiving is blocked pending approved SOPs.")} detail="Pharmacy/quality must approve receipt roles, evidence by product class, partial acceptance, quarantine, rejected deliveries and authorized release. No stock-changing endpoint exists." />
-    </section>}
+    {tab === "receiving" && <ReceivingDraftManager />}
     {tab === "transfers" && <section className="inventory-workspace-panel"><div className="inventory-section-heading"><div><p className="eyebrow">{t("LOCATION MOVEMENT")}</p><h2>{t("Stock transfers")}</h2><p>{t("Warehouse-to-branch and direct branch-to-branch movement." )}</p></div><button className="inventory-disabled-action" disabled>{t("New transfer" )}</button></div>
       <div className="inventory-transfer-route"><div><span>{t("FROM")}</span><strong>{t("Source location")}</strong><small>{t("Approved location register")}</small></div><span className="inventory-route-arrow">→</span><div><span>TO</span><strong>{t("Destination location")}</strong><small>{t("Direct branch route supported by design")}</small></div></div>
       <div className="inventory-flow-grid"><article><b>01</b><strong>{t("Request & approve")}</strong><small>{t("Roles and limits await sign-off")}</small></article><article><b>02</b><strong>{t("Pick & dispatch")}</strong><small>{t("Lot-level custody and dispatch event")}</small></article><article><b>03</b><strong>{t("In transit")}</strong><small>{t("Partial receipt and discrepancies remain visible")}</small></article><article><b>04</b><strong>{t("Receive & reconcile")}</strong><small>{t("Authorized close; no silent loss")}</small></article></div>
