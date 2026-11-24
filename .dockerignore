@@ -7,3 +7,4 @@
 .env
 .env.*
 !*.example
+nuget-seed.tar.gz
