@@ -25,7 +25,7 @@ public static class PharmacyReceiptDraftExtensions
                     x.Lines.Select(line => new LineResponse(line.Id, line.ProductId,
                         line.Product.DisplayName, line.UnitId, line.Unit.Code, line.Quantity,
                         line.SupplierItemReference)).ToList()))
-                .Take(100).ToListAsync(ct)));
+                .Take(100).ToListAsync(ct))).RequireAuthorization(manager);
 
         api.MapGet("/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct) =>
         {
@@ -39,7 +39,7 @@ public static class PharmacyReceiptDraftExtensions
                         line.SupplierItemReference)).ToList()))
                 .SingleOrDefaultAsync(ct);
             return row is null ? Results.NotFound() : Results.Ok(row);
-        });
+        }).RequireAuthorization(manager);
 
         api.MapPost("/", async (ReceiptInput input, ClaimsPrincipal user, AppDbContext db,
             HttpContext http, CancellationToken ct) =>
