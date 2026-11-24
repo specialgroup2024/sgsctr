@@ -107,8 +107,25 @@ The API Docker build also uses NuGet enhanced network retries (bounded so a
 dead feed fails fast instead of stalling the build for many minutes) and a
 BuildKit cache mount for `/root/.nuget/packages`, so packages downloaded by one
 successful restore are reused by later rebuilds even if the feed is briefly
-unreachable afterwards. Retries cannot repair blocked DNS, blocked outbound
-HTTPS or a missing proxy.
+unreachable afterwards. A pre-flight step resolves `api.nuget.org` over IPv4 and
+fetches the service index with a 30-second cap, so an unreachable feed aborts in
+seconds with a printed fix hint instead of burning minutes inside `dotnet`.
+Retries cannot repair blocked DNS, blocked outbound HTTPS or a missing proxy.
+
+When host checks pass but the container still reports NU1301 "Resource
+temporarily unavailable", the usual culprits are broken container DNS or
+IPv6-only resolution inside BuildKit (the resolver returns AAAA records that
+cannot connect). Test both directly:
+
+    docker run --rm mcr.microsoft.com/dotnet/sdk:10.0 sh -lc 'curl -fsS --ipv4 -m 20 -o /dev/null https://api.nuget.org/v3/index.json && echo IPV4_OK'
+    cat /etc/resolv.conf   # inside the same container, check nameserver reachability
+
+If the IPv4 test succeeds where the default failed, the issue is IPv6/DNS in
+Docker; pin daemon DNS (`"dns": ["1.1.1.1", "8.8.8.8"]` in
+`/etc/docker/daemon.json`, then `sudo systemctl restart docker`) or disable
+broken IPv6 egress. If it fails too, outbound HTTPS from Docker's bridge
+network is being blocked (firewall/iptables/nftables on the VM) even though the
+host itself works — repair that path before rebuilding.
 
 ### VM/LAN connectivity
 
