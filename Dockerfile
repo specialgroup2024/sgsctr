@@ -1,16 +1,21 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-# NuGet's enhanced retry policy helps with transient feed/network failures.
-# Docker's predefined proxy build args are intentionally not declared here:
-# BuildKit keeps them out of image history unless explicitly referenced.
-ENV NUGET_ENHANCED_MAX_NETWORK_TRY_COUNT=10 \
-    NUGET_ENHANCED_NETWORK_RETRY_DELAY_MILLISECONDS=1500
+# NuGet's enhanced retry policy helps with transient feed/network failures, but
+# keep the total bounded so an unreachable api.nuget.org (NU1301) fails fast and
+# clearly instead of stalling the whole compose build for many minutes.
+ENV NUGET_ENHANCED_MAX_NETWORK_TRY_COUNT=4 \
+    NUGET_ENHANCED_NETWORK_RETRY_DELAY_MILLISECONDS=2000
 COPY global.json ./
 COPY Directory.Packages.props ./
 COPY src/Sgsctr.Api/Sgsctr.Api.csproj src/Sgsctr.Api/
-RUN dotnet restore src/Sgsctr.Api/Sgsctr.Api.csproj
+# BuildKit cache mount persists downloaded packages across builds, so once a
+# restore succeeds even a later offline rebuild works, and transient registry
+# outages do not force re-downloading every package on each "compose up --build".
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet restore src/Sgsctr.Api/Sgsctr.Api.csproj
 COPY src/Sgsctr.Api/ src/Sgsctr.Api/
-RUN dotnet publish src/Sgsctr.Api/Sgsctr.Api.csproj --configuration Release --output /app/publish --no-restore /p:UseAppHost=false
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet publish src/Sgsctr.Api/Sgsctr.Api.csproj --configuration Release --output /app/publish --no-restore /p:UseAppHost=false
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*

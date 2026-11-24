@@ -103,8 +103,11 @@ weaken TLS as a default workaround. After correcting the network path, retry:
     docker compose build --no-cache --progress plain api
     docker compose up -d
 
-The API Docker build also uses NuGet enhanced network retries to tolerate
-transient feed failures. Retries cannot repair blocked DNS, blocked outbound
+The API Docker build also uses NuGet enhanced network retries (bounded so a
+dead feed fails fast instead of stalling the build for many minutes) and a
+BuildKit cache mount for `/root/.nuget/packages`, so packages downloaded by one
+successful restore are reused by later rebuilds even if the feed is briefly
+unreachable afterwards. Retries cannot repair blocked DNS, blocked outbound
 HTTPS or a missing proxy.
 
 ### VM/LAN connectivity
