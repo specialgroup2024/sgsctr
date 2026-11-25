@@ -45,3 +45,15 @@ Identity, audit infrastructure, notifications and deployment tooling may be shar
 Provisional direction: one PostgreSQL database for the one owner-reported company, with strict sector/module boundaries, separate sector permissions and audit trails. Do not create a database per sector, warehouse or branch on current evidence. Reassess if additional legal entities are documented.
 
 See [ADR-0001](../decisions/ADR-0001-business-boundaries.md), [legal-entity-register.md](legal-entity-register.md) and [accounting-rules.md](accounting-rules.md).
+
+## Pharmacy Group operational module boundaries
+
+Owner-selected direction on 2026-11-25: **Option B — four independent operational modules**:
+- Regular Medications.
+- Chemotherapy Drugs.
+- Medical Supplies.
+- Cosmetics.
+
+Each module has independent operational ownership and module-level management financial records/reporting. Group oversight and consolidated management reporting are required, while preserving module-level transaction attribution and controls. This does not establish separate legal entities, statutory books, databases or physical sites. The exact shared-service boundary, supplier master, physical warehouse/stock ownership, inter-module transfers and module-level accounting design remain open. No pharmacy workflow, costing, reimbursement, discount, clinical, quality or regulatory rule is approved by this selection.
+
+See [Pharmacy Group four-module boundary matrix](pharmacy-four-module-boundary-matrix.md) and approval PHARM-OWN-002 in the central register.

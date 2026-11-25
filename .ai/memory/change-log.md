@@ -35,3 +35,12 @@ Append-only record of material repository/governance state changes. Detailed evi
 - Generated context manifest/index updated to 132 source Markdown documents and zero empty placeholders at the branch head recorded in PR #82.
 - This is an open documentation PR, not a merge or technical acceptance. Full-tree checks remain unrun.
 - Business, professional, security/privacy and production-release approvals unchanged.
+
+## 2026-11-25 — Pharmacy Group Option B boundary matrix
+
+- Owner decision: PHARM-OWN-002 selects four independent operational modules (Regular Medications, Chemotherapy Drugs, Medical Supplies and Cosmetics), with module-level management financial records/reporting and group-level oversight/consolidation.
+- Evidence snapshot: master commit `94236489089407e598cd68ead41ee7454c47c3e8`; source inspection found generic catalogue/family proposal, supplier and receipt drafts, stock movement ledger and stock-transfer request APIs. Movement/transfer approval remains draft-only and no posting/dispatch/receipt effect was evidenced in inspected routes.
+- Reconciliation: current-state addendum corrects the earlier 2026-11-16 snapshot where it said no ledger/transfer artifacts existed on master. Five provisional product-family labels do not equal the four selected modules.
+- Canonical matrix: [Pharmacy Group four-module boundary matrix](../domain/pharmacy-four-module-boundary-matrix.md); per-task deliberation: [role selection](../roles/phase0-pharmacy-four-module-boundary-matrix.md).
+- Open decisions Q58-Q65 record shared supplier, site/module ownership, inter-module transfers, taxonomy, management accounting, costing and permissions.
+- No application code, database schema, migrations, operational rules, stock posting, financial calculations or production configuration were changed. Local scripts, builds, tests and runtime checks were not run; repository evidence only.
