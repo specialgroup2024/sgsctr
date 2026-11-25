@@ -94,14 +94,14 @@ class AiContextIntegrityTests(unittest.TestCase):
 
     def test_line_limit_excludes_read_only_legacy_corpus_and_checks_project_docs(self):
         legacy = self.root / "futher_md" / "legacy-reference.md"
-        legacy.write_text("# Legacy\\n" + "source evidence\\n" * 220, encoding="utf-8")
+        legacy.write_text("# Legacy\n" + "source evidence\n" * 220, encoding="utf-8")
         maintained = self.root / ".ai" / "too-long.md"
-        maintained.write_text("# Maintained\\n" + "project documentation\\n" * 199, encoding="utf-8")
+        maintained.write_text("# Maintained\n" + "project documentation\n" * 199, encoding="utf-8")
         result = self.command("check_markdown_line_limit.py", str(self.root), expected=1)
         self.assertIn(".ai/too-long.md", result.stdout)
         self.assertNotIn("futher_md", result.stdout)
 
-        maintained.write_text("# Maintained\\n" + "project documentation\\n" * 197, encoding="utf-8")
+        maintained.write_text("# Maintained\n" + "project documentation\n" * 197, encoding="utf-8")
         result = self.command("check_markdown_line_limit.py", str(self.root))
         self.assertIn("line-count check passed", result.stdout)
 
