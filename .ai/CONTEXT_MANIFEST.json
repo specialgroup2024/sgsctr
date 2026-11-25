@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 149,
+  "tracked_markdown_count": 159,
   "empty_markdown_count": 0,
   "entries": [
     {
@@ -904,8 +904,8 @@
     {
       "path": "AGENTS.md",
       "category": "repository-entry",
-      "git_blob_sha": "1f2299baa113ad5738ec3fb9793b45ee08060af0",
-      "size_bytes": 2653,
+      "git_blob_sha": "93ca13c8b30ae4993804bd0a64344f5882bd2732",
+      "size_bytes": 2858,
       "content_state": "populated"
     },
     {
@@ -1011,6 +1011,76 @@
       "category": "docs",
       "git_blob_sha": "2259200e7ffbc8162034205a77e7ae0ebad52179",
       "size_bytes": 4458,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/AGENTS.md",
+      "category": "futher_md",
+      "git_blob_sha": "14ac9410a3ab1f7abdb86025e1e10b4adaddb246",
+      "size_bytes": 15337,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_ai_agent_build_spec.md",
+      "category": "futher_md",
+      "git_blob_sha": "01bcc24766924186b6f4e8f364be0ef4571cbf73",
+      "size_bytes": 35110,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_app_modules.md",
+      "category": "futher_md",
+      "git_blob_sha": "b58f18d3b3e5c2a18a51f1a7bc56bc59f5464ef3",
+      "size_bytes": 24733,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_app_ui.md",
+      "category": "futher_md",
+      "git_blob_sha": "4691622ea3d97ed51c3bf6980e146c3ff077b938",
+      "size_bytes": 14277,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_app_workflow.md",
+      "category": "futher_md",
+      "git_blob_sha": "960b4f77461be29f018e619e9e9aa061ce6e92e9",
+      "size_bytes": 17445,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_architecture.md",
+      "category": "futher_md",
+      "git_blob_sha": "1c1130bc70fe49ae4c69eb2d5097d5f865e877b5",
+      "size_bytes": 25217,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_cost_control.md",
+      "category": "futher_md",
+      "git_blob_sha": "f3c88afc07374aa1869331c12a100b6c44ccd1ad",
+      "size_bytes": 42732,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_how_app_working.md",
+      "category": "futher_md",
+      "git_blob_sha": "8dca7d36a15be511d76252769a10965d65c64460",
+      "size_bytes": 25311,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future_25_static_analysis.md",
+      "category": "futher_md",
+      "git_blob_sha": "01a220abfc66d2c2bcd64c658a79fbe5d6f7dd0c",
+      "size_bytes": 16895,
+      "content_state": "populated"
+    },
+    {
+      "path": "futher_md/future25_schema_report.md",
+      "category": "futher_md",
+      "git_blob_sha": "108db2645a20f579b70f7311c79326a266c7d3ae",
+      "size_bytes": 19790,
       "content_state": "populated"
     },
     {
