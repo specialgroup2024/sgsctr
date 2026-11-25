@@ -8,6 +8,8 @@
 
 ## 1. Selected business model
 
+The exhaustive recovered-schema and workflow baseline is maintained in [Future 25 legacy reconciliation](../delivery/future25-legacy-pharmacy-reconciliation.md), with separate CSV registers for all 321 table definitions and 475 foreign-key clauses. The registers are evidence inventories, not approved target schema or implementation rules.
+
 The Pharmacy Group consists of exactly four independently operated modules:
 
 1. **Regular Medications**
