@@ -21,6 +21,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # Linux-host workaround: build against the host network so apt-get can
+      # resolve archive.ubuntu.com / security.ubuntu.com during the image build.
+      network: host
       # Optional host proxy settings are passed only to the image build.
       # Empty/unset host variables do not add proxy configuration.
       args:
