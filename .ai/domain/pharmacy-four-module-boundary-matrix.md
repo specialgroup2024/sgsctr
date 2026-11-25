@@ -89,3 +89,48 @@ These questions are recorded in `.ai/memory/open-questions.md` as Q58-Q65. Exist
 - Location-transfer proposal: `.ai/domain/pharmacy-stock-transfer-workflow.md` and `.ai/quality/pharmacy-stock-transfer-acceptance.md`.
 - Source evidence: `src/Sgsctr.Api/Data/CatalogueProduct.cs`, `CatalogueProductFamilyAssignment.cs`, `PharmacyReceiptDraft.cs`, `PharmacySupplier.cs`, `StockMovement.cs`, `StockTransferRequest.cs`; API extensions under `src/Sgsctr.Api/PharmacyCatalogue`, `PharmacyInventory` and `PharmacySuppliers`; migrations dated 2026-11-14 through 2026-11-17; `web/app/pharmacies/inventory/InventoryWorkspace.tsx`.
 - Review limitation: GitHub source/tree inspection only. No local build, automated tests, deployed database inspection, live VM test or professional review was performed for this matrix.
+
+
+## 8. Legacy Future 25 source baseline — owner-designated 2026-11-25
+
+The owner designated `futher_md/` as the primary legacy business/functional evidence corpus for reconstructing the former pharmacy application in SGSCTR. It is read-only product evidence, not SGSCTR policy or an approval source. See [AI source authority](../governance/ai-agent-source-authority.md).
+
+### 8.1 Corpus inventory and evidence baseline
+
+The folder contains 13 artifacts: nested `AGENTS.md`; `future25_schema.sql`; `future25_schema_report.md`; `future_25_ai_agent_build_spec.md`; `future_25_app_modules.md`; `future_25_app_ui.md`; `future_25_app_workflow.md`; `future_25_architecture.md`; `future_25_cost_control.md`; `future_25_how_app_working.md`; `future_25_rea_evidence.json`; and `future_25_static_analysis.md`.
+
+Observed repository evidence on `master` at commit `12e383dd0279220bf9353d301485f06612f8b23d`:
+- Recovered SQL Anywhere 9 DDL: 321 CREATE TABLE, 475 ALTER TABLE (mostly foreign keys), 36 CREATE INDEX, 1 CREATE VIEW, 475 foreign-key clauses and 297 primary-key clauses. The schema report says it was recovered from a translated transaction log, not an authenticated live catalog export.
+- The schema report groups tables into inventory/stores (87), application/support (83), accounting/finance (45), payroll/HR (27), setup/security (26), system/PowerBuilder/MobiLink support (21), sales/customers (14), purchasing (12) and fixed assets (6).
+- The analysis identifies a PowerBuilder 9 desktop application, compiled PBD libraries, ODBC and SQL Anywhere; MobiLink synchronization is inferred from metadata. No executable was launched and PBD business logic was not decompiled.
+- The module/UI/workflow/cost-control documents are static artifact analysis. Their own [O]/[I]/[U] confidence labels and stated limitations must be retained.
+
+### 8.2 Required reconciliation coverage
+
+| Legacy evidence | SGSCTR reconciliation target | Initial handling |
+|---|---|---|
+| Items, groups, units, conversions, barcodes, batches/expiry and stock balances | Four module-owned catalogues and stock/traceability foundations | Map to Regular Medications, Chemotherapy Drugs, Medical Supplies and Cosmetics; product fields/classification remain subject to Q38 and professional review. |
+| Stores, company stores, receipts, issues, returns, transfers, counts and adjustments | Module-owned stock at Mokattam, Student Hospital, Qasr El-Aini and Manial | Preserve location and movement concepts; do not infer module/site assignments or activate posting. |
+| Vendor, requisition, RFQ, quotation, purchase order and receiving | Module procurement and supplier capability | Map all entities and lifecycle states; supplier sharing, qualification, purchasing authority and receipt rules remain approval-gated. |
+| Sales, customer, price, promotion, discount and transaction history | Applicable pharmacy dispensing/sales and pricing | Map concepts; distinguish retail sales, payer coverage, patient share/exemption and employee discount. No patient-facing or financial behavior without approval. |
+| Claims, payer and follow-up structures | Provider agreements, claim submission, adjudication, remittance and receivables | Investigate source tables/workflows; legacy names alone do not prove current contract terms or approved calculation rules. |
+| Chart of accounts, vouchers, GL distributions, cost centers, budgets and rollups | Module-level management financial records and group consolidation | Map as accounting requirements; statutory ledger, posting engine, costing pools, tax and valuation require accountant/legal approval. |
+| Arabic/English windows, menus, DataWindows, reports, print layouts and exports | SGSCTR web UI, navigation, localization, reports and export acceptance criteria | Translate user tasks and report outputs, not PowerBuilder screen implementation or protected assets. |
+| Users, permissions, workstation/session, audit, backup, devices and synchronization | Platform identity, authorization, audit, operations, integration and recovery | Reconstruct only where applicable; current SGSCTR security/deployment decisions govern. |
+| Payroll/HR, fixed assets, job costing, general services and other non-pharmacy families | Shared platform or separate sector capability assessment | Inventory and map every capability; do not silently add these to the Pharmacy Sector or assume they are in the current delivery scope. Resolve Q66. |
+
+### 8.3 Non-negotiable reconciliation rules
+
+1. Inventory all 321 legacy table definitions and relationships; classify each table as pharmacy-module-owned, shared platform/reference, cross-cutting accounting, non-pharmacy candidate, technical legacy support, duplicate/obsolete, or unresolved. Record evidence and proposed SGSCTR destination for every table.
+2. Map legacy entities/columns/keys/foreign keys/indexes to existing SGSCTR entities, EF configurations, migrations, API routes, UI pages, reports and tests. Mark each as existing/partial/missing/conflicting/not-applicable/unknown. Never equate a legacy table with a required new table without domain analysis.
+3. Reconstruct complete workflows from UI, module catalog, workflow, architecture, static-analysis and schema evidence. Include validations, state transitions, permissions, transaction boundaries, reversals, reports and exception paths where evidence supports them.
+4. Maintain the four Option B operational boundaries. A legacy company/store/module model must not collapse the four modules or establish legal/statutory structure.
+5. Use the active SGSCTR stack and modular-monolith architecture. Do not adopt legacy SQL Anywhere, PowerBuilder, WPF, SQLite demo, MobiLink or the legacy AI build-spec stack recommendations as implementation decisions.
+6. Keep all inferred/unknown legacy behavior explicitly unresolved. Cost-control examples, average-cost algorithms, posting mappings, budget enforcement and return/transfer treatment are evidence to analyze, not approval to implement.
+7. Build a traceable legacy-to-SGSCTR coverage matrix before declaring scope complete. Then implement in small approved increments with tests; no wholesale schema import or destructive migration.
+
+### 8.4 Current completion status and next gate
+
+- **Completed in this record:** folder discovery; all 13 artifact names inventoried; SQL DDL totals and schema functional-area totals inspected; architecture, module, UI, workflow, cost-control, static-analysis and AI build-spec headings/contents sampled; source confidence and limitations identified.
+- **Not completed:** exhaustive per-table/column/FK mapping; full per-screen/report inventory; end-to-end workflow traceability; comparison against every current SGSCTR entity, migration, API, UI route and test; validation of source claims against a live legacy database/runtime.
+- **Next safe step:** produce the detailed legacy-to-SGSCTR capability and schema boundary matrix, beginning with pharmacy-critical master data, purchasing/receiving, inventory/stock, transfers, dispensing/sales, claims, costing/accounting and reports. Do not begin broad business implementation until this reconciliation and the relevant approval gates are complete.
