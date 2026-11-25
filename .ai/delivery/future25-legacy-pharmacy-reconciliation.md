@@ -8,17 +8,22 @@
 
 ## 1. Executive result
 
-The actual `futher_md/` directory contains **12 files**. Its recovered SQL Anywhere DDL contains **321 CREATE TABLE definitions, 475 foreign-key clauses, 36 indexes, one view and 833 extracted DDL statements**. The schema report classifies all 321 tables across nine functional areas.
+The actual `futher_md/` directory contains **12 files**. Its recovered SQL Anywhere DDL contains **321 CREATE TABLE definitions, 5,068 columns, 475 foreign-key clauses, 36 indexes, one view and 833 extracted DDL statements**. The schema report classifies all 321 tables across nine functional areas.
 
 The DDL was recovered from a translated transaction log, not an authenticated live catalog export: the database password was unavailable. The legacy app is a PowerBuilder 9 desktop ERP/POS application using compiled PBD libraries, Windows ODBC/DSN configuration and SQL Anywhere 9. MobiLink synchronization is inferred from metadata. No executable was launched, no original data file was modified, and PBD business logic was not decompiled.
 
 ## 2. Complete machine-readable inventories
 
-The complete first-pass inventories are stored separately from this short decision/evidence record:
+The complete inventories are stored separately from this short decision/evidence record:
 
 - [321-table inventory](future25-legacy-table-inventory.csv) — source name, reported column count, functional area, initial disposition and SGSCTR handling.
+- [5,068-column inventory](future25-legacy-column-inventory.csv) — source SQL type, nullability, default expression, PK membership, FK participation and mapping status.
 - [475 foreign-key inventory](future25-legacy-foreign-key-inventory.csv) — child/parent tables and columns, preserved from recovered DDL.
+- [36-index inventory](future25-legacy-index-inventory.csv) — recovered definitions, including one malformed/placeholder index entry requiring source verification.
+- [View inventory](future25-legacy-view-inventory.csv) — one name-only view stub; its SELECT definition is not present in the recovered DDL.
 - [Workflow reconciliation matrix](future25-legacy-workflow-mapping.csv) — 17 major workflow/capability families mapped to legacy evidence and current SGSCTR evidence.
+
+The 321 tables contain 5,068 inventoried columns. The recovered DDL has 297 tables with primary-key clauses; 24 tables have no recovered primary-key clause. Six column declarations have no explicit NULL/NOT NULL marker, and 96 include DEFAULT expressions. No CREATE TRIGGER, CREATE PROCEDURE or CREATE FUNCTION statements were recovered. These counts describe the extracted artifact, not the full behavior of the legacy program.
 
 The table dispositions are deliberately preliminary heuristics based on the recovered table names and source report categories. They are not semantic equivalence claims and do not authorize migration.
 
