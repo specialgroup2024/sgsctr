@@ -589,15 +589,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "caba692e6d438669c8a6326a45a928c434891fa5",
-      "size_bytes": 8716,
+      "git_blob_sha": "df7e8d70dac380b7224f07a4e897a2eabf265438",
+      "size_bytes": 8752,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "da66bbfbadd3edbbeeed9029625f9e462932cf2a",
-      "size_bytes": 33505,
+      "git_blob_sha": "e16071f1eee7fcfffca1bce43847f8dfbec4039f",
+      "size_bytes": 33578,
       "content_state": "populated"
     },
     {
@@ -904,8 +904,8 @@
     {
       "path": "AGENTS.md",
       "category": "repository-entry",
-      "git_blob_sha": "93ca13c8b30ae4993804bd0a64344f5882bd2732",
-      "size_bytes": 2858,
+      "git_blob_sha": "dbad6ff783e965bff268a3af0bb8c44658259b57",
+      "size_bytes": 2994,
       "content_state": "populated"
     },
     {
