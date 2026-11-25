@@ -44,3 +44,12 @@ Append-only record of material repository/governance state changes. Detailed evi
 - Canonical matrix: [Pharmacy Group four-module boundary matrix](../domain/pharmacy-four-module-boundary-matrix.md); per-task deliberation: [role selection](../roles/phase0-pharmacy-four-module-boundary-matrix.md).
 - Open decisions Q58-Q65 record shared supplier, site/module ownership, inter-module transfers, taxonomy, management accounting, costing and permissions.
 - No application code, database schema, migrations, operational rules, stock posting, financial calculations or production configuration were changed. Local scripts, builds, tests and runtime checks were not run; repository evidence only.
+
+## 2026-11-25 — Future 25 full legacy-to-Pharmacy reconciliation baseline
+
+- Source: owner-designated read-only `futher_md/` corpus (12 files); recovered SQL Anywhere DDL contains 321 tables, 475 FK clauses, 36 indexes and one view. The DDL is transaction-log recovery, not an authenticated live catalog export.
+- Added complete table-name/disposition register, complete FK register and 17-family workflow/capability mapping under `.ai/delivery/future25-legacy-*`; main reconciliation record links these inventories and preserves [O]/[I]/[U] confidence boundaries.
+- Compared source evidence with current `AppDbContext`, Pharmacy API, UI and tests. Confirmed partial catalogue, supplier-draft, receipt-draft, stock movement/transfer and regulatory foundations; full purchasing/PO, dispensing/claims, GL/costing, payroll and fixed-assets workflows are not evidenced as implemented.
+- Updated Pharmacy boundary matrix, Q66 status, AI context entrypoint and context manifest. Option B remains the selected four-module model; non-Pharmacy legacy families are not automatically in scope.
+- No application code, schema, migration, operational rule, financial posting, stock effect or production configuration changed. No local scripts, build, tests, database or VM checks were run; GitHub source inspection only.
+- Branch: `feat/future25-full-pharmacy-reconciliation-2026-11-25`. PR pending. PR #105 governance/source-authority change is already merged to master.
