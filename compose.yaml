@@ -59,6 +59,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
+      network: host
     container_name: sgsctr-web
     restart: unless-stopped
     environment:
