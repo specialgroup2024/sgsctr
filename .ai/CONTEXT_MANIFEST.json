@@ -148,8 +148,8 @@
     {
       "path": ".ai/delivery/future25-legacy-pharmacy-reconciliation.md",
       "category": "delivery",
-      "git_blob_sha": "87b2572bda304f3f04aa392cfa8de668d0067ff4",
-      "size_bytes": 9526,
+      "git_blob_sha": "09a786ba2b94e19e8c2ccf60d41b4f67850e84be",
+      "size_bytes": 10810,
       "content_state": "populated"
     },
     {
@@ -589,8 +589,8 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "ffc7e2ac73940a3e67df07fb461196b06420c4c1",
-      "size_bytes": 7953,
+      "git_blob_sha": "55f588bb57602e4bf1481bdb88720fef24783036",
+      "size_bytes": 8020,
       "content_state": "populated"
     },
     {
@@ -687,8 +687,8 @@
     {
       "path": ".ai/README.md",
       "category": "ai-entry",
-      "git_blob_sha": "0df8b4d5de5920fc39bec5dd4f06b5cedd2a9422",
-      "size_bytes": 5381,
+      "git_blob_sha": "196a4e2b0318a65dd3ad00a3154b7dc091f918e6",
+      "size_bytes": 5441,
       "content_state": "populated"
     },
     {
