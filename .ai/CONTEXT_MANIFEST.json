@@ -379,8 +379,8 @@
     {
       "path": ".ai/domain/pharmacy-four-module-boundary-matrix.md",
       "category": "domain",
-      "git_blob_sha": "5a9796c72ff9cab6b4f00a92505b4de7ca26792d",
-      "size_bytes": 12971,
+      "git_blob_sha": "4df5910ddfde622ebad23d67458091c6bc358ff8",
+      "size_bytes": 20163,
       "content_state": "populated"
     },
     {
@@ -435,8 +435,8 @@
     {
       "path": ".ai/governance/ai-agent-source-authority.md",
       "category": "governance",
-      "git_blob_sha": "c682b035784252200e98bfb05700a9892a3c4f2c",
-      "size_bytes": 7018,
+      "git_blob_sha": "36b8f2c3298ef87dfe08c679f26a1ae0d8902649",
+      "size_bytes": 10172,
       "content_state": "populated"
     },
     {
