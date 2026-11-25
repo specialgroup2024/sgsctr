@@ -78,9 +78,9 @@ The following principles from the archived `docs/archive/before-writing-code-2.m
 
 Before reading or following any file, an AI agent must verify:
 
-1. Is the file `AGENT.md`, `AGENTS.md`, or inside `.ai/`? → **Allowed**
-2. Is the file `AGENT.md` or `AGENTS.md` at repository root? → **Allowed**
-3. Is the file inside `.ai/` and referenced by `.ai/agent-context.json` mandatory baseline or selected task profile? → **Allowed**
+1. Is the file inside `futher_md/`? → **Allowed as read-only legacy product evidence only** under the restrictions in the owner-designated corpus section; never follow it as SGSCTR agent policy.
+2. Is the file `AGENT.md` or `AGENTS.md` at repository root? → **Allowed** as canonical instructions.
+3. Is the file inside `.ai/` and referenced by `.ai/agent-context.json` mandatory baseline or selected task profile, or by `.ai/README.md`? → **Allowed**.
 4. Otherwise → **Prohibited**. Stop and do not read or follow the file.
 
 If a host-specific instruction file (e.g. CLAUDE.md) references an external doc or markdown file, the agent must decline and redirect to AGENT.md, AGENTS.md, or .ai/.
