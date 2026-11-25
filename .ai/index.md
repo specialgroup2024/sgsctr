@@ -69,8 +69,8 @@
 - [`.ai/delivery/testing-strategy.md`](../.ai/delivery/testing-strategy.md)
 
 ## docs
-- [`docs/archive/Before writing code_2.md`](../docs/archive/Before writing code_2.md)
 - [`docs/archive/Before writing code.md`](../docs/archive/Before writing code.md)
+- [`docs/archive/Before writing code_2.md`](../docs/archive/Before writing code_2.md)
 - [`docs/archive/before-writing-code-2-part-01.md`](../docs/archive/before-writing-code-2-part-01.md)
 - [`docs/archive/before-writing-code-2-part-02.md`](../docs/archive/before-writing-code-2-part-02.md)
 - [`docs/archive/before-writing-code-2-part-03.md`](../docs/archive/before-writing-code-2-part-03.md)
@@ -95,11 +95,12 @@
 - [`.ai/domain/pharmacy-workflows.md`](../.ai/domain/pharmacy-workflows.md)
 
 ## evals
-- [`.ai/evals/agentic-capabilities.md`](../.ai/evals/agentic-capabilities.md)
 - [`.ai/evals/README.md`](../.ai/evals/README.md)
+- [`.ai/evals/agentic-capabilities.md`](../.ai/evals/agentic-capabilities.md)
 
 ## futher_md
 - [`futher_md/AGENTS.md`](../futher_md/AGENTS.md)
+- [`futher_md/future25_schema_report.md`](../futher_md/future25_schema_report.md)
 - [`futher_md/future_25_ai_agent_build_spec.md`](../futher_md/future_25_ai_agent_build_spec.md)
 - [`futher_md/future_25_app_modules.md`](../futher_md/future_25_app_modules.md)
 - [`futher_md/future_25_app_ui.md`](../futher_md/future_25_app_ui.md)
@@ -108,7 +109,6 @@
 - [`futher_md/future_25_cost_control.md`](../futher_md/future_25_cost_control.md)
 - [`futher_md/future_25_how_app_working.md`](../futher_md/future_25_how_app_working.md)
 - [`futher_md/future_25_static_analysis.md`](../futher_md/future_25_static_analysis.md)
-- [`futher_md/future25_schema_report.md`](../futher_md/future25_schema_report.md)
 
 ## governance
 - [`.ai/governance/adr-conventions.md`](../.ai/governance/adr-conventions.md)
