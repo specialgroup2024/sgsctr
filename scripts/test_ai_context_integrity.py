@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = ROOT / "scripts" / "ai_context_index.py"
 LINK_CHECKER = ROOT / "scripts" / "check_markdown_links.py"
+LINE_LIMIT_CHECKER = ROOT / "scripts" / "check_markdown_line_limit.py"
 
 def run(command, cwd, expected=0):
     result = subprocess.run(command, cwd=cwd, text=True, capture_output=True)
@@ -25,10 +26,11 @@ class AiContextIntegrityTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="sgsctr-ai-context-")
         self.root = Path(self.temp.name)
-        for directory in ("scripts", ".ai", "assets"):
+        for directory in ("scripts", ".ai", "assets", "futher_md"):
             (self.root / directory).mkdir()
         shutil.copy2(GENERATOR, self.root / "scripts" / GENERATOR.name)
         shutil.copy2(LINK_CHECKER, self.root / "scripts" / LINK_CHECKER.name)
+        shutil.copy2(LINE_LIMIT_CHECKER, self.root / "scripts" / LINE_LIMIT_CHECKER.name)
         (self.root / "AGENT.md").write_text("# Bootstrap\n\n## Overview\n", encoding="utf-8")
         (self.root / ".ai" / "guide.md").write_text(
             "# Guide\n\n[Root](../AGENT.md#bootstrap)\n"
@@ -89,6 +91,22 @@ class AiContextIntegrityTests(unittest.TestCase):
         result = self.command("check_markdown_links.py", expected=1)
         self.assertIn("unresolved local target", result.stdout)
         self.assertIn("missing anchor", result.stdout)
+
+    def test_line_limit_excludes_read_only_legacy_corpus_and_checks_project_docs(self):
+        legacy = self.root / "futher_md" / "legacy-reference.md"
+        legacy.write_text("# Legacy\n" + "source evidence\n" * 220, encoding="utf-8")
+        generated_index = self.root / ".ai" / "index.md"
+        generated_index.write_text("# Generated index\n" + "navigation\n" * 220, encoding="utf-8")
+        maintained = self.root / ".ai" / "too-long.md"
+        maintained.write_text("# Maintained\n" + "project documentation\n" * 199, encoding="utf-8")
+        result = self.command("check_markdown_line_limit.py", str(self.root), expected=1)
+        self.assertIn(".ai/too-long.md", result.stdout)
+        self.assertNotIn("futher_md", result.stdout)
+        self.assertNotIn(".ai/index.md", result.stdout)
+
+        maintained.write_text("# Maintained\n" + "project documentation\n" * 197, encoding="utf-8")
+        result = self.command("check_markdown_line_limit.py", str(self.root))
+        self.assertIn("line-count check passed", result.stdout)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

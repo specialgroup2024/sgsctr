@@ -31,7 +31,7 @@ This file is intentionally limited to repository mechanics. Universal behavior/a
   python scripts/ai_context_index.py
   python scripts/ai_context_index.py --check
 - Run Markdown line-limit and relative-link checks. Never claim a check passed unless executed.
-- Keep Markdown below 200 lines; target 180 or fewer. Split focused docs and link them.
+- Keep maintained project Markdown below 200 lines; target 180 or fewer. Split focused docs and link them. The owner-designated read-only legacy evidence corpus `futher_md/` and generated navigation file `.ai/index.md` are exempt: preserve legacy source files unchanged, and exclude these two paths from the authored-document line-limit check. The generated index remains subject to `python scripts/ai_context_index.py --check`.
 - Update current-state/open-questions/project-facts only when evidence requires it; do not duplicate one-off chat summaries.
 
 ## Release

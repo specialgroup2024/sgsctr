@@ -1,0 +1,2 @@
+"ViewNo","ViewName","RecoveredDefinition","ReviewStatus"
+"1","DBA.promotion_view","create view DBA.promotion_view;","Name-only stub in recovered DDL; SELECT definition unavailable"
