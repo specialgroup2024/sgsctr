@@ -1,6 +1,6 @@
 # Current state
 
-Last repository review: 2026-11-16. PR #81 merged at ef831fc7878ffa5229ad18310fb41a790e1cf893; technical acceptance remains BLOCKED pending inspectable execution of the exact regression suite and full-tree documentation checks. Runtime evidence below was supplied by the owner from the Linux VM on 2026-11-11; the dashboard's later API-unreachable report has not been independently reproduced because this agent has no access to the owner's VM. Repository state and runtime state are deliberately distinguished. PR #58 and PR #60 are now reported by GitHub as merged (merge commits b1cbf5c0ac09e57e533bd5dcadd310605b9377f9 and 11814a371af6eca679a9396251a86c43a870fc3c respectively), despite their descriptions stating that no merge was requested/performed. No workflow runs were returned for the PR #60 merge commit; its validation claims remain unverified.
+Last repository review: 2026-11-25 at master commit 94236489089407e598cd68ead41ee7454c47c3e8. This review rechecked current Pharmacy source and governance. Dated platform/runtime and PR acceptance observations below remain historical evidence; the 2026-11-25 Pharmacy source-reconciliation addendum supersedes earlier Pharmacy implementation-status statements where they conflict. Runtime state on the owner's VM was not independently reproduced.
 
 ## 2026-11-25 source-reconciliation addendum — Pharmacy Option B
 
