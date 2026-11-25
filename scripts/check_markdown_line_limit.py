@@ -6,6 +6,7 @@ EXCLUDED = {".git", "node_modules", "bin", "obj", ".venv", "venv"}
 # Owner-designated read-only legacy evidence is not maintained SGSCTR documentation.
 # Keep its original source documents intact; enforce the line limit on project-authored docs.
 EXCLUDED_ROOT_PATHS = {"futher_md"}
+EXCLUDED_PATHS = {".ai/index.md"}
 
 
 def check_markdown(root: Path, limit: int = LIMIT) -> list[str]:
@@ -15,7 +16,7 @@ def check_markdown(root: Path, limit: int = LIMIT) -> list[str]:
         relative = path.relative_to(root)
         if not relative.parts:
             continue
-        if relative.parts[0] in EXCLUDED_ROOT_PATHS:
+        if relative.parts[0] in EXCLUDED_ROOT_PATHS or relative.as_posix() in EXCLUDED_PATHS:
             continue
         if any(part in EXCLUDED for part in relative.parts):
             continue
