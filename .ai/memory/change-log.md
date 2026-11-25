@@ -57,5 +57,5 @@ Append-only record of material repository/governance state changes. Detailed evi
 ## 2026-11-25 — Documentation line-limit scope aligned with immutable legacy evidence
 
 - Initial PR workflow run found that `scripts/check_markdown_line_limit.py` scanned all Markdown, including the owner-designated read-only `futher_md/` source corpus (multiple source documents exceed 200 lines).
-- Root `AGENTS.md` now limits the rule to maintained project documentation. The checker excludes only the root `futher_md/` evidence corpus; a regression test verifies that long legacy evidence is exempt while long maintained Markdown still fails.
+- Root `AGENTS.md` now limits the rule to maintained project documentation. The checker excludes only the root `futher_md/` evidence corpus and generated `.ai/index.md`; regression tests verify that long legacy/generated evidence is exempt while long maintained Markdown still fails.
 - No source file under `futher_md/` was changed. GitHub Actions rerun is pending; do not claim the correction passed until the new run completes.
