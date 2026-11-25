@@ -46,6 +46,9 @@ COPY src/Sgsctr.Api/ src/Sgsctr.Api/
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet publish src/Sgsctr.Api/Sgsctr.Api.csproj --configuration Release --output /app/publish --no-restore /p:UseAppHost=false
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 # No apt here: the aspnet 10 image already ships curl (used by the compose
 # healthcheck), and deb.debian.org is unreachable from containers on this
