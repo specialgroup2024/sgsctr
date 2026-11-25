@@ -53,3 +53,9 @@ Append-only record of material repository/governance state changes. Detailed evi
 - Updated Pharmacy boundary matrix, Q66 status, AI context entrypoint and context manifest. Option B remains the selected four-module model; non-Pharmacy legacy families are not automatically in scope.
 - No application code, schema, migration, operational rule, financial posting, stock effect or production configuration changed. No local scripts, build, tests, database or VM checks were run; GitHub source inspection only.
 - Branch: `feat/future25-full-pharmacy-reconciliation-2026-11-25`. PR pending. PR #105 governance/source-authority change is already merged to master.
+
+## 2026-11-25 — Documentation line-limit scope aligned with immutable legacy evidence
+
+- Initial PR workflow run found that `scripts/check_markdown_line_limit.py` scanned all Markdown, including the owner-designated read-only `futher_md/` source corpus (multiple source documents exceed 200 lines).
+- Root `AGENTS.md` now limits the rule to maintained project documentation. The checker excludes only the root `futher_md/` evidence corpus; a regression test verifies that long legacy evidence is exempt while long maintained Markdown still fails.
+- No source file under `futher_md/` was changed. GitHub Actions rerun is pending; do not claim the correction passed until the new run completes.
