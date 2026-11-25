@@ -2,14 +2,14 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 146,
+  "tracked_markdown_count": 148,
   "empty_markdown_count": 0,
   "entries": [
     {
       "path": ".ai/README.md",
       "category": "ai-entry",
-      "git_blob_sha": "ce6bb7fb4c9c562971066f3953a5a279ab11b70b",
-      "size_bytes": 4877,
+      "git_blob_sha": "bf373390399f980b469bcc557ba3505c645b9ae4",
+      "size_bytes": 5181,
       "content_state": "populated"
     },
     {
@@ -169,8 +169,8 @@
     {
       "path": ".ai/delivery/local-development.md",
       "category": "delivery",
-      "git_blob_sha": "979abb089ab840797e941738389241ebdd505163",
-      "size_bytes": 6771,
+      "git_blob_sha": "d190a35a4e026b5913ea76451af40671810c6a60",
+      "size_bytes": 8997,
       "content_state": "populated"
     },
     {
@@ -351,8 +351,8 @@
     {
       "path": ".ai/domain/business-boundaries.md",
       "category": "domain",
-      "git_blob_sha": "b789480dd08b3e7fe7835e2ecdcf60af23a16a13",
-      "size_bytes": 3672,
+      "git_blob_sha": "274e74c0621c720657ca838c931440cacd5e1b0b",
+      "size_bytes": 4660,
       "content_state": "populated"
     },
     {
@@ -374,6 +374,13 @@
       "category": "domain",
       "git_blob_sha": "401bb4880181ea73b6bca84f40c581dece91eeb7",
       "size_bytes": 3394,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/domain/pharmacy-four-module-boundary-matrix.md",
+      "category": "domain",
+      "git_blob_sha": "5a9796c72ff9cab6b4f00a92505b4de7ca26792d",
+      "size_bytes": 12971,
       "content_state": "populated"
     },
     {
@@ -449,8 +456,8 @@
     {
       "path": ".ai/governance/approval-register.md",
       "category": "governance",
-      "git_blob_sha": "09f767fe4c56bc3d8888ec046ed679b498281b40",
-      "size_bytes": 13851,
+      "git_blob_sha": "d636bf8f8cde707c2a7604d9c608fe43e9d46472",
+      "size_bytes": 14702,
       "content_state": "populated"
     },
     {
@@ -582,15 +589,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "a68b7485d4f6c2b6dd12580fbde507681c28112d",
-      "size_bytes": 5009,
+      "git_blob_sha": "51f6a45ee43aefe1cf3e26b75b53d1df91684358",
+      "size_bytes": 6492,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "3dece26a5456a35bedf9f9085d31538573d4f910",
-      "size_bytes": 29737,
+      "git_blob_sha": "ab49b5ae04e098afb7d216d5257dbcf784a2232c",
+      "size_bytes": 31697,
       "content_state": "populated"
     },
     {
@@ -610,8 +617,8 @@
     {
       "path": ".ai/memory/open-questions.md",
       "category": "memory",
-      "git_blob_sha": "f8d07645a2fd52b3a62ef4ae5c954e777e3b11f0",
-      "size_bytes": 23482,
+      "git_blob_sha": "18bbcfecf43c0aaacbb49b1fdddcc4c58c4688dc",
+      "size_bytes": 25970,
       "content_state": "populated"
     },
     {
@@ -766,6 +773,13 @@
       "category": "roles",
       "git_blob_sha": "fac56a2db375a2d5e4cc1992e1516cc049fef78c",
       "size_bytes": 2332,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/roles/phase0-pharmacy-four-module-boundary-matrix.md",
+      "category": "roles",
+      "git_blob_sha": "164e34eb0ae88b8b039aecf441868d98289af488",
+      "size_bytes": 4588,
       "content_state": "populated"
     },
     {

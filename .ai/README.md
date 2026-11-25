@@ -34,6 +34,8 @@ Owner identifies Special Group with Pharmacies and Specialized Contracting secto
 Technology baseline is in [system context](architecture/system-context.md). Implementation status is in current-state and must be checked against source.
 
 ## Pharmacy controls
+- [Pharmacy four-module boundary matrix](domain/pharmacy-four-module-boundary-matrix.md): owner-selected Option B and evidence-based source reconciliation.
+- [Phase 0 role-selection record](roles/phase0-pharmacy-four-module-boundary-matrix.md): task-specific simulated perspectives, evidence and limits.
 For pharmacy tasks, task profiles load Egyptian requirements, source/evidence registers and compliance skill. Distinguish binding instruments, regulator guidance, drafts, official announcements and market signals. Verify primary sources and applicability. Qualified legal/regulatory, pharmacy, quality, accounting and owner decisions remain separate gates. Never auto-change dispensing, stock, prices, reimbursement or accounting from detected updates.
 
 ## Memory discipline

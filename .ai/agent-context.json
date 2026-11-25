@@ -68,6 +68,7 @@
       "delivery/testing-strategy.md"
     ],
     "pharmacy": [
+      "domain/pharmacy-four-module-boundary-matrix.md",
       "domain/business-boundaries.md",
       "domain/pharmacy-workflows.md",
       "domain/accounting-rules.md",
