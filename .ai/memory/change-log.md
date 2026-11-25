@@ -48,7 +48,7 @@ Append-only record of material repository/governance state changes. Detailed evi
 ## 2026-11-25 — Future 25 full legacy-to-Pharmacy reconciliation baseline
 
 - Source: owner-designated read-only `futher_md/` corpus (12 files); recovered SQL Anywhere DDL contains 321 tables, 475 FK clauses, 36 indexes and one view. The DDL is transaction-log recovery, not an authenticated live catalog export.
-- Added complete table-name/disposition register, complete FK register and 17-family workflow/capability mapping under `.ai/delivery/future25-legacy-*`; main reconciliation record links these inventories and preserves [O]/[I]/[U] confidence boundaries.
+- Added complete table-name/disposition register, 5,068-column inventory, complete FK register, 36-index and one-view inventories, 46-row first-pass source-to-target field mapping, and 17-family workflow/capability mapping under `.ai/delivery/future25-legacy-*`; main record preserves [O]/[I]/[U] confidence boundaries.
 - Compared source evidence with current `AppDbContext`, Pharmacy API, UI and tests. Confirmed partial catalogue, supplier-draft, receipt-draft, stock movement/transfer and regulatory foundations; full purchasing/PO, dispensing/claims, GL/costing, payroll and fixed-assets workflows are not evidenced as implemented.
 - Updated Pharmacy boundary matrix, Q66 status, AI context entrypoint and context manifest. Option B remains the selected four-module model; non-Pharmacy legacy families are not automatically in scope.
 - No application code, schema, migration, operational rule, financial posting, stock effect or production configuration changed. No local scripts, build, tests, database or VM checks were run; GitHub source inspection only.
