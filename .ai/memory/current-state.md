@@ -13,6 +13,15 @@ Last repository review: 2026-11-25 at master commit 94236489089407e598cd68ead41e
 - Weighted-average costing, dispensing/sales, payer claims/remittance, patient balances, employee discount calculation and GL/financial posting were not evidenced as operationally implemented in the inspected source. Professional approval gates remain pending.
 - Full evidence and gaps: [Pharmacy Group four-module boundary matrix](../domain/pharmacy-four-module-boundary-matrix.md). GitHub source/tree inspection only; no local build, automated test, deployed database, VM runtime or professional review was performed for this reconciliation.
 
+## 2026-11-25 Future 25 legacy reconciliation baseline
+
+- The owner-designated `futher_md/` corpus contains 12 files. Recovered SQL Anywhere DDL inventory: 321 tables, 475 foreign-key clauses, 36 indexes and one view; source report classifies all tables across nine areas.
+- Added exhaustive table-name and FK CSV registers plus a 17-family workflow matrix in `.ai/delivery/future25-legacy-pharmacy-reconciliation.md`. Table dispositions are first-pass heuristics; field-level mapping and source UI/runtime behavior remain open.
+- Current SGSCTR model has 28 AppDbContext DbSets for locations, catalogue/governance, supplier drafts, receipt drafts, stock movements/transfers and regulatory intelligence. It does not evidence complete PO/receiving, dispensing/claims, GL/costing, payroll or fixed-asset workflows.
+- The legacy corpus is read-only evidence; its nested AGENTS.md and legacy technology recommendations are not SGSCTR policy. No application code, database schema, migration, business rule or production setting was changed.
+- PR #105 (source-authority exception and Option B boundary baseline) merged to master on 2026-11-25 at `f4cfdfe95c4967dcbddae47df63103d653a8295`. Full reconciliation changes are on `feat/future25-full-pharmacy-reconciliation-2026-11-25`; no PR has yet been opened for this branch.
+- GitHub source inspection only. Local governance scripts, context-index generator, build, tests, DB migration checks and VM runtime checks were not run.
+
 ## Current summary
 Master contains the generic INV-01 Draft-only catalogue foundation (PR #36) and provisional INV-02 product-governance records (PR #37, merged 2026-11-14). PR #46 merged the separately labelled pharmacist demo examples on 2026-11-15. PR #47 merged the forward-only pharmacist-demo cleanup and Platform foundation health correction. Its GitHub Actions run 43702502896 completed successfully (build, API tests, EF snapshot validation, Docker startup and smoke checks). PR #48 merged the corresponding governance/regulatory documentation reconciliation. The owner's later API-unreachable dashboard report remains unverified on the Linux VM; deployment of the merged changes and the new forward migration must be confirmed by owner-provided runtime checks.
 
