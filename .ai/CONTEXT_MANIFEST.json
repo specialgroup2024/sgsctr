@@ -589,15 +589,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "51f6a45ee43aefe1cf3e26b75b53d1df91684358",
-      "size_bytes": 6492,
+      "git_blob_sha": "ffc7e2ac73940a3e67df07fb461196b06420c4c1",
+      "size_bytes": 7953,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "ab49b5ae04e098afb7d216d5257dbcf784a2232c",
-      "size_bytes": 31697,
+      "git_blob_sha": "bc9d045e60d6ffd2fbeca2dd8f53ba279a5649ba",
+      "size_bytes": 33170,
       "content_state": "populated"
     },
     {
