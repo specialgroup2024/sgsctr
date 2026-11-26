@@ -71,6 +71,7 @@
 - [`.ai/delivery/roadmap.md`](../.ai/delivery/roadmap.md)
 - [`.ai/delivery/test-approval-simulation-design.md`](../.ai/delivery/test-approval-simulation-design.md)
 - [`.ai/delivery/testing-strategy.md`](../.ai/delivery/testing-strategy.md)
+
 ## docs
 - [`docs/archive/Before writing code.md`](../docs/archive/Before writing code.md)
 - [`docs/archive/Before writing code_2.md`](../docs/archive/Before writing code_2.md)
