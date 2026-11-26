@@ -14,16 +14,16 @@ export default function CatalogueWorkspacePage() {
         <section className="welcome-row inventory-welcome">
           <div>
             <p className="eyebrow">{t("SECTOR 01 · PHARMACIES")}</p>
-            <h1>{t("Product")} <span>{t("catalogue")}</span></h1>
-            <p className="welcome-copy">{t("Manage generic product identities, units and exact packaging references.")}</p>
+            <h1>{t("Product catalogue")}</h1>
+            <p className="welcome-copy">{t("Inventory workspace foundation · reference visibility and workflow preparation.")}</p>
           </div>
-          <Link className="subtle-button" href="/pharmacies/inventory">{t("Back to Pharmacy Inventory")}</Link>
+          <Link className="subtle-button" href="/pharmacies/inventory">{t("Pharmacy Inventory")}</Link>
         </section>
         <section className="inventory-gate" role="note">
           <span className="inventory-gate-icon">!</span>
           <div>
-            <strong>{t("INV-01 · Generic draft reference data")}</strong>
-            <p>{t("All product and conversion records remain drafts. Product-family classification and professional review are pending. This workspace does not activate products or post stock, dispensing, valuation or financial transactions.")}</p>
+            <strong>{t("Generic catalogue only · Q38 professional review remains pending")}</strong>
+            <p>{t("Records and conversions remain drafts. Family and identifier entries are provisional only; no verified classification, product activation, stock, dispensing or valuation is enabled.")}</p>
           </div>
         </section>
         <CatalogueManager />
