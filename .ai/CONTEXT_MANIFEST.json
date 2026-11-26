@@ -6,6 +6,13 @@
   "empty_markdown_count": 0,
   "entries": [
     {
+      "path": ".ai/README.md",
+      "category": "ai-entry",
+      "git_blob_sha": "e2ac01aa0efd207b3f0e34eea40e97baa04e8461",
+      "size_bytes": 5715,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/architecture/ADR-0002-identity-and-access.md",
       "category": "architecture",
       "git_blob_sha": "12929777a314232eae58ad074644ba30d984015e",
@@ -426,17 +433,17 @@
       "content_state": "populated"
     },
     {
-      "path": ".ai/evals/agentic-capabilities.md",
-      "category": "evals",
-      "git_blob_sha": "94d04e1bcd6ebb1d4254aafe7d7e12ee9f6aaccd",
-      "size_bytes": 3335,
-      "content_state": "populated"
-    },
-    {
       "path": ".ai/evals/README.md",
       "category": "evals",
       "git_blob_sha": "f707aedc1ed9dbce12431c92e00dcb857f22273a",
       "size_bytes": 1724,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/evals/agentic-capabilities.md",
+      "category": "evals",
+      "git_blob_sha": "94d04e1bcd6ebb1d4254aafe7d7e12ee9f6aaccd",
+      "size_bytes": 3335,
       "content_state": "populated"
     },
     {
@@ -713,13 +720,6 @@
       "content_state": "populated"
     },
     {
-      "path": ".ai/README.md",
-      "category": "ai-entry",
-      "git_blob_sha": "e2ac01aa0efd207b3f0e34eea40e97baa04e8461",
-      "size_bytes": 5715,
-      "content_state": "populated"
-    },
-    {
       "path": ".ai/roles/accounting.md",
       "category": "roles",
       "git_blob_sha": "814dd8fffb988a3507369bb7f00c1467025c594f",
@@ -944,10 +944,10 @@
       "content_state": "populated"
     },
     {
-      "path": "docs/archive/Before writing code_2.md",
-      "category": "docs",
-      "git_blob_sha": "19f3ab19f484b2045827420c4cdd9550bab9d70b",
-      "size_bytes": 722,
+      "path": "README.md",
+      "category": "repository-entry",
+      "git_blob_sha": "fd44962a9ef720efe0b688cea0401098d07cd331",
+      "size_bytes": 9338,
       "content_state": "populated"
     },
     {
@@ -955,6 +955,13 @@
       "category": "docs",
       "git_blob_sha": "d90a35cc8ee995748d5ad3986df799bbafeb90f6",
       "size_bytes": 577,
+      "content_state": "populated"
+    },
+    {
+      "path": "docs/archive/Before writing code_2.md",
+      "category": "docs",
+      "git_blob_sha": "19f3ab19f484b2045827420c4cdd9550bab9d70b",
+      "size_bytes": 722,
       "content_state": "populated"
     },
     {
@@ -1049,6 +1056,13 @@
       "content_state": "populated"
     },
     {
+      "path": "futher_md/future25_schema_report.md",
+      "category": "futher_md",
+      "git_blob_sha": "108db2645a20f579b70f7311c79326a266c7d3ae",
+      "size_bytes": 19790,
+      "content_state": "populated"
+    },
+    {
       "path": "futher_md/future_25_ai_agent_build_spec.md",
       "category": "futher_md",
       "git_blob_sha": "01bcc24766924186b6f4e8f364be0ef4571cbf73",
@@ -1105,13 +1119,6 @@
       "content_state": "populated"
     },
     {
-      "path": "futher_md/future25_schema_report.md",
-      "category": "futher_md",
-      "git_blob_sha": "108db2645a20f579b70f7311c79326a266c7d3ae",
-      "size_bytes": 19790,
-      "content_state": "populated"
-    },
-    {
       "path": "mam/ai-chat/001-gpt_luna.md",
       "category": "mam",
       "git_blob_sha": "b79a19618fd921d184f9ffe95a63d31355d2ad35",
@@ -1137,13 +1144,6 @@
       "category": "mam",
       "git_blob_sha": "062d8165ef155404c4fec11bdf6451a00fc68ff6",
       "size_bytes": 880,
-      "content_state": "populated"
-    },
-    {
-      "path": "README.md",
-      "category": "repository-entry",
-      "git_blob_sha": "fd44962a9ef720efe0b688cea0401098d07cd331",
-      "size_bytes": 9338,
       "content_state": "populated"
     }
   ]
