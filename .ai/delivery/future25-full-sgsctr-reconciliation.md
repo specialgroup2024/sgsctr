@@ -29,7 +29,7 @@ The verified folder contains 12 files: nested `AGENTS.md`, recovered `future25_s
 - [22 workflow reconciliation rows](future25-legacy-workflow-reconciliation.csv)
 - Existing [46-row source-to-target candidate field map](future25-sgsctr-target-field-mapping.csv), [36-index inventory](future25-legacy-index-inventory.csv), [view inventory](future25-legacy-view-inventory.csv) and source table/column inventories remain available.
 
-Every recovered column and FK now has a first-pass disposition, candidate context and explicit review note. A disposition is not a semantic field mapping: most columns still require source UI/DataWindow lineage, domain meaning, transformation, target-field and owner/professional review. No unknown field is silently declared mapped.
+Every recovered column and FK now has a first-pass disposition, candidate context and explicit review note. A disposition is not a semantic field mapping: most columns still require source UI/DataWindow lineage, domain meaning, transformation, target-field and owner/professional review. No unknown field is silently declared mapped. Source functional-area labels are preserved but not treated as authoritative when names conflict (including claims, company cost-center organization, salary/holiday tables, security templates and food-drug interaction); those rows are explicitly flagged for source-lineage review.
 
 ## 4. Current SGSCTR implementation inspected
 
