@@ -6,7 +6,7 @@ function sameOrigin(request: NextRequest) {
   return origin === (process.env.WEB_BASE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 }
 
-export async function proxyReceiptDrafts(request: NextRequest, method: "GET" | "POST") {
+export async function proxyReceiptDrafts(request: NextRequest, method: "GET" | "POST", path = "/") {
   if (method === "POST" && !sameOrigin(request))
     return NextResponse.json({ error: "Cross-origin request rejected." }, { status: 403 });
   const session = await readSession();
@@ -24,7 +24,7 @@ export async function proxyReceiptDrafts(request: NextRequest, method: "GET" | "
   }
   let upstream: Response;
   try {
-    upstream = await fetch(`${apiBaseUrl}/api/v1/pharmacy/inventory/receipt-drafts/`, {
+    upstream = await fetch(`${apiBaseUrl}/api/v1/pharmacy/inventory/receipt-drafts${path}`, {
       method,
       headers: {
         authorization: `Bearer ${valid.accessToken}`,

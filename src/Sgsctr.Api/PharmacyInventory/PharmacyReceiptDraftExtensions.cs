@@ -107,12 +107,59 @@ public static class PharmacyReceiptDraftExtensions
                     stockPosted = false, message = "Draft evidence only. No stock balance or movement was created." });
         }).RequireAuthorization(manager);
 
+        api.MapGet("/{id:guid}/observations", async (Guid id, AppDbContext db, CancellationToken ct) =>
+        {
+            if (!await db.PharmacyReceiptDrafts.AnyAsync(x => x.Id == id, ct))
+                return Results.NotFound();
+            var notes = await db.CatalogueAuditEvents.AsNoTracking()
+                .Where(x => x.ResourceType == "PharmacyReceiptDraft" &&
+                    x.ResourceId == id && x.Action == "ReceiptDraftObservationAdded")
+                .OrderByDescending(x => x.OccurredAtUtc)
+                .Select(x => new ReceiptObservationResponse(x.Id, x.ActorSubject,
+                    x.OccurredAtUtc, x.Reason ?? string.Empty))
+                .Take(200).ToListAsync(ct);
+            return Results.Ok(notes);
+        }).RequireAuthorization(manager);
+
+        api.MapPost("/{id:guid}/observations", async (Guid id, ReceiptObservationInput input,
+            ClaimsPrincipal user, AppDbContext db, HttpContext http, CancellationToken ct) =>
+        {
+            if (string.IsNullOrWhiteSpace(input.Note) || input.Note.Trim().Length > 500)
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    ["note"] = ["Provide a receiving observation or discrepancy note (max 500 characters)."]
+                });
+            if (!await db.PharmacyReceiptDrafts.AnyAsync(x => x.Id == id, ct))
+                return Results.NotFound();
+
+            var actor = localWrites
+                ? "local-development"
+                : user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? user.FindFirst("sub")?.Value;
+            if (string.IsNullOrWhiteSpace(actor)) return Results.Forbid();
+
+            var now = DateTimeOffset.UtcNow;
+            var note = new CatalogueAuditEvent
+            {
+                Id = Guid.NewGuid(), ActorSubject = actor,
+                Action = "ReceiptDraftObservationAdded", ResourceType = "PharmacyReceiptDraft",
+                ResourceId = id, OccurredAtUtc = now, Outcome = "Succeeded",
+                Reason = input.Note.Trim(), CorrelationId = http.TraceIdentifier
+            };
+            db.CatalogueAuditEvents.Add(note);
+            await db.SaveChangesAsync(ct);
+            return Results.Created($"/api/v1/pharmacy/inventory/receipt-drafts/{id}/observations/{note.Id}",
+                new ReceiptObservationResponse(note.Id, note.ActorSubject, note.OccurredAtUtc, note.Reason));
+        }).RequireAuthorization(manager);
+
         return app;
     }
 
     public sealed record ReceiptInput(Guid LocationId, string SupplierReference, string? DeliveryReference,
         string ChangeReason, List<ReceiptLineInput> Lines);
     public sealed record ReceiptLineInput(Guid ProductId, Guid UnitId, decimal Quantity, string? SupplierItemReference);
+    public sealed record ReceiptObservationInput(string Note);
+    public sealed record ReceiptObservationResponse(Guid Id, string ActorSubject,
+        DateTimeOffset OccurredAtUtc, string Note);
     public sealed record ReceiptResponse(Guid Id, Guid LocationId, string LocationName, string SupplierReference,
         string? DeliveryReference, string Status, DateTimeOffset CreatedAtUtc, string CreatedBySubject,
         string ChangeReason, List<LineResponse> Lines);
