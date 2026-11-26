@@ -99,7 +99,7 @@ The owner designated `futher_md/` as the primary legacy business/functional evid
 
 ### 8.1 Corpus inventory and evidence baseline
 
-The folder contains 13 artifacts: nested `AGENTS.md`; `future25_schema.sql`; `future25_schema_report.md`; `future_25_ai_agent_build_spec.md`; `future_25_app_modules.md`; `future_25_app_ui.md`; `future_25_app_workflow.md`; `future_25_architecture.md`; `future_25_cost_control.md`; `future_25_how_app_working.md`; `future_25_rea_evidence.json`; and `future_25_static_analysis.md`.
+The folder contains exactly 12 artifacts: nested `AGENTS.md`; `future25_schema.sql`; `future25_schema_report.md`; `future_25_ai_agent_build_spec.md`; `future_25_app_modules.md`; `future_25_app_ui.md`; `future_25_app_workflow.md`; `future_25_architecture.md`; `future_25_cost_control.md`; `future_25_how_app_working.md`; `future_25_rea_evidence.json`; and `future_25_static_analysis.md`.
 
 Observed repository evidence on `master` at commit `12e383dd0279220bf9353d301485f06612f8b23d`:
 - Recovered SQL Anywhere 9 DDL: 321 CREATE TABLE, 475 ALTER TABLE (mostly foreign keys), 36 CREATE INDEX, 1 CREATE VIEW, 475 foreign-key clauses and 297 primary-key clauses. The schema report says it was recovered from a translated transaction log, not an authenticated live catalog export.
