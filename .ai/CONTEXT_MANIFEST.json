@@ -155,8 +155,8 @@
     {
       "path": ".ai/delivery/future25-full-sgsctr-reconciliation.md",
       "category": "delivery",
-      "git_blob_sha": "893bfd905213267c88e2a20a7af1afc2aaaed849",
-      "size_bytes": 9782,
+      "git_blob_sha": "9f81c07d960d807956a0007911988aca612d967f",
+      "size_bytes": 10410,
       "content_state": "populated"
     },
     {
@@ -603,15 +603,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "387cdccc7e9ddc4e898ad68e0ad0be3711fec6da",
-      "size_bytes": 10090,
+      "git_blob_sha": "8418327a40dd9c4fc9e4a18cebe0bc2b76cfd0ab",
+      "size_bytes": 10518,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "be90d3d78d8c1733d8e3b5b130a9476cf2ebf033",
-      "size_bytes": 33564,
+      "git_blob_sha": "1d45b60dc7d9be94282d8015801ad8d38e903f20",
+      "size_bytes": 33845,
       "content_state": "populated"
     },
     {
