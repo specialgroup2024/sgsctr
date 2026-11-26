@@ -65,6 +65,159 @@ jobs:
         run: |
           dotnet ef migrations has-pending-model-changes --context AuthDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
           dotnet ef migrations has-pending-model-changes --context AppDbContext --project src/Sgsctr.Api --startup-project src/Sgsctr.Api --configuration Release --no-build
+      - name: Use default BuildKit networking on GitHub-hosted runners
+        run: |
+          # compose.yaml keeps network: host for the owner's Linux VM DNS workaround.
+          # GitHub-hosted runners have normal bridge networking; BuildKit does not grant
+          # the network.host entitlement to this compose build.
+          sed -i '/^[[:space:]]*network: host$/d' compose.yaml
+          if grep -q '^[[:space:]]*network: host        env:
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
+          COOKIE_SECURE: "false"
+        run: docker compose up --build --detach
+      - name: Install Playwright browser for responsive RTL checks
+        run: |
+          cd web
+          npm install --no-save --ignore-scripts --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Verify bilingual RTL layout on desktop and mobile
+        env:
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
+        run: cd web && node rtl-smoke.mjs
+      - name: Upload RTL visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bilingual-rtl-visual-evidence
+          path: web/artifacts/rtl-*.png
+          if-no-files-found: ignore
+      - name: API, database and web smoke tests
+        env:
+          VERIFY_DOCKER_DATABASE: "true"
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
+          COOKIE_SECURE: "false"
+        run: bash scripts/smoke-test.sh http://127.0.0.1:8080 http://127.0.0.1:3000
+      - name: Verify English and Arabic layouts on desktop and mobile
+        env:
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
+          WEB_BASE_URL: http://127.0.0.1:3000
+        run: cd web && node scripts/rtl-visual-check.mjs
+      - name: Upload Arabic desktop/mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgsctr-arabic-rtl-screenshots
+          path: web/artifacts/rtl-visual/
+          if-no-files-found: ignore
+      - name: Container diagnostics on failure
+        if: failure()
+        env:
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
+          COOKIE_SECURE: "false"
+        run: |
+          docker compose ps -a
+          docker compose logs --tail=200 api db web
+      - name: Stop local stack without deleting data volumes
+        if: always()
+        env:
+          BOOTSTRAP_ADMIN_EMAIL: admin@example.test
+          BOOTSTRAP_ADMIN_PASSWORD: ci-only-Strong-Password-123!
+          PGADMIN_DEFAULT_PASSWORD: ci-only-local-development-password
+          AUTH_SESSION_SECRET: ci-only-ci-only-ci-only-ci-only-ci-only-ci-only
+          WEB_BASE_URL: http://localhost:3000
+          AUTHENTICATION_ENABLED: "true"
+          COOKIE_SECURE: "false"
+        run: docker compose down
+
+
+  appdbcontext-model-parity-diagnostic:
+    name: Diagnose AppDbContext runtime model vs migration snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.403
+      - name: Restore and build API
+        run: |
+          dotnet restore src/Sgsctr.Api/Sgsctr.Api.csproj
+          dotnet build src/Sgsctr.Api/Sgsctr.Api.csproj --configuration Release --no-restore
+      - name: Scaffold diagnostic migration and preserve exact model diff
+        shell: bash
+        run: |
+          set -uo pipefail
+          snapshot="src/Sgsctr.Api/Data/Migrations/AppDbContextModelSnapshot.cs"
+          backup="/tmp/AppDbContextModelSnapshot.before.cs"
+          report="/tmp/appdbcontext-model-parity-report.txt"
+          cp "$snapshot" "$backup"
+          restore_snapshot() { cp "$backup" "$snapshot"; }
+          trap restore_snapshot EXIT
+
+          dotnet tool install --global dotnet-ef --version 10.0.4
+          export PATH="$PATH:$HOME/.dotnet/tools"
+
+          set +e
+          dotnet ef migrations add AppDbContextModelParityProbe \
+            --context AppDbContext \
+            --project src/Sgsctr.Api \
+            --startup-project src/Sgsctr.Api \
+            --configuration Release \
+            --no-build \
+            --output-dir Data/ModelParityProbe \
+            > /tmp/appdbcontext-model-parity-scaffold.log 2>&1
+          probe_status=$?
+          set -e
+
+          {
+            echo "EF scaffold exit code: $probe_status"
+            echo
+            cat /tmp/appdbcontext-model-parity-scaffold.log
+            echo
+            echo "=== Snapshot delta (committed snapshot -> generated runtime snapshot) ==="
+            git diff --no-index -- "$backup" "$snapshot" || true
+            echo
+            echo "=== Generated migration files ==="
+            find src/Sgsctr.Api/Data/ModelParityProbe -maxdepth 1 -type f -name '*.cs' -print 2>/dev/null || true
+            while IFS= read -r file; do
+              echo
+              echo "=== $file ==="
+              cat "$file"
+            done < <(find src/Sgsctr.Api/Data/ModelParityProbe -maxdepth 1 -type f -name '*.cs' -print 2>/dev/null | sort)
+          } > "$report"
+
+          cat "$report"
+          exit 0
+      - name: Upload exact AppDbContext parity evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appdbcontext-model-parity-evidence
+          path: |
+            /tmp/appdbcontext-model-parity-report.txt
+            /tmp/appdbcontext-model-parity-scaffold.log
+          if-no-files-found: warn
+ compose.yaml; then
+            echo "CI compose override failed to remove host-network build entitlements."
+            exit 1
+          fi
       - name: Start API, PostgreSQL and Next.js
         env:
           BOOTSTRAP_ADMIN_EMAIL: admin@example.test
