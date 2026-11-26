@@ -243,6 +243,7 @@ export const messages:Record<string,string>={
 
   "No catalogue records yet. Add a generic draft record to begin.": "لا توجد سجلات في الدليل بعد. أضف سجل مسودة عام للبدء.",
   "No matching catalogue records.": "لا توجد سجلات منتجات مطابقة لبحثك.",
+  "Choose New draft product to open the product form. Existing products can be edited from the product list.": "اختر «منتج جديد كمسودة» لفتح نموذج المنتج. ويمكن تعديل المنتجات الحالية من قائمة المنتجات.",
   "+ New draft product": "+ منتج جديد كمسودة",
   "PRODUCT IDENTITY": "بيانات المنتج",
   "Edit draft product": "تعديل منتج مسودة",
