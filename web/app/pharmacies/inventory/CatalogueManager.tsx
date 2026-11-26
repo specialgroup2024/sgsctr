@@ -30,6 +30,7 @@ export default function CatalogueManager() {
   const [conversions, setConversions] = useState<Conversion[]>([]);
   const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([]);
   const [canManage, setCanManage] = useState(false);
+  const [productFormOpen, setProductFormOpen] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [search, setSearch] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -98,12 +99,19 @@ export default function CatalogueManager() {
 
   function resetProduct() {
     setEditing(null); setDisplayName(""); setChangeReason("");
+    setProductFormOpen(true);
+  }
+
+  function closeProductForm() {
+    setProductFormOpen(false);
+    setEditing(null); setDisplayName(""); setChangeReason("");
   }
 
   function editProduct(product: Product) {
     setEditing(product); setSelectedId(product.id);
     setDisplayName(product.displayName);
     setChangeReason("");
+    setProductFormOpen(true);
   }
 
   async function saveProduct(event: FormEvent<HTMLFormElement>) {
@@ -121,7 +129,7 @@ export default function CatalogueManager() {
       setSearch("");
       await load();
       setSelectedId(saved.id);
-      resetProduct();
+      closeProductForm();
       setNotice(editing ? "Draft product updated." : t("Draft product created."));
     } catch (e) { setError(e instanceof Error ? e.message : t("Product could not be saved.")); }
     finally { setBusy(false); }
@@ -175,18 +183,25 @@ export default function CatalogueManager() {
               <td><div className="table-actions"><button type="button" className="table-action" onClick={() => setSelectedId(product.id)}>{t("View")}</button>{canManage && <button type="button" className="table-action" onClick={() => editProduct(product)}>{t("Edit")}</button>}</div></td>
             </tr>)}
           </tbody></table></div> : <p className="inventory-empty">{search.trim() ? t("No matching catalogue records.") : t("No catalogue records yet. Add a generic draft record to begin.")}</p>}
-        <button type="button" className="subtle-button catalogue-new-button" onClick={resetProduct} disabled={!canManage}>{t("+ New draft product")}</button>
+        <button
+          type="button"
+          className="primary-button catalogue-new-button"
+          onClick={resetProduct}
+          disabled={!canManage || loading}
+          aria-expanded={productFormOpen}
+          aria-controls="catalogue-product-form"
+        >{t("+ New draft product")}</button>
       </div>
 
       <div className="inventory-panel">
         <div className="inventory-panel-heading"><div><p className="eyebrow">{t("PRODUCT IDENTITY")}</p><h3>{editing ? "Edit draft product" : "Create draft product"}</h3></div></div>
-        {canManage ? <form className="location-form catalogue-form" onSubmit={saveProduct}>
+        {canManage && productFormOpen ? <form id="catalogue-product-form" className="location-form catalogue-form" onSubmit={saveProduct}>
           <div className="form-grid">
             <label className="wide-field">{t("Display name")}<input required maxLength={200} value={displayName} onChange={e => setDisplayName(e.target.value)} /></label>
             <label className="wide-field">{t("Change reason (optional; do not enter patient or health data)")}<input maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label>
           </div>
-          <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div>{editing && <button type="button" className="subtle-button" onClick={resetProduct}>{t("Cancel")}</button>}<button type="submit" className="primary-button" disabled={busy}>{busy ? t("Saving…") : editing ? t("Save draft") : t("Create draft")}</button></div></div>
-        </form> : <p className="inventory-empty">{t("Catalogue changes require the Administrator role. Your account currently has read-only access.")}</p>}
+          <div className="form-actions"><span className="inventory-state-tag">{t("STATUS IS ALWAYS DRAFT")}</span><div><button type="button" className="subtle-button" onClick={closeProductForm} disabled={busy}>{t("Cancel")}</button><button type="submit" className="primary-button" disabled={busy}>{busy ? t("Saving…") : editing ? t("Save draft") : t("Create draft")}</button></div></div>
+        </form> : canManage ? <p className="inventory-empty">{t("Choose New draft product to open the product form. Existing products can be edited from the product list.")}</p> : <p className="inventory-empty">{t("Catalogue changes require the Administrator role. Your account currently has read-only access.")}</p>}
         <p className="catalogue-id-note">{selectedId ? `${t("Selected record ID:")} ${selectedId}` : "A product receives a stable system identifier when created."}</p>
       </div>
     </section>
