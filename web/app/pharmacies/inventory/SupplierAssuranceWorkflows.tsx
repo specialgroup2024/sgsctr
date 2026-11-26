@@ -24,9 +24,10 @@ const caseTypes = [
   ["ReceivingEligibilityEvaluation", "Receiving eligibility evaluation"]
 ] as const;
 
-type Props = { supplierId: string; canManage: boolean };
+type EvidenceReference = { id: string; title: string; evidenceKind: string; verificationStatus: string; expiresOn: string | null };
+type Props = { supplierId: string; canManage: boolean; evidence: EvidenceReference[] };
 
-export default function SupplierAssuranceWorkflows({ supplierId, canManage }: Props) {
+export default function SupplierAssuranceWorkflows({ supplierId, canManage, evidence }: Props) {
   const { t } = useI18n();
   const [items, setItems] = useState<AssuranceCase[]>([]);
   const [caseType, setCaseType] = useState<string>(caseTypes[0][0]);
@@ -82,14 +83,14 @@ export default function SupplierAssuranceWorkflows({ supplierId, canManage }: Pr
           {caseTypes.map(([value, label]) => <option key={value} value={value}>{t(label)}</option>)}
         </select></label>
         <label>{t("Scope reference (optional)")}<input maxLength={200} value={scopeReference} onChange={e => setScopeReference(e.target.value)} /></label>
-        <label>{t("Related evidence ID (optional)")}<input value={evidenceId} onChange={e => setEvidenceId(e.target.value)} /></label>
+        <label>{t("Related evidence (optional)")}<select value={evidenceId} onChange={e => setEvidenceId(e.target.value)}><option value="">{t("No evidence linked")}</option>{evidence.map(item => <option key={item.id} value={item.id}>{item.title} · {item.evidenceKind} · {t(item.verificationStatus)}{item.expiresOn ? " · " + item.expiresOn : ""}</option>)}</select></label>
         <label className="wide-field">{t("Reason")}<input required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label>
       </div>
       <button className="primary-button" type="submit" disabled={busy || loading}>{busy ? t("Saving…") : t("Create assurance work request")}</button>
     </form>}
     {loading ? <p className="loading-state">{t("Loading assurance work requests…")}</p> : items.length ? <div className="register-table-wrap"><table className="register-table">
-      <thead><tr><th>{t("Workflow")}</th><th>{t("Status")}</th><th>{t("Requested")}</th><th>{t("Blocker")}</th><th>{t("Reason")}</th></tr></thead>
-      <tbody>{items.map(item => <tr key={item.id}><td>{t(caseTypes.find(x => x[0] === item.caseType)?.[1] ?? item.caseType)}</td><td>{t(item.status)}</td><td>{new Date(item.requestedAtUtc).toLocaleString()}</td><td>{item.blockerCode ? t("Policy and qualification approvals are not recorded.") : "—"}</td><td>{item.reason}</td></tr>)}</tbody>
+      <thead><tr><th>{t("Workflow")}</th><th>{t("Status")}</th><th>{t("Requested")}</th><th>{t("Linked evidence")}</th><th>{t("Blocker")}</th><th>{t("Reason")}</th></tr></thead>
+      <tbody>{items.map(item => <tr key={item.id}><td>{t(caseTypes.find(x => x[0] === item.caseType)?.[1] ?? item.caseType)}</td><td>{t(item.status)}</td><td>{new Date(item.requestedAtUtc).toLocaleString()}</td><td>{item.evidenceId ? evidence.find(reference => reference.id === item.evidenceId)?.title ?? t("Evidence reference unavailable") : "—"}</td><td>{item.blockerCode ? t("Policy and qualification approvals are not recorded.") : "—"}</td><td>{item.reason}</td></tr>)}</tbody>
     </table></div> : <p className="inventory-empty">{t("No assurance work requests have been created.")}</p>}
   </section>;
 }
