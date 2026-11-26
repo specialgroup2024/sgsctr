@@ -43,10 +43,10 @@
 - [`.ai/delivery/future25-legacy-pharmacy-reconciliation.md`](../.ai/delivery/future25-legacy-pharmacy-reconciliation.md)
 - [`.ai/delivery/future25-pharmacy-ui-reconstruction-increment-1.md`](../.ai/delivery/future25-pharmacy-ui-reconstruction-increment-1.md)
 - [`.ai/delivery/future25-ui-workflow-data-traceability.md`](../.ai/delivery/future25-ui-workflow-data-traceability.md)
-- [`.ai/delivery/pharmacy-catalogue-workspace-ui.md`](../.ai/delivery/pharmacy-catalogue-workspace-ui.md)
 - [`.ai/delivery/governance-test-readiness-workspace.md`](../.ai/delivery/governance-test-readiness-workspace.md)
 - [`.ai/delivery/invb-supplier-operational-expansion-design.md`](../.ai/delivery/invb-supplier-operational-expansion-design.md)
 - [`.ai/delivery/local-development.md`](../.ai/delivery/local-development.md)
+- [`.ai/delivery/pharmacy-catalogue-workspace-ui.md`](../.ai/delivery/pharmacy-catalogue-workspace-ui.md)
 - [`.ai/delivery/pharmacy-inventory-costing-worked-examples.md`](../.ai/delivery/pharmacy-inventory-costing-worked-examples.md)
 - [`.ai/delivery/pharmacy-inventory-discovery.md`](../.ai/delivery/pharmacy-inventory-discovery.md)
 - [`.ai/delivery/pharmacy-inventory-inv00-deliberation.md`](../.ai/delivery/pharmacy-inventory-inv00-deliberation.md)
@@ -71,7 +71,6 @@
 - [`.ai/delivery/roadmap.md`](../.ai/delivery/roadmap.md)
 - [`.ai/delivery/test-approval-simulation-design.md`](../.ai/delivery/test-approval-simulation-design.md)
 - [`.ai/delivery/testing-strategy.md`](../.ai/delivery/testing-strategy.md)
-
 ## docs
 - [`docs/archive/Before writing code.md`](../docs/archive/Before writing code.md)
 - [`docs/archive/Before writing code_2.md`](../docs/archive/Before writing code_2.md)
