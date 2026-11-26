@@ -859,6 +859,8 @@ export const messages:Record<string,string>={
   "Enter a note and select Add note. The saved note appears in the observations table; reload the page and reopen the same receipt to verify persistence.": "أدخل ملاحظة واختر إضافة ملاحظة. ستظهر الملاحظة المحفوظة في الجدول؛ أعد تحميل الصفحة وافتح مسودة الاستلام نفسها للتحقق من استمرار الحفظ.",
   "If there are no receipt drafts, create a draft first. A note changes neither receipt status nor stock balances.": "إذا لم توجد مسودات استلام، فأنشئ مسودة أولاً. لا تغير الملاحظة حالة الاستلام أو أرصدة المخزون.",
   "Close": "إغلاق",
+  "Create a draft receipt": "أنشئ مسودة استلام",
+  "Observation saved and reloaded from the draft audit trail. No receipt status or stock was changed.": "تم حفظ الملاحظة وإعادة تحميلها من سجل تدقيق المسودة. لم تتغير حالة الاستلام أو المخزون.",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
 export function direction(locale:Locale):"ltr"|"rtl"{return locale==="ar"?"rtl":"ltr";}
