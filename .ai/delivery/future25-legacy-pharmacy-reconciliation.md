@@ -1,6 +1,6 @@
 # Future 25 → SGSCTR Pharmacy reconciliation
 
-- Status: **Phase 0 evidence baseline; field-level semantic reconciliation remains in progress.**
+- Status: **Phase 0 source/current-code reconciliation completed to first-pass disposition level; semantic approval and implementation remain gated.**
 - Owner-selected Pharmacy model: **Option B — four independent operational modules** (Regular Medications, Chemotherapy Drugs, Medical Supplies, Cosmetics).
 - Source corpus: `futher_md/` on merged `master`; read-only.
 - SGSCTR code baseline: `master` inspected 2026-11-25.
@@ -126,11 +126,11 @@ If migration is later approved:
 
 ## 10. Reconciliation completion criteria
 
-- [ ] Every source field and relationship has a target mapping or reasoned exclusion/unknown status.
+- [x] Every recovered source field and FK has a first-pass disposition, candidate context and review note; semantic target-field mapping remains incomplete.
 - [ ] Every Pharmacy capability is assigned to one of the four modules or explicitly shared.
 - [ ] Source module families, workflows, UI capability families and reports are mapped.
 - [ ] Current entities, EF configuration, migrations, API, UI and tests are checked against each approved mapping.
 - [ ] Professional accounting, pharmacy, quality, legal and regulatory approvals are recorded where required.
 - [ ] Migration is separately approved, rehearsed and reconciled.
 
-**Current completion state:** table-name and FK inventories are exhaustive for the recovered DDL; workflow mapping is a first-pass capability assessment. Field-level semantics, UI-to-SQL behavior, runtime validation and target implementation design remain open. This is not a claim that the legacy application has been rebuilt.
+**Current completion state:** the exact 12-file corpus is inventoried; all 321 tables, 5,068 columns and 475 FKs have first-pass dispositions; 22 workflow families are compared with current SGSCTR entities, migrations, API, UI and tests. See [full SGSCTR reconciliation](future25-full-sgsctr-reconciliation.md) and the linked per-table, per-column and per-relationship CSV registers. These dispositions are not semantic approval. Individual DataWindow/report lineage, runtime behavior, field transformations, professional decisions, migration and operational implementation remain open. This is not a claim that the legacy application has been rebuilt.
