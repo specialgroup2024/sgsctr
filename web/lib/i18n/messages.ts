@@ -822,6 +822,8 @@ export const messages:Record<string,string>={
   "Blocker": "سبب المنع",
   "Policy and qualification approvals are not recorded.": "لم يتم تسجيل اعتماد السياسة والتأهيل.",
   "No assurance work requests have been created.": "لم يتم إنشاء طلبات عمل ضمان.",
+  "Supplier assurance work request saved. No verification, qualification or eligibility decision was made.": "تم حفظ طلب عمل ضمان المورد. لم يتم إجراء أي تحقق أو تأهيل أو اتخاذ قرار أهلية.",
+  "Loading assurance work requests…": "جارٍ تحميل طلبات عمل الضمان…",
   "POLICY_AND_QUALIFICATION_NOT_APPROVED": "لم يتم اعتماد السياسة والتأهيل",
 };
 export function translate(locale:Locale,value:string):string{return locale==="ar"?(messages[value]??value):value;}
