@@ -49,7 +49,7 @@ Current `AppDbContext` includes organization locations; generic catalogue produc
 
 ### Tests and verification evidence
 
-Rule tests exist for catalogue, supplier, stock movements and transfer state transitions. PostgreSQL integration tests assert migrations, constraints and persistence behavior. This source inspection did not execute builds, tests, EF parity, browser/accessibility checks, migrations or VM runtime checks. Repository CI must be checked separately at the final commit; source presence is not a passing test.
+Rule tests exist for catalogue, supplier, stock movements and transfer state transitions. PostgreSQL integration tests assert migrations, constraints and persistence behavior. On PR #108, GitHub Actions documentation integrity passed (governance, isolated integrity tests, line limit, generated catalogue and relative links); .NET Release build passed with one existing obsolete-API warning; automated tests passed 164/164; both AuthDbContext and AppDbContext `has-pending-model-changes` checks passed. The Compose smoke-start step then failed before containers launched because BuildKit rejected the VM-specific `network: host` entitlement on the hosted runner. A CI-only step was added to remove those two build-network overrides in the ephemeral runner workspace; that follow-up has not yet been verified. The separate model-parity diagnostic uploaded an artifact but its probe name collided with the existing `AppDbContextModelParityProbe` migration, so it does not establish a model diff. No local VM runtime test was executed.
 
 ## 5. Option B boundary finding
 
