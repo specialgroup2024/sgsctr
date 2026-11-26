@@ -59,3 +59,14 @@ Append-only record of material repository/governance state changes. Detailed evi
 - Initial PR workflow run found that `scripts/check_markdown_line_limit.py` scanned all Markdown, including the owner-designated read-only `futher_md/` source corpus (multiple source documents exceed 200 lines).
 - Root `AGENTS.md` now limits the rule to maintained project documentation. The checker excludes only the root `futher_md/` evidence corpus and generated `.ai/index.md`; regression tests verify that long legacy/generated evidence is exempt while long maintained Markdown still fails.
 - No source file under `futher_md/` was changed. GitHub Actions rerun is pending; do not claim the correction passed until the new run completes.
+
+## 2026-11-26 — Full Future 25 source-to-SGSCTR current-code reconciliation
+
+- Corrected the source inventory: `futher_md/` contains exactly 12 files, not 13.
+- Added a 321-table disposition register, five column-disposition CSVs covering all 5,068 columns, a 475-FK disposition register and a 22-workflow reconciliation matrix.
+- Inspected current AppDbContext/EF model snapshot, pharmacy catalogue/supplier/receipt/stock/transfer/regulatory API extensions, relevant web workspaces and rule/PostgreSQL integration test sources.
+- Confirmed Option B remains selected but the current generic catalogue and stock/transfer models do not yet enforce independent module ownership. Receipt drafts and transfer approvals remain non-posting; no full PO, dispensing, claims, GL or cost-center workflow was evidenced.
+- Full record: [Future 25 full SGSCTR reconciliation](../delivery/future25-full-sgsctr-reconciliation.md). First-pass dispositions are not semantic approval; runtime, individual report/DataWindow lineage, migration and professional decisions remain open.
+- No application business code, schema, migration, financial policy, posting behavior or production configuration changed; a CI workflow-only change removes the VM-specific `network: host` build entitlement from the ephemeral GitHub-hosted runner workspace.
+- PR #108 CI evidence: documentation integrity passed; Release build passed; 164/164 tests passed; both EF pending-model-change checks passed. Compose smoke startup initially failed before container creation because BuildKit denied `network.host`; a CI-only default-network workaround was committed, but the rerun remains unverified. No local VM runtime test was run.
+- Work branch: `feat/future25-semantic-reconciliation-phase0-2026-11-26`.

@@ -2,14 +2,14 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 159,
+  "tracked_markdown_count": 160,
   "empty_markdown_count": 0,
   "entries": [
     {
       "path": ".ai/README.md",
       "category": "ai-entry",
-      "git_blob_sha": "196a4e2b0318a65dd3ad00a3154b7dc091f918e6",
-      "size_bytes": 5441,
+      "git_blob_sha": "e2ac01aa0efd207b3f0e34eea40e97baa04e8461",
+      "size_bytes": 5715,
       "content_state": "populated"
     },
     {
@@ -153,10 +153,17 @@
       "content_state": "populated"
     },
     {
+      "path": ".ai/delivery/future25-full-sgsctr-reconciliation.md",
+      "category": "delivery",
+      "git_blob_sha": "2589bfc44b27868eaf0d99e3245989d7ad695c1c",
+      "size_bytes": 10691,
+      "content_state": "populated"
+    },
+    {
       "path": ".ai/delivery/future25-legacy-pharmacy-reconciliation.md",
       "category": "delivery",
-      "git_blob_sha": "09a786ba2b94e19e8c2ccf60d41b4f67850e84be",
-      "size_bytes": 10810,
+      "git_blob_sha": "e47ebbedf0cbdb282aef56262aa9199fbbc081d8",
+      "size_bytes": 11244,
       "content_state": "populated"
     },
     {
@@ -386,8 +393,8 @@
     {
       "path": ".ai/domain/pharmacy-four-module-boundary-matrix.md",
       "category": "domain",
-      "git_blob_sha": "b250666dbc6866c0cef393d45aa5ba062e5313c2",
-      "size_bytes": 20505,
+      "git_blob_sha": "a1adf05b08ec2c58afeec40541796d6820cd84ce",
+      "size_bytes": 21180,
       "content_state": "populated"
     },
     {
@@ -596,15 +603,15 @@
     {
       "path": ".ai/memory/change-log.md",
       "category": "memory",
-      "git_blob_sha": "df7e8d70dac380b7224f07a4e897a2eabf265438",
-      "size_bytes": 8752,
+      "git_blob_sha": "8418327a40dd9c4fc9e4a18cebe0bc2b76cfd0ab",
+      "size_bytes": 10518,
       "content_state": "populated"
     },
     {
       "path": ".ai/memory/current-state.md",
       "category": "memory",
-      "git_blob_sha": "e16071f1eee7fcfffca1bce43847f8dfbec4039f",
-      "size_bytes": 33578,
+      "git_blob_sha": "1d45b60dc7d9be94282d8015801ad8d38e903f20",
+      "size_bytes": 33845,
       "content_state": "populated"
     },
     {
@@ -624,8 +631,8 @@
     {
       "path": ".ai/memory/open-questions.md",
       "category": "memory",
-      "git_blob_sha": "de5013cb82f83d63ebabafe308ff13958d23bedd",
-      "size_bytes": 26827,
+      "git_blob_sha": "b569273d43692888d5293b48fb4674d1dc342808",
+      "size_bytes": 26970,
       "content_state": "populated"
     },
     {

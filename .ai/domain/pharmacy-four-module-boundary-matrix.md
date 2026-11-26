@@ -99,7 +99,7 @@ The owner designated `futher_md/` as the primary legacy business/functional evid
 
 ### 8.1 Corpus inventory and evidence baseline
 
-The folder contains 13 artifacts: nested `AGENTS.md`; `future25_schema.sql`; `future25_schema_report.md`; `future_25_ai_agent_build_spec.md`; `future_25_app_modules.md`; `future_25_app_ui.md`; `future_25_app_workflow.md`; `future_25_architecture.md`; `future_25_cost_control.md`; `future_25_how_app_working.md`; `future_25_rea_evidence.json`; and `future_25_static_analysis.md`.
+The folder contains exactly 12 artifacts: nested `AGENTS.md`; `future25_schema.sql`; `future25_schema_report.md`; `future_25_ai_agent_build_spec.md`; `future_25_app_modules.md`; `future_25_app_ui.md`; `future_25_app_workflow.md`; `future_25_architecture.md`; `future_25_cost_control.md`; `future_25_how_app_working.md`; `future_25_rea_evidence.json`; and `future_25_static_analysis.md`.
 
 Observed repository evidence on `master` at commit `12e383dd0279220bf9353d301485f06612f8b23d`:
 - Recovered SQL Anywhere 9 DDL: 321 CREATE TABLE, 475 ALTER TABLE (mostly foreign keys), 36 CREATE INDEX, 1 CREATE VIEW, 475 foreign-key clauses and 297 primary-key clauses. The schema report says it was recovered from a translated transaction log, not an authenticated live catalog export.
@@ -133,6 +133,8 @@ Observed repository evidence on `master` at commit `12e383dd0279220bf9353d301485
 
 ### 8.4 Current completion status and next gate
 
-- **Completed in this record:** folder discovery; all 13 artifact names inventoried; SQL DDL totals and schema functional-area totals inspected; architecture, module, UI, workflow, cost-control, static-analysis and AI build-spec headings/contents sampled; source confidence and limitations identified.
-- **Not completed:** exhaustive per-table/column/FK mapping; full per-screen/report inventory; end-to-end workflow traceability; comparison against every current SGSCTR entity, migration, API, UI route and test; validation of source claims against a live legacy database/runtime.
-- **Next safe step:** produce the detailed legacy-to-SGSCTR capability and schema boundary matrix, beginning with pharmacy-critical master data, purchasing/receiving, inventory/stock, transfers, dispensing/sales, claims, costing/accounting and reports. Do not begin broad business implementation until this reconciliation and the relevant approval gates are complete.
+- **Completed in the current Phase 0 pass:** exact 12-file corpus inventory; recovered DDL totals; first-pass disposition of all 321 tables, 5,068 columns and 475 FKs; 22 workflow comparisons; source inspection of current AppDbContext/EF snapshot, API routes, UI workspaces and relevant tests. See [full SGSCTR reconciliation](../delivery/future25-full-sgsctr-reconciliation.md).
+- **Structured evidence:** [table dispositions](../delivery/future25-legacy-table-disposition.csv), five [column-disposition registers](../delivery/future25-column-disposition-pharmacy-operations.csv), [FK dispositions](../delivery/future25-legacy-relationship-disposition.csv), and [workflow reconciliation](../delivery/future25-legacy-workflow-reconciliation.csv).
+- **Not completed:** semantic field-by-field approval, exhaustive individual DataWindow/report-to-API lineage, runtime reconstruction, legal/professional decisions, migration design/verification and four-module operational implementation.
+- **Current implementation gap:** SGSCTR has generic Draft catalogue, supplier/receipt intake, stock-movement and transfer-request scaffolding plus regulatory intelligence. It does not yet enforce four independent operational module ownership; catalogue family proposals remain five provisional codes, and movement/transfer/location models do not yet carry an approved module ownership boundary.
+- **Next gate:** resolve Q58–Q66 and the applicable pharmacy/accounting/legal/security questions, then approve one bounded implementation slice. Do not interpret a candidate mapping as an approval or start broad operational posting.

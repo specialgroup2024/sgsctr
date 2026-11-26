@@ -36,6 +36,7 @@ Technology baseline is in [system context](architecture/system-context.md). Impl
 ## Pharmacy controls
 - [Pharmacy four-module boundary matrix](domain/pharmacy-four-module-boundary-matrix.md): owner-selected Option B and evidence-based source reconciliation.
 - [Future 25 legacy reconciliation](delivery/future25-legacy-pharmacy-reconciliation.md): read-only legacy corpus inventory, 321-table, 5,068-column, 475-FK, index and view registers, candidate target-field mapping, workflow coverage and migration guardrails.
+- [Full Future 25 → SGSCTR reconciliation](delivery/future25-full-sgsctr-reconciliation.md): current AppDbContext/EF/API/UI/test comparison, Option B enforcement gaps, 321 table dispositions, all 5,068 column dispositions, 475 FK dispositions and 22 workflow comparisons.
 - [Phase 0 role-selection record](roles/phase0-pharmacy-four-module-boundary-matrix.md): task-specific simulated perspectives, evidence and limits.
 For pharmacy tasks, task profiles load Egyptian requirements, source/evidence registers and compliance skill. Distinguish binding instruments, regulator guidance, drafts, official announcements and market signals. Verify primary sources and applicability. Qualified legal/regulatory, pharmacy, quality, accounting and owner decisions remain separate gates. Never auto-change dispensing, stock, prices, reimbursement or accounting from detected updates.
 
