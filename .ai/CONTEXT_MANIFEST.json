@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Navigation and content-integrity metadata; not an authority or approval register.",
   "generation": "python scripts/ai_context_index.py",
-  "tracked_markdown_count": 160,
+  "tracked_markdown_count": 161,
   "empty_markdown_count": 0,
   "entries": [
     {
@@ -164,6 +164,13 @@
       "category": "delivery",
       "git_blob_sha": "e47ebbedf0cbdb282aef56262aa9199fbbc081d8",
       "size_bytes": 11244,
+      "content_state": "populated"
+    },
+    {
+      "path": ".ai/delivery/future25-pharmacy-ui-reconstruction-increment-1.md",
+      "category": "delivery",
+      "git_blob_sha": "c01e1472065092ff6ac185eee3c52471c3666b63",
+      "size_bytes": 4068,
       "content_state": "populated"
     },
     {
