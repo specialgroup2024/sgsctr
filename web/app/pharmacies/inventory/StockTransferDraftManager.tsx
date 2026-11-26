@@ -15,7 +15,7 @@ async function payload<T>(response: Response): Promise<T> {
 }
 
 export default function StockTransferDraftManager() {
-  const { t, formatDate } = useI18n();
+  const { t } = useI18n();
   const [locations, setLocations] = useState<Location[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [units, setUnits] = useState<Unit[]>([]);
