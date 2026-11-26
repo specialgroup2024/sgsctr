@@ -48,3 +48,14 @@ Passing CI can establish technical behavior for this draft slice only. It cannot
 ## PR #66 — supplier draft onboarding intake
 
 PR #66 was merged to master on 2026-11-15 (merge commit `ed7a99eb49329e766c1b500db4febfb79e3df0bf`; head `2671e92854cfe3862bc6126775d98aae55f2adc6`). It adds the owner-approved INV-OWN-003 non-operative intake slice. The `build-and-smoke-test` and `markdown-line-limit` workflow runs both failed; both failed jobs were rerun, and both reruns also failed before reporting any steps. The job step lists are null and log download returned 404. No .NET/web build, unit test, EF snapshot/migration validation, PostgreSQL integration, API authorization, BFF or browser command is evidenced as having executed. The failure is an execution/runner evidence blocker, not a demonstrated code assertion failure and not a pass. PR #66 has no submitted reviews or discussion comments in the live connector response. No production or VM migration is authorized.
+
+## 2026-11-26 — evidence traceability and receipt draft observations
+
+A bounded follow-up was implemented on branch `feat/supplier-evidence-receipt-observations-2026-11-26`:
+
+- Supplier assurance requests now select an evidence reference already belonging to the selected supplier; the assurance list resolves the linked evidence title from that supplier's evidence collection. The API continues to validate supplier/evidence ownership and does not interpret or verify the evidence.
+- Receipt drafts now support append-only observation/discrepancy notes through the existing audit-event store. Notes are scoped to a receipt draft, record actor/time/correlation, and are visible in the receiving workspace.
+- The observation endpoints require the existing Administrator/local-development write policy. They do not change receipt status, line quantities, stock balances, stock movements, supplier eligibility, acceptance, rejection, quarantine or quality release. No schema migration is introduced.
+- English/Arabic labels and boundary messaging were added for the UI.
+
+**Not yet technically accepted:** no .NET build/test, TypeScript typecheck, Next.js build, EF model check, PostgreSQL integration, API/BFF authorization test, browser test or owner-VM runtime test has been run for this branch. The CI and runtime states must be recorded from actual results before merge/release claims. Existing INV-B technical acceptance and production/security/professional gates remain unchanged.
