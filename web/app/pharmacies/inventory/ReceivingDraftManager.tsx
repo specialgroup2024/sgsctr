@@ -32,6 +32,7 @@ export default function ReceivingDraftManager() {
   const [observations, setObservations] = useState<ReceiptObservation[]>([]);
   const [observationNote, setObservationNote] = useState("");
   const [observationBusy, setObservationBusy] = useState(false);
+  const [observationNotice, setObservationNotice] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -126,15 +127,12 @@ export default function ReceivingDraftManager() {
   async function openObservations(receiptId: string) {
     setSelectedReceiptId(receiptId);
     setObservationNote("");
+    setObservationNotice("");
     setError("");
-    try {
-      const response = await fetch(`/api/pharmacy/inventory/receipt-drafts/${encodeURIComponent(receiptId)}/observations`, { cache: "no-store" });
-      if (response.status === 401) { window.location.assign("/login"); return; }
-      if (!response.ok) throw new Error(t("Receipt observations could not be loaded."));
-      setObservations(await response.json() as ReceiptObservation[]);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : t("Receipt observations could not be loaded."));
-    }
+    const response = await fetch(`/api/pharmacy/inventory/receipt-drafts/${encodeURIComponent(receiptId)}/observations`, { cache: "no-store" });
+    if (response.status === 401) { window.location.assign("/login"); return; }
+    if (!response.ok) throw new Error(t("Receipt observations could not be loaded."));
+    setObservations(await response.json() as ReceiptObservation[]);
   }
 
   async function addObservation(event: FormEvent<HTMLFormElement>) {
@@ -151,7 +149,7 @@ export default function ReceivingDraftManager() {
       if (!response.ok) throw new Error(payload?.error ?? payload?.title ?? t("Receipt observation could not be saved."));
       setObservationNote("");
       await openObservations(selectedReceiptId);
-      setNotice(t("Observation saved to the draft audit trail. No receipt status or stock was changed."));
+      setObservationNotice(t("Observation saved and reloaded from the draft audit trail. No receipt status or stock was changed."));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : t("Receipt observation could not be saved."));
     } finally { setObservationBusy(false); }
@@ -163,6 +161,15 @@ export default function ReceivingDraftManager() {
     <div className="inventory-section-heading">
       <div><p className="eyebrow">{t("INBOUND STOCK")}</p><h2>{t("Receiving & inspection")}</h2><p>{t("Capture delivery references as draft evidence only. This does not receive or release stock.")}</p></div>
       <span className="inventory-status-chip">{t("Draft only · no stock effect")}</span>
+    </div>
+    <div className="inventory-panel" role="note" style={{ marginBottom: 16 }}>
+      <div className="inventory-panel-heading"><div><p className="eyebrow">{t("UI-02 WORKFLOW GUIDE")}</p><h3>{t("How to save and verify a receiving observation")}</h3></div></div>
+      <ol className="inventory-check-list">
+        <li><span className="check-pending">1</span><div><strong>{t("Create a draft receipt")}</strong><small>{t("Complete the receiving draft form and select Save draft receipt. It will appear under Recent receipt drafts.")}</small></div></li>
+        <li><span className="check-pending">2</span><div><strong>{t("Open its review notes")}</strong><small>{t("Find the receipt in Recent receipt drafts and select View / add notes.")}</small></div></li>
+        <li><span className="check-pending">3</span><div><strong>{t("Add and verify an observation")}</strong><small>{t("Enter a note and select Add note. The saved note appears in the observations table; reload the page and reopen the same receipt to verify persistence.")}</small></div></li>
+      </ol>
+      <p className="catalogue-footer-note">{t("If there are no receipt drafts, create a draft first. A note changes neither receipt status nor stock balances.")}</p>
     </div>
     <div className="inventory-gate" role="note"><span className="inventory-gate-icon">!</span><div><strong>{t("Quality release remains disabled.")}</strong><p>{t("This workspace records a draft receipt reference only. It does not verify suppliers, inspect or accept goods, record batches or expiry, or change stock balances. Approved pharmacy and quality procedures are still required.")}</p></div></div>
     {error && <p className="form-error" role="alert">{error}</p>}
@@ -186,7 +193,7 @@ export default function ReceivingDraftManager() {
       {!loading && (!locations.length || !products.length || !units.length) && <p className="inventory-empty">{t("Add an active pharmacy location, a Draft catalogue product and a unit before creating a receipt draft.")}</p>}
     </form>
     <div className="receiving-draft-list-heading"><h3>{t("Recent receipt drafts")}</h3><button type="button" className="subtle-button" onClick={() => void load()} disabled={loading}>{t("Refresh")}</button></div>
-    {loading ? <p className="loading-state">{t("Loading receipt drafts…")}</p> : receipts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Created")}</th><th>{t("Location")}</th><th>{t("Supplier reference")}</th><th>{t("Lines")}</th><th>{t("Status")}</th><th>{t("Review notes")}</th></tr></thead><tbody>{receipts.map(receipt => <tr key={receipt.id}><td>{formatDate(receipt.createdAtUtc)}</td><td>{receipt.locationName}</td><td>{receipt.supplierReference}</td><td>{receipt.lines.length}</td><td><span className="inventory-status-chip">{t(receipt.status)}</span></td><td><button type="button" className="table-action" onClick={() => void openObservations(receipt.id)}>{t("View / add notes")}</button></td></tr>)}</tbody></table></div> : <div className="inventory-empty-state compact-empty"><h3>{t("No receipt drafts yet")}</h3><p>{t("Saved draft evidence will appear here. No stock balance or movement is created.")}</p></div>}
-    {selectedReceiptId && <section className="inventory-panel" style={{ marginTop: 16 }}><div className="inventory-panel-heading"><div><p className="eyebrow">{t("DRAFT REVIEW NOTES")}</p><h3>{t("Observations and discrepancies")}</h3></div><button type="button" className="subtle-button" onClick={() => setSelectedReceiptId("")}>{t("Close")}</button></div><p className="catalogue-footer-note">{t("Record factual observations against this draft only. Notes do not accept or reject goods, change receipt status, create stock, or authorize quality release.")}</p><form className="location-form catalogue-form" onSubmit={addObservation}><label>{t("Observation / discrepancy note")}<input required maxLength={500} value={observationNote} onChange={event => setObservationNote(event.target.value)} /></label><button className="primary-button" type="submit" disabled={observationBusy || !observationNote.trim()}>{observationBusy ? t("Saving…") : t("Add note")}</button></form>{observations.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Recorded")}</th><th>{t("Actor")}</th><th>{t("Observation")}</th></tr></thead><tbody>{observations.map(item => <tr key={item.id}><td>{formatDate(item.occurredAtUtc)}</td><td>{item.actorSubject}</td><td>{item.note}</td></tr>)}</tbody></table></div> : <p className="inventory-empty">{t("No observations have been recorded for this draft.")}</p>}</section>}
+    {loading ? <p className="loading-state">{t("Loading receipt drafts…")}</p> : receipts.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Created")}</th><th>{t("Location")}</th><th>{t("Supplier reference")}</th><th>{t("Lines")}</th><th>{t("Status")}</th><th>{t("Review notes")}</th></tr></thead><tbody>{receipts.map(receipt => <tr key={receipt.id}><td>{formatDate(receipt.createdAtUtc)}</td><td>{receipt.locationName}</td><td>{receipt.supplierReference}</td><td>{receipt.lines.length}</td><td><span className="inventory-status-chip">{t(receipt.status)}</span></td><td><button type="button" className="table-action" onClick={() => void openObservations(receipt.id).catch(cause => setError(cause instanceof Error ? cause.message : t("Receipt observations could not be loaded.")))}>{t("View / add notes")}</button></td></tr>)}</tbody></table></div> : <div className="inventory-empty-state compact-empty"><h3>{t("No receipt drafts yet")}</h3><p>{t("Saved draft evidence will appear here. No stock balance or movement is created.")}</p></div>}
+    {selectedReceiptId && <section className="inventory-panel" style={{ marginTop: 16 }}><div className="inventory-panel-heading"><div><p className="eyebrow">{t("DRAFT REVIEW NOTES")}</p><h3>{t("Observations and discrepancies")}</h3></div><button type="button" className="subtle-button" onClick={() => setSelectedReceiptId("")}>{t("Close")}</button></div><p className="catalogue-footer-note">{t("Record factual observations against this draft only. Notes do not accept or reject goods, change receipt status, create stock, or authorize quality release.")}</p>{observationNotice && <p className="form-success" role="status" aria-live="polite">{observationNotice}</p>}<form className="location-form catalogue-form" onSubmit={addObservation}><label>{t("Observation / discrepancy note")}<input required maxLength={500} value={observationNote} onChange={event => setObservationNote(event.target.value)} /></label><button className="primary-button" type="submit" disabled={observationBusy || !observationNote.trim()}>{observationBusy ? t("Saving…") : t("Add note")}</button></form>{observations.length ? <div className="register-table-wrap"><table className="register-table"><thead><tr><th>{t("Recorded")}</th><th>{t("Actor")}</th><th>{t("Observation")}</th></tr></thead><tbody>{observations.map(item => <tr key={item.id}><td>{formatDate(item.occurredAtUtc)}</td><td>{item.actorSubject}</td><td>{item.note}</td></tr>)}</tbody></table></div> : <p className="inventory-empty">{t("No observations have been recorded for this draft.")}</p>}</section>}
   </section>;
 }

@@ -130,6 +130,15 @@ export default function SupplierRegister() {
   }
 
   return <div className="catalogue-manager">
+    <div className="inventory-panel" role="note" style={{ marginBottom: 16 }}>
+      <div className="inventory-panel-heading"><div><p className="eyebrow">{t("UI-02 WORKFLOW GUIDE")}</p><h3>{t("How to save and verify a supplier assurance request")}</h3></div></div>
+      <ol className="inventory-check-list">
+        <li><span className="check-pending">1</span><div><strong>{t("Create a supplier draft")}</strong><small>{t("Use the New supplier draft form, then select View in the supplier list.")}</small></div></li>
+        <li><span className="check-pending">2</span><div><strong>{t("Open Supplier assurance")}</strong><small>{t("Scroll within the selected supplier record to the Supplier assurance section; optionally add evidence first.")}</small></div></li>
+        <li><span className="check-pending">3</span><div><strong>{t("Create assurance work request")}</strong><small>{t("After saving, look for the green confirmation and the new row in the assurance request table. Refresh or reload to verify persistence.")}</small></div></li>
+      </ol>
+      <p className="catalogue-footer-note">{t("A saved request is still a work request only. It does not verify, qualify or approve the supplier.")}</p>
+    </div>
     <div className="inventory-gate"><span className="inventory-gate-icon">!</span><div>
       <strong>{t("Supplier directory · draft and unverified only")}</strong>
       <p>{t("This register captures supplier names and evidence references only. It does not verify licences, approve suppliers, authorize purchasing or permit supplier transmission.")}</p>

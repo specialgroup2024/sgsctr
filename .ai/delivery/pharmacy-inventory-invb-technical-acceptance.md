@@ -59,3 +59,17 @@ A bounded follow-up was implemented on branch `feat/supplier-evidence-receipt-ob
 - English/Arabic labels and boundary messaging were added for the UI.
 
 **Not yet technically accepted:** no .NET build/test, TypeScript typecheck, Next.js build, EF model check, PostgreSQL integration, API/BFF authorization test, browser test or owner-VM runtime test has been run for this branch. The CI and runtime states must be recorded from actual results before merge/release claims. Existing INV-B technical acceptance and production/security/professional gates remain unchanged.
+
+## 2026-11-26 — owner VM UI-02 feedback and correction
+
+The owner reported both supplier assurance and receiving observation acceptance as **Failed**, with the specific feedback: "No UI found \"saved\"." This is a browser-level failure report, not evidence of API/database persistence failure or success.
+
+Source inspection identified discoverability and confirmation defects:
+- Supplier assurance is nested inside a selected supplier detail. The UI did not explain the required sequence from creating/selecting a supplier to reaching the assurance form and locating the saved request.
+- Receiving observations are available only after a receipt draft exists and the user opens **View / add notes** in the recent-drafts table. The prerequisite and sequence were not prominent.
+- The receiving observation reload helper caught its own GET errors. The POST handler could therefore display success even when the follow-up read failed.
+
+A focused correction is proposed on branch `fix/ui02-save-discoverability-2026-11-26`: add bilingual step-by-step workflow guidance, show the observation confirmation beside the observation form, and propagate observation reload failures so success is displayed only after the saved observations are fetched again.
+
+**Acceptance remains Failed / pending retest.** No claim is made that the changes compile, pass CI, work on the owner's VM, or establish persistence. UI-03 remains blocked. Supplier qualification, evidence verification, goods acceptance, stock effects and financial posting remain outside this work package.
+
