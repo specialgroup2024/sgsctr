@@ -73,7 +73,11 @@ public static class PharmacyReceiptDraftExtensions
                     ["unitId"] = ["Every line must reference an existing unit of measure."]
                 });
 
-            var actor = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? user.FindFirst("sub")?.Value ?? "local-development";
+            var actor = localWrites
+                ? "local-development"
+                : user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? user.FindFirst("sub")?.Value;
+            if (string.IsNullOrWhiteSpace(actor)) return Results.Forbid();
+
             var now = DateTimeOffset.UtcNow;
             var receipt = new PharmacyReceiptDraft
             {
